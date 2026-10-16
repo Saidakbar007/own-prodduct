@@ -3,6 +3,19 @@
 {% block title %}Главная — Моя жизнь{% endblock %}
 
 {% block content %}
+{% if user %}
+<section class="text-center py-16">
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+        Привет, {{ user.login }}! 👋
+    </h1>
+    <p class="text-slate-500 max-w-xl mx-auto mb-2">
+        Привычек: {{ user.habits }} · Целей: {{ user.goals }}
+    </p>
+    <p class="text-slate-400 text-sm">
+        Дашборд с привычками и целями появится на следующих шагах проекта.
+    </p>
+</section>
+{% else %}
 <section class="text-center py-16">
     <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
         Мечта → Цель → Привычка → Результат
@@ -23,4 +36,5 @@
         </a>
     </div>
 </section>
+{% endif %}
 {% endblock %}

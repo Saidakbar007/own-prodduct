@@ -16,12 +16,21 @@
     <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
         <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
             <a href="/" class="text-lg font-bold text-indigo-600">🚀 Моя жизнь</a>
-            <div class="flex gap-4 text-sm font-medium">
+            <div class="flex gap-4 text-sm font-medium items-center">
                 <a href="/" class="hover:text-indigo-600">Главная</a>
                 <a href="/habits" class="hover:text-indigo-600">Привычки</a>
                 <a href="/goals" class="hover:text-indigo-600">Цели</a>
                 <a href="/friends" class="hover:text-indigo-600">Друзья</a>
                 <a href="/profile" class="hover:text-indigo-600">Профиль</a>
+                {% if user %}
+                    <span class="text-slate-400">|</span>
+                    <span class="text-slate-500">{{ user.login }}</span>
+                    <a href="/logout" class="text-red-600 hover:text-red-700">Выйти</a>
+                {% else %}
+                    <span class="text-slate-400">|</span>
+                    <a href="/login" class="hover:text-indigo-600">Войти</a>
+                    <a href="/register" class="hover:text-indigo-600">Регистрация</a>
+                {% endif %}
             </div>
         </nav>
     </header>
