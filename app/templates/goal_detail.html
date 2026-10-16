@@ -42,6 +42,54 @@
             <li class="text-slate-400">Пока нет отметок прогресса</li>
             {% endfor %}
         </ul>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+            <div>
+                <h2 class="font-medium text-sm mb-2">🏋️ Тренировочные программы</h2>
+                <ul class="text-sm text-slate-500 space-y-1 mb-2">
+                    {% for t in trainings %}
+                    <li>· <b>{{ t.name }}</b>{% if t.program %}: {{ t.program }}{% endif %}</li>
+                    {% else %}
+                    <li class="text-slate-400">Пока нет</li>
+                    {% endfor %}
+                </ul>
+                <details class="text-sm">
+                    <summary class="cursor-pointer text-indigo-600">+ добавить</summary>
+                    <form method="post" action="/goals/{{ goal.id }}/training" class="space-y-2 mt-2">
+                        <input type="text" name="name" placeholder="Название" required
+                               class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                        <input type="text" name="program" placeholder="Программа"
+                               class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                        <button type="submit" class="bg-indigo-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-indigo-700">
+                            Добавить
+                        </button>
+                    </form>
+                </details>
+            </div>
+
+            <div>
+                <h2 class="font-medium text-sm mb-2">📚 Образовательные программы</h2>
+                <ul class="text-sm text-slate-500 space-y-1 mb-2">
+                    {% for e in educations %}
+                    <li>· <b>{{ e.name }}</b>{% if e.program %}: {{ e.program }}{% endif %}</li>
+                    {% else %}
+                    <li class="text-slate-400">Пока нет</li>
+                    {% endfor %}
+                </ul>
+                <details class="text-sm">
+                    <summary class="cursor-pointer text-indigo-600">+ добавить</summary>
+                    <form method="post" action="/goals/{{ goal.id }}/education" class="space-y-2 mt-2">
+                        <input type="text" name="name" placeholder="Название" required
+                               class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                        <input type="text" name="program" placeholder="Программа"
+                               class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                        <button type="submit" class="bg-indigo-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-indigo-700">
+                            Добавить
+                        </button>
+                    </form>
+                </details>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

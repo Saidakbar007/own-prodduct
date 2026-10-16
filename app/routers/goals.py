@@ -12,7 +12,7 @@ from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import Goal, GoalHistory, User
+from app.models import Education, Goal, GoalHistory, Training, User
 from app.services.points import award_points
 
 router = APIRouter()
@@ -119,9 +119,19 @@ def goal_detail(
     history = db.exec(
         select(GoalHistory).where(GoalHistory.h_id == goal_id).order_by(GoalHistory.time.desc())
     ).all()
+    trainings = db.exec(select(Training).where(Training.g_id == goal_id)).all()
+    educations = db.exec(select(Education).where(Education.g_id == goal_id)).all()
 
     return templates.TemplateResponse(
-        request, "goal_detail.html", {"user": user, "goal": goal, "history": history}
+        request,
+        "goal_detail.html",
+        {
+            "user": user,
+            "goal": goal,
+            "history": history,
+            "trainings": trainings,
+            "educations": educations,
+        },
     )
 
 
