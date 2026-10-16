@@ -8,6 +8,14 @@ __pycache__/
 
 # база данных SQLite
 app.db
+app.db.bak-*
+
+# загруженные фото-доказательства
+uploads/
+
+# архив со скиллами и временная распаковка (сами скиллы устанавливаются в .claude/skills/)
+skills.zip
+skills_extract/
 
 # секреты
 .env
