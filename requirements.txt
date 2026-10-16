@@ -8,5 +8,6 @@ python-multipart
 itsdangerous
 python-dotenv
 anthropic
+alembic
 pytest
 httpx
