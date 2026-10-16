@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}AI-коуч — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-md mx-auto">
+    <h1 class="text-xl font-bold mb-4">🤖 AI-коуч</h1>
+
+    {% if question %}
+    <div class="bg-indigo-50 rounded-xl px-4 py-3 mb-3 text-sm">
+        <b>Ты:</b> {{ question }}
+    </div>
+    {% endif %}
+
+    <div class="bg-white border border-slate-200 rounded-xl px-4 py-3 mb-4 text-sm">
+        <b>Коуч:</b> {{ advice }}
+    </div>
+
+    <form method="post" action="/coach" class="space-y-2">
+        <textarea name="question" rows="2" placeholder="Спроси что-нибудь у коуча..."
+                  class="w-full border border-slate-300 rounded-lg px-3 py-2"></textarea>
+        <button type="submit"
+                class="w-full bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">
+            Спросить
+        </button>
+    </form>
+</section>
+{% endblock %}
