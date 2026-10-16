@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-md mx-auto bg-white rounded-xl border border-slate-200 p-6 mt-8 text-center">
+    <p class="text-slate-400 text-sm">Твой уровень</p>
+    <h1 class="text-3xl font-bold text-indigo-600 mb-2">{{ level.name }}</h1>
+    <p class="text-slate-500 mb-4">{{ level.point }} очков</p>
+
+    <div class="w-full bg-slate-100 rounded-full h-3 mb-2">
+        <div class="bg-indigo-600 h-3 rounded-full" style="width: {{ progress_percent }}%"></div>
+    </div>
+
+    {% if next_name %}
+    <p class="text-sm text-slate-400">
+        Ещё {{ points_needed }} очков до уровня «{{ next_name }}»
+    </p>
+    {% else %}
+    <p class="text-sm text-slate-400">Максимальный уровень достигнут 🏆</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -19,6 +19,7 @@ from app.routers import auth as auth_router
 from app.routers import profile as profile_router
 from app.routers import habits as habits_router
 from app.routers import goals as goals_router
+from app.routers import stats as stats_router
 
 load_dotenv()
 
@@ -49,6 +50,7 @@ app.include_router(auth_router.router)
 app.include_router(profile_router.router)
 app.include_router(habits_router.router)
 app.include_router(goals_router.router)
+app.include_router(stats_router.router)
 
 
 @app.get("/")

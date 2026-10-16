@@ -25,6 +25,17 @@ def level_name_for_points(points: int) -> str:
     return name
 
 
+def next_level_info(points: int) -> tuple[str, int] | None:
+    """
+    Возвращает (название следующего уровня, сколько очков до него не хватает).
+    Если уровень уже максимальный — возвращает None.
+    """
+    for threshold, level_name in LEVEL_THRESHOLDS:
+        if points < threshold:
+            return level_name, threshold - points
+    return None
+
+
 def award_points(db: Session, user: User, points: int) -> Level:
     """Добавляет очки пользователю и пересчитывает название уровня."""
     level = db.exec(select(Level).where(Level.uid == user.id)).first()
