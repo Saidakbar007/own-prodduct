@@ -6,7 +6,7 @@
 это сделано специально, чтобы совпадать с диаграммой.
 """
 
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import Optional
 
 from sqlmodel import Field, SQLModel
@@ -65,7 +65,7 @@ class HabitHistory(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     h_id: int = Field(foreign_key="habits.id")
-    time: datetime = Field(default_factory=datetime.utcnow)
+    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class Goal(SQLModel, table=True):
@@ -93,7 +93,7 @@ class GoalHistory(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     h_id: int = Field(foreign_key="goals.id")
-    time: datetime = Field(default_factory=datetime.utcnow)
+    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class Level(SQLModel, table=True):
@@ -140,6 +140,6 @@ class Friend(SQLModel, table=True):
     uid: int = Field(foreign_key="users.id")
     friend_id: int = Field(foreign_key="users.id")
     status: str = Field(default="pending")  # pending / accepted / declined
-    created_date: datetime = Field(default_factory=datetime.utcnow)
+    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     update_date: Optional[datetime] = None
     end_date: Optional[datetime] = None

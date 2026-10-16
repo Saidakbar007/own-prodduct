@@ -17,6 +17,7 @@ from app.database import create_db_and_tables
 from app import models  # noqa: F401 — импорт нужен, чтобы таблицы попали в metadata
 from app.routers import auth as auth_router
 from app.routers import profile as profile_router
+from app.routers import habits as habits_router
 
 load_dotenv()
 
@@ -45,6 +46,7 @@ templates = Jinja2Templates(directory="app/templates")
 # Роуты регистрации/входа/выхода
 app.include_router(auth_router.router)
 app.include_router(profile_router.router)
+app.include_router(habits_router.router)
 
 
 @app.get("/")

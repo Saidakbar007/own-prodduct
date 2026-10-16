@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Привычки — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-2xl mx-auto">
+    <h1 class="text-xl font-bold mb-4">Мои привычки</h1>
+
+    {% if error %}
+    <div class="bg-red-50 text-red-700 text-sm rounded-lg px-3 py-2 mb-4">{{ error }}</div>
+    {% endif %}
+
+    <div class="space-y-3 mb-6">
+        {% for item in habits %}
+        <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between">
+            <div>
+                <p class="font-medium">{{ item.habit.name }}</p>
+                {% if item.habit.description %}
+                <p class="text-sm text-slate-500">{{ item.habit.description }}</p>
+                {% endif %}
+                <p class="text-xs text-slate-400 mt-1">🔥 Streak: {{ item.streak }} дней</p>
+            </div>
+            {% if item.done_today %}
+            <span class="text-green-600 text-sm font-medium px-3 py-1.5 bg-green-50 rounded-lg">✓ Сделано сегодня</span>
+            {% else %}
+            <form method="post" action="/habits/{{ item.habit.id }}/check">
+                <button type="submit"
+                        class="bg-indigo-600 text-white text-sm px-4 py-1.5 rounded-lg hover:bg-indigo-700">
+                    Отметить
+                </button>
+            </form>
+            {% endif %}
+        </div>
+        {% else %}
+        <p class="text-slate-400 text-sm">Пока нет привычек — добавь первую ниже.</p>
+        {% endfor %}
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-4">
+        <h2 class="font-medium mb-3">Новая привычка</h2>
+        <form method="post" action="/habits" class="space-y-3">
+            <input type="text" name="name" placeholder="Название" required
+                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
+            <input type="text" name="description" placeholder="Описание (необязательно)"
+                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
+            <div class="grid grid-cols-2 gap-3">
+                <input type="number" name="point" placeholder="Очки за отметку" value="10"
+                       class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <input type="number" step="0.1" name="story_point" placeholder="Множитель сложности" value="1.0"
+                       class="w-full border border-slate-300 rounded-lg px-3 py-2">
+            </div>
+            <button type="submit"
+                    class="w-full bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">
+                Добавить привычку
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}
