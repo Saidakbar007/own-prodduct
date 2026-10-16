@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Друзья — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-2xl mx-auto space-y-6">
+    <h1 class="text-xl font-bold">Друзья</h1>
+
+    {% if error %}
+    <div class="bg-red-50 text-red-700 text-sm rounded-lg px-3 py-2">{{ error }}</div>
+    {% endif %}
+
+    <div class="bg-white border border-slate-200 rounded-xl p-4">
+        <h2 class="font-medium mb-3">Найти друга по логину</h2>
+        <form method="post" action="/friends/request" class="flex gap-2">
+            <input type="text" name="login" placeholder="Логин" required
+                   class="flex-1 border border-slate-300 rounded-lg px-3 py-2">
+            <button type="submit" class="bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700">
+                Отправить заявку
+            </button>
+        </form>
+    </div>
+
+    {% if incoming %}
+    <div class="bg-white border border-slate-200 rounded-xl p-4">
+        <h2 class="font-medium mb-3">Входящие заявки</h2>
+        <ul class="space-y-2">
+            {% for req in incoming %}
+            <li class="flex items-center justify-between text-sm">
+                <span>Заявка #{{ req.id }}</span>
+                <span class="flex gap-2">
+                    <form method="post" action="/friends/{{ req.id }}/accept">
+                        <button class="bg-green-600 text-white rounded-lg px-3 py-1.5 hover:bg-green-700">Принять</button>
+                    </form>
+                    <form method="post" action="/friends/{{ req.id }}/decline">
+                        <button class="bg-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-300">Отклонить</button>
+                    </form>
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if outgoing %}
+    <div class="bg-white border border-slate-200 rounded-xl p-4">
+        <h2 class="font-medium mb-3">Исходящие заявки (ожидают ответа)</h2>
+        <ul class="text-sm text-slate-500 space-y-1">
+            {% for req in outgoing %}
+            <li>· заявка #{{ req.id }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="bg-white border border-slate-200 rounded-xl p-4">
+        <h2 class="font-medium mb-3">Мои друзья</h2>
+        <ul class="space-y-2">
+            {% for f in friends %}
+            <li class="flex items-center justify-between text-sm">
+                <span class="font-medium">{{ f.user.login }}</span>
+                <span class="text-slate-500">{{ f.level_name }} · {{ f.points }} очков · 🔥 {{ f.streak }} дней</span>
+            </li>
+            {% else %}
+            <li class="text-slate-400 text-sm">Пока нет друзей</li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}

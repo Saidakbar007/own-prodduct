@@ -21,6 +21,7 @@ from app.routers import habits as habits_router
 from app.routers import goals as goals_router
 from app.routers import stats as stats_router
 from app.routers import programs as programs_router
+from app.routers import friends as friends_router
 
 load_dotenv()
 
@@ -53,6 +54,7 @@ app.include_router(habits_router.router)
 app.include_router(goals_router.router)
 app.include_router(stats_router.router)
 app.include_router(programs_router.router)
+app.include_router(friends_router.router)
 
 
 @app.get("/")
