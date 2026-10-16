@@ -4,6 +4,7 @@
 """
 
 import os
+from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Request
@@ -15,10 +16,19 @@ from app.auth import get_current_user
 from app.database import create_db_and_tables
 from app import models  # noqa: F401 — импорт нужен, чтобы таблицы попали в metadata
 from app.routers import auth as auth_router
+from app.routers import profile as profile_router
 
 load_dotenv()
 
-app = FastAPI(title="Моя жизнь (MVP)")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """При старте сервера создаём таблицы в базе данных, если их ещё нет."""
+    create_db_and_tables()
+    yield
+
+
+app = FastAPI(title="Моя жизнь (MVP)", lifespan=lifespan)
 
 # Подпись cookie-сессий секретным ключом из .env
 app.add_middleware(
@@ -34,12 +44,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 # Роуты регистрации/входа/выхода
 app.include_router(auth_router.router)
-
-
-@app.on_event("startup")
-def on_startup():
-    """При старте сервера создаём таблицы в базе данных, если их ещё нет."""
-    create_db_and_tables()
+app.include_router(profile_router.router)
 
 
 @app.get("/")
