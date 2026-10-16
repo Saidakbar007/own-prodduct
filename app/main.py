@@ -18,6 +18,7 @@ from app import models  # noqa: F401 — импорт нужен, чтобы т�
 from app.routers import auth as auth_router
 from app.routers import profile as profile_router
 from app.routers import habits as habits_router
+from app.routers import goals as goals_router
 
 load_dotenv()
 
@@ -47,6 +48,7 @@ templates = Jinja2Templates(directory="app/templates")
 app.include_router(auth_router.router)
 app.include_router(profile_router.router)
 app.include_router(habits_router.router)
+app.include_router(goals_router.router)
 
 
 @app.get("/")

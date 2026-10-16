@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ goal.name }} — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-2xl mx-auto">
+    <a href="/goals" class="text-sm text-indigo-600">← Все цели</a>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 mt-3">
+        <h1 class="text-xl font-bold mb-1">
+            {% if goal.status == "completed" %}✅{% else %}🎯{% endif %} {{ goal.name }}
+        </h1>
+        {% if goal.description %}
+        <p class="text-slate-500 mb-2">{{ goal.description }}</p>
+        {% endif %}
+        {% if goal.deadline %}
+        <p class="text-sm text-slate-400 mb-3">Дедлайн: {{ goal.deadline }}</p>
+        {% endif %}
+
+        {% if goal.status != "completed" %}
+        <div class="flex gap-2 mb-4">
+            <form method="post" action="/goals/{{ goal.id }}/progress">
+                <button type="submit" class="bg-white border border-slate-300 rounded-lg px-4 py-2 text-sm hover:bg-slate-100">
+                    Отметить прогресс
+                </button>
+            </form>
+            <form method="post" action="/goals/{{ goal.id }}/complete">
+                <button type="submit" class="bg-green-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-green-700">
+                    Завершить цель
+                </button>
+            </form>
+        </div>
+        {% else %}
+        <p class="text-green-600 text-sm font-medium mb-4">Цель выполнена 🎉</p>
+        {% endif %}
+
+        <h2 class="font-medium text-sm mb-2 mt-4">История прогресса</h2>
+        <ul class="text-sm text-slate-500 space-y-1">
+            {% for entry in history %}
+            <li>· {{ entry.time.strftime("%d.%m.%Y %H:%M") }}</li>
+            {% else %}
+            <li class="text-slate-400">Пока нет отметок прогресса</li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}
