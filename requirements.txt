@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+jinja2
+passlib[bcrypt]
+bcrypt==4.0.1
+python-multipart
+itsdangerous
+python-dotenv

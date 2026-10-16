@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Главная — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="text-center py-16">
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+        Мечта → Цель → Привычка → Результат
+    </h1>
+    <p class="text-slate-500 max-w-xl mx-auto mb-8">
+        Приложение помогает ставить цели, формировать привычки и доводить
+        начатое до конца. Отмечай привычки каждый день, получай очки и расти
+        по уровням.
+    </p>
+    <div class="flex gap-3 justify-center">
+        <a href="/register"
+           class="bg-indigo-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-indigo-700">
+            Начать
+        </a>
+        <a href="/login"
+           class="bg-white border border-slate-300 px-5 py-2.5 rounded-lg font-medium hover:bg-slate-100">
+            Войти
+        </a>
+    </div>
+</section>
+{% endblock %}

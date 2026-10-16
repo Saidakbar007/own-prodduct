@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Моя жизнь{% endblock %}</title>
+
+    <!-- Tailwind CSS через CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- HTMX для динамики без отдельного JS-фронтенда -->
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Верхняя навигация -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="/" class="text-lg font-bold text-indigo-600">🚀 Моя жизнь</a>
+            <div class="flex gap-4 text-sm font-medium">
+                <a href="/" class="hover:text-indigo-600">Главная</a>
+                <a href="/habits" class="hover:text-indigo-600">Привычки</a>
+                <a href="/goals" class="hover:text-indigo-600">Цели</a>
+                <a href="/friends" class="hover:text-indigo-600">Друзья</a>
+                <a href="/profile" class="hover:text-indigo-600">Профиль</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Основной контент страницы -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="text-center text-xs text-slate-400 py-4">
+        Учебный проект · MVP
+    </footer>
+</body>
+</html>
