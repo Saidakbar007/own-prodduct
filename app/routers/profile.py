@@ -3,22 +3,20 @@
 """
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import RedirectResponse
-from fastapi.templating import Jinja2Templates
 from sqlmodel import Session
 
 from app.auth import require_user
 from app.database import get_session
 from app.models import User
+from app.rendering import render
 
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/profile")
-def profile_page(request: Request, user: User = Depends(require_user)):
+def profile_page(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
     """Показывает текущие данные профиля."""
-    return templates.TemplateResponse(request, "profile.html", {"user": user, "saved": False})
+    return render(request, "profile.html", {"user": user, "saved": False}, db=db, user=user)
 
 
 @router.post("/profile")
@@ -37,4 +35,4 @@ def profile_update(
     db.add(user)
     db.commit()
     db.refresh(user)
-    return templates.TemplateResponse(request, "profile.html", {"user": user, "saved": True})
+    return render(request, "profile.html", {"user": user, "saved": True}, db=db, user=user)

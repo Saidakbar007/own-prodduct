@@ -54,8 +54,11 @@ class Habit(SQLModel, table=True):
     time_start: Optional[datetime] = None
     time_end: Optional[datetime] = None
     status: str = Field(default="active")
-    point: int = Field(default=0)        # базовые очки за одну отметку
+    point: int = Field(default=0)        # базовые очки за одну отметку (считает сервер по сложности)
     story_point: float = Field(default=1.0)  # множитель сложности привычки
+    habit_type: str = Field(default="useful")  # useful (полезная) / harmful (вредная, "день без срыва")
+    frequency: str = Field(default="daily")    # daily (каждый день) / weekly (по дням недели)
+    weekdays: Optional[str] = None  # для frequency="weekly": дни недели CSV, "0,2,4" (0=понедельник)
 
 
 class HabitHistory(SQLModel, table=True):
@@ -94,6 +97,18 @@ class GoalHistory(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     h_id: int = Field(foreign_key="goals.id")
     time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class GoalStep(SQLModel, table=True):
+    """Шаг внутри цели (v2). Прогресс цели = доля выполненных шагов."""
+
+    __tablename__ = "goal_steps"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    goal_id: int = Field(foreign_key="goals.id")
+    name: str
+    done: bool = Field(default=False)
+    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class Level(SQLModel, table=True):
@@ -143,3 +158,65 @@ class Friend(SQLModel, table=True):
     created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     update_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
+
+
+class Achievement(SQLModel, table=True):
+    """Каталог достижений (v2). Заполняется один раз при старте сервера."""
+
+    __tablename__ = "achievements"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    code: str = Field(unique=True, index=True)
+    name: str
+    description: str
+    icon: str = Field(default="🏆")
+
+
+class UserAchievement(SQLModel, table=True):
+    """Какие достижения получил пользователь и когда (v2)."""
+
+    __tablename__ = "user_achievements"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    achievement_id: int = Field(foreign_key="achievements.id")
+    earned_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class DailyTask(SQLModel, table=True):
+    """Ежедневное мини-задание с бонусными очками (v2)."""
+
+    __tablename__ = "daily_tasks"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    date: date
+    description: str
+    points: int = Field(default=20)
+    done: bool = Field(default=False)
+
+
+class PointsLog(SQLModel, table=True):
+    """
+    Журнал начислений очков с отметкой времени (v2).
+    Нужен, чтобы считать очки за неделю (рейтинг друзей), а не только общую сумму.
+    """
+
+    __tablename__ = "points_log"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    points: int
+    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class CoachMessage(SQLModel, table=True):
+    """Сообщение в истории переписки с AI-коучем (v2)."""
+
+    __tablename__ = "coach_messages"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    role: str  # "user" или "coach"
+    text: str
+    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

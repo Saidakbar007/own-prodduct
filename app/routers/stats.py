@@ -1,23 +1,26 @@
 """
-Страница статистики: очки, уровень, прогресс до следующего уровня.
+Страница статистики: очки, уровень, прогресс до следующего уровня,
+графики (отметки за 30 дней, очки по неделям) и карточки.
 """
 
+import json
+
 from fastapi import APIRouter, Depends, Request
-from fastapi.templating import Jinja2Templates
 from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
 from app.models import Level, User
+from app.rendering import render
 from app.services.points import LEVEL_THRESHOLDS, next_level_info
+from app.services.stats import checks_per_day, points_per_week, stats_cards
 
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/stats")
 def stats_page(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
-    """Показывает текущий уровень пользователя и прогресс до следующего."""
+    """Показывает уровень, прогресс, графики и карточки со статистикой."""
     level = db.exec(select(Level).where(Level.uid == user.id)).first()
     if not level:
         level = Level(uid=user.id, point=0, name="Новичок")
@@ -27,7 +30,6 @@ def stats_page(request: Request, user: User = Depends(require_user), db: Session
 
     next_level = next_level_info(level.point)
 
-    # Текущий порог — для прогресс-бара (сколько % пройдено до следующего уровня)
     current_threshold = 0
     for threshold, _name in LEVEL_THRESHOLDS:
         if level.point >= threshold:
@@ -41,7 +43,11 @@ def stats_page(request: Request, user: User = Depends(require_user), db: Session
     else:
         next_name, points_needed, progress_percent = None, None, 100
 
-    return templates.TemplateResponse(
+    checks_data = checks_per_day(db, user.id, days=30)
+    points_data = points_per_week(db, user.id, weeks=8)
+    cards = stats_cards(db, user.id)
+
+    return render(
         request,
         "stats.html",
         {
@@ -50,5 +56,12 @@ def stats_page(request: Request, user: User = Depends(require_user), db: Session
             "next_name": next_name,
             "points_needed": points_needed,
             "progress_percent": progress_percent,
+            "checks_labels_json": json.dumps([c["date"][5:] for c in checks_data]),
+            "checks_values_json": json.dumps([c["count"] for c in checks_data]),
+            "points_labels_json": json.dumps([p["label"] for p in points_data]),
+            "points_values_json": json.dumps([p["points"] for p in points_data]),
+            "cards": cards,
         },
+        db=db,
+        user=user,
     )

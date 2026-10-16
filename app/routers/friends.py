@@ -1,28 +1,36 @@
 """
-Друзья: заявка → принятие/отклонение, прогресс друга (уровень и streak).
+Друзья: заявка → принятие/отклонение, прогресс друга (уровень и streak),
+рейтинг среди друзей по очкам за неделю.
 """
 
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.templating import Jinja2Templates
 from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import Friend, Level, User
+from app.models import Friend, Level, PointsLog, User
+from app.rendering import render
+from app.services.achievements import check_and_award_achievements
+from app.services.flash import push_flash
 from app.services.streak import best_streak_for_user
 
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
 
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def _weekly_points(db: Session, uid: int) -> int:
+    week_ago = date.today() - timedelta(days=6)
+    logs = db.exec(select(PointsLog).where(PointsLog.uid == uid)).all()
+    return sum(log.points for log in logs if log.time.date() >= week_ago)
+
+
 def _friend_card(db: Session, user_id: int) -> dict:
-    """Публичные данные о прогрессе пользователя: уровень + лучший streak."""
+    """Публичные данные о прогрессе пользователя: уровень + лучший streak + очки за неделю."""
     friend_user = db.get(User, user_id)
     level = db.exec(select(Level).where(Level.uid == user_id)).first()
     return {
@@ -30,6 +38,7 @@ def _friend_card(db: Session, user_id: int) -> dict:
         "level_name": level.name if level else "Новичок",
         "points": level.point if level else 0,
         "streak": best_streak_for_user(db, user_id),
+        "weekly_points": _weekly_points(db, user_id),
     }
 
 
@@ -43,6 +52,9 @@ def _friends_context(db: Session, user: User, error: str = None) -> dict:
     friend_ids = [f.friend_id if f.uid == user.id else f.uid for f in accepted]
     friends = [_friend_card(db, fid) for fid in friend_ids]
 
+    leaderboard = [_friend_card(db, user.id)] + friends
+    leaderboard.sort(key=lambda c: c["weekly_points"], reverse=True)
+
     incoming = db.exec(
         select(Friend).where(Friend.friend_id == user.id, Friend.status == "pending")
     ).all()
@@ -53,6 +65,7 @@ def _friends_context(db: Session, user: User, error: str = None) -> dict:
     return {
         "user": user,
         "friends": friends,
+        "leaderboard": leaderboard,
         "incoming": incoming,
         "outgoing": outgoing,
         "error": error,
@@ -61,8 +74,8 @@ def _friends_context(db: Session, user: User, error: str = None) -> dict:
 
 @router.get("/friends")
 def friends_list(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
-    """Список друзей, входящих и исходящих заявок."""
-    return templates.TemplateResponse(request, "friends.html", _friends_context(db, user))
+    """Список друзей, рейтинг за неделю, входящие и исходящие заявки."""
+    return render(request, "friends.html", _friends_context(db, user), db=db, user=user)
 
 
 @router.post("/friends/request")
@@ -76,8 +89,8 @@ def send_request(
     target = db.exec(select(User).where(User.login == login)).first()
 
     if not target or target.id == user.id:
-        return templates.TemplateResponse(
-            request, "friends.html", _friends_context(db, user, "Пользователь не найден"), status_code=404
+        return render(
+            request, "friends.html", _friends_context(db, user, "Пользователь не найден"), db=db, user=user, status_code=404
         )
 
     existing = db.exec(
@@ -87,13 +100,18 @@ def send_request(
         )
     ).first()
     if existing:
-        return templates.TemplateResponse(
-            request, "friends.html", _friends_context(db, user, "Заявка уже существует или вы уже друзья"), status_code=400
+        return render(
+            request,
+            "friends.html",
+            _friends_context(db, user, "Заявка уже существует или вы уже друзья"),
+            db=db,
+            user=user,
+            status_code=400,
         )
 
     db.add(Friend(uid=user.id, friend_id=target.id, status="pending"))
     db.commit()
-    return templates.TemplateResponse(request, "friends.html", _friends_context(db, user))
+    return render(request, "friends.html", _friends_context(db, user), db=db, user=user)
 
 
 @router.post("/friends/{friend_id}/accept")
@@ -110,7 +128,16 @@ def accept_request(
         friend.update_date = _now()
         db.add(friend)
         db.commit()
-    return templates.TemplateResponse(request, "friends.html", _friends_context(db, user))
+
+        newly_earned = check_and_award_achievements(db, user)
+        for achievement in newly_earned:
+            push_flash(request, f"{achievement.icon} Новое достижение: «{achievement.name}»!", "achievement")
+
+        other_user = db.get(User, friend.uid)
+        if other_user:
+            check_and_award_achievements(db, other_user)
+
+    return render(request, "friends.html", _friends_context(db, user), db=db, user=user)
 
 
 @router.post("/friends/{friend_id}/decline")
@@ -127,4 +154,4 @@ def decline_request(
         friend.update_date = _now()
         db.add(friend)
         db.commit()
-    return templates.TemplateResponse(request, "friends.html", _friends_context(db, user))
+    return render(request, "friends.html", _friends_context(db, user), db=db, user=user)

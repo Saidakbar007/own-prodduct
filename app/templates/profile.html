@@ -3,8 +3,8 @@
 {% block title %}Профиль — Моя жизнь{% endblock %}
 
 {% block content %}
-<section class="max-w-md mx-auto bg-white rounded-xl border border-slate-200 p-6 mt-8">
-    <h1 class="text-xl font-bold mb-4">Профиль: {{ user.login }}</h1>
+<section class="max-w-md mx-auto bg-white rounded-xl border border-slate-200 p-6 mt-8 shadow-sm">
+    <h1 class="text-xl font-bold mb-4">👤 Профиль: {{ user.login }}</h1>
 
     {% if saved %}
     <div class="bg-green-50 text-green-700 text-sm rounded-lg px-3 py-2 mb-4">
@@ -15,13 +15,13 @@
     <form method="post" action="/profile" class="space-y-3">
         <div>
             <label class="block text-sm font-medium mb-1">Вес (кг)</label>
-            <input type="number" step="0.1" name="weight" value="{{ user.weight or '' }}"
+            <input type="number" step="0.1" name="weight" value="{{ user.weight or '' }}" placeholder="Например: 70"
                    class="w-full border border-slate-300 rounded-lg px-3 py-2">
         </div>
 
         <div>
             <label class="block text-sm font-medium mb-1">Рост (см)</label>
-            <input type="number" step="0.1" name="hight" value="{{ user.hight or '' }}"
+            <input type="number" step="0.1" name="hight" value="{{ user.hight or '' }}" placeholder="Например: 175"
                    class="w-full border border-slate-300 rounded-lg px-3 py-2">
         </div>
 

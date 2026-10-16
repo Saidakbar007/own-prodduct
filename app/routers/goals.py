@@ -1,22 +1,24 @@
 """
 Цели и мечты.
 Мечта — это цель верхнего уровня (parent_id = None).
-Обычная цель привязана к мечте через parent_id.
+Обычная цель привязана к мечте через parent_id, состоит из шагов.
 """
 
 from datetime import date, datetime, timezone
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.templating import Jinja2Templates
 from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import Education, Goal, GoalHistory, Training, User
-from app.services.points import award_points
+from app.models import Education, Goal, GoalHistory, GoalStep, Training, User
+from app.rendering import render
+from app.services.achievements import check_and_award_achievements
+from app.services.flash import push_flash
+from app.services.points import award_points, points_for_goal_difficulty
+from app.services.progress import dream_progress_percent, goal_progress_percent
 
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
 
 
 def _now() -> datetime:
@@ -24,7 +26,7 @@ def _now() -> datetime:
 
 
 def _goals_context(db: Session, user: User, error: str = None) -> dict:
-    """Собирает мечты пользователя вместе с их дочерними целями."""
+    """Собирает мечты пользователя вместе с их дочерними целями и прогрессом."""
     dreams = db.exec(
         select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)  # noqa: E711
     ).all()
@@ -32,15 +34,24 @@ def _goals_context(db: Session, user: User, error: str = None) -> dict:
     dreams_with_children = []
     for dream in dreams:
         children = db.exec(select(Goal).where(Goal.parent_id == dream.id)).all()
-        dreams_with_children.append({"dream": dream, "children": children})
+        children_with_progress = [
+            {"goal": g, "progress": goal_progress_percent(db, g)} for g in children
+        ]
+        dreams_with_children.append(
+            {
+                "dream": dream,
+                "children": children_with_progress,
+                "progress": dream_progress_percent(db, dream),
+            }
+        )
 
-    return {"user": user, "dreams": dreams_with_children, "error": error}
+    return {"user": user, "dreams": dreams_with_children, "error": error, "today": date.today()}
 
 
 @router.get("/goals")
 def goals_list(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
     """Список мечт и целей пользователя."""
-    return templates.TemplateResponse(request, "goals.html", _goals_context(db, user))
+    return render(request, "goals.html", _goals_context(db, user), db=db, user=user)
 
 
 @router.post("/goals")
@@ -57,7 +68,7 @@ def create_dream(
     user.goals += 1
     db.add(user)
     db.commit()
-    return templates.TemplateResponse(request, "goals.html", _goals_context(db, user))
+    return render(request, "goals.html", _goals_context(db, user), db=db, user=user)
 
 
 @router.post("/goals/{dream_id}/child")
@@ -67,16 +78,25 @@ def create_goal(
     name: str = Form(...),
     description: str = Form(None),
     deadline: date = Form(None),
-    point: int = Form(50),
-    story_point: float = Form(1.0),
+    difficulty: str = Form("medium"),
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
-    """Создаёт цель, привязанную к мечте."""
+    """Создаёт цель, привязанную к мечте. Очки по сложности считает сервер."""
     dream = db.get(Goal, dream_id)
     if not dream or dream.uid != user.id:
-        return templates.TemplateResponse(
-            request, "goals.html", _goals_context(db, user, "Мечта не найдена"), status_code=404
+        return render(
+            request, "goals.html", _goals_context(db, user, "Мечта не найдена"), db=db, user=user, status_code=404
+        )
+
+    if deadline and deadline < date.today():
+        return render(
+            request,
+            "goals.html",
+            _goals_context(db, user, "Дедлайн не может быть в прошлом"),
+            db=db,
+            user=user,
+            status_code=400,
         )
 
     goal = Goal(
@@ -84,15 +104,15 @@ def create_goal(
         name=name,
         description=description,
         deadline=deadline,
-        point=point,
-        story_point=story_point,
+        point=points_for_goal_difficulty(difficulty),
+        story_point=1.0,
         parent_id=dream_id,
     )
     db.add(goal)
     user.goals += 1
     db.add(user)
     db.commit()
-    return templates.TemplateResponse(request, "goals.html", _goals_context(db, user))
+    return render(request, "goals.html", _goals_context(db, user), db=db, user=user)
 
 
 def _get_owned_goal(db: Session, goal_id: int, user: User) -> Goal | None:
@@ -109,29 +129,34 @@ def goal_detail(
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
-    """Страница одной цели: описание, дедлайн, история прогресса."""
+    """Страница одной цели: описание, дедлайн, шаги, прогресс, история, программы."""
     goal = _get_owned_goal(db, goal_id, user)
     if not goal:
-        return templates.TemplateResponse(
-            request, "goals.html", _goals_context(db, user, "Цель не найдена"), status_code=404
+        return render(
+            request, "goals.html", _goals_context(db, user, "Цель не найдена"), db=db, user=user, status_code=404
         )
 
     history = db.exec(
         select(GoalHistory).where(GoalHistory.h_id == goal_id).order_by(GoalHistory.time.desc())
     ).all()
+    steps = db.exec(select(GoalStep).where(GoalStep.goal_id == goal_id)).all()
     trainings = db.exec(select(Training).where(Training.g_id == goal_id)).all()
     educations = db.exec(select(Education).where(Education.g_id == goal_id)).all()
 
-    return templates.TemplateResponse(
+    return render(
         request,
         "goal_detail.html",
         {
             "user": user,
             "goal": goal,
             "history": history,
+            "steps": steps,
+            "progress": goal_progress_percent(db, goal),
             "trainings": trainings,
             "educations": educations,
         },
+        db=db,
+        user=user,
     )
 
 
@@ -145,12 +170,48 @@ def goal_progress(
     """Отмечает прогресс по цели (добавляет запись в историю)."""
     goal = _get_owned_goal(db, goal_id, user)
     if not goal:
-        return templates.TemplateResponse(
-            request, "goals.html", _goals_context(db, user, "Цель не найдена"), status_code=404
+        return render(
+            request, "goals.html", _goals_context(db, user, "Цель не найдена"), db=db, user=user, status_code=404
         )
 
     db.add(GoalHistory(h_id=goal_id, time=_now()))
     db.commit()
+    return goal_detail(goal_id, request, user, db)
+
+
+@router.post("/goals/{goal_id}/steps")
+def add_step(
+    goal_id: int,
+    request: Request,
+    name: str = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    """Добавляет шаг внутри цели."""
+    goal = _get_owned_goal(db, goal_id, user)
+    if goal:
+        db.add(GoalStep(goal_id=goal_id, name=name))
+        db.commit()
+    return goal_detail(goal_id, request, user, db)
+
+
+@router.post("/goals/{goal_id}/steps/{step_id}/toggle")
+def toggle_step(
+    goal_id: int,
+    step_id: int,
+    request: Request,
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    """Переключает шаг цели выполнен/не выполнен."""
+    goal = _get_owned_goal(db, goal_id, user)
+    step = db.get(GoalStep, step_id)
+    if goal and step and step.goal_id == goal_id:
+        step.done = not step.done
+        db.add(step)
+        if step.done:
+            db.add(GoalHistory(h_id=goal_id, time=_now()))
+        db.commit()
     return goal_detail(goal_id, request, user, db)
 
 
@@ -164,8 +225,8 @@ def goal_complete(
     """Завершает цель и начисляет очки."""
     goal = _get_owned_goal(db, goal_id, user)
     if not goal:
-        return templates.TemplateResponse(
-            request, "goals.html", _goals_context(db, user, "Цель не найдена"), status_code=404
+        return render(
+            request, "goals.html", _goals_context(db, user, "Цель не найдена"), db=db, user=user, status_code=404
         )
 
     if goal.status != "completed":
@@ -173,6 +234,15 @@ def goal_complete(
         db.add(goal)
         db.add(GoalHistory(h_id=goal_id, time=_now()))
         db.commit()
-        award_points(db, user, int(goal.point * goal.story_point))
+
+        points = int(goal.point * goal.story_point)
+        level, leveled_up = award_points(db, user, points)
+        push_flash(request, f"+{points} очков 🎉 Цель выполнена!")
+        if leveled_up:
+            push_flash(request, f"⭐ Новый уровень: «{level.name}»!", "level-up")
+
+        newly_earned = check_and_award_achievements(db, user)
+        for achievement in newly_earned:
+            push_flash(request, f"{achievement.icon} Новое достижение: «{achievement.name}»!", "achievement")
 
     return goal_detail(goal_id, request, user, db)

@@ -2,10 +2,13 @@
 Подключение к базе данных SQLite через SQLModel.
 """
 
+import os
+
 from sqlmodel import SQLModel, Session, create_engine
 
-# Файл базы данных лежит в корне проекта
-sqlite_url = "sqlite:///app.db"
+# Файл базы данных лежит в корне проекта (можно переопределить через DATABASE_URL,
+# например для временной БД при проверке миграции схемы)
+sqlite_url = os.getenv("DATABASE_URL", "sqlite:///app.db")
 
 # check_same_thread=False нужен, т.к. FastAPI может обращаться к базе из разных потоков
 engine = create_engine(sqlite_url, echo=False, connect_args={"check_same_thread": False})

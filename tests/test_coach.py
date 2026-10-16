@@ -20,7 +20,7 @@ def test_coach_without_habits_suggests_starting(client, monkeypatch):
 def test_coach_reacts_to_streak(client, session, monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     register_user(client, login="finn", mail="finn@example.com")
-    client.post("/habits", data={"name": "Чтение", "point": 5})
+    client.post("/habits", data={"name": "Чтение"})
 
     user = session.exec(select(User).where(User.login == "finn")).first()
     award_points(session, user, 50)

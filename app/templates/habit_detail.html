@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ habit.name }} — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-2xl mx-auto">
+    <a href="/habits" class="text-sm text-indigo-600">← Все привычки</a>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-5 mt-3 shadow-sm">
+        <h1 class="text-xl font-bold mb-1">
+            {{ "🚫" if habit.habit_type == "harmful" else "✅" }} {{ habit.name }}
+        </h1>
+        {% if habit.description %}
+        <p class="text-slate-500 mb-3">{{ habit.description }}</p>
+        {% endif %}
+
+        <p class="text-sm text-slate-500 mb-4">
+            <span class="{{ 'fire-pulse' if streak > 0 else '' }}">🔥</span>
+            Текущая серия: <b>{{ streak }}</b> {{ "день" if streak == 1 else "дней" }} подряд
+        </p>
+
+        {% if done_today %}
+        <span class="inline-block text-green-600 text-sm font-medium px-4 py-2 bg-green-50 rounded-lg mb-5">
+            ✓ Сегодня уже отмечено
+        </span>
+        {% else %}
+        <form method="post" action="/habits/{{ habit.id }}/check" class="mb-5">
+            <button type="submit"
+                    class="btn-press bg-indigo-600 text-white text-base px-8 py-4 rounded-2xl font-bold hover:bg-indigo-700 shadow-lg">
+                {{ "💪 Не сорвался сегодня" if habit.habit_type == "harmful" else "✓ Отметить выполнено" }}
+            </button>
+        </form>
+        {% endif %}
+
+        <h2 class="text-sm font-medium text-slate-500 mb-2">Последние 30 дней</h2>
+        <div class="grid grid-cols-10 gap-1.5 sm:gap-2 mb-2">
+            {% for day in days %}
+            <div title="{{ day.date }}"
+                 class="aspect-square rounded-sm {{ 'bg-green-500' if day.done else 'bg-slate-100' }}"></div>
+            {% endfor %}
+        </div>
+        <p class="text-xs text-slate-400">Каждый квадрат — один день. Зелёный — привычка отмечена.</p>
+    </div>
+</section>
+{% endblock %}

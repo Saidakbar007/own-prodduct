@@ -10,7 +10,7 @@ from tests.conftest import register_user
 
 def test_dashboard_shows_habit_and_level(client):
     register_user(client, login="hank", mail="hank@example.com")
-    client.post("/habits", data={"name": "Отжимания", "point": 10})
+    client.post("/habits", data={"name": "Отжимания"})
 
     home = client.get("/")
     assert "Отжимания" in home.text
@@ -46,3 +46,19 @@ def test_dashboard_hides_completed_goal_deadline(client, session):
     client.post(f"/goals/{goal.id}/complete")
     home = client.get("/")
     assert "Готовая цель" not in home.text
+
+
+def test_dashboard_shows_daily_tasks(client):
+    register_user(client, login="kyle", mail="kyle@example.com")
+    home = client.get("/")
+    assert "Ежедневное задание" in home.text
+    assert "Выполнено" in home.text
+
+
+def test_dashboard_shows_last_achievement(client):
+    register_user(client, login="liu", mail="liu@example.com")
+    client.post("/habits", data={"name": "Бег"})  # выдаёт "Первая привычка"
+
+    home = client.get("/")
+    assert "Последнее достижение" in home.text
+    assert "Первая привычка" in home.text

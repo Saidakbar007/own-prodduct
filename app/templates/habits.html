@@ -4,7 +4,7 @@
 
 {% block content %}
 <section class="max-w-2xl mx-auto">
-    <h1 class="text-xl font-bold mb-4">Мои привычки</h1>
+    <h1 class="text-xl font-bold mb-4">✅ Мои привычки</h1>
 
     {% if error %}
     <div class="bg-red-50 text-red-700 text-sm rounded-lg px-3 py-2 mb-4">{{ error }}</div>
@@ -12,45 +12,89 @@
 
     <div class="space-y-3 mb-6">
         {% for item in habits %}
-        <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between">
+        <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
             <div>
-                <p class="font-medium">{{ item.habit.name }}</p>
+                <a href="/habits/{{ item.habit.id }}" class="font-medium hover:text-indigo-600">
+                    {{ "🚫" if item.habit.habit_type == "harmful" else "✅" }} {{ item.habit.name }}
+                </a>
                 {% if item.habit.description %}
                 <p class="text-sm text-slate-500">{{ item.habit.description }}</p>
                 {% endif %}
-                <p class="text-xs text-slate-400 mt-1">🔥 Streak: {{ item.streak }} дней</p>
+                <p class="text-xs text-slate-400 mt-1">
+                    <span class="{{ 'fire-pulse' if item.streak > 0 else '' }}">🔥</span> Streak: {{ item.streak }} дней
+                    {% if item.habit.frequency == "weekly" %}· по выбранным дням{% endif %}
+                </p>
             </div>
             {% if item.done_today %}
-            <span class="text-green-600 text-sm font-medium px-3 py-1.5 bg-green-50 rounded-lg">✓ Сделано сегодня</span>
+            <span class="text-green-600 text-sm font-medium px-3 py-1.5 bg-green-50 rounded-lg">✓ Сделано</span>
             {% else %}
             <form method="post" action="/habits/{{ item.habit.id }}/check">
                 <button type="submit"
-                        class="bg-indigo-600 text-white text-sm px-4 py-1.5 rounded-lg hover:bg-indigo-700">
-                    Отметить
+                        class="btn-press bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl font-semibold hover:bg-indigo-700 shadow">
+                    {{ "Не сорвался 💪" if item.habit.habit_type == "harmful" else "Отметить ✓" }}
                 </button>
             </form>
             {% endif %}
         </div>
         {% else %}
-        <p class="text-slate-400 text-sm">Пока нет привычек — добавь первую ниже.</p>
+        <div class="bg-white border border-dashed border-slate-300 rounded-xl p-8 text-center">
+            <p class="text-3xl mb-2">🌱</p>
+            <p class="text-slate-500 mb-1">Пока нет привычек</p>
+            <p class="text-slate-400 text-sm">Добавь первую ниже — например, «Пить воду по утрам»</p>
+        </div>
         {% endfor %}
     </div>
 
-    <div class="bg-white border border-slate-200 rounded-xl p-4">
+    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
         <h2 class="font-medium mb-3">Новая привычка</h2>
         <form method="post" action="/habits" class="space-y-3">
-            <input type="text" name="name" placeholder="Название" required
-                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
-            <input type="text" name="description" placeholder="Описание (необязательно)"
-                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
-            <div class="grid grid-cols-2 gap-3">
-                <input type="number" name="point" placeholder="Очки за отметку" value="10"
-                       class="w-full border border-slate-300 rounded-lg px-3 py-2">
-                <input type="number" step="0.1" name="story_point" placeholder="Множитель сложности" value="1.0"
+            <div>
+                <label class="block text-sm font-medium mb-1">Название</label>
+                <input type="text" name="name" placeholder="Например: Пить воду по утрам" required
                        class="w-full border border-slate-300 rounded-lg px-3 py-2">
             </div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Описание (необязательно)</label>
+                <input type="text" name="description" placeholder="Например: 1 стакан сразу после пробуждения"
+                       class="w-full border border-slate-300 rounded-lg px-3 py-2">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Тип</label>
+                    <select name="habit_type" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                        <option value="useful">Полезная</option>
+                        <option value="harmful">Вредная (хочу отказаться)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Сложность</label>
+                    <select name="difficulty" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                        <option value="easy">Легко (5 очков)</option>
+                        <option value="medium" selected>Средне (10 очков)</option>
+                        <option value="hard">Сложно (20 очков)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Частота</label>
+                <select name="frequency" class="w-full border border-slate-300 rounded-lg px-3 py-2 mb-2">
+                    <option value="daily">Каждый день</option>
+                    <option value="weekly">По выбранным дням недели</option>
+                </select>
+                <div class="flex gap-2 flex-wrap text-sm">
+                    {% for i, label in [(0,"Пн"),(1,"Вт"),(2,"Ср"),(3,"Чт"),(4,"Пт"),(5,"Сб"),(6,"Вс")] %}
+                    <label class="flex items-center gap-1 border border-slate-300 rounded-lg px-2 py-1 cursor-pointer">
+                        <input type="checkbox" name="weekdays" value="{{ i }}"> {{ label }}
+                    </label>
+                    {% endfor %}
+                </div>
+                <p class="text-xs text-slate-400 mt-1">Дни недели нужны только если выбрана частота «по выбранным дням»</p>
+            </div>
+
             <button type="submit"
-                    class="w-full bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">
+                    class="btn-press w-full bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">
                 Добавить привычку
             </button>
         </form>

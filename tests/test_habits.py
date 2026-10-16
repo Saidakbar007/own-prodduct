@@ -9,8 +9,8 @@ from app.models import HabitHistory, Level
 from tests.conftest import register_user
 
 
-def create_habit(client, name="Бег", point=10, story_point=1.0):
-    return client.post("/habits", data={"name": name, "point": point, "story_point": story_point})
+def create_habit(client, name="Бег", difficulty="medium"):
+    return client.post("/habits", data={"name": name, "difficulty": difficulty})
 
 
 def test_create_habit_increments_counter(client):
@@ -22,23 +22,23 @@ def test_create_habit_increments_counter(client):
 
 def test_check_habit_once_succeeds_and_awards_points(client, session):
     register_user(client, login="ivy", mail="ivy@example.com")
-    create_habit(client, point=10, story_point=2.0)
+    create_habit(client, difficulty="hard")  # сложно = 20 очков
 
-    habits_page = client.get("/habits")
-    habit_id = session.exec(select(HabitHistory)).all()  # пока пусто, привычка ещё не отмечена
-    assert habit_id == []
+    history_before = session.exec(select(HabitHistory)).all()  # пока пусто, привычка ещё не отмечена
+    assert history_before == []
 
     from app.models import Habit, User
 
     user = session.exec(select(User).where(User.login == "ivy")).first()
     habit = session.exec(select(Habit).where(Habit.uid == user.id)).first()
+    assert habit.point == 20  # сервер сам выбрал очки по сложности, клиент их не присылал
 
     resp = client.post(f"/habits/{habit.id}/check")
     assert resp.status_code == 200
-    assert "Сделано сегодня" in resp.text
+    assert "Сделано" in resp.text
 
     level = session.exec(select(Level).where(Level.uid == user.id)).first()
-    assert level.point == 20  # 10 * 2.0
+    assert level.point == 20
 
 
 def test_check_habit_twice_same_day_fails(client, session):

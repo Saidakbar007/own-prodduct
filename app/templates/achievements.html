@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Награды — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-2xl mx-auto">
+    <h1 class="text-xl font-bold mb-4">🏆 Достижения</h1>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        {% for item in items %}
+        <div class="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm {{ '' if item.earned else 'opacity-50' }}">
+            <p class="text-4xl mb-2 {{ '' if item.earned else 'grayscale' }}">{{ item.achievement.icon }}</p>
+            <p class="font-medium text-sm {{ 'text-slate-900' if item.earned else 'text-slate-400' }}">
+                {{ item.achievement.name }}
+            </p>
+            <p class="text-xs text-slate-400 mt-1">{{ item.achievement.description }}</p>
+            {% if not item.earned %}
+            <p class="text-xs text-slate-300 mt-1">🔒 Не получено</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

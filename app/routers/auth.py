@@ -4,21 +4,20 @@
 
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
-from fastapi.templating import Jinja2Templates
 from sqlmodel import Session, select
 
-from app.auth import get_current_user, hash_password, verify_password
+from app.auth import hash_password, verify_password
 from app.database import get_session
 from app.models import Level, Registration, User
+from app.rendering import render
 
 router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/register")
 def register_page(request: Request):
     """Показывает форму регистрации."""
-    return templates.TemplateResponse(request, "register.html", {"error": None})
+    return render(request, "register.html", {"error": None})
 
 
 @router.post("/register")
@@ -37,9 +36,7 @@ def register_submit(
 
     # Проверка совпадения паролей
     if password != password_confirm:
-        return templates.TemplateResponse(
-            request, "register.html", {"error": "Пароли не совпадают"}
-        )
+        return render(request, "register.html", {"error": "Пароли не совпадают"})
 
     # Проверка, что почта или логин уже не заняты
     existing = db.exec(
@@ -48,9 +45,7 @@ def register_submit(
         )
     ).first()
     if existing:
-        return templates.TemplateResponse(
-            request, "register.html", {"error": "Эта почта или логин уже используются"}
-        )
+        return render(request, "register.html", {"error": "Эта почта или логин уже используются"})
 
     # Создаём запись регистрации (с хешем пароля)
     registration = Registration(
@@ -83,7 +78,7 @@ def register_submit(
 @router.get("/login")
 def login_page(request: Request):
     """Показывает форму входа."""
-    return templates.TemplateResponse(request, "login.html", {"error": None})
+    return render(request, "login.html", {"error": None})
 
 
 @router.post("/login")
@@ -100,9 +95,7 @@ def login_submit(
     ).first()
 
     if not registration or not verify_password(password, registration.password):
-        return templates.TemplateResponse(
-            request, "login.html", {"error": "Неверный логин или пароль"}
-        )
+        return render(request, "login.html", {"error": "Неверный логин или пароль"})
 
     user = db.exec(select(User).where(User.login == registration.login)).first()
 

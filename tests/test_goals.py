@@ -17,7 +17,7 @@ def test_create_dream_and_goal(client, session):
 
     client.post(
         f"/goals/{dream.id}/child",
-        data={"name": "Выучить Python", "point": 100, "story_point": 1.0},
+        data={"name": "Выучить Python", "difficulty": "medium"},
     )
     session.refresh(user)
     assert user.goals == 2
@@ -32,8 +32,9 @@ def test_progress_and_complete_awards_points(client, session):
     user = session.exec(select(User).where(User.login == "oleg")).first()
     dream = session.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
 
-    client.post(f"/goals/{dream.id}/child", data={"name": "Цель", "point": 100, "story_point": 1.5})
+    client.post(f"/goals/{dream.id}/child", data={"name": "Цель", "difficulty": "hard"})  # сложно = 200 очков
     goal = session.exec(select(Goal).where(Goal.parent_id == dream.id)).first()
+    assert goal.point == 200  # сервер сам выбрал очки по сложности
 
     client.post(f"/goals/{goal.id}/progress")
     history = session.exec(select(GoalHistory).where(GoalHistory.h_id == goal.id)).all()
@@ -46,12 +47,29 @@ def test_progress_and_complete_awards_points(client, session):
     assert goal.status == "completed"
 
     level = session.exec(select(Level).where(Level.uid == user.id)).first()
-    assert level.point == 150  # 100 * 1.5
+    assert level.point == 200
 
     # повторное завершение не должно начислять очки повторно
     client.post(f"/goals/{goal.id}/complete")
     session.refresh(level)
-    assert level.point == 150
+    assert level.point == 200
+
+
+def test_deadline_in_the_past_is_rejected(client, session):
+    from datetime import date, timedelta
+
+    register_user(client, login="quinn", mail="quinn@example.com")
+    client.post("/goals", data={"name": "Мечта"})
+    user = session.exec(select(User).where(User.login == "quinn")).first()
+    dream = session.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
+
+    past_date = (date.today() - timedelta(days=1)).isoformat()
+    resp = client.post(f"/goals/{dream.id}/child", data={"name": "Цель", "deadline": past_date})
+    assert resp.status_code == 400
+    assert "прошлом" in resp.text
+
+    goal = session.exec(select(Goal).where(Goal.parent_id == dream.id)).first()
+    assert goal is None  # цель не создана
 
 
 def test_cannot_access_other_users_goal(client, session):
