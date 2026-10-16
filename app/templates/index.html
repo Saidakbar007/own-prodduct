@@ -4,16 +4,57 @@
 
 {% block content %}
 {% if user %}
-<section class="text-center py-16">
-    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-        Привет, {{ user.login }}! 👋
-    </h1>
-    <p class="text-slate-500 max-w-xl mx-auto mb-2">
-        Привычек: {{ user.habits }} · Целей: {{ user.goals }}
-    </p>
-    <p class="text-slate-400 text-sm">
-        Дашборд с привычками и целями появится на следующих шагах проекта.
-    </p>
+<section class="max-w-2xl mx-auto space-y-6">
+    <div class="text-center py-4">
+        <h1 class="text-2xl font-bold text-slate-900">Привет, {{ user.login }}! 👋</h1>
+        {% if level %}
+        <p class="text-slate-500 mt-1">
+            Уровень: <b class="text-indigo-600">{{ level.name }}</b> · {{ level.point }} очков
+        </p>
+        {% endif %}
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-4">
+        <h2 class="font-medium mb-3">Привычки на сегодня</h2>
+        <div class="space-y-2">
+            {% for item in habits %}
+            <div class="flex items-center justify-between text-sm">
+                <span>{{ item.habit.name }} <span class="text-slate-400">(🔥 {{ item.streak }})</span></span>
+                {% if item.done_today %}
+                <span class="text-green-600">✓ Сделано</span>
+                {% else %}
+                <form method="post" action="/habits/{{ item.habit.id }}/check">
+                    <button type="submit" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-indigo-700">
+                        Отметить
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% else %}
+            <p class="text-slate-400 text-sm">
+                Пока нет привычек. <a href="/habits" class="text-indigo-600">Добавить привычку →</a>
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if deadlines %}
+    <div class="bg-white border border-slate-200 rounded-xl p-4">
+        <h2 class="font-medium mb-3">Ближайшие дедлайны</h2>
+        <ul class="text-sm space-y-1">
+            {% for goal in deadlines %}
+            <li>
+                <a href="/goals/{{ goal.id }}" class="hover:text-indigo-600">
+                    🎯 {{ goal.name }}
+                    <span class="{{ 'text-red-500' if goal.deadline < today else 'text-slate-400' }}">
+                        (до {{ goal.deadline }})
+                    </span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 </section>
 {% else %}
 <section class="text-center py-16">
