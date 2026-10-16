@@ -40,6 +40,7 @@ class User(SQLModel, table=True):
     status: Optional[str] = None
     habits: int = Field(default=0)  # количество привычек, обновляется автоматически
     goals: int = Field(default=0)   # количество целей, обновляется автоматически
+    trust_score: int = Field(default=100)  # 0-100, пересчитывается после отметок/подтверждений (v3)
 
 
 class Habit(SQLModel, table=True):
@@ -59,6 +60,8 @@ class Habit(SQLModel, table=True):
     habit_type: str = Field(default="useful")  # useful (полезная) / harmful (вредная, "день без срыва")
     frequency: str = Field(default="daily")    # daily (каждый день) / weekly (по дням недели)
     weekdays: Optional[str] = None  # для frequency="weekly": дни недели CSV, "0,2,4" (0=понедельник)
+    requires_proof: bool = Field(default=False)  # нужно фото-доказательство при отметке (v3)
+    minimal_description: Optional[str] = None  # что считается "минимальной версией на плохой день" (v3)
 
 
 class HabitHistory(SQLModel, table=True):
@@ -68,6 +71,20 @@ class HabitHistory(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     h_id: int = Field(foreign_key="habits.id")
+    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    kind: str = Field(default="done")  # done (полная версия) / minimal (на плохой день) / skip (честный пропуск)
+    proof_path: Optional[str] = None  # путь к загруженному фото-доказательству (v3)
+
+
+class HabitConfirmation(SQLModel, table=True):
+    """Подтверждение отметки другом: confirmed (+бонус) или doubted ('правда?') (v3)."""
+
+    __tablename__ = "habit_confirmations"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    history_id: int = Field(foreign_key="habits_history.id")
+    confirmer_uid: int = Field(foreign_key="users.id")
+    status: str  # confirmed / doubted
     time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -220,3 +237,57 @@ class CoachMessage(SQLModel, table=True):
     role: str  # "user" или "coach"
     text: str
     time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class Partnership(SQLModel, table=True):
+    """Напарник: общая серия двух друзей, сгорает, если пропустил любой из двух (v3)."""
+
+    __tablename__ = "partnerships"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid_a: int = Field(foreign_key="users.id")
+    habit_id_a: int = Field(foreign_key="habits.id")
+    uid_b: int = Field(foreign_key="users.id")
+    habit_id_b: Optional[int] = Field(default=None, foreign_key="habits.id")  # выбирает B при принятии
+    status: str = Field(default="pending")  # pending / active / declined / broken
+    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class Bet(SQLModel, table=True):
+    """Ставка очков на выполнение привычки N дней подряд (v3)."""
+
+    __tablename__ = "bets"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    habit_id: int = Field(foreign_key="habits.id")
+    stake_points: int
+    target_days: int
+    start_date: date
+    status: str = Field(default="active")  # active / won / lost
+    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class Chest(SQLModel, table=True):
+    """Награда за неделю без пропусков (v3)."""
+
+    __tablename__ = "chests"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    habit_id: int = Field(foreign_key="habits.id")
+    week_start: date
+    reward_type: str  # points / freeze / badge
+    reward_value: str
+    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class BonusFreeze(SQLModel, table=True):
+    """Дополнительная заморозка серии на конкретную неделю, выданная сундуком (v3)."""
+
+    __tablename__ = "bonus_freezes"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    week_key: str  # например "2026-W03"
+    amount: int = Field(default=1)

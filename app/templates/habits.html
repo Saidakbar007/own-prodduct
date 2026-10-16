@@ -12,29 +12,30 @@
 
     <div class="space-y-3 mb-6">
         {% for item in habits %}
-        <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
-            <div>
-                <a href="/habits/{{ item.habit.id }}" class="font-medium hover:text-indigo-600">
-                    {{ "🚫" if item.habit.habit_type == "harmful" else "✅" }} {{ item.habit.name }}
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div>
+                    <a href="/habits/{{ item.habit.id }}" class="font-medium hover:text-indigo-600">
+                        {{ "🚫" if item.habit.habit_type == "harmful" else "✅" }} {{ item.habit.name }}
+                    </a>
+                    {% if item.habit.description %}
+                    <p class="text-sm text-slate-500">{{ item.habit.description }}</p>
+                    {% endif %}
+                    <p class="text-xs text-slate-400 mt-1">
+                        <span class="{{ 'fire-pulse' if item.streak > 0 else '' }}">🔥</span> Streak: {{ item.streak }} дней
+                        · ❄️ заморозок: {{ item.freezes_left }}/2
+                        {% if item.habit.frequency == "weekly" %}· по выбранным дням{% endif %}
+                    </p>
+                </div>
+                {% if item.done_today %}
+                <span class="text-green-600 text-sm font-medium px-3 py-1.5 bg-green-50 rounded-lg shrink-0">✓ Сделано</span>
+                {% else %}
+                <a href="/habits/{{ item.habit.id }}"
+                   class="btn-press bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl font-semibold hover:bg-indigo-700 shadow shrink-0">
+                    Отметить
                 </a>
-                {% if item.habit.description %}
-                <p class="text-sm text-slate-500">{{ item.habit.description }}</p>
                 {% endif %}
-                <p class="text-xs text-slate-400 mt-1">
-                    <span class="{{ 'fire-pulse' if item.streak > 0 else '' }}">🔥</span> Streak: {{ item.streak }} дней
-                    {% if item.habit.frequency == "weekly" %}· по выбранным дням{% endif %}
-                </p>
             </div>
-            {% if item.done_today %}
-            <span class="text-green-600 text-sm font-medium px-3 py-1.5 bg-green-50 rounded-lg">✓ Сделано</span>
-            {% else %}
-            <form method="post" action="/habits/{{ item.habit.id }}/check">
-                <button type="submit"
-                        class="btn-press bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-xl font-semibold hover:bg-indigo-700 shadow">
-                    {{ "Не сорвался 💪" if item.habit.habit_type == "harmful" else "Отметить ✓" }}
-                </button>
-            </form>
-            {% endif %}
         </div>
         {% else %}
         <div class="bg-white border border-dashed border-slate-300 rounded-xl p-8 text-center">
@@ -92,6 +93,22 @@
                 </div>
                 <p class="text-xs text-slate-400 mt-1">Дни недели нужны только если выбрана частота «по выбранным дням»</p>
             </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">
+                    Минимальная версия «на плохой день» (необязательно)
+                </label>
+                <input type="text" name="minimal_description" placeholder="Например: выпить хотя бы 1 стакан"
+                       class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <p class="text-xs text-slate-400 mt-1">
+                    Если совсем нет сил на полную версию — эта засчитается и сохранит серию (но даст меньше очков)
+                </p>
+            </div>
+
+            <label class="flex items-center gap-2 text-sm">
+                <input type="checkbox" name="requires_proof" value="1">
+                Требовать фото-доказательство при отметке 📷
+            </label>
 
             <button type="submit"
                     class="btn-press w-full bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">

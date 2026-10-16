@@ -4,7 +4,14 @@
 
 {% block content %}
 <section class="max-w-md mx-auto bg-white rounded-xl border border-slate-200 p-6 mt-8 shadow-sm">
-    <h1 class="text-xl font-bold mb-4">👤 Профиль: {{ user.login }}</h1>
+    <h1 class="text-xl font-bold mb-2">👤 Профиль: {{ user.login }}</h1>
+    <p class="text-sm mb-4">
+        Trust score:
+        <span class="font-bold {{ 'text-green-600' if user.trust_score >= 80 else ('text-amber-600' if user.trust_score >= 50 else 'text-red-500') }}">
+            🛡️ {{ user.trust_score }}/100
+        </span>
+        <span class="text-slate-400">— растёт от фото-доказательств и подтверждений друзей</span>
+    </p>
 
     {% if saved %}
     <div class="bg-green-50 text-green-700 text-sm rounded-lg px-3 py-2 mb-4">

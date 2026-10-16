@@ -10,7 +10,7 @@ from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import Friend, Level, PointsLog, User
+from app.models import Friend, Habit, HabitConfirmation, HabitHistory, Level, PointsLog, User
 from app.rendering import render
 from app.services.achievements import check_and_award_achievements
 from app.services.flash import push_flash
@@ -39,7 +39,49 @@ def _friend_card(db: Session, user_id: int) -> dict:
         "points": level.point if level else 0,
         "streak": best_streak_for_user(db, user_id),
         "weekly_points": _weekly_points(db, user_id),
+        "trust_score": friend_user.trust_score if friend_user else 100,
     }
+
+
+def _activity_feed(db: Session, user: User, friend_ids: list) -> list:
+    """Лента последних отметок друзей (за 3 дня) — для подтверждения/сомнения."""
+    if not friend_ids:
+        return []
+
+    habits = db.exec(select(Habit).where(Habit.uid.in_(friend_ids))).all()
+    habit_by_id = {h.id: h for h in habits}
+    if not habit_by_id:
+        return []
+
+    cutoff = _now() - timedelta(days=3)
+    entries = db.exec(
+        select(HabitHistory)
+        .where(
+            HabitHistory.h_id.in_(habit_by_id.keys()),
+            HabitHistory.kind.in_(["done", "minimal"]),
+            HabitHistory.time >= cutoff,
+        )
+        .order_by(HabitHistory.time.desc())
+    ).all()
+
+    feed = []
+    for entry in entries[:20]:
+        habit = habit_by_id[entry.h_id]
+        owner = db.get(User, habit.uid)
+        my_confirmation = db.exec(
+            select(HabitConfirmation).where(
+                HabitConfirmation.history_id == entry.id, HabitConfirmation.confirmer_uid == user.id
+            )
+        ).first()
+        feed.append(
+            {
+                "entry": entry,
+                "habit": habit,
+                "owner": owner,
+                "my_status": my_confirmation.status if my_confirmation else None,
+            }
+        )
+    return feed
 
 
 def _friends_context(db: Session, user: User, error: str = None) -> dict:
@@ -68,6 +110,7 @@ def _friends_context(db: Session, user: User, error: str = None) -> dict:
         "leaderboard": leaderboard,
         "incoming": incoming,
         "outgoing": outgoing,
+        "feed": _activity_feed(db, user, friend_ids),
         "error": error,
     }
 

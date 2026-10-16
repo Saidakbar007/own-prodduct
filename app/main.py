@@ -14,8 +14,9 @@ from sqlmodel import Session, select
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.auth import get_current_user
-from app.database import create_db_and_tables, engine, get_session
+from app.database import engine, get_session
 from app import models  # noqa: F401 — импорт нужен, чтобы таблицы попали в metadata
+from app.migrations_runner import run_migrations
 from app.models import Goal, Level, UserAchievement, Achievement
 from app.rendering import render
 from app.routers import auth as auth_router
@@ -28,19 +29,36 @@ from app.routers import friends as friends_router
 from app.routers import coach as coach_router
 from app.routers import achievements as achievements_router
 from app.routers import daily_tasks as daily_tasks_router
-from app.routers.habits import _habits_context
+from app.routers import confirmations as confirmations_router
+from app.routers import bets as bets_router
+from app.routers import partnerships as partnerships_router
+from app.routers.habits import _habits_context, habits_at_risk
 from app.services.achievements import ensure_achievements_seeded
 from app.services.daily_tasks import get_or_create_today_tasks
+from app.services.progress import dream_progress_percent
 
 load_dotenv()
+
+os.makedirs("uploads", exist_ok=True)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """При старте сервера создаём таблицы в базе данных и заполняем каталог достижений."""
-    create_db_and_tables()
+    """
+    При старте сервера: применяем миграции Alembic (создают/обновляют таблицы),
+    заполняем каталог достижений, и если база пустая — запускаем seed автоматически.
+    """
+    run_migrations()
     with Session(engine) as db:
         ensure_achievements_seeded(db)
+
+        from app.models import Registration
+
+        if not db.exec(select(Registration)).first():
+            import seed
+
+            seed.main()
+
     yield
 
 
@@ -52,8 +70,9 @@ app.add_middleware(
     secret_key=os.getenv("SECRET_KEY", "dev-secret-key-change-me"),
 )
 
-# Подключаем папку со статикой (картинки, css, если понадобятся)
+# Статика и загруженные фото-доказательства
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Роуты
 app.include_router(auth_router.router)
@@ -66,6 +85,9 @@ app.include_router(friends_router.router)
 app.include_router(coach_router.router)
 app.include_router(achievements_router.router)
 app.include_router(daily_tasks_router.router)
+app.include_router(confirmations_router.router)
+app.include_router(bets_router.router)
+app.include_router(partnerships_router.router)
 
 
 @app.get("/")
@@ -74,7 +96,8 @@ def index(request: Request, user=Depends(get_current_user), db: Session = Depend
     Главная страница.
     Гостю показывает приглашение зарегистрироваться.
     Вошедшему — дашборд: сегодняшние привычки, уровень, ежедневное задание,
-    ближайшие дедлайны и последнее достижение.
+    ближайшие дедлайны, последнее достижение, прогресс к мечте и мягкий
+    экран возврата для пропущенных вчера привычек.
     """
     if not user:
         return render(request, "index.html", {"user": None})
@@ -100,6 +123,9 @@ def index(request: Request, user=Depends(get_current_user), db: Session = Depend
     if last_user_achievement:
         last_achievement = db.get(Achievement, last_user_achievement.achievement_id)
 
+    top_dream = db.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
+    dream_progress = dream_progress_percent(db, top_dream) if top_dream else None
+
     return render(
         request,
         "index.html",
@@ -110,6 +136,9 @@ def index(request: Request, user=Depends(get_current_user), db: Session = Depend
             "deadlines": deadlines,
             "daily_tasks": daily_tasks,
             "last_achievement": last_achievement,
+            "top_dream": top_dream,
+            "dream_progress": dream_progress,
+            "at_risk_habits": habits_at_risk(db, user),
             "today": date.today(),
         },
         db=db,

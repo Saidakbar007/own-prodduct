@@ -14,21 +14,54 @@
         <p class="text-slate-500 mb-3">{{ habit.description }}</p>
         {% endif %}
 
-        <p class="text-sm text-slate-500 mb-4">
+        <p class="text-sm text-slate-500 mb-1">
             <span class="{{ 'fire-pulse' if streak > 0 else '' }}">🔥</span>
-            Текущая серия: <b>{{ streak }}</b> {{ "день" if streak == 1 else "дней" }} подряд
+            Серия: <b>{{ streak }}</b> {{ "день" if streak == 1 else "дней" }} подряд
+            · ❄️ заморозок осталось: <b>{{ freezes_left }}/2</b> на этой неделе
         </p>
 
-        {% if done_today %}
+        {% if adaptive_suggestion %}
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 my-4">
+            <p class="text-sm text-amber-800 mb-2">💛 {{ adaptive_suggestion }}</p>
+            <form method="post" action="/habits/{{ habit.id }}/adaptive-plan/apply">
+                <button type="submit" class="btn-press bg-amber-500 text-white rounded-lg px-4 py-2 text-sm hover:bg-amber-600">
+                    Перейти на 3 дня в неделю
+                </button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if logged_today %}
         <span class="inline-block text-green-600 text-sm font-medium px-4 py-2 bg-green-50 rounded-lg mb-5">
             ✓ Сегодня уже отмечено
         </span>
         {% else %}
-        <form method="post" action="/habits/{{ habit.id }}/check" class="mb-5">
-            <button type="submit"
-                    class="btn-press bg-indigo-600 text-white text-base px-8 py-4 rounded-2xl font-bold hover:bg-indigo-700 shadow-lg">
-                {{ "💪 Не сорвался сегодня" if habit.habit_type == "harmful" else "✓ Отметить выполнено" }}
-            </button>
+        <form method="post" action="/habits/{{ habit.id }}/check" enctype="multipart/form-data" class="space-y-3 mb-5">
+            {% if habit.requires_proof %}
+            <div>
+                <label class="block text-xs font-medium mb-1 text-slate-500">
+                    📷 Для этой привычки нужно фото-доказательство (с камеры)
+                </label>
+                <input type="file" name="proof" accept="image/*" capture="environment"
+                       class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+            </div>
+            {% endif %}
+            <div class="flex gap-2 flex-wrap">
+                <button type="submit" name="kind" value="done"
+                        class="btn-press bg-indigo-600 text-white text-base px-6 py-4 rounded-2xl font-bold hover:bg-indigo-700 shadow-lg">
+                    {{ "💪 Не сорвался" if habit.habit_type == "harmful" else "✓ Выполнено полностью" }}
+                </button>
+                {% if habit.minimal_description %}
+                <button type="submit" name="kind" value="minimal"
+                        class="btn-press bg-white border border-indigo-300 text-indigo-700 text-sm px-4 py-4 rounded-2xl font-medium hover:bg-indigo-50">
+                    😅 На плохой день: {{ habit.minimal_description }}
+                </button>
+                {% endif %}
+                <button type="submit" name="kind" value="skip"
+                        class="btn-press bg-white border border-slate-300 text-slate-500 text-sm px-4 py-4 rounded-2xl font-medium hover:bg-slate-50">
+                    🙈 Не сделал (честно) +2
+                </button>
+            </div>
         </form>
         {% endif %}
 
@@ -36,10 +69,62 @@
         <div class="grid grid-cols-10 gap-1.5 sm:gap-2 mb-2">
             {% for day in days %}
             <div title="{{ day.date }}"
-                 class="aspect-square rounded-sm {{ 'bg-green-500' if day.done else 'bg-slate-100' }}"></div>
+                 class="aspect-square rounded-sm {{ 'bg-green-500' if day.kind == 'done' else ('bg-amber-300' if day.kind == 'skip' else 'bg-slate-100') }}"></div>
             {% endfor %}
         </div>
-        <p class="text-xs text-slate-400">Каждый квадрат — один день. Зелёный — привычка отмечена.</p>
+        <p class="text-xs text-slate-400 mb-6">🟩 выполнено · 🟨 честный пропуск · ⬜ пусто</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="border border-slate-200 rounded-xl p-4">
+                <h2 class="font-medium text-sm mb-2">🎲 Ставка</h2>
+                {% if active_bet %}
+                <p class="text-sm text-slate-500">
+                    {{ active_bet.stake_points }} очков на {{ active_bet.target_days }} дней подряд — идёт с {{ active_bet.start_date }}
+                </p>
+                {% else %}
+                <form method="post" action="/habits/{{ habit.id }}/bet" class="space-y-2">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="number" name="stake_points" placeholder="Очки" min="1" required
+                               class="border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                        <input type="number" name="target_days" placeholder="Дней подряд" min="1" required
+                               class="border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                    </div>
+                    <button type="submit" class="btn-press bg-amber-500 text-white rounded-lg px-4 py-2 text-sm w-full hover:bg-amber-600">
+                        Поставить (×2 при выигрыше)
+                    </button>
+                </form>
+                {% endif %}
+                {% if past_bets %}
+                <ul class="text-xs text-slate-400 mt-2 space-y-1">
+                    {% for b in past_bets %}
+                    <li>{{ "✅ выиграна" if b.status == "won" else "❌ проиграна" }}: {{ b.stake_points }} очков / {{ b.target_days }} дней</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+
+            <div class="border border-slate-200 rounded-xl p-4">
+                <h2 class="font-medium text-sm mb-2">🤝 Напарник</h2>
+                {% if partnership and partnership.status == "active" %}
+                <p class="text-sm text-slate-500">
+                    Общая серия: <b>{{ partner_streak }}</b> дней 🔥 — сгорит, если кто-то из вас пропустит
+                </p>
+                {% elif partnership and partnership.status == "pending" %}
+                <p class="text-sm text-slate-400">Предложение отправлено, ждём ответа</p>
+                {% elif partnership and partnership.status == "broken" %}
+                <p class="text-sm text-red-500">Партнёрство сгорело 💔 — можно предложить новое</p>
+                {% endif %}
+                {% if not partnership or partnership.status in ("declined", "broken") %}
+                <form method="post" action="/habits/{{ habit.id }}/partnership" class="space-y-2 mt-2">
+                    <input type="text" name="friend_login" placeholder="Логин друга" required
+                           class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                    <button type="submit" class="btn-press bg-indigo-600 text-white rounded-lg px-4 py-2 text-sm w-full hover:bg-indigo-700">
+                        Предложить
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

@@ -13,7 +13,7 @@ from app.database import get_session
 from app.models import Level, User
 from app.rendering import render
 from app.services.points import LEVEL_THRESHOLDS, next_level_info
-from app.services.stats import checks_per_day, points_per_week, stats_cards
+from app.services.stats import checks_per_day, month_over_month, points_per_week, stats_cards
 
 router = APIRouter()
 
@@ -46,6 +46,7 @@ def stats_page(request: Request, user: User = Depends(require_user), db: Session
     checks_data = checks_per_day(db, user.id, days=30)
     points_data = points_per_week(db, user.id, weeks=8)
     cards = stats_cards(db, user.id)
+    comparison = month_over_month(db, user.id)
 
     return render(
         request,
@@ -61,6 +62,7 @@ def stats_page(request: Request, user: User = Depends(require_user), db: Session
             "points_labels_json": json.dumps([p["label"] for p in points_data]),
             "points_values_json": json.dumps([p["points"] for p in points_data]),
             "cards": cards,
+            "comparison": comparison,
         },
         db=db,
         user=user,

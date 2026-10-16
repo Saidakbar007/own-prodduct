@@ -71,3 +71,33 @@ def stats_cards(db: Session, uid: int) -> dict:
         "goals_completed": goals_completed,
         "week_completion_percent": min(week_completion_percent, 100),
     }
+
+
+def month_over_month(db: Session, uid: int) -> dict:
+    """Сравнение 'ты месяц назад vs сейчас': отметки и очки за последние 30 дней vs предыдущие 30."""
+    habit_ids = [h.id for h in db.exec(select(Habit).where(Habit.uid == uid)).all()]
+    today = date.today()
+    recent_start = today - timedelta(days=29)
+    prior_start = today - timedelta(days=59)
+    prior_end = today - timedelta(days=30)
+
+    checks_recent = checks_prior = 0
+    if habit_ids:
+        history = db.exec(select(HabitHistory).where(HabitHistory.h_id.in_(habit_ids))).all()
+        for h in history:
+            d = h.time.date()
+            if recent_start <= d <= today:
+                checks_recent += 1
+            elif prior_start <= d <= prior_end:
+                checks_prior += 1
+
+    logs = db.exec(select(PointsLog).where(PointsLog.uid == uid)).all()
+    points_recent = sum(l.points for l in logs if recent_start <= l.time.date() <= today)
+    points_prior = sum(l.points for l in logs if prior_start <= l.time.date() <= prior_end)
+
+    return {
+        "checks_recent": checks_recent,
+        "checks_prior": checks_prior,
+        "points_recent": points_recent,
+        "points_prior": points_prior,
+    }

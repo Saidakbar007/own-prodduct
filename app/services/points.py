@@ -51,11 +51,17 @@ def next_level_info(points: int) -> tuple[str, int] | None:
     return None
 
 
-def award_points(db: Session, user: User, points: int) -> tuple[Level, bool]:
+def award_points(db: Session, user: User, points: int, apply_trust: bool = True) -> tuple[Level, bool]:
     """
     Добавляет очки пользователю, пересчитывает название уровня, пишет в журнал
-    очков (для недельного рейтинга). Возвращает (уровень, повысился ли уровень).
+    очков (для недельного рейтинга). Очки масштабируются множителем trust score
+    (0.5x-1.0x), если apply_trust=True. Возвращает (уровень, повысился ли уровень).
     """
+    if apply_trust:
+        from app.services.trust import trust_multiplier
+
+        points = round(points * trust_multiplier(user.trust_score))
+
     level = db.exec(select(Level).where(Level.uid == user.id)).first()
     if not level:
         level = Level(uid=user.id, point=0, name="Новичок")

@@ -40,6 +40,20 @@
     </div>
 
     <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+        <h2 class="font-medium text-sm mb-3">📅 Ты месяц назад vs сейчас</h2>
+        <div class="grid grid-cols-2 gap-4 text-center">
+            <div>
+                <p class="text-xs text-slate-400 mb-1">Отметок</p>
+                <p class="text-lg"><span class="text-slate-400">{{ comparison.checks_prior }}</span> → <b class="text-indigo-600">{{ comparison.checks_recent }}</b></p>
+            </div>
+            <div>
+                <p class="text-xs text-slate-400 mb-1">Очков</p>
+                <p class="text-lg"><span class="text-slate-400">{{ comparison.points_prior }}</span> → <b class="text-indigo-600">{{ comparison.points_recent }}</b></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
         <h2 class="font-medium text-sm mb-3">Отметки привычек за 30 дней</h2>
         <canvas id="checksChart" height="100"></canvas>
     </div>

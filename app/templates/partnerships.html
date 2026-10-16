@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Напарники — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-md mx-auto">
+    <h1 class="text-xl font-bold mb-4">🤝 Предложения напарника</h1>
+
+    <div class="space-y-3">
+        {% for p in incoming %}
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+            <p class="text-sm text-slate-500 mb-2">Предложение #{{ p.id }} — выбери свою привычку для общей серии</p>
+            <form method="post" action="/partnerships/{{ p.id }}/accept" class="flex gap-2 mb-2">
+                <select name="habit_id" required class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                    {% for h in my_habits %}
+                    <option value="{{ h.id }}">{{ h.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn-press bg-green-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-green-700">
+                    Принять
+                </button>
+            </form>
+            <form method="post" action="/partnerships/{{ p.id }}/decline">
+                <button type="submit" class="text-sm text-slate-400 hover:text-slate-600">Отклонить</button>
+            </form>
+        </div>
+        {% else %}
+        <div class="bg-white border border-dashed border-slate-300 rounded-xl p-8 text-center">
+            <p class="text-3xl mb-2">🤝</p>
+            <p class="text-slate-400 text-sm">Пока нет предложений напарника</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

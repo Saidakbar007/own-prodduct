@@ -7,13 +7,18 @@
 привычек/целей у demo).
 """
 
+import base64
+import os
 from datetime import date, datetime, timedelta, timezone
 
 from sqlmodel import Session, select
 
 from app.auth import hash_password
-from app.database import create_db_and_tables, engine
+from app.database import engine
+from app.migrations_runner import run_migrations
 from app.models import (
+    Bet,
+    Chest,
     CoachMessage,
     Education,
     Friend,
@@ -21,8 +26,10 @@ from app.models import (
     GoalHistory,
     GoalStep,
     Habit,
+    HabitConfirmation,
     HabitHistory,
     Level,
+    Partnership,
     PointsLog,
     Registration,
     Training,
@@ -31,10 +38,26 @@ from app.models import (
 from app.services.achievements import check_and_award_achievements, ensure_achievements_seeded
 from app.services.daily_tasks import get_or_create_today_tasks
 from app.services.points import level_name_for_points
+from app.services.trust import refresh_trust_score
 
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+# Крошечный валидный JPEG (1x1 пиксель) — для демо-фото-доказательств, чтобы
+# на странице друзей картинка реально открывалась, а не была "битой".
+_PLACEHOLDER_JPEG = base64.b64decode(
+    "/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMDAwMDAwQEBAQFBQUFBQcGBgYGBwkICQkJCQkMDAwM"
+    "DAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAALCAABAAEBAREA/8QAFAAB"
+    "AAAAAAAAAAAAAAAAAAAACP/EABQQAQAAAAAAAAAAAAAAAAAAAAD/2gAIAQEAAD8AVAr/2Q=="
+)
+
+
+def _write_placeholder_photo(path: str) -> None:
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "wb") as f:
+        f.write(_PLACEHOLDER_JPEG)
 
 
 def _get_or_create_user(db: Session, *, name, age, gender, mail, login, password) -> User:
@@ -70,17 +93,25 @@ def _award_points_at(db: Session, user: User, points: int, when: datetime) -> No
     db.commit()
 
 
-def _seed_habits(db: Session, demo: User) -> None:
+def _seed_habits(db: Session, demo: User) -> tuple:
+    """Создаёт привычки с историей. Если уже заполнено — просто возвращает их."""
     if demo.habits > 0:
-        return  # уже заполнено
+        existing = db.exec(select(Habit).where(Habit.uid == demo.id)).all()
+        by_name = {h.name: h for h in existing}
+        water_entries = db.exec(
+            select(HabitHistory).where(HabitHistory.h_id == by_name["Пить воду"].id)
+        ).all()
+        return by_name["Пить воду"], by_name["Читать книгу"], by_name["Не курить"], water_entries
 
     water = Habit(
         uid=demo.id, name="Пить воду", description="8 стаканов в день",
         point=10, story_point=1.0, habit_type="useful", frequency="daily",
+        requires_proof=True, minimal_description="выпить хотя бы 1 стакан",
     )
     reading = Habit(
         uid=demo.id, name="Читать книгу", description="30 минут перед сном",
         point=15, story_point=1.0, habit_type="useful", frequency="daily",
+        minimal_description="прочитать хотя бы 5 страниц",
     )
     no_smoking = Habit(
         uid=demo.id, name="Не курить", description="день без срыва",
@@ -98,26 +129,48 @@ def _seed_habits(db: Session, demo: User) -> None:
 
     today = _now()
 
-    # "Пить воду" — чистая серия 30 дней подряд (для достижений streak_7 / streak_30)
+    # "Пить воду" — серия 30 дней почти без дыр: один честный пропуск (заморозка
+    # спасает серию) и свежие отметки с фото-доказательством (растит trust score)
+    water_entries = []
     for days_ago in range(30):
         when = today - timedelta(days=days_ago)
-        db.add(HabitHistory(h_id=water.id, time=when))
-        db.commit()
-        _award_points_at(db, demo, water.point, when)
+        if days_ago == 3:
+            entry = HabitHistory(h_id=water.id, time=when, kind="skip")
+            db.add(entry)
+            db.commit()
+            _award_points_at(db, demo, 2, when)
+        else:
+            proof = f"uploads/seed_demo_water_{days_ago}.jpg"
+            _write_placeholder_photo(proof)
+            entry = HabitHistory(h_id=water.id, time=when, kind="done", proof_path=proof)
+            db.add(entry)
+            db.commit()
+            _award_points_at(db, demo, water.point, when)
+        db.refresh(entry)
+        water_entries.append(entry)
 
-    # "Читать книгу" — реже, со случайными пропусками (для графика с разбросом)
+    # "Читать книгу" — реже, с минимальными версиями и пропусками (для графика с разбросом)
+    minimal_days = {5, 14, 22}
     for days_ago in [1, 2, 4, 5, 6, 9, 10, 13, 14, 15, 18, 21, 22, 25, 27]:
         when = today - timedelta(days=days_ago)
-        db.add(HabitHistory(h_id=reading.id, time=when))
+        kind = "minimal" if days_ago in minimal_days else "done"
+        points = max(1, reading.point // 2) if kind == "minimal" else reading.point
+        proof = f"uploads/seed_demo_reading_{days_ago}.jpg"
+        _write_placeholder_photo(proof)
+        db.add(HabitHistory(h_id=reading.id, time=when, kind=kind, proof_path=proof))
         db.commit()
-        _award_points_at(db, demo, reading.point, when)
+        _award_points_at(db, demo, points, when)
 
     # "Не курить" — несколько отметок
     for days_ago in [0, 2, 4, 7, 9]:
         when = today - timedelta(days=days_ago)
-        db.add(HabitHistory(h_id=no_smoking.id, time=when))
+        proof = f"uploads/seed_demo_smoking_{days_ago}.jpg"
+        _write_placeholder_photo(proof)
+        db.add(HabitHistory(h_id=no_smoking.id, time=when, proof_path=proof))
         db.commit()
         _award_points_at(db, demo, no_smoking.point, when)
+
+    return water, reading, no_smoking, water_entries
 
 
 def _seed_goals(db: Session, demo: User) -> None:
@@ -178,6 +231,28 @@ def _seed_goals(db: Session, demo: User) -> None:
     db.commit()
 
 
+def _seed_friend_habit(db: Session, friend: User) -> Habit:
+    """Даёт другу привычку с короткой свежей серией — нужна для демо напарника."""
+    existing = db.exec(select(Habit).where(Habit.uid == friend.id)).first()
+    if existing:
+        return existing
+
+    habit = Habit(uid=friend.id, name="Зарядка", point=10, story_point=1.0)
+    db.add(habit)
+    friend.habits += 1
+    db.add(friend)
+    db.commit()
+    db.refresh(habit)
+
+    today = _now()
+    for days_ago in range(3):
+        proof = f"uploads/seed_friend_{days_ago}.jpg"
+        _write_placeholder_photo(proof)
+        db.add(HabitHistory(h_id=habit.id, time=today - timedelta(days=days_ago), kind="done", proof_path=proof))
+    db.commit()
+    return habit
+
+
 def _seed_friendship_and_leaderboard(db: Session, demo: User, friend: User) -> None:
     existing = db.exec(
         select(Friend).where(
@@ -194,6 +269,67 @@ def _seed_friendship_and_leaderboard(db: Session, demo: User, friend: User) -> N
     # Немного очков у друга за последнюю неделю — для рейтинга
     _award_points_at(db, friend, 60, _now() - timedelta(days=2))
     _award_points_at(db, friend, 40, _now() - timedelta(days=4))
+
+
+def _seed_bet(db: Session, demo: User, reading: Habit) -> None:
+    """Активная ставка на 'Читать книгу' — демонстрирует механику ставок."""
+    existing = db.exec(select(Bet).where(Bet.uid == demo.id)).first()
+    if existing:
+        return
+    db.add(
+        Bet(
+            uid=demo.id, habit_id=reading.id, stake_points=30, target_days=5,
+            start_date=date.today(), status="active",
+        )
+    )
+    db.commit()
+
+
+def _seed_partnership(db: Session, demo: User, friend: User, water: Habit, friend_habit: Habit) -> None:
+    """Активное партнёрство 'напарник' между demo и friend_demo."""
+    existing = db.exec(
+        select(Partnership).where(
+            (Partnership.uid_a == demo.id) | (Partnership.uid_b == demo.id)
+        )
+    ).first()
+    if existing:
+        return
+    db.add(
+        Partnership(
+            uid_a=demo.id, habit_id_a=water.id, uid_b=friend.id, habit_id_b=friend_habit.id,
+            status="active",
+        )
+    )
+    db.commit()
+
+
+def _seed_chest(db: Session, demo: User, water: Habit) -> None:
+    """Исторический сундук — за одну из прошлых недель чистой серии 'Пить воду'."""
+    existing = db.exec(select(Chest).where(Chest.uid == demo.id)).first()
+    if existing:
+        return
+    week_start = (date.today() - timedelta(days=21)) - timedelta(days=(date.today() - timedelta(days=21)).weekday())
+    db.add(
+        Chest(
+            uid=demo.id, habit_id=water.id, week_start=week_start,
+            reward_type="points", reward_value="30", time=_now() - timedelta(days=20),
+        )
+    )
+    db.commit()
+
+
+def _seed_confirmation(db: Session, friend: User, water_entries: list) -> None:
+    """Друг подтверждает самую свежую отметку 'Пить воду' — для ленты друзей."""
+    recent_entry = next((e for e in water_entries if e.kind == "done" and e.proof_path), None)
+    if not recent_entry:
+        return
+    existing = db.exec(
+        select(HabitConfirmation).where(HabitConfirmation.history_id == recent_entry.id)
+    ).first()
+    if existing:
+        return
+    db.add(HabitConfirmation(history_id=recent_entry.id, confirmer_uid=friend.id, status="confirmed"))
+    db.commit()
 
 
 def _seed_coach_history(db: Session, demo: User) -> None:
@@ -214,7 +350,7 @@ def _seed_coach_history(db: Session, demo: User) -> None:
 
 
 def main() -> None:
-    create_db_and_tables()
+    run_migrations()
     with Session(engine) as db:
         ensure_achievements_seeded(db)
 
@@ -227,13 +363,21 @@ def main() -> None:
             mail="friend@example.com", login="friend_demo", password="demo1234",
         )
 
-        _seed_habits(db, demo)
+        water, reading, no_smoking, water_entries = _seed_habits(db, demo)
         _seed_goals(db, demo)
         _seed_friendship_and_leaderboard(db, demo, friend)
+        friend_habit = _seed_friend_habit(db, friend)
+        _seed_bet(db, demo, reading)
+        _seed_partnership(db, demo, friend, water, friend_habit)
+        _seed_chest(db, demo, water)
+        _seed_confirmation(db, friend, water_entries)
         _seed_coach_history(db, demo)
 
         check_and_award_achievements(db, demo)
         check_and_award_achievements(db, friend)
+
+        refresh_trust_score(db, demo)
+        refresh_trust_score(db, friend)
 
         get_or_create_today_tasks(db, demo)
 
