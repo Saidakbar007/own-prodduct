@@ -21,6 +21,7 @@ from app.services.pentagon import pentagon_chart
 from app.services.personas import PERSONA_IMAGE_CODE, PERSONAS, persona_profile
 from app.services.persona_voices import balance_warning_line, council_line, greeting_line
 from app.services.pets import PET_SPECIES, hatch_pet, pet_profile
+from app.services.seasons import claim_new_steps, get_active_season, season_progress
 from app.services.spheres import all_spheres_progress
 from app.services.streak import _week_key
 from app.services.usertime import local_date, today_for
@@ -117,6 +118,14 @@ def hero_page(request: Request, user: User = Depends(require_user), db: Session 
     if pet["species"]:
         pet["image_url"] = pet_image_url(pet["species"], pet["stage"])
 
+    season = None
+    active_season = get_active_season(db)
+    if active_season:
+        newly_granted = claim_new_steps(db, user, active_season)
+        for grant in newly_granted:
+            push_flash(request, f"🎖️ Ступень {grant['step']} сезонного трека: {grant['text']}", "season")
+        season = season_progress(db, user, active_season)
+
     return render(
         request,
         "hero.html",
@@ -131,6 +140,7 @@ def hero_page(request: Request, user: User = Depends(require_user), db: Session 
             "pet": pet,
             "pet_species_options": PET_SPECIES,
             "council": _weekly_council(db, user, progress["level"]),
+            "season": season,
         },
         db=db,
         user=user,

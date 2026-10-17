@@ -10,6 +10,7 @@ from sqlmodel.pool import StaticPool
 from app.database import get_session
 from app.main import app
 from app.services.achievements import ensure_achievements_seeded
+from app.services.seasons import ensure_season_seeded
 from app.services.shop import ensure_shop_seeded
 
 
@@ -22,6 +23,7 @@ def session_fixture():
     with Session(engine) as session:
         ensure_achievements_seeded(session)
         ensure_shop_seeded(session)
+        ensure_season_seeded(session)
         yield session
 
 

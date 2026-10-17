@@ -41,6 +41,7 @@ from app.routers import hero as hero_router
 from app.routers import shop as shop_router
 from app.routers.habits import _habits_context, best_streak_with_freeze_for_user, habits_at_risk
 from app.services.achievements import ensure_achievements_seeded
+from app.services.seasons import ensure_season_seeded
 from app.services.shop import ensure_shop_seeded
 from app.services.daily_tasks import get_or_create_today_tasks
 from app.services.pentagon import pentagon_chart
@@ -65,6 +66,7 @@ async def lifespan(app: FastAPI):
     with Session(engine) as db:
         ensure_achievements_seeded(db)
         ensure_shop_seeded(db)
+        ensure_season_seeded(db)
 
         from app.models import Registration
 

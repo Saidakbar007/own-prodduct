@@ -31,6 +31,8 @@
 
                 {% if entry.level_locked %}
                 <p class="text-xs text-[var(--danger)] flex items-center gap-1"><i data-lucide="lock" style="width:0.9em;height:0.9em;"></i> Нужен уровень героя {{ entry.item.min_hero_level }}+</p>
+                {% elif entry.item.price is none and entry.item.season_code %}
+                <p class="text-xs text-[var(--accent)] flex items-center gap-1"><i data-lucide="calendar-range" style="width:0.9em;height:0.9em;"></i> Сезонный — только через трек</p>
                 {% elif entry.item.price is none %}
                 <p class="text-xs text-[var(--muted)] flex items-center gap-1"><i data-lucide="sparkles" style="width:0.9em;height:0.9em;"></i> Не продаётся</p>
                 {% elif slot.code == "freeze" %}

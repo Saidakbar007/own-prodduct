@@ -17,6 +17,20 @@
 
     {% include "_pet_card.html" %}
 
+    {% if season %}
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+        <div class="flex items-center justify-between mb-1">
+            <h2 class="font-medium flex items-center gap-2"><i data-lucide="calendar-range"></i> {{ season.name }}</h2>
+            <span class="numeric text-sm text-[var(--muted)]">Ступень {{ season.step }}/{{ season.max_steps }}</span>
+        </div>
+        <p class="text-xs text-[var(--muted)] mb-2">{{ season.theme }}</p>
+        <div class="w-full bg-[var(--sunken)] rounded-full h-2 mb-1">
+            <div class="bg-[var(--accent)] h-2 rounded-full transition-all" style="width: {{ season.percent }}%"></div>
+        </div>
+        <p class="text-xs text-[var(--muted)]">{{ season.xp_into_step }}/{{ season.xp_per_step }} XP до следующей ступени · бесплатный трек</p>
+    </div>
+    {% endif %}
+
     {% if council %}
     <div class="bg-[var(--card)] border border-[var(--accent)] rounded-xl p-4">
         <h2 class="font-medium mb-3 flex items-center gap-2"><i data-lucide="scroll-text"></i> Совет недели</h2>

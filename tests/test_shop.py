@@ -43,7 +43,8 @@ def test_ensure_shop_seeded_is_idempotent(session):
     first_count = len(session.exec(select(ShopItem)).all())
     ensure_shop_seeded(session)
     second_count = len(session.exec(select(ShopItem)).all())
-    assert first_count == second_count == len(CATALOG)
+    assert first_count == second_count
+    assert first_count >= len(CATALOG)  # сезонные предметы (shop 6, п.13) добавляют ещё строк
 
 
 def test_buy_item_deducts_coins_and_adds_to_inventory(client, session):
