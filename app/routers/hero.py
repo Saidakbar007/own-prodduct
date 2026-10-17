@@ -3,18 +3,21 @@
 личностей с уровнем/стадией/состоянием и последней репликой коуча.
 """
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Form, Request
 from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
 from app.models import CoachMessage, Level, User
 from app.rendering import render
-from app.services.game_assets import hero_image_url, persona_image_url
+from app.routers.habits import best_streak_with_freeze_for_user
+from app.services.flash import push_flash
+from app.services.game_assets import hero_image_url, persona_image_url, pet_image_url
 from app.services.levels import level_progress
 from app.services.pentagon import pentagon_chart
 from app.services.personas import PERSONA_IMAGE_CODE, persona_profile
 from app.services.persona_voices import balance_warning_line, greeting_line
+from app.services.pets import PET_SPECIES, hatch_pet, pet_profile
 from app.services.spheres import all_spheres_progress
 from app.services.usertime import local_date, today_for
 
@@ -65,6 +68,10 @@ def hero_page(request: Request, user: User = Depends(require_user), db: Session 
             }
         )
 
+    pet = pet_profile(db, user, progress["level"], best_streak_with_freeze_for_user(db, user))
+    if pet["species"]:
+        pet["image_url"] = pet_image_url(pet["species"], pet["stage"])
+
     return render(
         request,
         "hero.html",
@@ -76,7 +83,25 @@ def hero_page(request: Request, user: User = Depends(require_user), db: Session 
             "hero_image_url": hero_image_url(progress["stage"]),
             "hero_chart": pentagon_chart(all_spheres_progress(db, user.id)),
             "personas": cards,
+            "pet": pet,
+            "pet_species_options": PET_SPECIES,
         },
         db=db,
         user=user,
     )
+
+
+@router.post("/pet/hatch")
+def pet_hatch_route(
+    request: Request,
+    species: str = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    level = db.exec(select(Level).where(Level.uid == user.id)).first()
+    hero_level = level_progress(level.point if level else 0)["level"]
+
+    ok, message = hatch_pet(db, user, hero_level, species)
+    push_flash(request, message, "success" if ok else "error")
+
+    return hero_page(request, user, db)

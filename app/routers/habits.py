@@ -96,6 +96,23 @@ def habits_at_risk(db: Session, user: User) -> list[Habit]:
     return at_risk
 
 
+def best_streak_with_freeze_for_user(db: Session, user: User) -> int:
+    """
+    Лучший ТЕКУЩИЙ streak пользователя (across всех привычек) с учётом
+    заморозки — используется питомцем (v6b), чтобы заморозка защищала его
+    от "грусти" так же, как защищает серию на странице привычки.
+    """
+    habits = db.exec(select(Habit).where(Habit.uid == user.id)).all()
+    bonus_freezes = _bonus_freezes_for(db, user.id)
+    best = 0
+    for habit in habits:
+        done_dates = _habit_dates(db, habit.id, user, kinds=("done", "minimal"))
+        skip_dates = _habit_dates(db, habit.id, user, kinds=("skip",))
+        streak_info = calculate_streak_with_freeze(done_dates, skip_dates, bonus_freezes)
+        best = max(best, streak_info["streak"])
+    return best
+
+
 def _habits_context(db: Session, user: User, error: str = None) -> dict:
     """Собирает данные для шаблона habits.html: привычки + streak + статус за сегодня."""
     habits = db.exec(select(Habit).where(Habit.uid == user.id)).all()

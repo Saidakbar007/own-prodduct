@@ -19,6 +19,8 @@
         {% with chart = hero_chart %}{% include "_pentagon_chart.html" %}{% endwith %}
     </div>
 
+    {% include "_pet_card.html" %}
+
     {% if at_risk_habits %}
     <div class="bg-[var(--accent-soft)] border border-[var(--accent)] rounded-xl p-4">
         <h2 class="font-medium mb-2 text-[var(--accent)] flex items-center gap-2"><i data-lucide="heart-handshake"></i> Вчера был пропуск — ничего страшного</h2>
