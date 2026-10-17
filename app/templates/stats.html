@@ -4,61 +4,61 @@
 
 {% block content %}
 <section class="max-w-2xl mx-auto space-y-6">
-    <div class="bg-white rounded-xl border border-slate-200 p-6 text-center shadow-sm">
-        <p class="text-slate-400 text-sm">Твой уровень</p>
-        <h1 class="text-3xl font-bold text-indigo-600 mb-2">{{ level.name }}</h1>
-        <p class="text-slate-500 mb-4">{{ level.point }} очков</p>
+    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 text-center shadow-sm">
+        <p class="text-slate-400 dark:text-slate-500 text-sm">Твой уровень</p>
+        <h1 class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">{{ level.name }}</h1>
+        <p class="text-slate-500 dark:text-slate-400 mb-4">{{ level.point }} очков</p>
 
-        <div class="w-full bg-slate-100 rounded-full h-3 mb-2">
+        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3 mb-2">
             <div class="bg-indigo-600 h-3 rounded-full transition-all" style="width: {{ progress_percent }}%"></div>
         </div>
 
         {% if next_name %}
-        <p class="text-sm text-slate-400">Ещё {{ points_needed }} очков до уровня «{{ next_name }}»</p>
+        <p class="text-sm text-slate-400 dark:text-slate-500">Ещё {{ points_needed }} очков до уровня «{{ next_name }}»</p>
         {% else %}
-        <p class="text-sm text-slate-400">Максимальный уровень достигнут 🏆</p>
+        <p class="text-sm text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1"><i data-lucide="trophy" style="width:0.9em;height:0.9em;"></i> Максимальный уровень достигнут</p>
         {% endif %}
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-indigo-600">🔥 {{ cards.best_streak }}</p>
-            <p class="text-xs text-slate-400 mt-1">Лучшая серия</p>
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-center shadow-sm">
+            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 flex items-center justify-center gap-1"><i data-lucide="flame"></i> {{ cards.best_streak }}</p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Лучшая серия</p>
         </div>
-        <div class="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-indigo-600">{{ cards.total_checks }}</p>
-            <p class="text-xs text-slate-400 mt-1">Всего отметок</p>
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-center shadow-sm">
+            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ cards.total_checks }}</p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Всего отметок</p>
         </div>
-        <div class="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-indigo-600">{{ cards.goals_completed }}</p>
-            <p class="text-xs text-slate-400 mt-1">Целей выполнено</p>
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-center shadow-sm">
+            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ cards.goals_completed }}</p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Целей выполнено</p>
         </div>
-        <div class="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-indigo-600">{{ cards.week_completion_percent }}%</p>
-            <p class="text-xs text-slate-400 mt-1">Выполнение за неделю</p>
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-center shadow-sm">
+            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ cards.week_completion_percent }}%</p>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Выполнение за неделю</p>
         </div>
     </div>
 
-    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-        <h2 class="font-medium text-sm mb-3">📅 Ты месяц назад vs сейчас</h2>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+        <h2 class="font-medium text-sm mb-3 flex items-center gap-1.5"><i data-lucide="calendar-days"></i> Ты месяц назад vs сейчас</h2>
         <div class="grid grid-cols-2 gap-4 text-center">
             <div>
-                <p class="text-xs text-slate-400 mb-1">Отметок</p>
-                <p class="text-lg"><span class="text-slate-400">{{ comparison.checks_prior }}</span> → <b class="text-indigo-600">{{ comparison.checks_recent }}</b></p>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">Отметок</p>
+                <p class="text-lg"><span class="text-slate-400 dark:text-slate-500">{{ comparison.checks_prior }}</span> → <b class="text-indigo-600 dark:text-indigo-400">{{ comparison.checks_recent }}</b></p>
             </div>
             <div>
-                <p class="text-xs text-slate-400 mb-1">Очков</p>
-                <p class="text-lg"><span class="text-slate-400">{{ comparison.points_prior }}</span> → <b class="text-indigo-600">{{ comparison.points_recent }}</b></p>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">Очков</p>
+                <p class="text-lg"><span class="text-slate-400 dark:text-slate-500">{{ comparison.points_prior }}</span> → <b class="text-indigo-600 dark:text-indigo-400">{{ comparison.points_recent }}</b></p>
             </div>
         </div>
     </div>
 
-    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
         <h2 class="font-medium text-sm mb-3">Отметки привычек за 30 дней</h2>
         <canvas id="checksChart" height="100"></canvas>
     </div>
 
-    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
         <h2 class="font-medium text-sm mb-3">Очки по неделям</h2>
         <canvas id="pointsChart" height="100"></canvas>
     </div>
@@ -68,22 +68,56 @@
 {% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <script>
-    new Chart(document.getElementById('checksChart'), {
-        type: 'bar',
-        data: {
-            labels: {{ checks_labels_json | safe }},
-            datasets: [{ label: 'Отметки', data: {{ checks_values_json | safe }}, backgroundColor: '#6366f1' }]
-        },
-        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-    });
+    // Графики перерисовываются при переключении темы, чтобы подписи/сетка
+    // оставались читаемыми и в тёмном, и в светлом режиме.
+    var checksChartInstance = null;
+    var pointsChartInstance = null;
 
-    new Chart(document.getElementById('pointsChart'), {
-        type: 'line',
-        data: {
-            labels: {{ points_labels_json | safe }},
-            datasets: [{ label: 'Очки', data: {{ points_values_json | safe }}, borderColor: '#a855f7', backgroundColor: '#a855f733', fill: true, tension: 0.3 }]
-        },
-        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
-    });
+    function chartColors() {
+        var dark = document.documentElement.classList.contains('dark');
+        return {
+            text: dark ? '#94a3b8' : '#64748b',
+            grid: dark ? 'rgba(148,163,184,0.15)' : 'rgba(100,116,139,0.1)'
+        };
+    }
+
+    function renderCharts() {
+        var colors = chartColors();
+        if (checksChartInstance) checksChartInstance.destroy();
+        if (pointsChartInstance) pointsChartInstance.destroy();
+
+        checksChartInstance = new Chart(document.getElementById('checksChart'), {
+            type: 'bar',
+            data: {
+                labels: {{ checks_labels_json | safe }},
+                datasets: [{ label: 'Отметки', data: {{ checks_values_json | safe }}, backgroundColor: '#6366f1' }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1, color: colors.text }, grid: { color: colors.grid } },
+                    x: { ticks: { color: colors.text }, grid: { color: colors.grid } }
+                }
+            }
+        });
+
+        pointsChartInstance = new Chart(document.getElementById('pointsChart'), {
+            type: 'line',
+            data: {
+                labels: {{ points_labels_json | safe }},
+                datasets: [{ label: 'Очки', data: {{ points_values_json | safe }}, borderColor: '#a855f7', backgroundColor: '#a855f733', fill: true, tension: 0.3 }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { color: colors.text }, grid: { color: colors.grid } },
+                    x: { ticks: { color: colors.text }, grid: { color: colors.grid } }
+                }
+            }
+        });
+    }
+
+    renderCharts();
+    document.addEventListener('theme-changed', renderCharts);
 </script>
 {% endblock %}

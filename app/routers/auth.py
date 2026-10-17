@@ -70,9 +70,9 @@ def register_submit(
     db.add(level)
     db.commit()
 
-    # Сразу авторизуем нового пользователя
+    # Сразу авторизуем нового пользователя и ведём на короткий онбординг
     request.session["user_id"] = user.id
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse("/onboarding", status_code=303)
 
 
 @router.get("/login")
@@ -100,6 +100,15 @@ def login_submit(
     user = db.exec(select(User).where(User.login == registration.login)).first()
 
     request.session["user_id"] = user.id
+    return RedirectResponse("/", status_code=303)
+
+
+@router.get("/try-demo")
+def try_demo(request: Request, db: Session = Depends(get_session)):
+    """Входит под демо-аккаунтом в один клик (для кнопки на лендинге)."""
+    user = db.exec(select(User).where(User.login == "demo")).first()
+    if user:
+        request.session["user_id"] = user.id
     return RedirectResponse("/", status_code=303)
 
 

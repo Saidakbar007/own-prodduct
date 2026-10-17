@@ -1,0 +1,23 @@
+<header class="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-800 dark:to-purple-800 text-white sticky top-0 z-20 shadow-md">
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+        <a href="/" class="text-lg font-bold flex items-center gap-2 shrink-0">
+            <i data-lucide="rocket"></i> <span class="hidden sm:inline">Моя жизнь</span>
+        </a>
+        <div class="flex items-center gap-2 sm:gap-3">
+            <div class="relative">
+                <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="p-2 rounded-lg hover:bg-white/10" aria-label="Тема">
+                    <i data-lucide="sun-moon"></i>
+                </button>
+                <div class="more-menu absolute right-0 mt-2 w-44 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 py-1 text-sm z-30">
+                    <button data-theme-option="light" class="w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="sun"></i> Светлая</button>
+                    <button data-theme-option="dark" class="w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="moon"></i> Тёмная</button>
+                    <button data-theme-option="system" class="w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="monitor"></i> Как в системе</button>
+                </div>
+            </div>
+            <a href="/login" class="text-sm font-medium hover:text-indigo-200 shrink-0">Войти</a>
+            <a href="/register" class="btn-press bg-white text-indigo-700 text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-indigo-50 shrink-0 whitespace-nowrap">
+                Регистрация
+            </a>
+        </div>
+    </nav>
+</header>

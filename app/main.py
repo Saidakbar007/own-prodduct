@@ -9,15 +9,17 @@ from datetime import date
 
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Request
+from fastapi.exception_handlers import http_exception_handler as default_http_exception_handler
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, select
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.auth import get_current_user
 from app.database import engine, get_session
 from app import models  # noqa: F401 — импорт нужен, чтобы таблицы попали в metadata
 from app.migrations_runner import run_migrations
-from app.models import Goal, Level, UserAchievement, Achievement
+from app.models import Goal, Level, User, UserAchievement, Achievement
 from app.rendering import render
 from app.routers import auth as auth_router
 from app.routers import profile as profile_router
@@ -32,6 +34,7 @@ from app.routers import daily_tasks as daily_tasks_router
 from app.routers import confirmations as confirmations_router
 from app.routers import bets as bets_router
 from app.routers import partnerships as partnerships_router
+from app.routers import onboarding as onboarding_router
 from app.routers.habits import _habits_context, habits_at_risk
 from app.services.achievements import ensure_achievements_seeded
 from app.services.daily_tasks import get_or_create_today_tasks
@@ -88,6 +91,22 @@ app.include_router(daily_tasks_router.router)
 app.include_router(confirmations_router.router)
 app.include_router(bets_router.router)
 app.include_router(partnerships_router.router)
+app.include_router(onboarding_router.router)
+
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_404_handler(request: Request, exc: StarletteHTTPException):
+    """Красивая 404-страница для несуществующих адресов; все остальные статусы — как обычно."""
+    if exc.status_code != 404:
+        return await default_http_exception_handler(request, exc)
+
+    user = None
+    user_id = request.session.get("user_id")
+    if user_id:
+        with Session(engine) as db:
+            user = db.get(User, user_id)
+
+    return render(request, "404.html", {"user": user}, status_code=404)
 
 
 @app.get("/")

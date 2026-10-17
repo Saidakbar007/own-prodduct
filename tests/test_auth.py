@@ -6,7 +6,7 @@ from tests.conftest import register_user
 def test_register_creates_user_and_logs_in(client):
     resp = register_user(client, login="alice", mail="alice@example.com")
     assert resp.status_code == 303
-    assert resp.headers["location"] == "/"
+    assert resp.headers["location"] == "/onboarding"  # сразу залогинен, но сначала короткий онбординг
 
     home = client.get("/")
     assert home.status_code == 200

@@ -3,12 +3,12 @@
 {% block title %}Регистрация — Моя жизнь{% endblock %}
 
 {% block content %}
-<section class="max-w-md mx-auto bg-white rounded-xl border border-slate-200 p-6 mt-8">
+<section class="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mt-8">
     <h1 class="text-xl font-bold mb-4">Регистрация</h1>
 
     {% if error %}
-    <div class="bg-red-50 text-red-700 text-sm rounded-lg px-3 py-2 mb-4">
-        {{ error }}
+    <div class="bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 text-sm rounded-lg px-3 py-2 mb-4 flex items-center gap-2">
+        <i data-lucide="alert-triangle" class="shrink-0" style="width:1em;height:1em;"></i> {{ error }}
     </div>
     {% endif %}
 
@@ -16,18 +16,18 @@
         <div>
             <label class="block text-sm font-medium mb-1">Имя</label>
             <input type="text" name="name" required
-                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                   class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
             <div>
                 <label class="block text-sm font-medium mb-1">Возраст</label>
                 <input type="number" name="age" min="1"
-                       class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                       class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
             </div>
             <div>
                 <label class="block text-sm font-medium mb-1">Пол</label>
-                <select name="gender" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                <select name="gender" class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
                     <option value="">Не указан</option>
                     <option value="male">Мужской</option>
                     <option value="female">Женский</option>
@@ -38,25 +38,25 @@
         <div>
             <label class="block text-sm font-medium mb-1">Почта</label>
             <input type="email" name="mail" required
-                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                   class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
         </div>
 
         <div>
             <label class="block text-sm font-medium mb-1">Логин</label>
             <input type="text" name="login" required
-                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                   class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
         </div>
 
         <div>
             <label class="block text-sm font-medium mb-1">Пароль</label>
             <input type="password" name="password" required
-                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                   class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
         </div>
 
         <div>
             <label class="block text-sm font-medium mb-1">Повторите пароль</label>
             <input type="password" name="password_confirm" required
-                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                   class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
         </div>
 
         <button type="submit"
@@ -65,8 +65,8 @@
         </button>
     </form>
 
-    <p class="text-sm text-slate-500 text-center mt-4">
-        Уже есть аккаунт? <a href="/login" class="text-indigo-600 font-medium">Войти</a>
+    <p class="text-sm text-slate-500 dark:text-slate-400 text-center mt-4">
+        Уже есть аккаунт? <a href="/login" class="text-indigo-600 dark:text-indigo-400 font-medium">Войти</a>
     </p>
 </section>
 {% endblock %}

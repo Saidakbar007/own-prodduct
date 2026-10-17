@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Страница не найдена — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="text-center py-20">
+    <i data-lucide="compass" class="mx-auto mb-4" style="width:3rem;height:3rem;"></i>
+    <h1 class="text-2xl font-bold mb-2">Такой страницы не существует</h1>
+    <p class="text-slate-500 dark:text-slate-400 mb-6">Возможно, ссылка устарела или был опечатка в адресе.</p>
+    <a href="/" class="btn-press inline-flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-indigo-700">
+        <i data-lucide="home"></i> На главную
+    </a>
+</section>
+{% endblock %}

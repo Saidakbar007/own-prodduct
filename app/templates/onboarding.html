@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Начало работы — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-md mx-auto mt-8">
+    <!-- Индикатор шагов -->
+    <div class="flex gap-1.5 mb-6 justify-center">
+        {% for i in range(1, 5) %}
+        <span class="h-1.5 w-8 rounded-full {{ 'bg-indigo-600' if i <= step else 'bg-slate-200 dark:bg-slate-700' }}"></span>
+        {% endfor %}
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-sm text-center">
+        {% if step == 1 %}
+        <i data-lucide="sparkles" class="mx-auto mb-3 text-indigo-600 dark:text-indigo-400" style="width:2.5rem;height:2.5rem;"></i>
+        <h1 class="text-xl font-bold mb-2">Привет! Коротко расскажем, как это работает</h1>
+        <p class="text-slate-500 dark:text-slate-400 mb-6">
+            Мечта → Цель → Привычки. Отмечай привычки каждый день честно —
+            получай очки, уровень растёт, а друзья видят твой прогресс.
+        </p>
+        <a href="/onboarding/dream" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">
+            Начать <i data-lucide="arrow-right"></i>
+        </a>
+
+        {% elif step == 2 %}
+        <i data-lucide="moon-star" class="mx-auto mb-3 text-indigo-600 dark:text-indigo-400" style="width:2.5rem;height:2.5rem;"></i>
+        <h1 class="text-xl font-bold mb-2">О чём твоя мечта?</h1>
+        <p class="text-slate-500 dark:text-slate-400 mb-4">Мечта — это самая верхняя цель, к ней потом привяжутся обычные цели.</p>
+        <form method="post" action="/onboarding/dream" class="space-y-3 text-left">
+            <input type="text" name="name" placeholder="Например: Стать здоровым и сильным"
+                   class="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-700 rounded-lg px-3 py-2">
+            <button type="submit" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">
+                Далее <i data-lucide="arrow-right"></i>
+            </button>
+        </form>
+
+        {% elif step == 3 %}
+        <i data-lucide="list-checks" class="mx-auto mb-3 text-indigo-600 dark:text-indigo-400" style="width:2.5rem;height:2.5rem;"></i>
+        <h1 class="text-xl font-bold mb-2">Добавь первую привычку</h1>
+        <p class="text-slate-500 dark:text-slate-400 mb-4">Маленький ежедневный шаг — то, с чего начинается серия.</p>
+        <form method="post" action="/onboarding/habit" class="space-y-3 text-left">
+            <input type="text" name="name" placeholder="Например: Пить воду по утрам"
+                   class="w-full border border-slate-300 dark:border-slate-600 dark:bg-slate-700 rounded-lg px-3 py-2">
+            <button type="submit" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">
+                Далее <i data-lucide="arrow-right"></i>
+            </button>
+        </form>
+
+        {% else %}
+        <i data-lucide="party-popper" class="mx-auto mb-3 text-indigo-600 dark:text-indigo-400" style="width:2.5rem;height:2.5rem;"></i>
+        <h1 class="text-xl font-bold mb-2">Готово!</h1>
+        <p class="text-slate-500 dark:text-slate-400 mb-6">Дальше — просто заходи каждый день и отмечай привычки.</p>
+        <a href="/" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">
+            Перейти в приложение <i data-lucide="arrow-right"></i>
+        </a>
+        {% endif %}
+    </div>
+
+    {% if step < 4 %}
+    <p class="text-center mt-4">
+        <a href="/" class="text-sm text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">Пропустить</a>
+    </p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -4,31 +4,31 @@
 
 {% block content %}
 <section class="max-w-2xl mx-auto">
-    <h1 class="text-xl font-bold mb-4">✅ Мои привычки</h1>
+    <h1 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="list-checks"></i> Мои привычки</h1>
 
     {% if error %}
-    <div class="bg-red-50 text-red-700 text-sm rounded-lg px-3 py-2 mb-4">{{ error }}</div>
+    <div class="bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 text-sm rounded-lg px-3 py-2 mb-4 flex items-center gap-2"><i data-lucide="alert-triangle" class="shrink-0" style="width:1em;height:1em;"></i> {{ error }}</div>
     {% endif %}
 
     <div class="space-y-3 mb-6">
         {% for item in habits %}
-        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
             <div class="flex items-center justify-between">
                 <div>
-                    <a href="/habits/{{ item.habit.id }}" class="font-medium hover:text-indigo-600">
-                        {{ "🚫" if item.habit.habit_type == "harmful" else "✅" }} {{ item.habit.name }}
+                    <a href="/habits/{{ item.habit.id }}" class="font-medium hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1.5">
+                        <i data-lucide="{{ 'ban' if item.habit.habit_type == 'harmful' else 'check' }}" style="width:0.95em;height:0.95em;"></i> {{ item.habit.name }}
                     </a>
                     {% if item.habit.description %}
-                    <p class="text-sm text-slate-500">{{ item.habit.description }}</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">{{ item.habit.description }}</p>
                     {% endif %}
-                    <p class="text-xs text-slate-400 mt-1">
-                        <span class="{{ 'fire-pulse' if item.streak > 0 else '' }}">🔥</span> Streak: {{ item.streak }} дней
-                        · ❄️ заморозок: {{ item.freezes_left }}/2
+                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 flex items-center gap-1 flex-wrap">
+                        <span class="{{ 'fire-pulse' if item.streak > 0 else '' }} flex items-center"><i data-lucide="flame" style="width:0.9em;height:0.9em;"></i></span> Streak: {{ item.streak }} дней
+                        · <i data-lucide="snowflake" style="width:0.9em;height:0.9em;"></i> заморозок: {{ item.freezes_left }}/2
                         {% if item.habit.frequency == "weekly" %}· по выбранным дням{% endif %}
                     </p>
                 </div>
                 {% if item.done_today %}
-                <span class="text-green-600 text-sm font-medium px-3 py-1.5 bg-green-50 rounded-lg shrink-0">✓ Сделано</span>
+                <span class="text-green-600 dark:text-green-400 text-sm font-medium px-3 py-1.5 bg-green-50 dark:bg-green-950 rounded-lg shrink-0 flex items-center gap-1"><i data-lucide="check-circle-2"></i> Сделано</span>
                 {% else %}
                 <a href="/habits/{{ item.habit.id }}"
                    class="btn-press bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl font-semibold hover:bg-indigo-700 shadow shrink-0">
@@ -38,39 +38,39 @@
             </div>
         </div>
         {% else %}
-        <div class="bg-white border border-dashed border-slate-300 rounded-xl p-8 text-center">
-            <p class="text-3xl mb-2">🌱</p>
-            <p class="text-slate-500 mb-1">Пока нет привычек</p>
-            <p class="text-slate-400 text-sm">Добавь первую ниже — например, «Пить воду по утрам»</p>
+        <div class="bg-white dark:bg-slate-800 border border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-8 text-center">
+            <i data-lucide="sprout" class="mx-auto mb-2 text-slate-400 dark:text-slate-500" style="width:2rem;height:2rem;"></i>
+            <p class="text-slate-500 dark:text-slate-400 mb-1">Пока нет привычек</p>
+            <p class="text-slate-400 dark:text-slate-500 text-sm">Добавь первую ниже — например, «Пить воду по утрам»</p>
         </div>
         {% endfor %}
     </div>
 
-    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
         <h2 class="font-medium mb-3">Новая привычка</h2>
         <form method="post" action="/habits" class="space-y-3">
             <div>
                 <label class="block text-sm font-medium mb-1">Название</label>
                 <input type="text" name="name" placeholder="Например: Пить воду по утрам" required
-                       class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                       class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
             </div>
             <div>
                 <label class="block text-sm font-medium mb-1">Описание (необязательно)</label>
                 <input type="text" name="description" placeholder="Например: 1 стакан сразу после пробуждения"
-                       class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                       class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
             </div>
 
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-sm font-medium mb-1">Тип</label>
-                    <select name="habit_type" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                    <select name="habit_type" class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
                         <option value="useful">Полезная</option>
                         <option value="harmful">Вредная (хочу отказаться)</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">Сложность</label>
-                    <select name="difficulty" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                    <select name="difficulty" class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
                         <option value="easy">Легко (5 очков)</option>
                         <option value="medium" selected>Средне (10 очков)</option>
                         <option value="hard">Сложно (20 очков)</option>
@@ -80,18 +80,18 @@
 
             <div>
                 <label class="block text-sm font-medium mb-1">Частота</label>
-                <select name="frequency" class="w-full border border-slate-300 rounded-lg px-3 py-2 mb-2">
+                <select name="frequency" class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 mb-2 dark:bg-slate-700 dark:text-slate-100">
                     <option value="daily">Каждый день</option>
                     <option value="weekly">По выбранным дням недели</option>
                 </select>
                 <div class="flex gap-2 flex-wrap text-sm">
                     {% for i, label in [(0,"Пн"),(1,"Вт"),(2,"Ср"),(3,"Чт"),(4,"Пт"),(5,"Сб"),(6,"Вс")] %}
-                    <label class="flex items-center gap-1 border border-slate-300 rounded-lg px-2 py-1 cursor-pointer">
+                    <label class="flex items-center gap-1 border border-slate-300 dark:border-slate-600 rounded-lg px-2 py-1 cursor-pointer dark:bg-slate-700 dark:text-slate-100">
                         <input type="checkbox" name="weekdays" value="{{ i }}"> {{ label }}
                     </label>
                     {% endfor %}
                 </div>
-                <p class="text-xs text-slate-400 mt-1">Дни недели нужны только если выбрана частота «по выбранным дням»</p>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Дни недели нужны только если выбрана частота «по выбранным дням»</p>
             </div>
 
             <div>
@@ -99,15 +99,15 @@
                     Минимальная версия «на плохой день» (необязательно)
                 </label>
                 <input type="text" name="minimal_description" placeholder="Например: выпить хотя бы 1 стакан"
-                       class="w-full border border-slate-300 rounded-lg px-3 py-2">
-                <p class="text-xs text-slate-400 mt-1">
+                       class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
                     Если совсем нет сил на полную версию — эта засчитается и сохранит серию (но даст меньше очков)
                 </p>
             </div>
 
             <label class="flex items-center gap-2 text-sm">
                 <input type="checkbox" name="requires_proof" value="1">
-                Требовать фото-доказательство при отметке 📷
+                Требовать фото-доказательство при отметке <i data-lucide="camera" style="width:0.95em;height:0.95em;"></i>
             </label>
 
             <button type="submit"

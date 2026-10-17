@@ -1,0 +1,13 @@
+{
+  "name": "Моя жизнь",
+  "short_name": "Моя жизнь",
+  "description": "Привычки, цели и честность — в одном приложении",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#6366f1",
+  "icons": [
+    { "src": "/static/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/static/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

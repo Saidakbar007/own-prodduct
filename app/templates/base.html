@@ -5,69 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Моя жизнь{% endblock %}</title>
 
+    <!-- Применяем тему ДО отрисовки, чтобы не было мигания света/тьмы -->
+    <script>
+        (function () {
+            function systemPrefersDark() {
+                return window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            function applyTheme(pref) {
+                var isDark = pref === 'dark' || (pref === 'system' && systemPrefersDark());
+                document.documentElement.classList.toggle('dark', isDark);
+            }
+            window.__applyTheme = applyTheme;
+            window.__currentThemePref = function () { return localStorage.getItem('theme') || 'system'; };
+            applyTheme(window.__currentThemePref());
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+                if (window.__currentThemePref() === 'system') applyTheme('system');
+            });
+        })();
+    </script>
+
+    <script>
+        tailwind = { config: { darkMode: 'class' } };
+    </script>
     <!-- Tailwind CSS через CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- HTMX для динамики без отдельного JS-фронтенда -->
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <!-- Lucide — единый набор иконок -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.js"></script>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+    <link rel="icon" href="/static/icons/icon-192.png">
 
     <style>
         @keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fire-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
         .toast { animation: toast-in 0.25s ease-out; }
         .fire-pulse { animation: fire-pulse 1.4s ease-in-out infinite; display: inline-block; }
-        .btn-press { transition: transform 0.1s ease; }
+        .btn-press { transition: transform 0.1s ease, background-color 0.15s ease; }
         .btn-press:active { transform: scale(0.95); }
+        .fade-in { animation: fade-in 0.25s ease-out; }
+        * { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+        .more-menu { display: none; }
+        .more-menu.open { display: block; }
+        [data-lucide] { width: 1.1em; height: 1.1em; }
+        .btn-press[disabled] { opacity: 0.6; cursor: wait; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col pb-16 sm:pb-0">
 
-    <!-- Верхняя навигация -->
-    <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white sticky top-0 z-20 shadow-md">
-        <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3 overflow-x-auto whitespace-nowrap">
-            <a href="/" class="text-lg font-bold flex items-center gap-1 shrink-0">🚀 Моя жизнь</a>
-            <div class="flex gap-4 text-sm font-medium items-center">
-                <a href="/" class="hover:text-indigo-200">🏠 Главная</a>
-                <a href="/habits" class="hover:text-indigo-200">✅ Привычки</a>
-                <a href="/goals" class="hover:text-indigo-200">🎯 Цели</a>
-                <a href="/friends" class="hover:text-indigo-200">🤝 Друзья</a>
-                <a href="/stats" class="hover:text-indigo-200">📊 Статистика</a>
-                <a href="/achievements" class="hover:text-indigo-200">🏆 Награды</a>
-                <a href="/coach" class="hover:text-indigo-200">🤖 Коуч</a>
-                <a href="/profile" class="hover:text-indigo-200">👤 Профиль</a>
-                {% if user %}
-                    <span class="text-indigo-300">|</span>
-                    <span class="text-indigo-100">{{ user.login }}</span>
-                    <a href="/logout" class="text-red-200 hover:text-red-100">Выйти</a>
-                {% else %}
-                    <span class="text-indigo-300">|</span>
-                    <a href="/login" class="hover:text-indigo-200">Войти</a>
-                    <a href="/register" class="hover:text-indigo-200">Регистрация</a>
-                {% endif %}
-            </div>
-        </nav>
-
-        {% if xp_level %}
-        <div class="max-w-5xl mx-auto px-4 pb-2">
-            <div class="flex items-center justify-between text-xs text-indigo-100 mb-1">
-                <span>⭐ {{ xp_level.name }} · {{ xp_level.point }} XP</span>
-                {% if xp_next_name %}
-                <span>{{ xp_points_needed }} XP до «{{ xp_next_name }}»</span>
-                {% else %}
-                <span>Максимальный уровень 🏆</span>
-                {% endif %}
-            </div>
-            <div class="w-full bg-indigo-800/40 rounded-full h-2">
-                <div class="bg-yellow-300 h-2 rounded-full transition-all" style="width: {{ xp_percent }}%"></div>
-            </div>
-        </div>
-        {% endif %}
-    </header>
+    {% if user %}
+    {% include "_nav_logged_in.html" %}
+    {% else %}
+    {% include "_nav_guest.html" %}
+    {% endif %}
 
     <!-- Всплывающие уведомления -->
     {% if flashes %}
     <div class="fixed top-4 right-4 z-50 space-y-2 max-w-xs" id="toasts">
         {% for f in flashes %}
-        <div class="toast bg-white border border-indigo-200 shadow-lg rounded-lg px-4 py-3 text-sm">
+        <div class="toast bg-white dark:bg-slate-800 border border-indigo-200 dark:border-indigo-800 shadow-lg rounded-lg px-4 py-3 text-sm">
             {{ f.message }}
         </div>
         {% endfor %}
@@ -81,14 +82,60 @@
     {% endif %}
 
     <!-- Основной контент страницы -->
-    <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6 fade-in">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="text-center text-xs text-slate-400 py-4">
+    <footer class="text-center text-xs text-slate-400 dark:text-slate-500 py-4 {% if user %}hidden sm:block{% endif %}">
         Учебный проект · MVP
     </footer>
 
     {% block scripts %}{% endblock %}
+
+    <script>
+        // Иконки Lucide
+        if (window.lucide) { lucide.createIcons(); }
+
+        // Переключатель темы (светлая / тёмная / как в системе)
+        function setTheme(pref) {
+            localStorage.setItem('theme', pref);
+            window.__applyTheme(pref);
+            document.querySelectorAll('[data-theme-option]').forEach(function (el) {
+                el.classList.toggle('text-indigo-600', el.getAttribute('data-theme-option') === pref);
+                el.classList.toggle('dark:text-indigo-400', el.getAttribute('data-theme-option') === pref);
+            });
+            document.dispatchEvent(new CustomEvent('theme-changed'));
+        }
+        document.querySelectorAll('[data-theme-option]').forEach(function (el) {
+            el.addEventListener('click', function () { setTheme(el.getAttribute('data-theme-option')); });
+        });
+
+        // Меню "Ещё"
+        function toggleMoreMenu() {
+            document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.toggle('open'); });
+        }
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.more-menu') && !e.target.closest('[data-more-toggle]')) {
+                document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.remove('open'); });
+            }
+        });
+
+        // Состояние загрузки: блокируем кнопку при отправке формы, чтобы не было повторных кликов
+        document.querySelectorAll('form').forEach(function (form) {
+            form.addEventListener('submit', function () {
+                var btn = form.querySelector('button[type="submit"]');
+                if (btn && !btn.disabled) {
+                    btn.dataset.originalText = btn.innerHTML;
+                    btn.disabled = true;
+                    btn.innerHTML = '<span class="inline-block animate-spin">⏳</span> ' + (btn.dataset.loadingText || 'Секунду...');
+                }
+            });
+        });
+
+        // PWA: регистрируем service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/static/sw.js').catch(function () {});
+        }
+    </script>
 </body>
 </html>

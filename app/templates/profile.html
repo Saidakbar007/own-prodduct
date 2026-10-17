@@ -3,19 +3,19 @@
 {% block title %}Профиль — Моя жизнь{% endblock %}
 
 {% block content %}
-<section class="max-w-md mx-auto bg-white rounded-xl border border-slate-200 p-6 mt-8 shadow-sm">
-    <h1 class="text-xl font-bold mb-2">👤 Профиль: {{ user.login }}</h1>
+<section class="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mt-8 shadow-sm">
+    <h1 class="text-xl font-bold mb-2 flex items-center gap-2"><i data-lucide="user-round"></i> Профиль: {{ user.login }}</h1>
     <p class="text-sm mb-4">
         Trust score:
-        <span class="font-bold {{ 'text-green-600' if user.trust_score >= 80 else ('text-amber-600' if user.trust_score >= 50 else 'text-red-500') }}">
-            🛡️ {{ user.trust_score }}/100
+        <span class="font-bold inline-flex items-center gap-1 {{ 'text-green-600 dark:text-green-400' if user.trust_score >= 80 else ('text-amber-600 dark:text-amber-400' if user.trust_score >= 50 else 'text-red-500 dark:text-red-400') }}">
+            <i data-lucide="shield-check" style="width:0.95em;height:0.95em;"></i> {{ user.trust_score }}/100
         </span>
-        <span class="text-slate-400">— растёт от фото-доказательств и подтверждений друзей</span>
+        <span class="text-slate-400 dark:text-slate-500">— растёт от фото-доказательств и подтверждений друзей</span>
     </p>
 
     {% if saved %}
-    <div class="bg-green-50 text-green-700 text-sm rounded-lg px-3 py-2 mb-4">
-        Сохранено
+    <div class="bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-400 text-sm rounded-lg px-3 py-2 mb-4 flex items-center gap-2">
+        <i data-lucide="check-circle-2" style="width:1em;height:1em;"></i> Сохранено
     </div>
     {% endif %}
 
@@ -23,18 +23,18 @@
         <div>
             <label class="block text-sm font-medium mb-1">Вес (кг)</label>
             <input type="number" step="0.1" name="weight" value="{{ user.weight or '' }}" placeholder="Например: 70"
-                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                   class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
         </div>
 
         <div>
             <label class="block text-sm font-medium mb-1">Рост (см)</label>
             <input type="number" step="0.1" name="hight" value="{{ user.hight or '' }}" placeholder="Например: 175"
-                   class="w-full border border-slate-300 rounded-lg px-3 py-2">
+                   class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
         </div>
 
         <div>
             <label class="block text-sm font-medium mb-1">Семейное положение</label>
-            <select name="familly_stat" class="w-full border border-slate-300 rounded-lg px-3 py-2">
+            <select name="familly_stat" class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
                 <option value="" {% if not user.familly_stat %}selected{% endif %}>Не указано</option>
                 <option value="single" {% if user.familly_stat == "single" %}selected{% endif %}>Холост/не замужем</option>
                 <option value="married" {% if user.familly_stat == "married" %}selected{% endif %}>В браке</option>

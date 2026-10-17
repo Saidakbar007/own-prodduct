@@ -1,0 +1,92 @@
+<header class="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-800 dark:to-purple-800 text-white sticky top-0 z-20 shadow-md">
+    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+        <a href="/" class="text-lg font-bold flex items-center gap-2 shrink-0">
+            <i data-lucide="rocket"></i> <span class="hidden sm:inline">Моя жизнь</span>
+        </a>
+
+        <!-- Десктоп: компактное меню -->
+        <div class="hidden sm:flex items-center gap-1 text-sm font-medium">
+            <a href="/" class="px-3 py-2 rounded-lg hover:bg-white/10 flex items-center gap-1.5"><i data-lucide="home"></i> Главная</a>
+            <a href="/habits" class="px-3 py-2 rounded-lg hover:bg-white/10 flex items-center gap-1.5"><i data-lucide="list-checks"></i> Привычки</a>
+            <a href="/goals" class="px-3 py-2 rounded-lg hover:bg-white/10 flex items-center gap-1.5"><i data-lucide="target"></i> Цели</a>
+            <a href="/friends" class="px-3 py-2 rounded-lg hover:bg-white/10 flex items-center gap-1.5"><i data-lucide="users"></i> Друзья</a>
+
+            <div class="relative">
+                <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="px-3 py-2 rounded-lg hover:bg-white/10 flex items-center gap-1.5">
+                    <i data-lucide="more-horizontal"></i> Ещё
+                </button>
+                <div class="more-menu hidden sm:block absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 py-1 text-sm z-30">
+                    <a href="/stats" class="px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="bar-chart-3"></i> Статистика</a>
+                    <a href="/achievements" class="px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="trophy"></i> Награды</a>
+                    <a href="/coach" class="px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="bot"></i> Коуч</a>
+                    <a href="/profile" class="px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="user-round"></i> Профиль</a>
+                    <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+                    <div class="px-3 py-1 text-xs text-slate-400 dark:text-slate-500">Тема</div>
+                    <button data-theme-option="light" class="w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="sun"></i> Светлая</button>
+                    <button data-theme-option="dark" class="w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="moon"></i> Тёмная</button>
+                    <button data-theme-option="system" class="w-full text-left px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="monitor"></i> Как в системе</button>
+                    <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+                    <a href="/logout" class="px-3 py-2 hover:bg-red-50 dark:hover:bg-red-950 text-red-600 dark:text-red-400 flex items-center gap-2"><i data-lucide="log-out"></i> Выйти</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Мобайл: только лого + кнопка "Ещё" (разделы — в нижней панели) -->
+        <div class="sm:hidden relative">
+            <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="p-2 rounded-lg hover:bg-white/10" aria-label="Ещё">
+                <i data-lucide="more-horizontal"></i>
+            </button>
+        </div>
+    </nav>
+
+    {% if xp_level %}
+    <div class="max-w-5xl mx-auto px-4 pb-2">
+        <div class="flex items-center justify-between text-xs text-indigo-100 mb-1">
+            <span class="flex items-center gap-1"><i data-lucide="star"></i> {{ xp_level.name }} · {{ xp_level.point }} XP</span>
+            {% if xp_next_name %}
+            <span>{{ xp_points_needed }} XP до «{{ xp_next_name }}»</span>
+            {% else %}
+            <span class="flex items-center gap-1"><i data-lucide="trophy"></i> Максимальный уровень</span>
+            {% endif %}
+        </div>
+        <div class="w-full bg-indigo-800/40 rounded-full h-2">
+            <div class="bg-yellow-300 h-2 rounded-full transition-all" style="width: {{ xp_percent }}%"></div>
+        </div>
+    </div>
+    {% endif %}
+</header>
+
+<!-- Мобильная версия меню "Ещё" — нижний лист -->
+<div class="more-menu sm:hidden fixed bottom-16 inset-x-3 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 py-1 text-sm z-30">
+    <a href="/stats" class="px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="bar-chart-3"></i> Статистика</a>
+    <a href="/achievements" class="px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="trophy"></i> Награды</a>
+    <a href="/coach" class="px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="bot"></i> Коуч</a>
+    <a href="/profile" class="px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="user-round"></i> Профиль</a>
+    <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+    <div class="px-4 py-1 text-xs text-slate-400 dark:text-slate-500">Тема</div>
+    <button data-theme-option="light" class="w-full text-left px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="sun"></i> Светлая</button>
+    <button data-theme-option="dark" class="w-full text-left px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="moon"></i> Тёмная</button>
+    <button data-theme-option="system" class="w-full text-left px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><i data-lucide="monitor"></i> Как в системе</button>
+    <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+    <a href="/logout" class="px-4 py-3 hover:bg-red-50 dark:hover:bg-red-950 text-red-600 dark:text-red-400 flex items-center gap-2"><i data-lucide="log-out"></i> Выйти</a>
+</div>
+
+<!-- Нижняя панель навигации — только на телефоне -->
+<nav class="sm:hidden fixed bottom-0 inset-x-0 z-20 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 grid grid-cols-5 text-[11px] text-slate-500 dark:text-slate-400"
+     style="padding-bottom: env(safe-area-inset-bottom);">
+    <a href="/" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-indigo-600 dark:hover:text-indigo-400">
+        <i data-lucide="home"></i> Главная
+    </a>
+    <a href="/habits" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-indigo-600 dark:hover:text-indigo-400">
+        <i data-lucide="list-checks"></i> Привычки
+    </a>
+    <a href="/goals" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-indigo-600 dark:hover:text-indigo-400">
+        <i data-lucide="target"></i> Цели
+    </a>
+    <a href="/friends" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-indigo-600 dark:hover:text-indigo-400">
+        <i data-lucide="users"></i> Друзья
+    </a>
+    <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-indigo-600 dark:hover:text-indigo-400">
+        <i data-lucide="more-horizontal"></i> Ещё
+    </button>
+</nav>
