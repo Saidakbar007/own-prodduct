@@ -44,6 +44,11 @@ class User(SQLModel, table=True):
     coins: int = Field(default=0)  # валюта за подтверждения друзей, никогда не XP (v5)
     timezone: str = Field(default="UTC")  # IANA-имя пояса, задаётся при регистрации (v5)
     timezone_changed_at: Optional[datetime] = None  # когда пояс меняли — не чаще раза в 30 дней (v5)
+    equipped_bg: Optional[str] = None  # код надетого фона профиля из магазина (v6a)
+    equipped_frame: Optional[str] = None  # код надетой рамки аватара (v6a)
+    equipped_title: Optional[str] = None  # код надетого титула (v6a)
+    equipped_effect: Optional[str] = None  # код надетого эффекта отметки (v6a)
+    freeze_stock: int = Field(default=0)  # запас купленных заморозок серии, максимум 2 (v6a)
 
 
 class Habit(SQLModel, table=True):
@@ -244,6 +249,7 @@ class CoachMessage(SQLModel, table=True):
     role: str  # "user" или "coach"
     text: str
     time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    persona_code: Optional[str] = None  # если реплика от конкретной личности — её код сферы (v6a)
 
 
 class Partnership(SQLModel, table=True):
@@ -298,3 +304,30 @@ class BonusFreeze(SQLModel, table=True):
     uid: int = Field(foreign_key="users.id")
     week_key: str  # например "2026-W03"
     amount: int = Field(default=1)
+
+
+class ShopItem(SQLModel, table=True):
+    """Каталог магазина (v6a): фоны/рамки/титулы/эффекты отметки + заморозка серии."""
+
+    __tablename__ = "shop_items"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    code: str = Field(unique=True, index=True)
+    slot: str  # bg / frame / title / effect / freeze (freeze — расходуемый, не экипируется)
+    rarity: str  # common / rare / epic / legendary
+    name: str
+    description: Optional[str] = None
+    price: Optional[int] = None  # None = не продаётся (легендарные)
+    min_hero_level: int = Field(default=1)  # эпические требуют урovень героя >= 20
+    image_name: Optional[str] = None  # имя файла без категории, для game_asset_url()
+
+
+class InventoryItem(SQLModel, table=True):
+    """Предмет, купленный пользователем (v6a)."""
+
+    __tablename__ = "inventory_items"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    item_code: str = Field(foreign_key="shop_items.code")
+    acquired_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

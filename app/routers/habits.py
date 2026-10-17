@@ -19,14 +19,17 @@ from app.services.adaptive_plan import adaptive_plan_message, apply_adaptive_pla
 from app.services.bets import evaluate_bets_for_habit
 from app.services.catalog import CATALOG, find_by_code
 from app.services.chests import maybe_award_chest
-from app.services.difficulty import calculate_difficulty, clamp_difficulty
+from app.services.coins import HABIT_COINS, PROOF_PHOTO_BONUS, award_coins
+from app.services.difficulty import calculate_difficulty, clamp_difficulty, difficulty_from_points
 from app.services.flash import push_flash
 from app.services.levels import level_for_xp, level_up_message
 from app.services.partnerships import combined_streak, evaluate_partnerships_for_habit
+from app.services.personas import WAKING_XP_BONUS, is_waking
+from app.services.persona_voices import is_streak_milestone, skip_line, streak_line
 from app.services.points import points_for_habit_difficulty, award_points
 from app.services.recalibration import maybe_recalibrate
 from app.services.spheres import SPHERES, log_sphere_xp
-from app.services.streak import calculate_streak, calculate_streak_with_freeze
+from app.services.streak import calculate_streak_with_freeze
 from app.services.trust import refresh_trust_score
 from app.services.uploads import save_proof_photo
 from app.services.usertime import local_date, today_for
@@ -331,6 +334,10 @@ async def habit_check(
                 status_code=400,
             )
 
+    # "Пробуждение" проверяем ДО записи отметки — иначе отметка сама же
+    # обновит "последнюю активность", и личность никогда не окажется "спит"
+    was_waking = kind != "skip" and is_waking(db, user.id, habit.sphere)
+
     # Время ставит сервер, игнорируя всё, что мог бы прислать клиент
     entry = HabitHistory(h_id=habit_id, time=_now(), kind=kind, proof_path=proof_path)
     db.add(entry)
@@ -339,8 +346,12 @@ async def habit_check(
     if kind == "skip":
         level, leveled_up = award_points(db, user, SKIP_HONESTY_POINTS)
         push_flash(request, f"Честно признано 🙏 +{SKIP_HONESTY_POINTS} очка за честность")
+        push_flash(request, skip_line(habit.sphere), "persona")
     else:
         base_points = habit.point if kind == "done" else max(1, habit.point // MINIMAL_POINTS_DIVISOR)
+        if was_waking:
+            base_points = round(base_points * (1 + WAKING_XP_BONUS))
+
         level, leveled_up = award_points(db, user, base_points)
         awarded_sphere_xp = log_sphere_xp(db, user.id, habit.sphere, base_points)
         sphere_name = SPHERES.get(habit.sphere, habit.sphere)
@@ -348,6 +359,22 @@ async def habit_check(
             push_flash(request, f"+{base_points} очков 🎉 (+{awarded_sphere_xp} XP «{sphere_name}»)")
         else:
             push_flash(request, f"+{base_points} очков 🎉 (дневной лимит XP «{sphere_name}» уже набран)")
+        if was_waking:
+            push_flash(request, f"✨ Пробуждение! «{sphere_name}» вернулась в строй — очки +{int(WAKING_XP_BONUS * 100)}%")
+
+        difficulty = difficulty_from_points(habit.point)
+        coin_amount = HABIT_COINS.get(difficulty, HABIT_COINS["medium"]) + (PROOF_PHOTO_BONUS if proof_path else 0)
+        awarded_coins = award_coins(db, user, coin_amount)
+        if awarded_coins:
+            push_flash(request, f"+{awarded_coins} 🪙", "coins")
+
+        new_streak = calculate_streak_with_freeze(
+            _habit_dates(db, habit_id, user, kinds=("done", "minimal")),
+            _habit_dates(db, habit_id, user, kinds=("skip",)),
+            _bonus_freezes_for(db, user.id),
+        )["streak"]
+        if is_streak_milestone(new_streak):
+            push_flash(request, streak_line(habit.sphere, new_streak), "persona")
 
     if leveled_up:
         push_flash(request, level_up_message(level_for_xp(level.point)), "level-up")

@@ -116,6 +116,8 @@ def test_friend_confirmation_awards_coins_but_never_xp(client, session):
 
     client.post("/login", data={"login": "ivy2", "password": "secret123"})
     ivy = session.exec(select(User).where(User.login == "ivy2")).first()
+    ivy_coins_before = ivy.coins
+    hugo_coins_before = session.exec(select(User).where(User.id == hugo.id)).first().coins
     resp = client.post(f"/confirmations/{entry.id}/confirm")
     assert resp.status_code == 200
 
@@ -126,8 +128,11 @@ def test_friend_confirmation_awards_coins_but_never_xp(client, session):
     session.refresh(hugo)
     ivy_level = session.exec(select(Level).where(Level.uid == ivy.id)).first()
     hugo_level = session.exec(select(Level).where(Level.uid == hugo.id)).first()
-    assert ivy.coins == 1  # бонус подтверждающему — монетами, не XP
-    assert hugo.coins == 3  # бонус владельцу — монетами, не XP
+    # дельта от самого подтверждения — монетами (без trust-множителя), не XP;
+    # абсолютные суммы не берём, т.к. к этому моменту уже могли начислиться
+    # монеты за другие события (достижения "первая привычка"/"первый друг" и т.п.)
+    assert ivy.coins - ivy_coins_before == 1  # бонус подтверждающему
+    assert hugo.coins - hugo_coins_before == 3  # бонус владельцу
     assert ivy_level.point == 0  # подтверждение не даёт XP
     assert hugo_level.point == hugo_points_before  # XP не изменился от подтверждения
 

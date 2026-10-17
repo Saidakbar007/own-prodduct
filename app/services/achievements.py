@@ -13,6 +13,7 @@ from app.models import (
     User,
     UserAchievement,
 )
+from app.services.coins import award_coins, coins_for_achievement
 from app.services.streak import best_streak_for_user
 
 # Каталог достижений: код → (название, описание, иконка)
@@ -49,12 +50,13 @@ def _has(db: Session, uid: int, code: str) -> bool:
     )
 
 
-def _award(db: Session, uid: int, code: str) -> Achievement | None:
+def _award(db: Session, user: User, code: str) -> Achievement | None:
     achievement = db.exec(select(Achievement).where(Achievement.code == code)).first()
-    if not achievement or _has(db, uid, code):
+    if not achievement or _has(db, user.id, code):
         return None
-    db.add(UserAchievement(uid=uid, achievement_id=achievement.id))
+    db.add(UserAchievement(uid=user.id, achievement_id=achievement.id))
     db.commit()
+    award_coins(db, user, coins_for_achievement(code))
     return achievement
 
 
@@ -72,17 +74,17 @@ def check_and_award_achievements(db: Session, user: User) -> list[Achievement]:
     newly_earned = []
 
     if user.habits >= 1:
-        a = _award(db, user.id, "first_habit")
+        a = _award(db, user, "first_habit")
         if a:
             newly_earned.append(a)
 
     best_streak = best_streak_for_user(db, user.id)
     if best_streak >= 7:
-        a = _award(db, user.id, "streak_7")
+        a = _award(db, user, "streak_7")
         if a:
             newly_earned.append(a)
     if best_streak >= 30:
-        a = _award(db, user.id, "streak_30")
+        a = _award(db, user, "streak_30")
         if a:
             newly_earned.append(a)
 
@@ -90,7 +92,7 @@ def check_and_award_achievements(db: Session, user: User) -> list[Achievement]:
         select(Goal).where(Goal.uid == user.id, Goal.status == "completed")
     ).first()
     if done_goal:
-        a = _award(db, user.id, "first_goal_done")
+        a = _award(db, user, "first_goal_done")
         if a:
             newly_earned.append(a)
 
@@ -101,12 +103,12 @@ def check_and_award_achievements(db: Session, user: User) -> list[Achievement]:
         )
     ).first()
     if has_friend:
-        a = _award(db, user.id, "first_friend")
+        a = _award(db, user, "first_friend")
         if a:
             newly_earned.append(a)
 
     if _total_checks(db, user.id) >= 100:
-        a = _award(db, user.id, "checks_100")
+        a = _award(db, user, "checks_100")
         if a:
             newly_earned.append(a)
 

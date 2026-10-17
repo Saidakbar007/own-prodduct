@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Герой — Моя жизнь{% endblock %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto space-y-6">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-6 text-center">
+        <img src="{{ hero_image_url }}" alt="Герой" class="mx-auto mb-3" style="width:120px;height:120px;" width="120" height="120">
+        <h1 class="text-xl font-bold">Ур. {{ hero_level }} · {{ hero_rank }}</h1>
+        <p class="text-sm text-[var(--muted)]">Стадия героя {{ hero_stage }}/5</p>
+    </div>
+
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+        <p class="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] mb-4 text-center">Профиль героя</p>
+        {% with chart = hero_chart %}{% include "_pentagon_chart.html" %}{% endwith %}
+    </div>
+
+    <div>
+        <h2 class="font-medium mb-3 flex items-center gap-2"><i data-lucide="users"></i> Личности</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {% for p in personas %}
+            <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4" data-persona="{{ p.sphere_code }}">
+                <div class="flex items-center gap-3 mb-2">
+                    <img src="{{ p.image_url }}" alt="{{ p.persona_name }}" style="width:56px;height:56px;" width="56" height="56">
+                    <div>
+                        <p class="font-medium flex items-center gap-1.5">
+                            {{ p.persona_name }}
+                            {% if p.is_leading %}
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)]" title="Ведущая личность">★</span>
+                            {% endif %}
+                        </p>
+                        <p class="text-xs text-[var(--muted)]">{{ p.sphere_name }} · ур. {{ p.level }} · стадия {{ p.stage }}/5</p>
+                    </div>
+                    <span class="ml-auto text-xs px-2 py-1 rounded-lg
+                        {{ 'bg-[var(--success-soft)] text-[var(--success)]' if p.state == 'активна'
+                           else ('bg-[var(--coin-soft)] text-[var(--coin)]' if p.state == 'дремлет'
+                           else 'bg-[var(--danger-soft)] text-[var(--danger)]') }}">
+                        {{ p.state }}
+                    </span>
+                </div>
+                <p class="text-sm text-[var(--muted)] italic">«{{ p.last_line }}»</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

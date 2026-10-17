@@ -8,13 +8,28 @@ from datetime import date, timedelta
 from sqlmodel import Session, select
 
 from app.models import BonusFreeze, Chest, Habit, HabitHistory, User
+from app.services.personas import has_harmony
 from app.services.points import award_points
 from app.services.streak import _week_key
+
+POINTS_TIERS = [20, 30, 50]
+
+# Лестница "силы" награды сундука: badge < freeze < points (см. DECISIONS.md, п.2)
+REWARD_TIER_ORDER = ["badge", "freeze", "points"]
 
 
 def _week_start(day: date) -> date:
     """Понедельник недели, в которую входит day."""
     return day - timedelta(days=day.weekday())
+
+
+def _bump_points_tier(value: int) -> int:
+    """Поднимает размер очкового тира на ступень (20->30->50, 50 — уже максимум)."""
+    if value in POINTS_TIERS:
+        i = POINTS_TIERS.index(value)
+        if i + 1 < len(POINTS_TIERS):
+            return POINTS_TIERS[i + 1]
+    return value
 
 
 def maybe_award_chest(db: Session, user: User, habit: Habit) -> Chest | None:
@@ -42,8 +57,20 @@ def maybe_award_chest(db: Session, user: User, habit: Habit) -> Chest | None:
         return None
 
     reward_type = random.choice(["points", "points", "freeze", "badge"])  # очки чаще выпадают
+    value = random.choice(POINTS_TIERS) if reward_type == "points" else None
+
+    if has_harmony(db, user.id):
+        # "Гармония" (все 5 личностей активны за неделю) поднимает награду сундука
+        # на ступень выше по лестнице badge < freeze < points (см. DECISIONS.md, п.2)
+        tier_index = REWARD_TIER_ORDER.index(reward_type)
+        if tier_index + 1 < len(REWARD_TIER_ORDER):
+            reward_type = REWARD_TIER_ORDER[tier_index + 1]
+            if reward_type == "points":
+                value = POINTS_TIERS[-1]
+        elif reward_type == "points":
+            value = _bump_points_tier(value)
+
     if reward_type == "points":
-        value = random.choice([20, 30, 50])
         award_points(db, user, value)
         reward_value = str(value)
     elif reward_type == "freeze":

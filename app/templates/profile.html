@@ -4,7 +4,8 @@
 
 {% block content %}
 <section class="max-w-md mx-auto bg-[var(--card)] rounded-xl border border-[var(--line)] p-6 mt-8">
-    <h1 class="text-xl font-bold mb-2 flex items-center gap-2"><i data-lucide="user-round"></i> Профиль: {{ user.login }}</h1>
+    <h1 class="text-xl font-bold mb-1 flex items-center gap-2"><i data-lucide="user-round"></i> Профиль: {{ user.login }}</h1>
+    <p class="text-xs font-mono uppercase tracking-widest text-[var(--accent)] mb-3">{{ persona_title }}</p>
     <p class="text-sm mb-4">
         Trust score:
         <span class="font-bold inline-flex items-center gap-1 {{ 'text-[var(--success)]' if user.trust_score >= 80 else ('text-[var(--coin)]' if user.trust_score >= 50 else 'text-[var(--danger)]') }}">

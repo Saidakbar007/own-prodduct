@@ -5,14 +5,16 @@
 from datetime import datetime, timezone as dt_timezone
 
 from fastapi import APIRouter, Depends, Form, Request
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import User
+from app.models import Level, User
 from app.rendering import render
 from app.services.flash import push_flash
+from app.services.levels import level_progress
 from app.services.pentagon import pentagon_chart
+from app.services.personas import PERSONAS, leading_persona_sphere
 from app.services.spheres import all_spheres_progress
 from app.services.usertime import TIMEZONE_CHANGE_COOLDOWN_DAYS, can_change_timezone, is_valid_timezone
 
@@ -20,11 +22,16 @@ router = APIRouter()
 
 
 def _profile_context(db: Session, user: User, saved: bool = False) -> dict:
+    level = db.exec(select(Level).where(Level.uid == user.id)).first()
+    rank = level_progress(level.point if level else 0)["rank"]
+    leading_code = leading_persona_sphere(db, user.id)
+
     return {
         "user": user,
         "saved": saved,
         "hero_chart": pentagon_chart(all_spheres_progress(db, user.id)),
         "can_change_timezone": can_change_timezone(user),
+        "persona_title": f"{PERSONAS[leading_code]} · {rank}",
     }
 
 

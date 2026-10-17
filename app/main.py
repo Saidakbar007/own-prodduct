@@ -35,6 +35,8 @@ from app.routers import confirmations as confirmations_router
 from app.routers import bets as bets_router
 from app.routers import partnerships as partnerships_router
 from app.routers import onboarding as onboarding_router
+from app.routers import game_assets as game_assets_router
+from app.routers import hero as hero_router
 from app.routers.habits import _habits_context, habits_at_risk
 from app.services.achievements import ensure_achievements_seeded
 from app.services.daily_tasks import get_or_create_today_tasks
@@ -94,6 +96,8 @@ app.include_router(confirmations_router.router)
 app.include_router(bets_router.router)
 app.include_router(partnerships_router.router)
 app.include_router(onboarding_router.router)
+app.include_router(game_assets_router.router)
+app.include_router(hero_router.router)
 
 
 @app.exception_handler(StarletteHTTPException)

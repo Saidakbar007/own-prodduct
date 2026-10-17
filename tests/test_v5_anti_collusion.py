@@ -162,12 +162,16 @@ def test_confirmation_awards_coins_never_xp_and_updates_trust(client, session):
     client.get("/logout")
     _accept_friendship(client, session, "kara5", "liam5")
 
+    coins_before = session.exec(select(User).where(User.login == "kara5")).first().coins
+
     client.post("/login", data={"login": "liam5", "password": "secret123"})
     resp = client.post(f"/confirmations/{entry.id}/confirm")
     assert resp.status_code == 200
 
     session.refresh(user)
-    assert user.coins == 3
+    # дельта от самого подтверждения (без trust-множителя) — остальные монеты
+    # к этому моменту уже могли прийти от достижений ("первая привычка" и т.п.)
+    assert user.coins - coins_before == 3
     assert user.trust_score == 100  # 1 из 1 отметок с фото -> подтверждена
 
 
