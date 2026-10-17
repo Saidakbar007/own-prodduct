@@ -1,18 +1,23 @@
 {# Пятиугольная диаграмма 5 сфер героя. Ожидает переменную `chart` (из pentagon_chart()). #}
-<svg viewBox="0 0 {{ chart.size }} {{ chart.size }}" class="w-full max-w-[280px] mx-auto" role="img" aria-label="Диаграмма сфер героя">
+<svg viewBox="0 0 {{ chart.width }} {{ chart.height }}" class="w-full max-w-[320px] mx-auto block" role="img" aria-label="Диаграмма сфер героя">
     {% for ring in chart.grid_rings %}
     <polygon points="{{ ring }}" fill="none" stroke="var(--line)" stroke-width="1"></polygon>
     {% endfor %}
     {% for ax in chart.axis_lines %}
-    <line x1="{{ chart.center }}" y1="{{ chart.center }}" x2="{{ ax[0] }}" y2="{{ ax[1] }}" stroke="var(--line)" stroke-width="1"></line>
+    <line x1="{{ chart.center_x }}" y1="{{ chart.center_y }}" x2="{{ ax[0] }}" y2="{{ ax[1] }}" stroke="var(--line)" stroke-width="1"></line>
     {% endfor %}
 
     <polygon points="{{ chart.data_polygon }}" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"></polygon>
 
     {% for label in chart.labels %}
-    <text x="{{ label.x }}" y="{{ label.y }}" text-anchor="middle" dominant-baseline="middle"
-          class="font-mono" style="font-size:9px; fill: var(--muted); letter-spacing: 0.04em;" data-sphere="{{ label.code }}">
-        {{ label.name }} {{ label.level }}
+    <text x="{{ label.x }}" y="{{ label.y }}" text-anchor="{{ label.anchor }}" dominant-baseline="central"
+          class="font-mono" style="font-size:9px; fill: var(--text); letter-spacing: 0.02em;" data-sphere="{{ label.code }}">
+        <tspan x="{{ label.x }}" dy="-5">{{ label.name }}</tspan>
+        <tspan x="{{ label.x }}" dy="12" style="fill: var(--muted);">{{ label.level }}</tspan>
     </text>
     {% endfor %}
 </svg>
+
+{% if chart.all_level_one %}
+<p class="text-xs text-[var(--muted)] text-center mt-2">Отмечай привычки — профиль начнёт расти</p>
+{% endif %}
