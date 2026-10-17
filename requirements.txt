@@ -11,3 +11,5 @@ anthropic
 alembic
 pytest
 httpx
+playwright
+pytest-playwright
