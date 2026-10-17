@@ -36,9 +36,12 @@ from app.models import (
     User,
 )
 from app.services.achievements import check_and_award_achievements, ensure_achievements_seeded
+from app.services.bosses import create_group, deal_damage, join_group
 from app.services.daily_tasks import get_or_create_today_tasks
 from app.services.levels import level_for_xp
 from app.services.points import level_name_for_points
+from app.services.pets import hatch_pet
+from app.services.seasons import ensure_season_seeded
 from app.services.shop import buy_item, ensure_shop_seeded, equip_item
 from app.services.trust import refresh_trust_score
 
@@ -398,11 +401,39 @@ def _seed_shop_purchases(db: Session, demo: User) -> None:
     equip_item(db, demo, "frame_simple")
 
 
+def _seed_pet(db: Session, demo: User) -> None:
+    """Вылупляет питомца демо (лис), если героя уже хватает на яйцо (ур. 3+)."""
+    hero_level = level_for_xp(db.exec(select(Level).where(Level.uid == demo.id)).first().point)
+    hatch_pet(db, demo, hero_level, species="fox")
+
+
+def _seed_boss_fight(db: Session, demo: User, friend: User) -> None:
+    """
+    Группа demo+friend сражается с боссом недели, бой НЕ завершён —
+    чтобы на /boss сразу было видно HP-полосу и ленту ударов (демо-ценность
+    важнее, чем "честная" история — урон всё равно наносится через deal_damage).
+    """
+    from app.services.bosses import active_group_for_user
+
+    hero_level = level_for_xp(db.exec(select(Level).where(Level.uid == demo.id)).first().point)
+    if active_group_for_user(db, demo.id):
+        return  # уже засеяно
+
+    group, _message = create_group(db, demo, hero_level)
+    if not group:
+        return  # уровень героя пока не хватает — ничего не делаем
+
+    join_group(db, friend, group.id)
+    deal_damage(db, demo, 90)
+    deal_damage(db, friend, 60)
+
+
 def main() -> None:
     run_migrations()
     with Session(engine) as db:
         ensure_achievements_seeded(db)
         ensure_shop_seeded(db)
+        ensure_season_seeded(db)
 
         demo = _get_or_create_user(
             db, name="Демо Пользователь", age=25, gender="male",
@@ -423,6 +454,8 @@ def main() -> None:
         _seed_chest(db, demo, water)
         _seed_confirmation(db, friend, water_entries)
         _seed_coach_history(db, demo)
+        _seed_pet(db, demo)
+        _seed_boss_fight(db, demo, friend)
 
         check_and_award_achievements(db, demo)
         check_and_award_achievements(db, friend)
@@ -438,7 +471,7 @@ def main() -> None:
     print("Логин: friend_demo   Пароль: demo1234")
     with Session(engine) as db:
         demo = db.exec(select(User).where(User.login == "demo")).first()
-        print(f"У demo: {demo.coins} монет, предметы надеты (фон/рамка)")
+        print(f"У demo: {demo.coins} монет, предметы надеты (фон/рамка), питомец вылупился, идёт бой с боссом недели")
 
 
 if __name__ == "__main__":
