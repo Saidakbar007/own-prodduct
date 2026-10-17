@@ -51,5 +51,24 @@
             Сохранить
         </button>
     </form>
+
+    <div class="mt-6 pt-4 border-t border-[var(--line)]">
+        <label class="block text-sm font-medium mb-1">Часовой пояс</label>
+        <p class="text-xs text-[var(--muted)] mb-2">
+            Текущий: <span class="numeric">{{ user.timezone }}</span> — по нему считается «сегодня» для отметок.
+        </p>
+        {% if can_change_timezone %}
+        <form method="post" action="/profile/timezone" class="flex gap-2">
+            <input type="text" name="timezone" value="{{ user.timezone }}"
+                   class="flex-1 border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2 text-sm">
+            <button type="submit"
+                    class="btn-press bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-4 py-2 text-sm font-medium hover:opacity-90">
+                Изменить
+            </button>
+        </form>
+        {% else %}
+        <p class="text-xs text-[var(--danger)]">Часовой пояс можно менять не чаще раза в 30 дней</p>
+        {% endif %}
+    </div>
 </section>
 {% endblock %}

@@ -59,11 +59,27 @@
                    class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
         </div>
 
+        <div>
+            <label class="block text-sm font-medium mb-1">Часовой пояс</label>
+            <input type="text" name="timezone" id="timezone-input" value="UTC"
+                   class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+            <p class="text-xs text-[var(--muted)] mt-1">
+                По нему считается «сегодня» для отметок. Определили автоматически — поменять можно будет не чаще раза в 30 дней.
+            </p>
+        </div>
+
         <button type="submit"
                 class="w-full bg-[var(--accent)] text-white rounded-lg py-2.5 font-medium hover:opacity-90">
             Создать аккаунт
         </button>
     </form>
+
+    <script>
+        try {
+            var detected = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if (detected) document.getElementById("timezone-input").value = detected;
+        } catch (e) {}
+    </script>
 
     <p class="text-sm text-[var(--muted)] text-center mt-4">
         Уже есть аккаунт? <a href="/login" class="text-[var(--accent)] font-medium">Войти</a>

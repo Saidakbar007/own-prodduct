@@ -28,6 +28,7 @@ from app.services.spheres import SPHERES, log_sphere_xp
 from app.services.streak import calculate_streak, calculate_streak_with_freeze
 from app.services.trust import refresh_trust_score
 from app.services.uploads import save_proof_photo
+from app.services.usertime import local_date, today_for
 
 router = APIRouter()
 
@@ -45,12 +46,12 @@ def _habit_entries(db: Session, habit_id: int) -> list[HabitHistory]:
     return db.exec(select(HabitHistory).where(HabitHistory.h_id == habit_id)).all()
 
 
-def _habit_dates(db: Session, habit_id: int, kinds: tuple = None) -> set:
-    """Даты (без времени) отметок привычки, опционально только нужных видов (kind)."""
+def _habit_dates(db: Session, habit_id: int, user: User, kinds: tuple = None) -> set:
+    """Даты (без времени, по поясу пользователя) отметок привычки, опционально только нужных видов (kind)."""
     entries = _habit_entries(db, habit_id)
     if kinds:
         entries = [e for e in entries if e.kind in kinds]
-    return {e.time.date() for e in entries}
+    return {local_date(user, e.time) for e in entries}
 
 
 def _bonus_freezes_for(db: Session, uid: int) -> dict:
@@ -58,16 +59,16 @@ def _bonus_freezes_for(db: Session, uid: int) -> dict:
     return {r.week_key: r.amount for r in rows}
 
 
-def habit_logged_today(db: Session, habit_id: int) -> bool:
-    """Есть ли сегодня хоть какая-то отметка (done/minimal/skip)."""
-    return _now().date() in _habit_dates(db, habit_id)
+def habit_logged_today(db: Session, habit_id: int, user: User) -> bool:
+    """Есть ли сегодня (по поясу пользователя) хоть какая-то отметка (done/minimal/skip)."""
+    return today_for(user) in _habit_dates(db, habit_id, user)
 
 
-def habit_due_today(habit: Habit) -> bool:
-    """Запланирована ли привычка на сегодня (для daily — всегда да)."""
+def habit_due_today(habit: Habit, user: User) -> bool:
+    """Запланирована ли привычка на сегодня по поясу пользователя (для daily — всегда да)."""
     if habit.frequency != "weekly" or not habit.weekdays:
         return True
-    today_weekday = str(_now().weekday())
+    today_weekday = str(today_for(user).weekday())
     return today_weekday in habit.weekdays.split(",")
 
 
@@ -76,15 +77,15 @@ def habits_at_risk(db: Session, user: User) -> list[Habit]:
     Привычки, которые вчера пропустили полностью (без единой отметки) —
     для мягкого экрана возврата ("не пропускай дважды").
     """
-    yesterday = _now().date() - timedelta(days=1)
+    yesterday = today_for(user) - timedelta(days=1)
     habits = db.exec(select(Habit).where(Habit.uid == user.id)).all()
     at_risk = []
     for habit in habits:
-        if not habit_due_today(habit):
+        if not habit_due_today(habit, user):
             continue
-        if habit_logged_today(db, habit.id):
+        if habit_logged_today(db, habit.id, user):
             continue
-        dates = _habit_dates(db, habit.id)
+        dates = _habit_dates(db, habit.id, user)
         if yesterday not in dates:
             at_risk.append(habit)
     return at_risk
@@ -96,16 +97,16 @@ def _habits_context(db: Session, user: User, error: str = None) -> dict:
     bonus_freezes = _bonus_freezes_for(db, user.id)
     habits_with_info = []
     for habit in habits:
-        done_dates = _habit_dates(db, habit.id, kinds=("done", "minimal"))
-        skip_dates = _habit_dates(db, habit.id, kinds=("skip",))
+        done_dates = _habit_dates(db, habit.id, user, kinds=("done", "minimal"))
+        skip_dates = _habit_dates(db, habit.id, user, kinds=("skip",))
         streak_info = calculate_streak_with_freeze(done_dates, skip_dates, bonus_freezes)
         habits_with_info.append(
             {
                 "habit": habit,
-                "done_today": _now().date() in done_dates,
+                "done_today": today_for(user) in done_dates,
                 "streak": streak_info["streak"],
                 "freezes_left": streak_info["freezes_left"],
-                "due_today": habit_due_today(habit),
+                "due_today": habit_due_today(habit, user),
             }
         )
     return {"user": user, "habits": habits_with_info, "error": error, "catalog": CATALOG, "spheres": SPHERES}
@@ -214,10 +215,10 @@ def habit_detail(
             request, "habits.html", _habits_context(db, user, "Привычка не найдена"), db=db, user=user, status_code=404
         )
 
-    done_dates = _habit_dates(db, habit_id, kinds=("done", "minimal"))
-    skip_dates = _habit_dates(db, habit_id, kinds=("skip",))
+    done_dates = _habit_dates(db, habit_id, user, kinds=("done", "minimal"))
+    skip_dates = _habit_dates(db, habit_id, user, kinds=("skip",))
     all_dates = done_dates | skip_dates
-    today = _now().date()
+    today = today_for(user)
 
     days = []
     for i in range(29, -1, -1):
@@ -302,7 +303,7 @@ async def habit_check(
             request, "habits.html", _habits_context(db, user, "Привычка не найдена"), db=db, user=user, status_code=404
         )
 
-    if habit_logged_today(db, habit_id):
+    if habit_logged_today(db, habit_id, user):
         return render(
             request,
             "habits.html",

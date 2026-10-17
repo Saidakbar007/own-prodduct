@@ -10,6 +10,7 @@ from app.auth import hash_password, verify_password
 from app.database import get_session
 from app.models import Level, Registration, User
 from app.rendering import render
+from app.services.usertime import DEFAULT_TIMEZONE, is_valid_timezone
 
 router = APIRouter()
 
@@ -30,6 +31,7 @@ def register_submit(
     login: str = Form(...),
     password: str = Form(...),
     password_confirm: str = Form(...),
+    timezone: str = Form(DEFAULT_TIMEZONE),
     db: Session = Depends(get_session),
 ):
     """Обрабатывает отправленную форму регистрации."""
@@ -59,8 +61,11 @@ def register_submit(
     db.add(registration)
     db.commit()
 
+    # Часовой пояс определяется в браузере; на сервере проверяем, что он валиден
+    safe_timezone = timezone if is_valid_timezone(timezone) else DEFAULT_TIMEZONE
+
     # Создаём профиль пользователя
-    user = User(mail=mail, login=login, habits=0, goals=0)
+    user = User(mail=mail, login=login, habits=0, goals=0, timezone=safe_timezone)
     db.add(user)
     db.commit()
     db.refresh(user)
