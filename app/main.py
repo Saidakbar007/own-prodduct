@@ -35,6 +35,7 @@ from app.routers import confirmations as confirmations_router
 from app.routers import bets as bets_router
 from app.routers import partnerships as partnerships_router
 from app.routers import onboarding as onboarding_router
+from app.routers import boss as boss_router
 from app.routers import game_assets as game_assets_router
 from app.routers import hero as hero_router
 from app.routers import shop as shop_router
@@ -105,6 +106,7 @@ app.include_router(onboarding_router.router)
 app.include_router(game_assets_router.router)
 app.include_router(hero_router.router)
 app.include_router(shop_router.router)
+app.include_router(boss_router.router)
 
 
 @app.exception_handler(StarletteHTTPException)

@@ -19,6 +19,7 @@ from app.services.adaptive_plan import adaptive_plan_message, apply_adaptive_pla
 from app.services.bets import evaluate_bets_for_habit
 from app.services.catalog import CATALOG, find_by_code
 from app.services.chests import maybe_award_chest
+from app.services.bosses import BOSSES, VICTORY_COINS, deal_damage
 from app.services.coins import HABIT_COINS, PROOF_PHOTO_BONUS, award_coins
 from app.services.difficulty import calculate_difficulty, clamp_difficulty, difficulty_from_points
 from app.services.flash import push_flash
@@ -409,6 +410,12 @@ async def habit_check(
         awarded_coins = award_coins(db, user, coin_amount)
         if awarded_coins:
             push_flash(request, f"+{awarded_coins} 🪙", "coins")
+
+        boss_group = deal_damage(db, user, base_points)
+        if boss_group and boss_group.status == "won":
+            push_flash(request, f"🏆 Группа повергла «{BOSSES[boss_group.boss_code]}»! Сундук и +{VICTORY_COINS} монет всем!", "boss-won")
+        elif boss_group:
+            push_flash(request, f"⚔️ -{base_points} HP боссу «{BOSSES[boss_group.boss_code]}» ({boss_group.hp_remaining}/{boss_group.hp_total})", "boss-hit")
 
         new_streak = calculate_streak_with_freeze(
             _habit_dates(db, habit_id, user, kinds=("done", "minimal")),
