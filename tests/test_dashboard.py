@@ -10,7 +10,7 @@ from tests.conftest import register_user
 
 def test_dashboard_shows_habit_and_level(client):
     register_user(client, login="hank", mail="hank@example.com")
-    client.post("/habits", data={"name": "Отжимания"})
+    client.post("/habits", data={"name": "Отжимания", "sphere": "health"})
 
     home = client.get("/")
     assert "Отжимания" in home.text
@@ -20,7 +20,7 @@ def test_dashboard_shows_habit_and_level(client):
 
 def test_dashboard_shows_upcoming_deadline(client, session):
     register_user(client, login="iris", mail="iris@example.com")
-    client.post("/goals", data={"name": "Мечта"})
+    client.post("/goals", data={"name": "Мечта", "sphere": "health"})
 
     user = session.exec(select(User).where(User.login == "iris")).first()
     dream = session.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
@@ -35,7 +35,7 @@ def test_dashboard_shows_upcoming_deadline(client, session):
 
 def test_dashboard_hides_completed_goal_deadline(client, session):
     register_user(client, login="jill", mail="jill@example.com")
-    client.post("/goals", data={"name": "Мечта"})
+    client.post("/goals", data={"name": "Мечта", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "jill")).first()
     dream = session.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
 
@@ -57,7 +57,7 @@ def test_dashboard_shows_daily_tasks(client):
 
 def test_dashboard_shows_last_achievement(client):
     register_user(client, login="liu", mail="liu@example.com")
-    client.post("/habits", data={"name": "Бег"})  # выдаёт "Первая привычка"
+    client.post("/habits", data={"name": "Бег", "sphere": "health"})  # выдаёт "Первая привычка"
 
     home = client.get("/")
     assert "Последнее достижение" in home.text

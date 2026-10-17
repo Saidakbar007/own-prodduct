@@ -4,6 +4,7 @@
 """
 
 import io
+from datetime import datetime, timedelta, timezone
 
 from sqlmodel import select
 
@@ -12,7 +13,7 @@ from tests.conftest import register_user
 
 
 def _create_habit(client, **extra):
-    data = {"name": "Бег", "difficulty": "medium"}
+    data = {"name": "Бег", "difficulty": "medium", "sphere": "strength"}
     data.update(extra)
     return client.post("/habits", data=data)
 
@@ -75,7 +76,7 @@ def test_check_with_proof_photo_saves_path(client, session, tmp_path, monkeypatc
     assert os.path.exists(entry.proof_path)
 
 
-def test_friend_confirmation_awards_bonus_to_both(client, session):
+def test_friend_confirmation_awards_coins_but_never_xp(client, session):
     register_user(client, login="hugo3", mail="hugo3@example.com")
     _create_habit(client)
     client.get("/logout")
@@ -93,11 +94,24 @@ def test_friend_confirmation_awards_bonus_to_both(client, session):
     client.post(f"/friends/{pending.id}/accept")
     client.get("/logout")
 
+    # дружба старше 7 дней — иначе анти-сговор заблокирует подтверждение
+    friend = session.exec(select(Friend).where(Friend.id == pending.id)).first()
+    friend.update_date = datetime.now(timezone.utc) - timedelta(days=8)
+    session.add(friend)
+    session.commit()
+
     client.post("/login", data={"login": "hugo3", "password": "secret123"})
     hugo = session.exec(select(User).where(User.login == "hugo3")).first()
     habit = session.exec(select(Habit).where(Habit.uid == hugo.id)).first()
-    client.post(f"/habits/{habit.id}/check", data={"kind": "done"})
+    photo = io.BytesIO(b"fake-image-bytes")
+    client.post(
+        f"/habits/{habit.id}/check",
+        data={"kind": "done"},
+        files={"proof": ("proof.jpg", photo, "image/jpeg")},
+    )
     entry = session.exec(select(HabitHistory).where(HabitHistory.h_id == habit.id)).first()
+    hugo_level_before = session.exec(select(Level).where(Level.uid == hugo.id)).first()
+    hugo_points_before = hugo_level_before.point
     client.get("/logout")
 
     client.post("/login", data={"login": "ivy2", "password": "secret123"})
@@ -109,10 +123,13 @@ def test_friend_confirmation_awards_bonus_to_both(client, session):
     assert confirmation.status == "confirmed"
 
     session.refresh(ivy)
+    session.refresh(hugo)
     ivy_level = session.exec(select(Level).where(Level.uid == ivy.id)).first()
     hugo_level = session.exec(select(Level).where(Level.uid == hugo.id)).first()
-    assert ivy_level.point == 1  # бонус подтверждающему
-    assert hugo_level.point == 10 + 3  # 10 за отметку + 3 бонус за подтверждение
+    assert ivy.coins == 1  # бонус подтверждающему — монетами, не XP
+    assert hugo.coins == 3  # бонус владельцу — монетами, не XP
+    assert ivy_level.point == 0  # подтверждение не даёт XP
+    assert hugo_level.point == hugo_points_before  # XP не изменился от подтверждения
 
 
 def test_cannot_confirm_own_checkin(client, session):

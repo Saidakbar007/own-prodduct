@@ -17,10 +17,14 @@ from app.rendering import render
 from app.services.achievements import check_and_award_achievements
 from app.services.adaptive_plan import adaptive_plan_message, apply_adaptive_plan, needs_adaptive_plan
 from app.services.bets import evaluate_bets_for_habit
+from app.services.catalog import CATALOG, find_by_code
 from app.services.chests import maybe_award_chest
+from app.services.difficulty import calculate_difficulty, clamp_difficulty
 from app.services.flash import push_flash
 from app.services.partnerships import combined_streak, evaluate_partnerships_for_habit
 from app.services.points import points_for_habit_difficulty, award_points
+from app.services.recalibration import maybe_recalibrate
+from app.services.spheres import SPHERES, log_sphere_xp
 from app.services.streak import calculate_streak, calculate_streak_with_freeze
 from app.services.trust import refresh_trust_score
 from app.services.uploads import save_proof_photo
@@ -104,20 +108,27 @@ def _habits_context(db: Session, user: User, error: str = None) -> dict:
                 "due_today": habit_due_today(habit),
             }
         )
-    return {"user": user, "habits": habits_with_info, "error": error}
+    return {"user": user, "habits": habits_with_info, "error": error, "catalog": CATALOG, "spheres": SPHERES}
 
 
 @router.get("/habits")
 def habits_list(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
     """Список привычек пользователя с отметкой «сделано сегодня», streak и заморозками."""
-    return render(request, "habits.html", _habits_context(db, user), db=db, user=user)
+    return render(
+        request, "habits.html",
+        _habits_context(db, user),
+        db=db, user=user,
+    )
 
 
 @router.post("/habits")
 def habit_create(
     request: Request,
-    name: str = Form(...),
+    source: str = Form("custom"),  # "catalog" (готовая привычка) или "custom" (своя)
+    catalog_code: str = Form(None),
+    name: str = Form(None),
     description: str = Form(None),
+    sphere: str = Form(None),
     difficulty: str = Form("medium"),
     habit_type: str = Form("useful"),
     frequency: str = Form("daily"),
@@ -127,18 +138,49 @@ def habit_create(
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
-    """Создаёт новую привычку. Очки считает сервер по сложности, клиент их не присылает."""
+    """
+    Создаёт новую привычку — из каталога типовых (сфера+сложность уже заданы)
+    или свою (сферу выбирает пользователь, сложность считает сервер по
+    ключевым словам/Claude — пользователь не может поставить её выше расчётной).
+    """
+    if source == "catalog" and catalog_code:
+        catalog_item = find_by_code(catalog_code)
+        if not catalog_item:
+            return render(
+                request, "habits.html",
+                _habits_context(db, user, "Привычка из каталога не найдена"),
+                db=db, user=user, status_code=400,
+            )
+        final_name = catalog_item["name"]
+        final_sphere = catalog_item["sphere"]
+        final_difficulty = catalog_item["difficulty"]
+        final_catalog_code = catalog_item["code"]
+    else:
+        if not name or not sphere or sphere not in SPHERES:
+            return render(
+                request, "habits.html",
+                _habits_context(db, user, "Укажи название и сферу привычки"),
+                db=db, user=user, status_code=400,
+            )
+        calculated = calculate_difficulty(name, description)
+        final_difficulty = clamp_difficulty(difficulty, calculated)
+        final_name = name
+        final_sphere = sphere
+        final_catalog_code = None
+
     habit = Habit(
         uid=user.id,
-        name=name,
+        name=final_name,
         description=description,
-        point=points_for_habit_difficulty(difficulty),
+        point=points_for_habit_difficulty(final_difficulty),
         story_point=1.0,
         habit_type=habit_type,
         frequency=frequency,
         weekdays=",".join(weekdays) if frequency == "weekly" and weekdays else None,
         requires_proof=bool(requires_proof),
         minimal_description=minimal_description,
+        sphere=final_sphere,
+        catalog_code=final_catalog_code,
     )
     db.add(habit)
 
@@ -151,7 +193,11 @@ def habit_create(
     for achievement in newly_earned:
         push_flash(request, f"{achievement.icon} Новое достижение: «{achievement.name}»!", "achievement")
 
-    return render(request, "habits.html", _habits_context(db, user), db=db, user=user)
+    return render(
+        request, "habits.html",
+        _habits_context(db, user),
+        db=db, user=user,
+    )
 
 
 @router.get("/habits/{habit_id}")
@@ -294,7 +340,12 @@ async def habit_check(
     else:
         base_points = habit.point if kind == "done" else max(1, habit.point // MINIMAL_POINTS_DIVISOR)
         level, leveled_up = award_points(db, user, base_points)
-        push_flash(request, f"+{base_points} очков 🎉")
+        awarded_sphere_xp = log_sphere_xp(db, user.id, habit.sphere, base_points)
+        sphere_name = SPHERES.get(habit.sphere, habit.sphere)
+        if awarded_sphere_xp > 0:
+            push_flash(request, f"+{base_points} очков 🎉 (+{awarded_sphere_xp} XP «{sphere_name}»)")
+        else:
+            push_flash(request, f"+{base_points} очков 🎉 (дневной лимит XP «{sphere_name}» уже набран)")
 
     if leveled_up:
         push_flash(request, f"⭐ Новый уровень: «{level.name}»!", "level-up")
@@ -306,6 +357,16 @@ async def habit_check(
     chest = maybe_award_chest(db, user, habit)
     if chest:
         push_flash(request, f"🎁 Сундук за неделю без пропусков: {chest.reward_value}!", "chest")
+
+    if kind == "done":
+        new_difficulty = maybe_recalibrate(db, habit)
+        if new_difficulty:
+            push_flash(
+                request,
+                f"«{habit.name}» выполнялась 30 дней подряд без пропусков — "
+                f"сложность снижена до «{new_difficulty}», она явно стала легче 💪",
+                "recalibration",
+            )
 
     newly_earned = check_and_award_achievements(db, user)
     for achievement in newly_earned:

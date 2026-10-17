@@ -11,11 +11,12 @@ def test_create_harmful_habit_with_weekly_frequency(client, session):
     client.post(
         "/habits",
         data={
-            "name": "Не курить",
+            "name": "Никогда не курить",
             "habit_type": "harmful",
             "frequency": "weekly",
             "weekdays": ["0", "2", "4"],
             "difficulty": "hard",
+            "sphere": "health",
         },
     )
 
@@ -30,7 +31,7 @@ def test_create_harmful_habit_with_weekly_frequency(client, session):
 
 def test_habit_detail_page_shows_calendar(client, session):
     register_user(client, login="olga", mail="olga@example.com")
-    client.post("/habits", data={"name": "Чтение"})
+    client.post("/habits", data={"name": "Чтение", "sphere": "health"})
 
     user = session.exec(select(User).where(User.login == "olga")).first()
     habit = session.exec(select(Habit).where(Habit.uid == user.id)).first()
@@ -46,7 +47,7 @@ def test_habit_detail_page_shows_calendar(client, session):
 
 def test_cannot_view_other_users_habit_detail(client, session):
     register_user(client, login="pete", mail="pete@example.com")
-    client.post("/habits", data={"name": "Бег"})
+    client.post("/habits", data={"name": "Бег", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "pete")).first()
     habit = session.exec(select(Habit).where(Habit.uid == user.id)).first()
     client.get("/logout")

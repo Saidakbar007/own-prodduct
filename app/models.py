@@ -41,6 +41,9 @@ class User(SQLModel, table=True):
     habits: int = Field(default=0)  # количество привычек, обновляется автоматически
     goals: int = Field(default=0)   # количество целей, обновляется автоматически
     trust_score: int = Field(default=100)  # 0-100, пересчитывается после отметок/подтверждений (v3)
+    coins: int = Field(default=0)  # валюта за подтверждения друзей, никогда не XP (v5)
+    timezone: str = Field(default="UTC")  # IANA-имя пояса, задаётся при регистрации (v5)
+    timezone_changed_at: Optional[datetime] = None  # когда пояс меняли — не чаще раза в 30 дней (v5)
 
 
 class Habit(SQLModel, table=True):
@@ -62,6 +65,9 @@ class Habit(SQLModel, table=True):
     weekdays: Optional[str] = None  # для frequency="weekly": дни недели CSV, "0,2,4" (0=понедельник)
     requires_proof: bool = Field(default=False)  # нужно фото-доказательство при отметке (v3)
     minimal_description: Optional[str] = None  # что считается "минимальной версией на плохой день" (v3)
+    sphere: str = Field(default="discipline")  # strength/intellect/discipline/health/charisma (v5)
+    catalog_code: Optional[str] = None  # код из каталога типовых привычек, если выбрана не своя (v5)
+    last_recalibration: Optional[date] = None  # дата последнего снижения сложности за 30 дней 100% (v5)
 
 
 class HabitHistory(SQLModel, table=True):
@@ -224,6 +230,7 @@ class PointsLog(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     uid: int = Field(foreign_key="users.id")
     points: int
+    sphere: Optional[str] = None  # заполнено для XP от привычек — идёт и в общий уровень, и в сферу (v5)
     time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 

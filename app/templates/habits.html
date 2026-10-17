@@ -48,33 +48,71 @@
 
     <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3">Новая привычка</h2>
-        <form method="post" action="/habits" class="space-y-3">
-            <div>
-                <label class="block text-sm font-medium mb-1">Название</label>
-                <input type="text" name="name" placeholder="Например: Пить воду по утрам" required
-                       class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-            </div>
-            <div>
-                <label class="block text-sm font-medium mb-1">Описание (необязательно)</label>
-                <input type="text" name="description" placeholder="Например: 1 стакан сразу после пробуждения"
-                       class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-            </div>
 
-            <div class="grid grid-cols-2 gap-3">
+        <div class="flex gap-2 mb-4" role="tablist">
+            <button type="button" id="tab-catalog" onclick="selectHabitSource('catalog')"
+                    class="habit-source-tab flex-1 text-sm font-medium rounded-lg py-2 border border-[var(--line)]">
+                Из каталога
+            </button>
+            <button type="button" id="tab-custom" onclick="selectHabitSource('custom')"
+                    class="habit-source-tab flex-1 text-sm font-medium rounded-lg py-2 border border-[var(--line)]">
+                Своя привычка
+            </button>
+        </div>
+
+        <form method="post" action="/habits" class="space-y-3">
+            <input type="hidden" name="source" id="habit-source-input" value="catalog">
+
+            <div id="catalog-section" class="space-y-3">
                 <div>
-                    <label class="block text-sm font-medium mb-1">Тип</label>
-                    <select name="habit_type" class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-                        <option value="useful">Полезная</option>
-                        <option value="harmful">Вредная (хочу отказаться)</option>
+                    <label class="block text-sm font-medium mb-1">Выбери привычку</label>
+                    <select name="catalog_code" id="catalog-select"
+                            class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+                        {% for item in catalog %}
+                        <option value="{{ item.code }}">{{ item.name }} — {{ spheres[item.sphere] }} ({{ {"easy": "легко", "medium": "средне", "hard": "сложно"}[item.difficulty] }})</option>
+                        {% endfor %}
                     </select>
                 </div>
+            </div>
+
+            <div id="custom-section" class="space-y-3" style="display:none;">
                 <div>
-                    <label class="block text-sm font-medium mb-1">Сложность</label>
-                    <select name="difficulty" class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-                        <option value="easy">Легко (5 очков)</option>
-                        <option value="medium" selected>Средне (10 очков)</option>
-                        <option value="hard">Сложно (20 очков)</option>
+                    <label class="block text-sm font-medium mb-1">Название</label>
+                    <input type="text" name="name" id="custom-name" placeholder="Например: Пить воду по утрам"
+                           class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Описание (необязательно)</label>
+                    <input type="text" name="description" placeholder="Например: 1 стакан сразу после пробуждения"
+                           class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Сфера</label>
+                    <select name="sphere" id="custom-sphere"
+                            class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+                        {% for code, label in spheres.items() %}
+                        <option value="{{ code }}">{{ label }}</option>
+                        {% endfor %}
                     </select>
+                    <p class="text-xs text-[var(--muted)] mt-1">Сложность (и очки) для своей привычки оценивает сервер — её нельзя завысить вручную</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Тип</label>
+                        <select name="habit_type" class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+                            <option value="useful">Полезная</option>
+                            <option value="harmful">Вредная (хочу отказаться)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Сложность (не выше)</label>
+                        <select name="difficulty" class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+                            <option value="easy">Легко</option>
+                            <option value="medium" selected>Средне</option>
+                            <option value="hard">Сложно</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -117,4 +155,20 @@
         </form>
     </div>
 </section>
+
+<style>
+    .habit-source-tab { color: var(--muted); background: var(--sunken); }
+    .habit-source-tab.active { color: #fff; background: var(--accent); border-color: var(--accent); }
+</style>
+<script>
+    function selectHabitSource(source) {
+        document.getElementById("habit-source-input").value = source;
+        document.getElementById("catalog-section").style.display = source === "catalog" ? "" : "none";
+        document.getElementById("custom-section").style.display = source === "custom" ? "" : "none";
+        document.getElementById("custom-name").required = source === "custom";
+        document.getElementById("tab-catalog").classList.toggle("active", source === "catalog");
+        document.getElementById("tab-custom").classList.toggle("active", source === "custom");
+    }
+    selectHabitSource("catalog");
+</script>
 {% endblock %}

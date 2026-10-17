@@ -28,7 +28,7 @@ def test_create_dream_and_goal(client, session):
 
 def test_progress_and_complete_awards_points(client, session):
     register_user(client, login="oleg", mail="oleg@example.com")
-    client.post("/goals", data={"name": "Мечта"})
+    client.post("/goals", data={"name": "Мечта", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "oleg")).first()
     dream = session.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
 
@@ -59,7 +59,7 @@ def test_deadline_in_the_past_is_rejected(client, session):
     from datetime import date, timedelta
 
     register_user(client, login="quinn", mail="quinn@example.com")
-    client.post("/goals", data={"name": "Мечта"})
+    client.post("/goals", data={"name": "Мечта", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "quinn")).first()
     dream = session.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
 
@@ -74,7 +74,7 @@ def test_deadline_in_the_past_is_rejected(client, session):
 
 def test_cannot_access_other_users_goal(client, session):
     register_user(client, login="pavel", mail="pavel@example.com")
-    client.post("/goals", data={"name": "Чужая мечта"})
+    client.post("/goals", data={"name": "Чужая мечта", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "pavel")).first()
     dream = session.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
     client.get("/logout")

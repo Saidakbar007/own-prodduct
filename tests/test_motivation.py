@@ -15,7 +15,7 @@ from tests.conftest import register_user
 
 def test_minimal_version_extends_streak_with_fewer_points(client, session):
     register_user(client, login="kara", mail="kara@example.com")
-    client.post("/habits", data={"name": "Бег", "difficulty": "hard", "minimal_description": "5 минут"})
+    client.post("/habits", data={"name": "Марафон", "difficulty": "hard", "minimal_description": "5 минут", "sphere": "strength"})
     user = session.exec(select(User).where(User.login == "kara")).first()
     habit = session.exec(select(Habit).where(Habit.uid == user.id)).first()
     assert habit.point == 20
@@ -32,7 +32,7 @@ def test_minimal_version_extends_streak_with_fewer_points(client, session):
 
 def test_adaptive_plan_suggested_below_50_percent(client, session):
     register_user(client, login="liam2", mail="liam2@example.com")
-    client.post("/habits", data={"name": "Чтение"})
+    client.post("/habits", data={"name": "Чтение", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "liam2")).first()
     habit = session.exec(select(Habit).where(Habit.uid == user.id)).first()
 
@@ -51,7 +51,7 @@ def test_adaptive_plan_suggested_below_50_percent(client, session):
 
 def test_bet_win_doubles_stake(client, session):
     register_user(client, login="mona", mail="mona@example.com")
-    client.post("/habits", data={"name": "Бег"})
+    client.post("/habits", data={"name": "Бег", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "mona")).first()
     habit = session.exec(select(Habit).where(Habit.uid == user.id)).first()
 
@@ -85,7 +85,7 @@ def test_bet_win_doubles_stake(client, session):
 
 def test_bet_lost_when_day_missed(client, session):
     register_user(client, login="nora", mail="nora@example.com")
-    client.post("/habits", data={"name": "Бег"})
+    client.post("/habits", data={"name": "Бег", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "nora")).first()
     habit = session.exec(select(Habit).where(Habit.uid == user.id)).first()
 
@@ -112,7 +112,7 @@ def test_bet_lost_when_day_missed(client, session):
 
 def test_cannot_bet_more_points_than_available(client, session):
     register_user(client, login="omar", mail="omar@example.com")
-    client.post("/habits", data={"name": "Бег"})
+    client.post("/habits", data={"name": "Бег", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "omar")).first()
     habit = session.exec(select(Habit).where(Habit.uid == user.id)).first()
 
@@ -122,10 +122,10 @@ def test_cannot_bet_more_points_than_available(client, session):
 
 def test_partnership_proposal_accept_and_break(client, session):
     register_user(client, login="priya", mail="priya@example.com")
-    client.post("/habits", data={"name": "Бег"})
+    client.post("/habits", data={"name": "Бег", "sphere": "health"})
     client.get("/logout")
     register_user(client, login="quin", mail="quin@example.com")
-    client.post("/habits", data={"name": "Йога"})
+    client.post("/habits", data={"name": "Йога", "sphere": "health"})
     client.get("/logout")
 
     client.post("/login", data={"login": "priya", "password": "secret123"})
@@ -172,7 +172,7 @@ def test_chest_awarded_for_full_week(client, session, monkeypatch):
     import app.services.chests as chests_module
 
     register_user(client, login="rex", mail="rex@example.com")
-    client.post("/habits", data={"name": "Бег"})
+    client.post("/habits", data={"name": "Бег", "sphere": "health"})
     user = session.exec(select(User).where(User.login == "rex")).first()
     habit = session.exec(select(Habit).where(Habit.uid == user.id)).first()
 

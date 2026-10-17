@@ -10,7 +10,7 @@ from tests.conftest import register_user
 
 def test_checks_per_day_counts_todays_check(client, session):
     register_user(client, login="emil", mail="emil@example.com")
-    client.post("/habits", data={"name": "Бег"})
+    client.post("/habits", data={"name": "Бег", "sphere": "health"})
 
     from app.models import Habit
 
@@ -34,7 +34,7 @@ def test_points_per_week_reflects_awarded_points(client, session):
 
 def test_stats_cards_reflect_activity(client, session):
     register_user(client, login="gwen", mail="gwen@example.com")
-    client.post("/habits", data={"name": "Бег"})
+    client.post("/habits", data={"name": "Бег", "sphere": "health"})
 
     from app.models import Habit
 

@@ -12,11 +12,11 @@ def test_onboarding_steps_create_dream_and_habit(client, session):
     step1 = client.get("/onboarding")
     assert step1.status_code == 200
 
-    resp = client.post("/onboarding/dream", data={"name": "Стать здоровым"}, follow_redirects=False)
+    resp = client.post("/onboarding/dream", data={"name": "Стать здоровым", "sphere": "health"}, follow_redirects=False)
     assert resp.status_code == 303
     assert resp.headers["location"] == "/onboarding/habit"
 
-    resp2 = client.post("/onboarding/habit", data={"name": "Пить воду"}, follow_redirects=False)
+    resp2 = client.post("/onboarding/habit", data={"name": "Пить воду", "sphere": "health"}, follow_redirects=False)
     assert resp2.status_code == 303
     assert resp2.headers["location"] == "/onboarding/done"
 
@@ -41,7 +41,7 @@ def test_onboarding_skip_does_not_create_anything(client, session):
 
 def test_onboarding_empty_submit_does_not_create_dream(client, session):
     register_user(client, login="oleg2", mail="oleg2@example.com")
-    client.post("/onboarding/dream", data={"name": ""})
+    client.post("/onboarding/dream", data={"name": "", "sphere": "health"})
 
     user = session.exec(select(User).where(User.login == "oleg2")).first()
     assert user.goals == 0

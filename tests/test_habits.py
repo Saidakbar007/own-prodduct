@@ -9,8 +9,8 @@ from app.models import HabitHistory, Level
 from tests.conftest import register_user
 
 
-def create_habit(client, name="Бег", difficulty="medium"):
-    return client.post("/habits", data={"name": name, "difficulty": difficulty})
+def create_habit(client, name="Бег", difficulty="medium", sphere="strength"):
+    return client.post("/habits", data={"name": name, "difficulty": difficulty, "sphere": sphere})
 
 
 def test_create_habit_increments_counter(client):
@@ -22,7 +22,7 @@ def test_create_habit_increments_counter(client):
 
 def test_check_habit_once_succeeds_and_awards_points(client, session):
     register_user(client, login="ivy", mail="ivy@example.com")
-    create_habit(client, difficulty="hard")  # сложно = 20 очков
+    create_habit(client, name="Марафон", difficulty="hard")  # сложно = 20 очков
 
     history_before = session.exec(select(HabitHistory)).all()  # пока пусто, привычка ещё не отмечена
     assert history_before == []

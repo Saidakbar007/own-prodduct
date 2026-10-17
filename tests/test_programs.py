@@ -8,10 +8,10 @@ from tests.conftest import register_user
 
 def _make_goal(client, session, login, mail):
     register_user(client, login=login, mail=mail)
-    client.post("/goals", data={"name": "Мечта"})
+    client.post("/goals", data={"name": "Мечта", "sphere": "health"})
     user = session.exec(select(User).where(User.login == login)).first()
     dream = session.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
-    client.post(f"/goals/{dream.id}/child", data={"name": "Цель"})
+    client.post(f"/goals/{dream.id}/child", data={"name": "Цель", "sphere": "health"})
     return session.exec(select(Goal).where(Goal.parent_id == dream.id)).first()
 
 
@@ -36,7 +36,7 @@ def test_cannot_add_program_to_other_users_goal(client, session):
     client.get("/logout")
 
     register_user(client, login="wendy", mail="wendy@example.com")
-    client.post(f"/goals/{goal.id}/training", data={"name": "Чужая программа"})
+    client.post(f"/goals/{goal.id}/training", data={"name": "Чужая программа", "sphere": "health"})
 
     trainings = session.exec(select(Training).where(Training.g_id == goal.id)).all()
     assert trainings == []

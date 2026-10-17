@@ -115,6 +115,7 @@ def test_more_menu_clickable_while_flash_toast_visible(demo_page, e2e_server):
     demo_page.set_viewport_size({"width": 1280, "height": 900})
     demo_page.goto(f"{e2e_server}/habits")
 
+    demo_page.click('#tab-custom')
     demo_page.fill('input[name="name"]', "Toast overlap habit")
     demo_page.click('button:has-text("Добавить привычку")')
     demo_page.wait_for_load_state("networkidle")
