@@ -410,7 +410,7 @@ async def habit_check(
 
     chest = maybe_award_chest(db, user, habit)
     if chest:
-        push_flash(request, f"🎁 Сундук за неделю без пропусков: {chest.reward_value}!", "chest")
+        push_flash(request, f"🎁 Сундук за неделю без пропусков: {chest.reward_value}!", f"chest-{chest.rarity}")
 
     if kind == "done":
         new_difficulty = maybe_recalibrate(db, habit)

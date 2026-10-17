@@ -198,6 +198,8 @@ class Achievement(SQLModel, table=True):
     name: str
     description: str
     icon: str = Field(default="🏆")
+    category: Optional[str] = None  # streak/sphere/honesty/boss/goals/comeback/personas (v6b)
+    tier: Optional[str] = None  # bronze/silver/gold, либо None для одиночных ачивок (v6b)
 
 
 class UserAchievement(SQLModel, table=True):
@@ -288,10 +290,11 @@ class Chest(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     uid: int = Field(foreign_key="users.id")
-    habit_id: int = Field(foreign_key="habits.id")
+    habit_id: Optional[int] = Field(default=None, foreign_key="habits.id")  # None — награда за босса, не за привычку (v6b)
     week_start: date
     reward_type: str  # points / freeze / badge
     reward_value: str
+    rarity: Optional[str] = None  # common/rare/epic/legendary — по весам из v6b, старые записи без неё (v6b)
     time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -320,6 +323,7 @@ class ShopItem(SQLModel, table=True):
     price: Optional[int] = None  # None = не продаётся (легендарные)
     min_hero_level: int = Field(default=1)  # эпические требуют урovень героя >= 20
     image_name: Optional[str] = None  # имя файла без категории, для game_asset_url()
+    season_code: Optional[str] = None  # код сезона, если предмет выдаётся только через сезонный трек (v6b)
 
 
 class InventoryItem(SQLModel, table=True):
@@ -331,3 +335,90 @@ class InventoryItem(SQLModel, table=True):
     uid: int = Field(foreign_key="users.id")
     item_code: str = Field(foreign_key="shop_items.code")
     acquired_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class Pet(SQLModel, table=True):
+    """Питомец героя (v6b): яйцо с ур.3, вид выбирается при вылуплении."""
+
+    __tablename__ = "pets"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", unique=True, index=True)
+    species: Optional[str] = None  # fox / owl / drake — None до вылупления
+    hatched_at: Optional[datetime] = None
+    best_stage_reached: int = Field(default=1)  # стадия не откатывается (v6b)
+
+
+class BossGroup(SQLModel, table=True):
+    """Группа друзей, сражающаяся с боссом недели (v6b)."""
+
+    __tablename__ = "boss_groups"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    week_key: str = Field(index=True)  # например "2026-W03"
+    boss_code: str  # laziness/procrastination/sleepiness/sugar/scroll/doubt
+    hp_total: int
+    hp_remaining: int
+    status: str = Field(default="active")  # active / won / expired
+    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class BossGroupMember(SQLModel, table=True):
+    """Участник группы босса недели (v6b)."""
+
+    __tablename__ = "boss_group_members"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    group_id: int = Field(foreign_key="boss_groups.id")
+    uid: int = Field(foreign_key="users.id")
+    joined_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class BossHit(SQLModel, table=True):
+    """Один удар по боссу недели — лента ударов участников (v6b)."""
+
+    __tablename__ = "boss_hits"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    group_id: int = Field(foreign_key="boss_groups.id")
+    uid: int = Field(foreign_key="users.id")
+    damage: int
+    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class WeeklyCouncilMessage(SQLModel, table=True):
+    """5 реплик личностей по воскресеньям, с 10 ур. героя (v6b)."""
+
+    __tablename__ = "weekly_council_messages"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    week_key: str = Field(index=True)
+    persona_code: str
+    text: str
+    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class Season(SQLModel, table=True):
+    """Сезон (4 недели): тема + бесплатный трек на 30 ступеней (v6b)."""
+
+    __tablename__ = "seasons"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    code: str = Field(unique=True, index=True)
+    name: str
+    theme: str
+    start_date: datetime
+    end_date: datetime
+
+
+class SeasonClaim(SQLModel, table=True):
+    """Какую ступень сезонного трека пользователь уже получил (v6b)."""
+
+    __tablename__ = "season_claims"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id")
+    season_id: int = Field(foreign_key="seasons.id")
+    step: int
+    claimed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

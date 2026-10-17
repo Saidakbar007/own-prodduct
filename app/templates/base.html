@@ -112,7 +112,15 @@
         @keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fire-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes chest-open {
+            0% { transform: scale(0.9) rotate(0deg); box-shadow: 0 0 0 0 currentColor; }
+            20% { transform: scale(1.02) rotate(-3deg); }
+            35% { transform: scale(1.02) rotate(3deg); }
+            50% { transform: scale(1.08) rotate(0deg); box-shadow: 0 0 18px 4px currentColor; }
+            100% { transform: scale(1) rotate(0deg); box-shadow: 0 0 0 0 currentColor; }
+        }
         .toast { animation: toast-in 0.25s ease-out; }
+        .chest-toast { animation: toast-in 0.25s ease-out, chest-open 0.7s ease-out 0.1s; border: 2px solid currentColor; }
         .fire-pulse { animation: fire-pulse 1.4s ease-in-out infinite; display: inline-block; }
         .btn-press { transition: transform 0.1s ease, background-color 0.15s ease, opacity 0.15s ease; }
         .btn-press:active { transform: scale(0.95); }
@@ -155,9 +163,15 @@
     {% if flashes %}
     <div class="fixed top-4 right-4 z-50 space-y-2 max-w-xs" id="toasts">
         {% for f in flashes %}
+        {% if f.kind.startswith("chest-") %}
+        <div class="toast chest-toast rarity-{{ f.kind.split('-')[1] }} bg-[var(--card)] rounded-lg px-4 py-3 text-sm font-medium">
+            {{ f.message }}
+        </div>
+        {% else %}
         <div class="toast bg-[var(--card)] border border-[var(--accent)] rounded-lg px-4 py-3 text-sm">
             {{ f.message }}
         </div>
+        {% endif %}
         {% endfor %}
     </div>
     <script>

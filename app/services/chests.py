@@ -1,5 +1,8 @@
 """
-Сундук: случайная награда за неделю без пропусков (каждый день — done/minimal).
+Сундук: награда за неделю без пропусков (каждый день — done/minimal) или
+за победу над боссом недели (см. app/services/bosses.py). Редкость —
+по весам 60/28/10/2% (common/rare/epic/legendary), trust >= 90 удваивает
+шанс легендарного (см. DECISIONS.md, п.9).
 """
 
 import random
@@ -7,15 +10,14 @@ from datetime import date, timedelta
 
 from sqlmodel import Session, select
 
-from app.models import BonusFreeze, Chest, Habit, HabitHistory, User
+from app.models import Chest, Habit, HabitHistory, User
+from app.services.coins import award_coins
 from app.services.personas import has_harmony
 from app.services.points import award_points
-from app.services.streak import _week_key
+from app.services.shop import FREEZE_MAX_STOCK, RARITY_ORDER
 
-POINTS_TIERS = [20, 30, 50]
-
-# Лестница "силы" награды сундука: badge < freeze < points (см. DECISIONS.md, п.2)
-REWARD_TIER_ORDER = ["badge", "freeze", "points"]
+RARITY_WEIGHTS = {"common": 60, "rare": 28, "epic": 10, "legendary": 2}
+LEGENDARY_TRUST_THRESHOLD = 90
 
 
 def _week_start(day: date) -> date:
@@ -23,19 +25,85 @@ def _week_start(day: date) -> date:
     return day - timedelta(days=day.weekday())
 
 
-def _bump_points_tier(value: int) -> int:
-    """Поднимает размер очкового тира на ступень (20->30->50, 50 — уже максимум)."""
-    if value in POINTS_TIERS:
-        i = POINTS_TIERS.index(value)
-        if i + 1 < len(POINTS_TIERS):
-            return POINTS_TIERS[i + 1]
-    return value
+def roll_chest_rarity(trust_score: int) -> str:
+    """
+    Взвешенный выбор редкости сундука. trust >= 90 удваивает шанс
+    легендарного (2% -> 4%), лишнее забирается у "обычного" (60% -> 58%) —
+    остальные доли не трогаем (см. DECISIONS.md, п.9).
+    """
+    weights = dict(RARITY_WEIGHTS)
+    if trust_score >= LEGENDARY_TRUST_THRESHOLD:
+        extra = weights["legendary"]
+        weights["legendary"] += extra
+        weights["common"] -= extra
+
+    roll = random.uniform(0, sum(weights.values()))
+    cumulative = 0
+    for rarity in RARITY_ORDER:
+        cumulative += weights[rarity]
+        if roll <= cumulative:
+            return rarity
+    return RARITY_ORDER[-1]
+
+
+def _bump_rarity(rarity: str) -> str:
+    """Поднимает редкость на ступень выше (common->rare->epic->legendary)."""
+    i = RARITY_ORDER.index(rarity)
+    return RARITY_ORDER[min(i + 1, len(RARITY_ORDER) - 1)]
+
+
+def _apply_reward_for_rarity(db: Session, user: User, rarity: str) -> tuple[str, str]:
+    """Начисляет награду по редкости. Возвращает (reward_type, reward_value) для записи в Chest."""
+    if rarity == "common":
+        award_points(db, user, 20)
+        return "points", "20"
+
+    if rarity == "rare":
+        if user.freeze_stock < FREEZE_MAX_STOCK:
+            user.freeze_stock += 1
+            db.add(user)
+            db.commit()
+            return "freeze", "+1 заморозка в запас"
+        award_points(db, user, 40)  # запас заморозок полон — не терять награду впустую
+        return "points", "40"
+
+    if rarity == "epic":
+        award_points(db, user, 80)
+        award_coins(db, user, 10)
+        return "points", "80 XP + 10 монет"
+
+    # legendary
+    award_points(db, user, 150)
+    award_coins(db, user, 30)
+    return "badge", "Легендарная воля 🛡️ (+150 XP, +30 монет)"
+
+
+def grant_chest(db: Session, user: User, week_start: date, habit_id: int = None) -> Chest:
+    """
+    Выдаёт сундук со случайной редкостью (с учётом trust и "гармонии") и
+    применяет его награду. Используется и для недельной серии привычки,
+    и для победы над боссом (тогда habit_id=None).
+    """
+    rarity = roll_chest_rarity(user.trust_score)
+    if has_harmony(db, user.id):
+        rarity = _bump_rarity(rarity)
+
+    reward_type, reward_value = _apply_reward_for_rarity(db, user, rarity)
+
+    chest = Chest(
+        uid=user.id, habit_id=habit_id, week_start=week_start,
+        reward_type=reward_type, reward_value=reward_value, rarity=rarity,
+    )
+    db.add(chest)
+    db.commit()
+    db.refresh(chest)
+    return chest
 
 
 def maybe_award_chest(db: Session, user: User, habit: Habit) -> Chest | None:
     """
     Если сегодня воскресенье и все 7 дней текущей недели отмечены (done/minimal),
-    выдаёт случайную награду (один раз за неделю на привычку).
+    выдаёт сундук (один раз за неделю на привычку).
     """
     today = date.today()
     if today.weekday() != 6:  # только в воскресенье — неделя считается завершённой
@@ -56,40 +124,4 @@ def maybe_award_chest(db: Session, user: User, habit: Habit) -> Chest | None:
     if not week_days.issubset(done_dates):
         return None
 
-    reward_type = random.choice(["points", "points", "freeze", "badge"])  # очки чаще выпадают
-    value = random.choice(POINTS_TIERS) if reward_type == "points" else None
-
-    if has_harmony(db, user.id):
-        # "Гармония" (все 5 личностей активны за неделю) поднимает награду сундука
-        # на ступень выше по лестнице badge < freeze < points (см. DECISIONS.md, п.2)
-        tier_index = REWARD_TIER_ORDER.index(reward_type)
-        if tier_index + 1 < len(REWARD_TIER_ORDER):
-            reward_type = REWARD_TIER_ORDER[tier_index + 1]
-            if reward_type == "points":
-                value = POINTS_TIERS[-1]
-        elif reward_type == "points":
-            value = _bump_points_tier(value)
-
-    if reward_type == "points":
-        award_points(db, user, value)
-        reward_value = str(value)
-    elif reward_type == "freeze":
-        next_week_key = _week_key(today + timedelta(days=1))
-        bonus = db.exec(
-            select(BonusFreeze).where(BonusFreeze.uid == user.id, BonusFreeze.week_key == next_week_key)
-        ).first()
-        if bonus:
-            bonus.amount += 1
-            db.add(bonus)
-        else:
-            db.add(BonusFreeze(uid=user.id, week_key=next_week_key, amount=1))
-        db.commit()
-        reward_value = "+1 заморозка на следующую неделю"
-    else:
-        reward_value = "Железная воля 🛡️"
-
-    chest = Chest(uid=user.id, habit_id=habit.id, week_start=week_start, reward_type=reward_type, reward_value=reward_value)
-    db.add(chest)
-    db.commit()
-    db.refresh(chest)
-    return chest
+    return grant_chest(db, user, week_start, habit_id=habit.id)
