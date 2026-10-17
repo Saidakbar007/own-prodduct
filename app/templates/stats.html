@@ -6,15 +6,17 @@
 <section class="max-w-2xl mx-auto space-y-6">
     <div class="bg-[var(--card)] rounded-xl border border-[var(--line)] p-6 text-center">
         <p class="text-[var(--muted)] text-sm">Твой уровень</p>
-        <h1 class="text-3xl font-bold text-[var(--accent)] mb-2">{{ level.name }}</h1>
-        <p class="text-[var(--muted)] mb-4"><span class="numeric">{{ level.point }}</span> очков</p>
+        <h1 class="text-3xl font-bold text-[var(--accent)] mb-2">Ур. {{ hero_level }} · {{ hero_rank }}</h1>
+        <p class="text-[var(--muted)] mb-4"><span class="numeric">{{ level.point }}</span> XP всего</p>
 
         <div class="w-full bg-[var(--sunken)] rounded-full h-3 mb-2">
             <div class="bg-[var(--accent)] h-3 rounded-full transition-all" style="width: {{ progress_percent }}%"></div>
         </div>
 
-        {% if next_name %}
-        <p class="text-sm text-[var(--muted)]">Ещё {{ points_needed }} очков до уровня «{{ next_name }}»</p>
+        {% if points_needed %}
+        <p class="text-sm text-[var(--muted)]">
+            Ещё {{ points_needed }} XP до уровня {{ hero_level + 1 }}{% if next_rank %} и ранга «{{ next_rank }}»{% endif %}
+        </p>
         {% else %}
         <p class="text-sm text-[var(--muted)] flex items-center justify-center gap-1"><i data-lucide="trophy" style="width:0.9em;height:0.9em;"></i> Максимальный уровень достигнут</p>
         {% endif %}

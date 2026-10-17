@@ -12,7 +12,7 @@ from app.auth import require_user
 from app.database import get_session
 from app.models import Level, User
 from app.rendering import render
-from app.services.points import LEVEL_THRESHOLDS, next_level_info
+from app.services.levels import level_progress
 from app.services.stats import checks_per_day, month_over_month, points_per_week, stats_cards
 
 router = APIRouter()
@@ -28,20 +28,7 @@ def stats_page(request: Request, user: User = Depends(require_user), db: Session
         db.commit()
         db.refresh(level)
 
-    next_level = next_level_info(level.point)
-
-    current_threshold = 0
-    for threshold, _name in LEVEL_THRESHOLDS:
-        if level.point >= threshold:
-            current_threshold = threshold
-
-    if next_level:
-        next_name, points_needed = next_level
-        next_threshold = level.point + points_needed
-        span = next_threshold - current_threshold
-        progress_percent = int(((level.point - current_threshold) / span) * 100) if span else 100
-    else:
-        next_name, points_needed, progress_percent = None, None, 100
+    progress = level_progress(level.point)
 
     checks_data = checks_per_day(db, user.id, days=30)
     points_data = points_per_week(db, user.id, weeks=8)
@@ -54,9 +41,13 @@ def stats_page(request: Request, user: User = Depends(require_user), db: Session
         {
             "user": user,
             "level": level,
-            "next_name": next_name,
-            "points_needed": points_needed,
-            "progress_percent": progress_percent,
+            "hero_level": progress["level"],
+            "hero_rank": progress["rank"],
+            "next_rank": progress["next_rank"],
+            "points_needed": (
+                progress["xp_for_next_level"] - progress["xp_into_level"] if progress["xp_for_next_level"] else None
+            ),
+            "progress_percent": progress["percent"],
             "checks_labels_json": json.dumps([c["date"][5:] for c in checks_data]),
             "checks_values_json": json.dumps([c["count"] for c in checks_data]),
             "points_labels_json": json.dumps([p["label"] for p in points_data]),

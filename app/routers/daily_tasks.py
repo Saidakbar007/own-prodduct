@@ -11,6 +11,7 @@ from app.database import get_session
 from app.models import DailyTask, User
 from app.services.achievements import check_and_award_achievements
 from app.services.flash import push_flash
+from app.services.levels import level_for_xp, level_up_message
 from app.services.points import award_points
 
 router = APIRouter()
@@ -33,7 +34,7 @@ def complete_task(
         level, leveled_up = award_points(db, user, task.points)
         push_flash(request, f"+{task.points} бонусных очков за задание 🎉")
         if leveled_up:
-            push_flash(request, f"⭐ Новый уровень: «{level.name}»!", "level-up")
+            push_flash(request, level_up_message(level_for_xp(level.point)), "level-up")
 
         newly_earned = check_and_award_achievements(db, user)
         for achievement in newly_earned:

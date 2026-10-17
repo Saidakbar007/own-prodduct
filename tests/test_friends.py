@@ -18,7 +18,7 @@ def test_request_then_accept_shows_friend_progress(client, session):
     client.post("/friends/request", data={"login": "yuri"})
 
     yuri = session.exec(select(User).where(User.login == "yuri")).first()
-    award_points(session, yuri, 120)  # у Yuri будет уровень "Ученик"
+    award_points(session, yuri, 700)  # 700 XP = ур.6 = ранг "Ученик"
 
     client.get("/logout")
     client.post("/login", data={"login": "yuri", "password": "secret123"})

@@ -15,6 +15,7 @@ from app.models import Education, Goal, GoalHistory, GoalStep, Training, User
 from app.rendering import render
 from app.services.achievements import check_and_award_achievements
 from app.services.flash import push_flash
+from app.services.levels import level_for_xp, level_up_message
 from app.services.points import award_points, points_for_goal_difficulty
 from app.services.progress import dream_progress_percent, goal_progress_percent
 
@@ -239,7 +240,7 @@ def goal_complete(
         level, leveled_up = award_points(db, user, points)
         push_flash(request, f"+{points} очков 🎉 Цель выполнена!")
         if leveled_up:
-            push_flash(request, f"⭐ Новый уровень: «{level.name}»!", "level-up")
+            push_flash(request, level_up_message(level_for_xp(level.point)), "level-up")
 
         newly_earned = check_and_award_achievements(db, user)
         for achievement in newly_earned:

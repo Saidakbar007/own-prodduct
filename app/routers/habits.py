@@ -21,6 +21,7 @@ from app.services.catalog import CATALOG, find_by_code
 from app.services.chests import maybe_award_chest
 from app.services.difficulty import calculate_difficulty, clamp_difficulty
 from app.services.flash import push_flash
+from app.services.levels import level_for_xp, level_up_message
 from app.services.partnerships import combined_streak, evaluate_partnerships_for_habit
 from app.services.points import points_for_habit_difficulty, award_points
 from app.services.recalibration import maybe_recalibrate
@@ -349,7 +350,7 @@ async def habit_check(
             push_flash(request, f"+{base_points} очков 🎉 (дневной лимит XP «{sphere_name}» уже набран)")
 
     if leveled_up:
-        push_flash(request, f"⭐ Новый уровень: «{level.name}»!", "level-up")
+        push_flash(request, level_up_message(level_for_xp(level.point)), "level-up")
 
     refresh_trust_score(db, user)
     evaluate_bets_for_habit(db, habit_id)
