@@ -79,6 +79,20 @@
             <span class="flex items-center gap-1"><span class="inline-block w-2.5 h-2.5 rounded-sm bg-[var(--sunken)]"></span> пусто</span>
         </p>
 
+        {% if user.freeze_stock > 0 and missed_days %}
+        <form method="post" action="/habits/{{ habit.id }}/use-freeze" class="flex items-center gap-2 mb-6 flex-wrap">
+            <span class="text-xs text-[var(--muted)] flex items-center gap-1"><i data-lucide="snowflake" style="width:0.9em;height:0.9em;"></i> Заморозка ({{ user.freeze_stock }}/2):</span>
+            <select name="day" class="border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-2 py-1 text-xs">
+                {% for d in missed_days %}
+                <option value="{{ d.isoformat() }}">{{ d.isoformat() }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-press bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-3 py-1 text-xs font-medium hover:opacity-90">
+                Применить на пропущенный день
+            </button>
+        </form>
+        {% endif %}
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="border border-[var(--line)] rounded-xl p-4">
                 <h2 class="font-medium text-sm mb-2 flex items-center gap-1.5"><i data-lucide="dices"></i> Ставка</h2>

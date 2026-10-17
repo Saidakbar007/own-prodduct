@@ -28,6 +28,7 @@ from app.services.personas import WAKING_XP_BONUS, is_waking
 from app.services.persona_voices import is_streak_milestone, skip_line, streak_line
 from app.services.points import points_for_habit_difficulty, award_points
 from app.services.recalibration import maybe_recalibrate
+from app.services.shop import use_freeze
 from app.services.spheres import SPHERES, log_sphere_xp
 from app.services.streak import calculate_streak_with_freeze
 from app.services.trust import refresh_trust_score
@@ -248,6 +249,7 @@ def habit_detail(
     partner_streak = combined_streak(db, partnership) if partnership and partnership.status == "active" else None
 
     adaptive_suggestion = adaptive_plan_message(habit) if needs_adaptive_plan(db, habit) else None
+    missed_days = [d["date"] for d in days if d["kind"] is None and d["date"] < today]
 
     return render(
         request,
@@ -265,10 +267,33 @@ def habit_detail(
             "partnership": partnership,
             "partner_streak": partner_streak,
             "adaptive_suggestion": adaptive_suggestion,
+            "missed_days": missed_days,
         },
         db=db,
         user=user,
     )
+
+
+@router.post("/habits/{habit_id}/use-freeze")
+def use_freeze_route(
+    habit_id: int,
+    request: Request,
+    day: str = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    """Тратит запасённую заморозку на конкретный пропущенный день (см. app/services/shop.py)."""
+    habit = db.get(Habit, habit_id)
+    if habit and habit.uid == user.id:
+        try:
+            target_day = datetime.strptime(day, "%Y-%m-%d").date()
+        except ValueError:
+            target_day = None
+        if target_day:
+            ok, message = use_freeze(db, user, habit, target_day)
+            push_flash(request, message, "success" if ok else "error")
+
+    return habit_detail(habit_id, request, user, db)
 
 
 @router.post("/habits/{habit_id}/adaptive-plan/apply")

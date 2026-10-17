@@ -37,8 +37,10 @@ from app.routers import partnerships as partnerships_router
 from app.routers import onboarding as onboarding_router
 from app.routers import game_assets as game_assets_router
 from app.routers import hero as hero_router
+from app.routers import shop as shop_router
 from app.routers.habits import _habits_context, habits_at_risk
 from app.services.achievements import ensure_achievements_seeded
+from app.services.shop import ensure_shop_seeded
 from app.services.daily_tasks import get_or_create_today_tasks
 from app.services.pentagon import pentagon_chart
 from app.services.spheres import all_spheres_progress
@@ -58,6 +60,7 @@ async def lifespan(app: FastAPI):
     run_migrations()
     with Session(engine) as db:
         ensure_achievements_seeded(db)
+        ensure_shop_seeded(db)
 
         from app.models import Registration
 
@@ -98,6 +101,7 @@ app.include_router(partnerships_router.router)
 app.include_router(onboarding_router.router)
 app.include_router(game_assets_router.router)
 app.include_router(hero_router.router)
+app.include_router(shop_router.router)
 
 
 @app.exception_handler(StarletteHTTPException)
