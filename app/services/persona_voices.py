@@ -212,6 +212,47 @@ STREAK_TEMPLATES = {
 
 STREAK_MILESTONES = (3, 7, 14, 30, 60, 100)
 
+# "Совет недели" (с 10 ур. героя, по воскресеньям) — разовое событие раз в
+# неделю, поэтому вариантов меньше, чем у ежедневных триггеров (см.
+# DECISIONS.md, п.12).
+COUNCIL_TEMPLATES = {
+    "strength": [
+        "Эта неделя — +{week_xp} XP силы. Неплохо, но можно жёстче.",
+        "Неделя закрыта: {week_xp} XP в копилке силы. Следующая — рекорд.",
+        "{week_xp} XP за неделю. Форма растёт — не сбавляй.",
+        "Итог недели по силе: {week_xp} XP. Вперёд, без пауз.",
+        "{week_xp} XP силы за неделю — солидно. Теперь закрепим.",
+    ],
+    "intellect": [
+        "За неделю — {week_xp} XP ума. Что из этого стало привычкой мышления?",
+        "{week_xp} XP за неделю — какой вывод возьмёшь в следующую?",
+        "Итог недели: {week_xp} XP интеллекта. Что удивило тебя самого?",
+        "{week_xp} XP — хороший повод спросить: а что дальше?",
+        "Неделя дала {week_xp} XP ума. Какой урок самый ценный?",
+    ],
+    "discipline": [
+        "Неделя: {week_xp} XP дисциплины. Режим держится — продолжаем.",
+        "{week_xp} XP за неделю — ритм на месте.",
+        "Итог: {week_xp} XP дисциплины. Коротко: так и держать.",
+        "{week_xp} XP — порядок за неделю виден в цифрах.",
+        "Неделя закрыта с {week_xp} XP дисциплины. Без сбоев дальше.",
+    ],
+    "health": [
+        "За неделю — {week_xp} XP заботы о себе. Ты молодец, без иронии.",
+        "{week_xp} XP здоровья за неделю — мягко, но стабильно.",
+        "Итог недели: {week_xp} XP. Как твоё самочувствие в целом?",
+        "{week_xp} XP заботы за неделю — и это уже хорошая база.",
+        "Неделя дала {week_xp} XP здоровья. Не забывай отдыхать и дальше.",
+    ],
+    "charisma": [
+        "Неделя дала {week_xp} XP харизмы! С кем поделишься итогами?",
+        "{week_xp} XP за неделю — отличный повод рассказать друзьям!",
+        "Итог недели: {week_xp} XP. Какое общение запомнилось больше всего?",
+        "{week_xp} XP харизмы за неделю — ты явно был в центре внимания!",
+        "Неделя закрыта с {week_xp} XP. Отпразднуй это с кем-то!",
+    ],
+}
+
 
 def _canned_line(templates: dict, persona_code: str, **context) -> str:
     options = templates.get(persona_code, [])
@@ -238,6 +279,8 @@ def _claude_line(persona_code: str, trigger: str, **context) -> str | None:
         )
         if trigger == "streak" and "streak" in context:
             prompt += f"Серия пользователя — {context['streak']} дней подряд. "
+        if "week_xp" in context:
+            prompt += f"За прошедшую неделю в этой сфере набрано {context['week_xp']} XP. "
         prompt += "Ответь ОДНОЙ короткой фразой на русском (до 12 слов), в характере персонажа, без пояснений."
 
         client = anthropic.Anthropic(api_key=api_key)
@@ -264,6 +307,12 @@ def skip_line(persona_code: str) -> str:
 def streak_line(persona_code: str, streak: int) -> str:
     claude = _claude_line(persona_code, "серия дней подряд", streak=streak)
     return claude or _canned_line(STREAK_TEMPLATES, persona_code, streak=streak)
+
+
+def council_line(persona_code: str, week_xp: int) -> str:
+    """"Совет недели" — реплика личности о прошедшей неделе (см. п.5/12)."""
+    claude = _claude_line(persona_code, "итог недели — совет недели", week_xp=week_xp)
+    return claude or _canned_line(COUNCIL_TEMPLATES, persona_code, week_xp=week_xp)
 
 
 def balance_warning_line(persona_code: str, days_asleep: int) -> str:

@@ -1,27 +1,33 @@
 """
 Страница /hero: герой (стадия по рангу), пятиугольник сфер, 5 карточек
-личностей с уровнем/стадией/состоянием и последней репликой коуча.
+личностей с уровнем/стадией/состоянием и последней репликой коуча,
+питомец, и "совет недели" по воскресеньям с 10 ур. героя.
 """
+
+from datetime import timedelta
 
 from fastapi import APIRouter, Depends, Form, Request
 from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import CoachMessage, Level, User
+from app.models import CoachMessage, Level, PointsLog, User, WeeklyCouncilMessage
 from app.rendering import render
 from app.routers.habits import best_streak_with_freeze_for_user
 from app.services.flash import push_flash
 from app.services.game_assets import hero_image_url, persona_image_url, pet_image_url
 from app.services.levels import level_progress
 from app.services.pentagon import pentagon_chart
-from app.services.personas import PERSONA_IMAGE_CODE, persona_profile
-from app.services.persona_voices import balance_warning_line, greeting_line
+from app.services.personas import PERSONA_IMAGE_CODE, PERSONAS, persona_profile
+from app.services.persona_voices import balance_warning_line, council_line, greeting_line
 from app.services.pets import PET_SPECIES, hatch_pet, pet_profile
 from app.services.spheres import all_spheres_progress
+from app.services.streak import _week_key
 from app.services.usertime import local_date, today_for
 
 router = APIRouter()
+
+COUNCIL_MIN_HERO_LEVEL = 10
 
 
 def _latest_persona_message(db: Session, uid: int, persona_code: str) -> CoachMessage | None:
@@ -40,6 +46,45 @@ def _ensure_daily_greeting(db: Session, user: User, leading_code: str) -> None:
 
     db.add(CoachMessage(uid=user.id, role="coach", text=greeting_line(leading_code), persona_code=leading_code))
     db.commit()
+
+
+def _sphere_xp_in_week(db: Session, uid: int, sphere: str, week_start) -> int:
+    logs = db.exec(select(PointsLog).where(PointsLog.uid == uid, PointsLog.sphere == sphere)).all()
+    return sum(log.points for log in logs if log.time.date() >= week_start)
+
+
+def _weekly_council(db: Session, user: User, hero_level: int) -> list[dict] | None:
+    """
+    По воскресеньям, с 10-го уровня героя — 5 реплик (одна на личность) про
+    прошедшую неделю. Генерируется один раз за неделю (см. DECISIONS.md, п.12).
+    """
+    if hero_level < COUNCIL_MIN_HERO_LEVEL or today_for(user).weekday() != 6:
+        return None
+
+    week = _week_key(today_for(user))
+    week_start = today_for(user) - timedelta(days=6)
+
+    existing = db.exec(
+        select(WeeklyCouncilMessage).where(WeeklyCouncilMessage.uid == user.id, WeeklyCouncilMessage.week_key == week)
+    ).all()
+    if not existing:
+        for code in PERSONAS:
+            week_xp = _sphere_xp_in_week(db, user.id, code, week_start)
+            db.add(
+                WeeklyCouncilMessage(
+                    uid=user.id, week_key=week, persona_code=code, text=council_line(code, week_xp)
+                )
+            )
+        db.commit()
+        existing = db.exec(
+            select(WeeklyCouncilMessage).where(
+                WeeklyCouncilMessage.uid == user.id, WeeklyCouncilMessage.week_key == week
+            )
+        ).all()
+
+    order = list(PERSONAS.keys())
+    existing.sort(key=lambda m: order.index(m.persona_code) if m.persona_code in order else 99)
+    return [{"persona_name": PERSONAS.get(m.persona_code, m.persona_code), "text": m.text} for m in existing]
 
 
 @router.get("/hero")
@@ -85,6 +130,7 @@ def hero_page(request: Request, user: User = Depends(require_user), db: Session 
             "personas": cards,
             "pet": pet,
             "pet_species_options": PET_SPECIES,
+            "council": _weekly_council(db, user, progress["level"]),
         },
         db=db,
         user=user,
