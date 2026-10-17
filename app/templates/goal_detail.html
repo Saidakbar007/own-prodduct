@@ -4,39 +4,39 @@
 
 {% block content %}
 <section class="max-w-2xl mx-auto">
-    <a href="/goals" class="text-sm text-indigo-600 dark:text-indigo-400 flex items-center gap-1 w-fit"><i data-lucide="arrow-left"></i> Все цели</a>
+    <a href="/goals" class="text-sm text-[var(--accent)] flex items-center gap-1 w-fit"><i data-lucide="arrow-left"></i> Все цели</a>
 
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 mt-3 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-5 mt-3">
         <h1 class="text-xl font-bold mb-1 flex items-center gap-2">
             <i data-lucide="{{ 'check-circle-2' if goal.status == 'completed' else 'target' }}"></i> {{ goal.name }}
         </h1>
         {% if goal.description %}
-        <p class="text-slate-500 dark:text-slate-400 mb-2">{{ goal.description }}</p>
+        <p class="text-[var(--muted)] mb-2">{{ goal.description }}</p>
         {% endif %}
         {% if goal.deadline %}
-        <p class="text-sm text-slate-400 dark:text-slate-500 mb-3">Дедлайн: {{ goal.deadline }}</p>
+        <p class="text-sm text-[var(--muted)] mb-3">Дедлайн: {{ goal.deadline }}</p>
         {% endif %}
 
-        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2.5 mb-1">
-            <div class="bg-indigo-500 h-2.5 rounded-full transition-all" style="width: {{ progress }}%"></div>
+        <div class="w-full bg-[var(--sunken)] rounded-full h-2.5 mb-1">
+            <div class="bg-[var(--accent)] h-2.5 rounded-full transition-all" style="width: {{ progress }}%"></div>
         </div>
-        <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">Прогресс по шагам: {{ progress }}%</p>
+        <p class="text-xs text-[var(--muted)] mb-4">Прогресс по шагам: {{ progress }}%</p>
 
         {% if goal.status != "completed" %}
         <div class="flex gap-2 mb-5 flex-wrap">
             <form method="post" action="/goals/{{ goal.id }}/progress">
-                <button type="submit" class="btn-press bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">
+                <button type="submit" class="btn-press bg-[var(--card)] border border-[var(--line)] rounded-lg px-4 py-2 text-sm hover:bg-[var(--sunken)]">
                     Отметить прогресс
                 </button>
             </form>
             <form method="post" action="/goals/{{ goal.id }}/complete">
-                <button type="submit" class="btn-press bg-green-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-green-700">
+                <button type="submit" class="btn-press bg-[var(--success)] text-white rounded-lg px-4 py-2 text-sm hover:opacity-90">
                     Завершить цель
                 </button>
             </form>
         </div>
         {% else %}
-        <p class="text-green-600 dark:text-green-400 text-sm font-medium mb-5 flex items-center gap-1.5"><i data-lucide="party-popper"></i> Цель выполнена</p>
+        <p class="text-[var(--success)] text-sm font-medium mb-5 flex items-center gap-1.5"><i data-lucide="party-popper"></i> Цель выполнена</p>
         {% endif %}
 
         <h2 class="font-medium text-sm mb-2">Шаги</h2>
@@ -44,51 +44,51 @@
             {% for step in steps %}
             <li class="flex items-center gap-2 text-sm">
                 <form method="post" action="/goals/{{ goal.id }}/steps/{{ step.id }}/toggle">
-                    <button type="submit" class="{{ 'text-green-600 dark:text-green-400' if step.done else 'text-slate-300 dark:text-slate-600' }}">
+                    <button type="submit" class="{{ 'text-[var(--success)]' if step.done else 'text-[var(--line)]' }}">
                         <i data-lucide="{{ 'check-square' if step.done else 'square' }}"></i>
                     </button>
                 </form>
-                <span class="{{ 'line-through text-slate-400 dark:text-slate-500' if step.done else '' }}">{{ step.name }}</span>
+                <span class="{{ 'line-through text-[var(--muted)]' if step.done else '' }}">{{ step.name }}</span>
             </li>
             {% else %}
-            <li class="text-slate-400 dark:text-slate-500 text-sm">Пока нет шагов — разбей цель на маленькие действия</li>
+            <li class="text-[var(--muted)] text-sm">Пока нет шагов — разбей цель на маленькие действия</li>
             {% endfor %}
         </ul>
         <form method="post" action="/goals/{{ goal.id }}/steps" class="flex gap-2 mb-5">
             <input type="text" name="name" placeholder="Например: Купить кроссовки" required
-                   class="flex-1 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm dark:bg-slate-700 dark:text-slate-100">
-            <button type="submit" class="btn-press bg-indigo-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-indigo-700">
+                   class="flex-1 border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2 text-sm">
+            <button type="submit" class="btn-press bg-[var(--accent)] text-white rounded-lg px-4 py-2 text-sm hover:opacity-90">
                 + Шаг
             </button>
         </form>
 
         <h2 class="font-medium text-sm mb-2">История прогресса</h2>
-        <ul class="text-sm text-slate-500 dark:text-slate-400 space-y-1">
+        <ul class="text-sm text-[var(--muted)] space-y-1">
             {% for entry in history %}
             <li>· {{ entry.time.strftime("%d.%m.%Y %H:%M") }}</li>
             {% else %}
-            <li class="text-slate-400 dark:text-slate-500">Пока нет отметок прогресса</li>
+            <li class="text-[var(--muted)]">Пока нет отметок прогресса</li>
             {% endfor %}
         </ul>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
             <div>
                 <h2 class="font-medium text-sm mb-2 flex items-center gap-1.5"><i data-lucide="dumbbell"></i> Тренировочные программы</h2>
-                <ul class="text-sm text-slate-500 dark:text-slate-400 space-y-1 mb-2">
+                <ul class="text-sm text-[var(--muted)] space-y-1 mb-2">
                     {% for t in trainings %}
                     <li>· <b>{{ t.name }}</b>{% if t.program %}: {{ t.program }}{% endif %}</li>
                     {% else %}
-                    <li class="text-slate-400 dark:text-slate-500">Пока нет</li>
+                    <li class="text-[var(--muted)]">Пока нет</li>
                     {% endfor %}
                 </ul>
                 <details class="text-sm">
-                    <summary class="cursor-pointer text-indigo-600 dark:text-indigo-400">+ добавить</summary>
+                    <summary class="cursor-pointer text-[var(--accent)]">+ добавить</summary>
                     <form method="post" action="/goals/{{ goal.id }}/training" class="space-y-2 mt-2">
                         <input type="text" name="name" placeholder="Например: Бег по утрам" required
-                               class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
+                               class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
                         <input type="text" name="program" placeholder="Например: 5 км 3 раза в неделю"
-                               class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
-                        <button type="submit" class="btn-press bg-indigo-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-indigo-700">
+                               class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+                        <button type="submit" class="btn-press bg-[var(--accent)] text-white rounded-lg px-4 py-2 text-sm hover:opacity-90">
                             Добавить
                         </button>
                     </form>
@@ -97,21 +97,21 @@
 
             <div>
                 <h2 class="font-medium text-sm mb-2 flex items-center gap-1.5"><i data-lucide="graduation-cap"></i> Образовательные программы</h2>
-                <ul class="text-sm text-slate-500 dark:text-slate-400 space-y-1 mb-2">
+                <ul class="text-sm text-[var(--muted)] space-y-1 mb-2">
                     {% for e in educations %}
                     <li>· <b>{{ e.name }}</b>{% if e.program %}: {{ e.program }}{% endif %}</li>
                     {% else %}
-                    <li class="text-slate-400 dark:text-slate-500">Пока нет</li>
+                    <li class="text-[var(--muted)]">Пока нет</li>
                     {% endfor %}
                 </ul>
                 <details class="text-sm">
-                    <summary class="cursor-pointer text-indigo-600 dark:text-indigo-400">+ добавить</summary>
+                    <summary class="cursor-pointer text-[var(--accent)]">+ добавить</summary>
                     <form method="post" action="/goals/{{ goal.id }}/education" class="space-y-2 mt-2">
                         <input type="text" name="name" placeholder="Например: Курс FastAPI" required
-                               class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
+                               class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
                         <input type="text" name="program" placeholder="Например: 20 уроков"
-                               class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
-                        <button type="submit" class="btn-press bg-indigo-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-indigo-700">
+                               class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+                        <button type="submit" class="btn-press bg-[var(--accent)] text-white rounded-lg px-4 py-2 text-sm hover:opacity-90">
                             Добавить
                         </button>
                     </form>

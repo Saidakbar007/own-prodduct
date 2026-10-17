@@ -4,61 +4,61 @@
 
 {% block content %}
 <section class="max-w-2xl mx-auto space-y-6">
-    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 text-center shadow-sm">
-        <p class="text-slate-400 dark:text-slate-500 text-sm">Твой уровень</p>
-        <h1 class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">{{ level.name }}</h1>
-        <p class="text-slate-500 dark:text-slate-400 mb-4">{{ level.point }} очков</p>
+    <div class="bg-[var(--card)] rounded-xl border border-[var(--line)] p-6 text-center">
+        <p class="text-[var(--muted)] text-sm">Твой уровень</p>
+        <h1 class="text-3xl font-bold text-[var(--accent)] mb-2">{{ level.name }}</h1>
+        <p class="text-[var(--muted)] mb-4"><span class="numeric">{{ level.point }}</span> очков</p>
 
-        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3 mb-2">
-            <div class="bg-indigo-600 h-3 rounded-full transition-all" style="width: {{ progress_percent }}%"></div>
+        <div class="w-full bg-[var(--sunken)] rounded-full h-3 mb-2">
+            <div class="bg-[var(--accent)] h-3 rounded-full transition-all" style="width: {{ progress_percent }}%"></div>
         </div>
 
         {% if next_name %}
-        <p class="text-sm text-slate-400 dark:text-slate-500">Ещё {{ points_needed }} очков до уровня «{{ next_name }}»</p>
+        <p class="text-sm text-[var(--muted)]">Ещё {{ points_needed }} очков до уровня «{{ next_name }}»</p>
         {% else %}
-        <p class="text-sm text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1"><i data-lucide="trophy" style="width:0.9em;height:0.9em;"></i> Максимальный уровень достигнут</p>
+        <p class="text-sm text-[var(--muted)] flex items-center justify-center gap-1"><i data-lucide="trophy" style="width:0.9em;height:0.9em;"></i> Максимальный уровень достигнут</p>
         {% endif %}
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 flex items-center justify-center gap-1"><i data-lucide="flame"></i> {{ cards.best_streak }}</p>
-            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Лучшая серия</p>
+        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center">
+            <p class="text-2xl font-bold text-[var(--accent)] flex items-center justify-center gap-1 numeric"><i data-lucide="flame"></i> {{ cards.best_streak }}</p>
+            <p class="text-xs text-[var(--muted)] mt-1">Лучшая серия</p>
         </div>
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ cards.total_checks }}</p>
-            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Всего отметок</p>
+        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center">
+            <p class="text-2xl font-bold text-[var(--accent)] numeric">{{ cards.total_checks }}</p>
+            <p class="text-xs text-[var(--muted)] mt-1">Всего отметок</p>
         </div>
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ cards.goals_completed }}</p>
-            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Целей выполнено</p>
+        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center">
+            <p class="text-2xl font-bold text-[var(--accent)] numeric">{{ cards.goals_completed }}</p>
+            <p class="text-xs text-[var(--muted)] mt-1">Целей выполнено</p>
         </div>
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-center shadow-sm">
-            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ cards.week_completion_percent }}%</p>
-            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Выполнение за неделю</p>
+        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center">
+            <p class="text-2xl font-bold text-[var(--accent)] numeric">{{ cards.week_completion_percent }}%</p>
+            <p class="text-xs text-[var(--muted)] mt-1">Выполнение за неделю</p>
         </div>
     </div>
 
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium text-sm mb-3 flex items-center gap-1.5"><i data-lucide="calendar-days"></i> Ты месяц назад vs сейчас</h2>
         <div class="grid grid-cols-2 gap-4 text-center">
             <div>
-                <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">Отметок</p>
-                <p class="text-lg"><span class="text-slate-400 dark:text-slate-500">{{ comparison.checks_prior }}</span> → <b class="text-indigo-600 dark:text-indigo-400">{{ comparison.checks_recent }}</b></p>
+                <p class="text-xs text-[var(--muted)] mb-1">Отметок</p>
+                <p class="text-lg"><span class="text-[var(--muted)]">{{ comparison.checks_prior }}</span> → <b class="text-[var(--accent)]">{{ comparison.checks_recent }}</b></p>
             </div>
             <div>
-                <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">Очков</p>
-                <p class="text-lg"><span class="text-slate-400 dark:text-slate-500">{{ comparison.points_prior }}</span> → <b class="text-indigo-600 dark:text-indigo-400">{{ comparison.points_recent }}</b></p>
+                <p class="text-xs text-[var(--muted)] mb-1">Очков</p>
+                <p class="text-lg"><span class="text-[var(--muted)]">{{ comparison.points_prior }}</span> → <b class="text-[var(--accent)]">{{ comparison.points_recent }}</b></p>
             </div>
         </div>
     </div>
 
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium text-sm mb-3">Отметки привычек за 30 дней</h2>
         <canvas id="checksChart" height="100"></canvas>
     </div>
 
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium text-sm mb-3">Очки по неделям</h2>
         <canvas id="pointsChart" height="100"></canvas>
     </div>
@@ -76,8 +76,10 @@
     function chartColors() {
         var dark = document.documentElement.classList.contains('dark');
         return {
-            text: dark ? '#94a3b8' : '#64748b',
-            grid: dark ? 'rgba(148,163,184,0.15)' : 'rgba(100,116,139,0.1)'
+            text: dark ? '#93A4B0' : '#566874',
+            grid: dark ? 'rgba(37,51,63,0.6)' : 'rgba(211,220,226,0.6)',
+            accent: dark ? '#3CC0C9' : '#0E7C86',
+            coin: dark ? '#E0A23A' : '#A9680A'
         };
     }
 
@@ -90,7 +92,7 @@
             type: 'bar',
             data: {
                 labels: {{ checks_labels_json | safe }},
-                datasets: [{ label: 'Отметки', data: {{ checks_values_json | safe }}, backgroundColor: '#6366f1' }]
+                datasets: [{ label: 'Отметки', data: {{ checks_values_json | safe }}, backgroundColor: colors.accent }]
             },
             options: {
                 plugins: { legend: { display: false } },
@@ -105,7 +107,7 @@
             type: 'line',
             data: {
                 labels: {{ points_labels_json | safe }},
-                datasets: [{ label: 'Очки', data: {{ points_values_json | safe }}, borderColor: '#a855f7', backgroundColor: '#a855f733', fill: true, tension: 0.3 }]
+                datasets: [{ label: 'Очки', data: {{ points_values_json | safe }}, borderColor: colors.coin, backgroundColor: colors.coin + '33', fill: true, tension: 0.3 }]
             },
             options: {
                 plugins: { legend: { display: false } },

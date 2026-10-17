@@ -34,33 +34,116 @@
     <!-- Lucide — единый набор иконок -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.js"></script>
 
+    <!-- Шрифты "игрового кодекса": заголовки/текст/цифры -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
     <!-- PWA -->
     <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#6366f1">
+    <meta name="theme-color" content="#0E7C86">
     <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
     <link rel="icon" href="/static/icons/icon-192.png">
 
     <style>
+        /* ===== Дизайн-токены "игрового кодекса" — светлая тема по умолчанию ===== */
+        :root {
+            --bg: #EDF1F3;
+            --card: #FFFFFF;
+            --sunken: #E3E9EC;
+            --text: #13202A;
+            --muted: #566874;
+            --line: #D3DCE2;
+            --accent: #0E7C86;
+            --accent-soft: #D6EEF0;
+            --coin: #A9680A;
+            --coin-soft: #F6EAD6;
+            --rarity-common: #6B7782;
+            --rarity-rare: #13866F;
+            --rarity-epic: #9440C4;
+            --rarity-legendary: #C27407;
+            --success: #13866F;
+            --success-soft: #DCEEE8;
+            --danger: #B23B3B;
+            --danger-soft: #F7E3E1;
+        }
+
+        /* ===== Тёмная тема ===== */
+        html.dark {
+            --bg: #0C1318;
+            --card: #141D25;
+            --sunken: #0F171E;
+            --text: #E2EAEF;
+            --muted: #93A4B0;
+            --line: #25333F;
+            --accent: #3CC0C9;
+            --accent-soft: #12343A;
+            --coin: #E0A23A;
+            --coin-soft: #3A2B12;
+            --rarity-common: #93A0AC;
+            --rarity-rare: #25A88A;
+            --rarity-epic: #A876E0;
+            --rarity-legendary: #CC8C26;
+            --success: #25A88A;
+            --success-soft: #16332C;
+            --danger: #E08585;
+            --danger-soft: #3A2020;
+        }
+
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3, .font-display { font-family: 'Unbounded', sans-serif; }
+
+        /* Мелкие подписи-"бровки": капс, моноширинный, разрядка, цвет акцента */
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: var(--accent);
+        }
+
+        /* Цифры и числовые подписи — моноширинные, с фиксированной шириной цифр */
+        .numeric, .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
         @keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fire-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
         .toast { animation: toast-in 0.25s ease-out; }
         .fire-pulse { animation: fire-pulse 1.4s ease-in-out infinite; display: inline-block; }
-        .btn-press { transition: transform 0.1s ease, background-color 0.15s ease; }
+        .btn-press { transition: transform 0.1s ease, background-color 0.15s ease, opacity 0.15s ease; }
         .btn-press:active { transform: scale(0.95); }
         .fade-in { animation: fade-in 0.25s ease-out; }
         * { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+
         .more-menu { display: none; }
         .more-menu.open { display: block; }
+        .theme-option-active { color: var(--accent) !important; }
         /* Тосты всегда ниже выпадающего меню по z-index, чтобы не перекрывать и не
            блокировать клики по его пунктам (оба живут в правом верхнем углу). */
         #toasts { z-index: 40; }
         .more-menu { z-index: 50; }
         [data-lucide] { width: 1.1em; height: 1.1em; }
         .btn-press[disabled] { opacity: 0.6; cursor: wait; }
+
+        /* Карточки кодекса: тонкая рамка, radius 12px, без теней */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+        }
+
+        /* Редкость (для будущих наград/привычек по сферам) */
+        .rarity-common { color: var(--rarity-common); }
+        .rarity-rare { color: var(--rarity-rare); }
+        .rarity-epic { color: var(--rarity-epic); }
+        .rarity-legendary { color: var(--rarity-legendary); }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col pb-16 sm:pb-0">
+<body class="bg-[var(--bg)] text-[var(--text)] min-h-screen flex flex-col pb-16 sm:pb-0">
 
     {% if user %}
     {% include "_nav_logged_in.html" %}
@@ -72,7 +155,7 @@
     {% if flashes %}
     <div class="fixed top-4 right-4 z-50 space-y-2 max-w-xs" id="toasts">
         {% for f in flashes %}
-        <div class="toast bg-white dark:bg-slate-800 border border-indigo-200 dark:border-indigo-800 shadow-lg rounded-lg px-4 py-3 text-sm">
+        <div class="toast bg-[var(--card)] border border-[var(--accent)] rounded-lg px-4 py-3 text-sm">
             {{ f.message }}
         </div>
         {% endfor %}
@@ -90,7 +173,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="text-center text-xs text-slate-400 dark:text-slate-500 py-4 {% if user %}hidden sm:block{% endif %}">
+    <footer class="text-center text-xs text-[var(--muted)] py-4 {% if user %}hidden sm:block{% endif %}">
         Учебный проект · MVP
     </footer>
 
@@ -105,8 +188,7 @@
             localStorage.setItem('theme', pref);
             window.__applyTheme(pref);
             document.querySelectorAll('[data-theme-option]').forEach(function (el) {
-                el.classList.toggle('text-indigo-600', el.getAttribute('data-theme-option') === pref);
-                el.classList.toggle('dark:text-indigo-400', el.getAttribute('data-theme-option') === pref);
+                el.classList.toggle('theme-option-active', el.getAttribute('data-theme-option') === pref);
             });
             document.dispatchEvent(new CustomEvent('theme-changed'));
             document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.remove('open'); });

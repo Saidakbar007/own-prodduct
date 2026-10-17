@@ -6,19 +6,19 @@
 {% if user %}
 <section class="max-w-2xl mx-auto space-y-6">
     <div class="text-center py-2">
-        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Привет, {{ user.login }}! 👋</h1>
+        <h1 class="text-2xl font-bold text-[var(--text)]">Привет, {{ user.login }}! 👋</h1>
         {% if level %}
-        <p class="text-slate-500 dark:text-slate-400 mt-1">
-            Уровень: <b class="text-indigo-600 dark:text-indigo-400">{{ level.name }}</b> · {{ level.point }} очков
+        <p class="text-[var(--muted)] mt-1">
+            Уровень: <b class="text-[var(--accent)]">{{ level.name }}</b> · {{ level.point }} очков
         </p>
         {% endif %}
     </div>
 
     {% if at_risk_habits %}
-    <div class="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-xl p-4 shadow-sm">
-        <h2 class="font-medium mb-2 text-blue-800 dark:text-blue-200 flex items-center gap-2"><i data-lucide="heart-handshake"></i> Вчера был пропуск — ничего страшного</h2>
+    <div class="bg-[var(--accent-soft)] border border-[var(--accent)] rounded-xl p-4">
+        <h2 class="font-medium mb-2 text-[var(--accent)] flex items-center gap-2"><i data-lucide="heart-handshake"></i> Вчера был пропуск — ничего страшного</h2>
         {% for habit in at_risk_habits %}
-        <p class="text-sm text-blue-700 dark:text-blue-300 mb-1">
+        <p class="text-sm text-[var(--accent)] mb-1">
             «{{ habit.name }}»: не пропускай два дня подряд — сделай сегодня хотя бы
             {{ "минимальную версию" if habit.minimal_description else "немного" }}.
             <a href="/habits/{{ habit.id }}" class="underline font-medium">Вернуться →</a>
@@ -28,48 +28,48 @@
     {% endif %}
 
     {% if top_dream %}
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <div class="flex items-center justify-between mb-1">
             <h2 class="font-medium flex items-center gap-2"><i data-lucide="moon-star"></i> {{ top_dream.name }}</h2>
-            <span class="text-sm text-indigo-600 dark:text-indigo-400 font-bold">{{ dream_progress }}%</span>
+            <span class="text-sm text-[var(--accent)] font-bold">{{ dream_progress }}%</span>
         </div>
-        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
-            <div class="bg-indigo-500 h-2 rounded-full transition-all" style="width: {{ dream_progress }}%"></div>
+        <div class="w-full bg-[var(--sunken)] rounded-full h-2">
+            <div class="bg-[var(--accent)] h-2 rounded-full transition-all" style="width: {{ dream_progress }}%"></div>
         </div>
     </div>
     {% endif %}
 
     {% if last_achievement %}
-    <div class="bg-gradient-to-r from-yellow-50 dark:from-yellow-950 to-orange-50 dark:to-orange-950 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+    <div class="bg-[var(--coin-soft)] border border-[var(--coin)] rounded-xl p-4 flex items-center gap-3">
         <span class="text-3xl">{{ last_achievement.icon }}</span>
         <div>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Последнее достижение</p>
+            <p class="text-sm text-[var(--muted)]">Последнее достижение</p>
             <p class="font-medium">{{ last_achievement.name }}</p>
         </div>
-        <a href="/achievements" class="ml-auto text-xs text-indigo-600 dark:text-indigo-400 hover:underline shrink-0">Все награды →</a>
+        <a href="/achievements" class="ml-auto text-xs text-[var(--accent)] hover:underline shrink-0">Все награды →</a>
     </div>
     {% endif %}
 
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3 flex items-center gap-2"><i data-lucide="list-checks"></i> Привычки на сегодня</h2>
         <div class="space-y-2">
             {% for item in habits %}
             <div class="flex items-center justify-between text-sm">
                 <span class="flex items-center gap-1.5">
-                    <i data-lucide="{{ 'ban' if item.habit.habit_type == 'harmful' else 'check' }}" class="text-slate-400 dark:text-slate-500" style="width:0.95em;height:0.95em;"></i>
+                    <i data-lucide="{{ 'ban' if item.habit.habit_type == 'harmful' else 'check' }}" class="text-[var(--muted)]" style="width:0.95em;height:0.95em;"></i>
                     {{ item.habit.name }}
-                    <span class="{{ 'fire-pulse' if item.streak > 0 else '' }} text-slate-400 dark:text-slate-500 flex items-center gap-0.5">(<i data-lucide="flame" style="width:0.9em;height:0.9em;"></i> {{ item.streak }})</span>
+                    <span class="{{ 'fire-pulse' if item.streak > 0 else '' }} text-[var(--muted)] flex items-center gap-0.5">(<i data-lucide="flame" style="width:0.9em;height:0.9em;"></i> {{ item.streak }})</span>
                 </span>
                 {% if item.done_today %}
-                <span class="text-green-600 dark:text-green-400 flex items-center gap-1"><i data-lucide="check-circle-2"></i> Сделано</span>
+                <span class="text-[var(--success)] flex items-center gap-1"><i data-lucide="check-circle-2"></i> Сделано</span>
                 {% elif item.habit.requires_proof %}
-                <a href="/habits/{{ item.habit.id }}" class="btn-press bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-indigo-700 flex items-center gap-1">
+                <a href="/habits/{{ item.habit.id }}" class="btn-press bg-[var(--accent)] text-white text-xs px-3 py-1.5 rounded-lg hover:opacity-90 flex items-center gap-1">
                     <i data-lucide="camera"></i> Отметить
                 </a>
                 {% else %}
                 <form method="post" action="/habits/{{ item.habit.id }}/check">
                     <input type="hidden" name="kind" value="done">
-                    <button type="submit" class="btn-press bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-indigo-700">
+                    <button type="submit" class="btn-press bg-[var(--accent)] text-white text-xs px-3 py-1.5 rounded-lg hover:opacity-90">
                         Отметить
                     </button>
                 </form>
@@ -77,26 +77,26 @@
             </div>
             {% else %}
             <div class="text-center py-4">
-                <i data-lucide="sprout" class="mx-auto mb-1 text-slate-400 dark:text-slate-500"></i>
-                <p class="text-slate-400 dark:text-slate-500 text-sm mb-2">Пока нет привычек</p>
-                <a href="/habits" class="text-indigo-600 dark:text-indigo-400 text-sm font-medium">Добавить привычку →</a>
+                <i data-lucide="sprout" class="mx-auto mb-1 text-[var(--muted)]"></i>
+                <p class="text-[var(--muted)] text-sm mb-2">Пока нет привычек</p>
+                <a href="/habits" class="text-[var(--accent)] text-sm font-medium">Добавить привычку →</a>
             </div>
             {% endfor %}
         </div>
     </div>
 
     {% if daily_tasks %}
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3 flex items-center gap-2"><i data-lucide="clipboard-list"></i> Ежедневное задание</h2>
         <div class="space-y-2">
             {% for task in daily_tasks %}
             <div class="flex items-center justify-between text-sm">
-                <span class="{{ 'line-through text-slate-400 dark:text-slate-500' if task.done else '' }}">{{ task.description }}</span>
+                <span class="{{ 'line-through text-[var(--muted)]' if task.done else '' }}">{{ task.description }}</span>
                 {% if task.done %}
-                <span class="text-green-600 dark:text-green-400">✓ +{{ task.points }}</span>
+                <span class="text-[var(--success)]">✓ +{{ task.points }}</span>
                 {% else %}
                 <form method="post" action="/daily-tasks/{{ task.id }}/complete">
-                    <button type="submit" class="btn-press bg-purple-600 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-purple-700">
+                    <button type="submit" class="btn-press bg-[var(--accent)] text-white text-xs px-3 py-1.5 rounded-lg hover:opacity-90">
                         Выполнено (+{{ task.points }})
                     </button>
                 </form>
@@ -108,14 +108,14 @@
     {% endif %}
 
     {% if deadlines %}
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3 flex items-center gap-2"><i data-lucide="alarm-clock"></i> Ближайшие дедлайны</h2>
         <ul class="text-sm space-y-1">
             {% for goal in deadlines %}
             <li>
-                <a href="/goals/{{ goal.id }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1.5">
+                <a href="/goals/{{ goal.id }}" class="hover:text-[var(--accent)] flex items-center gap-1.5">
                     <i data-lucide="target" style="width:0.95em;height:0.95em;"></i> {{ goal.name }}
-                    <span class="{{ 'text-red-500 dark:text-red-400' if goal.deadline < today else 'text-slate-400 dark:text-slate-500' }}">
+                    <span class="{{ 'text-[var(--danger)]' if goal.deadline < today else 'text-[var(--muted)]' }}">
                         (до {{ goal.deadline }})
                     </span>
                 </a>
@@ -128,54 +128,54 @@
 {% else %}
 <!-- Герой -->
 <section class="text-center py-16 sm:py-24">
-    <div class="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 text-xs font-medium px-3 py-1 rounded-full mb-5">
+    <div class="inline-flex items-center gap-2 bg-[var(--accent-soft)] text-[var(--accent)] text-xs font-medium px-3 py-1 rounded-full mb-5">
         <i data-lucide="shield-check"></i> Приложение, которое не даёт себе врать
     </div>
-    <h1 class="text-3xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4 leading-tight">
+    <h1 class="text-3xl sm:text-5xl font-bold text-[var(--text)] mb-4 leading-tight">
         Мечта → Цель → Привычка → Результат
     </h1>
-    <p class="text-slate-500 dark:text-slate-400 max-w-xl mx-auto mb-8 text-lg">
+    <p class="text-[var(--muted)] max-w-xl mx-auto mb-8 text-lg">
         Ставь цели, формируй привычки и доводи начатое до конца — честно,
         с друзьями и без лишнего выгорания.
     </p>
     <div class="flex flex-wrap gap-3 justify-center">
-        <a href="/register" class="btn-press inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 shadow-lg">
+        <a href="/register" class="btn-press inline-flex items-center gap-2 bg-[var(--accent)] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 shadow-lg">
             <i data-lucide="rocket"></i> Начать бесплатно
         </a>
-        <a href="/try-demo" class="btn-press inline-flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="/try-demo" class="btn-press inline-flex items-center gap-2 bg-[var(--card)] border border-[var(--line)] px-6 py-3 rounded-lg font-semibold hover:bg-[var(--sunken)]">
             <i data-lucide="play"></i> Попробовать демо
         </a>
     </div>
 </section>
 
 <!-- Как это работает -->
-<section class="py-10 border-t border-slate-200 dark:border-slate-700">
-    <h2 class="text-center text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide mb-8">Как это работает</h2>
+<section class="py-10 border-t border-[var(--line)]">
+    <h2 class="text-center eyebrow mb-8">Как это работает</h2>
     <div class="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
         <div class="text-center">
-            <div class="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center mx-auto mb-3 font-bold">1</div>
-            <i data-lucide="moon-star" class="mx-auto mb-2 text-indigo-600 dark:text-indigo-400"></i>
+            <div class="w-12 h-12 rounded-full bg-[var(--accent)] text-white flex items-center justify-center mx-auto mb-3 font-bold">1</div>
+            <i data-lucide="moon-star" class="mx-auto mb-2 text-[var(--accent)]"></i>
             <h3 class="font-semibold mb-1">Сформулируй мечту</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Большая цель, к которой хочешь прийти</p>
+            <p class="text-sm text-[var(--muted)]">Большая цель, к которой хочешь прийти</p>
         </div>
         <div class="text-center">
-            <div class="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center mx-auto mb-3 font-bold">2</div>
-            <i data-lucide="target" class="mx-auto mb-2 text-indigo-600 dark:text-indigo-400"></i>
+            <div class="w-12 h-12 rounded-full bg-[var(--accent)] text-white flex items-center justify-center mx-auto mb-3 font-bold">2</div>
+            <i data-lucide="target" class="mx-auto mb-2 text-[var(--accent)]"></i>
             <h3 class="font-semibold mb-1">Разбей на цели и привычки</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Конкретные шаги и ежедневные действия</p>
+            <p class="text-sm text-[var(--muted)]">Конкретные шаги и ежедневные действия</p>
         </div>
         <div class="text-center">
-            <div class="w-12 h-12 rounded-full bg-indigo-600 text-white flex items-center justify-center mx-auto mb-3 font-bold">3</div>
-            <i data-lucide="flame" class="mx-auto mb-2 text-indigo-600 dark:text-indigo-400"></i>
+            <div class="w-12 h-12 rounded-full bg-[var(--accent)] text-white flex items-center justify-center mx-auto mb-3 font-bold">3</div>
+            <i data-lucide="flame" class="mx-auto mb-2 text-[var(--accent)]"></i>
             <h3 class="font-semibold mb-1">Отмечай каждый день</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Получай очки, растёт уровень и серия</p>
+            <p class="text-sm text-[var(--muted)]">Получай очки, растёт уровень и серия</p>
         </div>
     </div>
 </section>
 
 <!-- Функции -->
-<section class="py-10 border-t border-slate-200 dark:border-slate-700">
-    <h2 class="text-center text-sm font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wide mb-8">Что внутри</h2>
+<section class="py-10 border-t border-[var(--line)]">
+    <h2 class="text-center eyebrow mb-8">Что внутри</h2>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
         {% set features = [
             ("list-checks", "Привычки", "Полезные и вредные, каждый день или по дням недели, с календарём серии"),
@@ -186,21 +186,21 @@
             ("bot", "AI-коуч", "Советует по правилам или через Claude API, если задан ключ"),
         ] %}
         {% for icon, title, desc in features %}
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-5 shadow-sm">
-            <i data-lucide="{{ icon }}" class="text-indigo-600 dark:text-indigo-400 mb-2" style="width:1.6rem;height:1.6rem;"></i>
+        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-5">
+            <i data-lucide="{{ icon }}" class="text-[var(--accent)] mb-2" style="width:1.6rem;height:1.6rem;"></i>
             <h3 class="font-semibold mb-1">{{ title }}</h3>
-            <p class="text-sm text-slate-500 dark:text-slate-400">{{ desc }}</p>
+            <p class="text-sm text-[var(--muted)]">{{ desc }}</p>
         </div>
         {% endfor %}
     </div>
 </section>
 
 <!-- Честность -->
-<section class="py-10 border-t border-slate-200 dark:border-slate-700">
-    <div class="max-w-3xl mx-auto bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950 dark:to-purple-950 border border-indigo-100 dark:border-indigo-900 rounded-2xl p-6 sm:p-8 text-center">
-        <i data-lucide="shield-check" class="mx-auto mb-3 text-indigo-600 dark:text-indigo-400" style="width:2.5rem;height:2.5rem;"></i>
+<section class="py-10 border-t border-[var(--line)]">
+    <div class="max-w-3xl mx-auto bg-[var(--accent-soft)] border border-[var(--accent)] rounded-xl p-6 sm:p-8 text-center">
+        <i data-lucide="shield-check" class="mx-auto mb-3 text-[var(--accent)]" style="width:2.5rem;height:2.5rem;"></i>
         <h2 class="text-xl font-bold mb-2">Приложения для привычек легко обмануть. Это — нет</h2>
-        <p class="text-slate-600 dark:text-slate-300 max-w-xl mx-auto">
+        <p class="text-[var(--muted)] max-w-xl mx-auto">
             Можно честно признать «не сделал» и получить небольшой бонус за правду, а не ноль.
             Можно приложить фото с камеры или получить подтверждение от друга.
             Trust score считает, насколько твои отметки подтверждены — и влияет на итоговые очки.
@@ -209,14 +209,14 @@
 </section>
 
 <!-- Призыв к действию -->
-<section class="py-14 text-center border-t border-slate-200 dark:border-slate-700">
+<section class="py-14 text-center border-t border-[var(--line)]">
     <h2 class="text-2xl font-bold mb-3">Готов начать?</h2>
-    <p class="text-slate-500 dark:text-slate-400 mb-6">Это бесплатно и займёт меньше минуты</p>
+    <p class="text-[var(--muted)] mb-6">Это бесплатно и займёт меньше минуты</p>
     <div class="flex flex-wrap gap-3 justify-center">
-        <a href="/register" class="btn-press inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 shadow-lg">
+        <a href="/register" class="btn-press inline-flex items-center gap-2 bg-[var(--accent)] text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 shadow-lg">
             <i data-lucide="rocket"></i> Зарегистрироваться
         </a>
-        <a href="/try-demo" class="btn-press inline-flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="/try-demo" class="btn-press inline-flex items-center gap-2 bg-[var(--card)] border border-[var(--line)] px-6 py-3 rounded-lg font-semibold hover:bg-[var(--sunken)]">
             <i data-lucide="play"></i> Попробовать демо
         </a>
     </div>

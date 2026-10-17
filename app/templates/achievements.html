@@ -8,14 +8,14 @@
 
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {% for item in items %}
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 text-center shadow-sm {{ '' if item.earned else 'opacity-50' }}">
+        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center {{ '' if item.earned else 'opacity-50' }}">
             <p class="text-4xl mb-2 {{ '' if item.earned else 'grayscale' }}">{{ item.achievement.icon }}</p>
-            <p class="font-medium text-sm {{ 'text-slate-900 dark:text-white' if item.earned else 'text-slate-400 dark:text-slate-500' }}">
+            <p class="font-medium text-sm {{ 'text-[var(--text)]' if item.earned else 'text-[var(--muted)]' }}">
                 {{ item.achievement.name }}
             </p>
-            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">{{ item.achievement.description }}</p>
+            <p class="text-xs text-[var(--muted)] mt-1">{{ item.achievement.description }}</p>
             {% if not item.earned %}
-            <p class="text-xs text-slate-300 dark:text-slate-600 mt-1 flex items-center justify-center gap-1"><i data-lucide="lock" style="width:0.9em;height:0.9em;"></i> Не получено</p>
+            <p class="text-xs text-[var(--line)] mt-1 flex items-center justify-center gap-1"><i data-lucide="lock" style="width:0.9em;height:0.9em;"></i> Не получено</p>
             {% endif %}
         </div>
         {% endfor %}

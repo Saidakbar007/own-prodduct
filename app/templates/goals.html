@@ -7,94 +7,94 @@
     <h1 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="target"></i> Мечты и цели</h1>
 
     {% if error %}
-    <div class="bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 text-sm rounded-lg px-3 py-2 mb-4 flex items-center gap-2"><i data-lucide="alert-triangle" class="shrink-0" style="width:1em;height:1em;"></i> {{ error }}</div>
+    <div class="bg-[var(--danger-soft)] text-[var(--danger)] text-sm rounded-lg px-3 py-2 mb-4 flex items-center gap-2"><i data-lucide="alert-triangle" class="shrink-0" style="width:1em;height:1em;"></i> {{ error }}</div>
     {% endif %}
 
     <div class="space-y-4 mb-6">
         {% for item in dreams %}
-        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
-            <p class="font-bold text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5"><i data-lucide="moon-star"></i> {{ item.dream.name }}</p>
+        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+            <p class="font-bold text-[var(--accent)] flex items-center gap-1.5"><i data-lucide="moon-star"></i> {{ item.dream.name }}</p>
             {% if item.dream.description %}
-            <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">{{ item.dream.description }}</p>
+            <p class="text-sm text-[var(--muted)] mb-2">{{ item.dream.description }}</p>
             {% endif %}
 
-            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 mb-3">
-                <div class="bg-indigo-500 h-2 rounded-full transition-all" style="width: {{ item.progress }}%"></div>
+            <div class="w-full bg-[var(--sunken)] rounded-full h-2 mb-3">
+                <div class="bg-[var(--accent)] h-2 rounded-full transition-all" style="width: {{ item.progress }}%"></div>
             </div>
 
             <ul class="space-y-1 mb-3 ml-4">
                 {% for c in item.children %}
                 <li class="text-sm flex items-center justify-between">
-                    <a href="/goals/{{ c.goal.id }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1.5">
+                    <a href="/goals/{{ c.goal.id }}" class="hover:text-[var(--accent)] flex items-center gap-1.5">
                         <i data-lucide="{{ 'check-circle-2' if c.goal.status == 'completed' else 'target' }}" style="width:0.95em;height:0.95em;"></i>
                         {{ c.goal.name }}
-                        {% if c.goal.deadline %}<span class="text-slate-400 dark:text-slate-500">(до {{ c.goal.deadline }})</span>{% endif %}
+                        {% if c.goal.deadline %}<span class="text-[var(--muted)]">(до {{ c.goal.deadline }})</span>{% endif %}
                     </a>
-                    <span class="text-slate-400 dark:text-slate-500 text-xs">{{ c.progress }}%</span>
+                    <span class="text-[var(--muted)] text-xs">{{ c.progress }}%</span>
                 </li>
                 {% else %}
-                <li class="text-sm text-slate-400 dark:text-slate-500">Пока нет целей к этой мечте</li>
+                <li class="text-sm text-[var(--muted)]">Пока нет целей к этой мечте</li>
                 {% endfor %}
             </ul>
 
             <details class="text-sm">
-                <summary class="cursor-pointer text-indigo-600 dark:text-indigo-400">+ добавить цель</summary>
+                <summary class="cursor-pointer text-[var(--accent)]">+ добавить цель</summary>
                 <form method="post" action="/goals/{{ item.dream.id }}/child" class="space-y-2 mt-2">
                     <div>
                         <label class="block text-xs font-medium mb-1">Название цели</label>
                         <input type="text" name="name" placeholder="Например: Пробежать 5 км до декабря" required
-                               class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
+                               class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
                     </div>
                     <div>
                         <label class="block text-xs font-medium mb-1">Описание (необязательно)</label>
                         <input type="text" name="description" placeholder="Например: тренировки по вторникам и субботам"
-                               class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
+                               class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-xs font-medium mb-1">Дедлайн</label>
                             <input type="date" name="deadline" min="{{ today }}"
-                                   class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
+                                   class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
                         </div>
                         <div>
                             <label class="block text-xs font-medium mb-1">Сложность</label>
-                            <select name="difficulty" class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
+                            <select name="difficulty" class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
                                 <option value="easy">Легко (50 очков)</option>
                                 <option value="medium" selected>Средне (100 очков)</option>
                                 <option value="hard">Сложно (200 очков)</option>
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="btn-press bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700">
+                    <button type="submit" class="btn-press bg-[var(--accent)] text-white rounded-lg px-4 py-2 hover:opacity-90">
                         Добавить цель
                     </button>
                 </form>
             </details>
         </div>
         {% else %}
-        <div class="bg-white dark:bg-slate-800 border border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-8 text-center">
-            <i data-lucide="moon-star" class="mx-auto mb-2 text-slate-400 dark:text-slate-500" style="width:2rem;height:2rem;"></i>
-            <p class="text-slate-500 dark:text-slate-400 mb-1">Пока нет мечт</p>
-            <p class="text-slate-400 dark:text-slate-500 text-sm">Добавь первую ниже — например, «Стать здоровым и сильным»</p>
+        <div class="bg-[var(--card)] border border-dashed border-[var(--line)] rounded-xl p-8 text-center">
+            <i data-lucide="moon-star" class="mx-auto mb-2 text-[var(--muted)]" style="width:2rem;height:2rem;"></i>
+            <p class="text-[var(--muted)] mb-1">Пока нет мечт</p>
+            <p class="text-[var(--muted)] text-sm">Добавь первую ниже — например, «Стать здоровым и сильным»</p>
         </div>
         {% endfor %}
     </div>
 
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3">Новая мечта</h2>
         <form method="post" action="/goals" class="space-y-3">
             <div>
                 <label class="block text-sm font-medium mb-1">Название мечты</label>
                 <input type="text" name="name" placeholder="Например: Стать здоровым и сильным" required
-                       class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
+                       class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
             </div>
             <div>
                 <label class="block text-sm font-medium mb-1">Описание (необязательно)</label>
                 <input type="text" name="description" placeholder="Расскажи, почему это важно для тебя"
-                       class="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
+                       class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
             </div>
             <button type="submit"
-                    class="btn-press w-full bg-indigo-600 text-white rounded-lg py-2.5 font-medium hover:bg-indigo-700">
+                    class="btn-press w-full bg-[var(--accent)] text-white rounded-lg py-2.5 font-medium hover:opacity-90">
                 Добавить мечту
             </button>
         </form>

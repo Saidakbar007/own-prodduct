@@ -41,7 +41,7 @@ def test_habit_detail_page_shows_calendar(client, session):
 
     client.post(f"/habits/{habit.id}/check")
     resp2 = client.get(f"/habits/{habit.id}")
-    assert "bg-green-500" in resp2.text  # сегодняшний день закрашен
+    assert "var(--success)" in resp2.text  # сегодняшний день закрашен
 
 
 def test_cannot_view_other_users_habit_detail(client, session):

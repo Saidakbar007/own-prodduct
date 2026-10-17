@@ -6,26 +6,26 @@
 <section class="max-w-2xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
         <h1 class="text-xl font-bold">Друзья</h1>
-        <a href="/partnerships" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"><i data-lucide="handshake"></i> Предложения напарника</a>
+        <a href="/partnerships" class="text-sm text-[var(--accent)] hover:underline flex items-center gap-1"><i data-lucide="handshake"></i> Предложения напарника</a>
     </div>
 
     {% if error %}
-    <div class="bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 text-sm rounded-lg px-3 py-2 flex items-center gap-2"><i data-lucide="alert-triangle" class="shrink-0" style="width:1em;height:1em;"></i> {{ error }}</div>
+    <div class="bg-[var(--danger-soft)] text-[var(--danger)] text-sm rounded-lg px-3 py-2 flex items-center gap-2"><i data-lucide="alert-triangle" class="shrink-0" style="width:1em;height:1em;"></i> {{ error }}</div>
     {% endif %}
 
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3">Найти друга по логину</h2>
         <form method="post" action="/friends/request" class="flex gap-2">
             <input type="text" name="login" placeholder="Логин" required
-                   class="flex-1 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-slate-100">
-            <button type="submit" class="bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700">
+                   class="flex-1 border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+            <button type="submit" class="bg-[var(--accent)] text-white rounded-lg px-4 py-2 hover:opacity-90">
                 Отправить заявку
             </button>
         </form>
     </div>
 
     {% if incoming %}
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3">Входящие заявки</h2>
         <ul class="space-y-2">
             {% for req in incoming %}
@@ -33,10 +33,10 @@
                 <span>Заявка #{{ req.id }}</span>
                 <span class="flex gap-2">
                     <form method="post" action="/friends/{{ req.id }}/accept">
-                        <button class="bg-green-600 text-white rounded-lg px-3 py-1.5 hover:bg-green-700">Принять</button>
+                        <button class="bg-[var(--success)] text-white rounded-lg px-3 py-1.5 hover:opacity-90">Принять</button>
                     </form>
                     <form method="post" action="/friends/{{ req.id }}/decline">
-                        <button class="bg-slate-200 dark:bg-slate-600 rounded-lg px-3 py-1.5 hover:bg-slate-300 dark:hover:bg-slate-500">Отклонить</button>
+                        <button class="bg-[var(--sunken)] rounded-lg px-3 py-1.5 hover:bg-[var(--line)]">Отклонить</button>
                     </form>
                 </span>
             </li>
@@ -46,9 +46,9 @@
     {% endif %}
 
     {% if outgoing %}
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3">Исходящие заявки (ожидают ответа)</h2>
-        <ul class="text-sm text-slate-500 dark:text-slate-400 space-y-1">
+        <ul class="text-sm text-[var(--muted)] space-y-1">
             {% for req in outgoing %}
             <li>· заявка #{{ req.id }}</li>
             {% endfor %}
@@ -56,34 +56,34 @@
     </div>
     {% endif %}
 
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3">Мои друзья</h2>
         <ul class="space-y-2">
             {% for f in friends %}
             <li class="flex items-center justify-between text-sm">
                 <span class="font-medium">{{ f.user.login }}</span>
-                <span class="text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                <span class="text-[var(--muted)] flex items-center gap-1">
                     {{ f.level_name }} · {{ f.points }} очков · <i data-lucide="flame" style="width:0.9em;height:0.9em;"></i> {{ f.streak }} дней ·
-                    <span class="flex items-center gap-0.5 {{ 'text-green-600 dark:text-green-400' if f.trust_score >= 80 else ('text-amber-600 dark:text-amber-400' if f.trust_score >= 50 else 'text-red-500 dark:text-red-400') }}">
+                    <span class="flex items-center gap-0.5 {{ 'text-[var(--success)]' if f.trust_score >= 80 else ('text-[var(--coin)]' if f.trust_score >= 50 else 'text-[var(--danger)]') }}">
                         <i data-lucide="shield-check" style="width:0.9em;height:0.9em;"></i> {{ f.trust_score }}
                     </span>
                 </span>
             </li>
             {% else %}
             <li class="text-center py-4">
-                <i data-lucide="handshake" class="mx-auto mb-1 text-slate-400 dark:text-slate-500"></i>
-                <p class="text-slate-400 dark:text-slate-500 text-sm">Пока нет друзей — найди кого-нибудь по логину выше</p>
+                <i data-lucide="handshake" class="mx-auto mb-1 text-[var(--muted)]"></i>
+                <p class="text-[var(--muted)] text-sm">Пока нет друзей — найди кого-нибудь по логину выше</p>
             </li>
             {% endfor %}
         </ul>
     </div>
 
     {% if friends %}
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3 flex items-center gap-1.5"><i data-lucide="trophy"></i> Рейтинг за неделю</h2>
         <ul class="space-y-2">
             {% for c in leaderboard %}
-            <li class="flex items-center justify-between text-sm {{ 'font-bold text-indigo-600 dark:text-indigo-400' if c.user.id == user.id else '' }}">
+            <li class="flex items-center justify-between text-sm {{ 'font-bold text-[var(--accent)]' if c.user.id == user.id else '' }}">
                 <span>{{ loop.index }}. {{ c.user.login }}{{ " (ты)" if c.user.id == user.id else "" }}</span>
                 <span>{{ c.weekly_points }} очков</span>
             </li>
@@ -93,29 +93,29 @@
     {% endif %}
 
     {% if feed %}
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-sm">
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <h2 class="font-medium mb-3 flex items-center gap-1.5"><i data-lucide="megaphone"></i> Лента друзей</h2>
         <ul class="space-y-3">
             {% for item in feed %}
-            <li class="text-sm border-b border-slate-100 dark:border-slate-700 pb-3 last:border-0 last:pb-0">
+            <li class="text-sm border-b border-[var(--line)] pb-3 last:border-0 last:pb-0">
                 <p>
                     <b>{{ item.owner.login }}</b> отметил «{{ item.habit.name }}»
-                    <span class="text-slate-400 dark:text-slate-500">{{ item.entry.time.strftime("%d.%m %H:%M") }}</span>
+                    <span class="text-[var(--muted)]">{{ item.entry.time.strftime("%d.%m %H:%M") }}</span>
                 </p>
                 {% if item.entry.proof_path %}
-                <img src="/{{ item.entry.proof_path }}" class="mt-1 max-h-32 rounded-lg border border-slate-200 dark:border-slate-700">
+                <img src="/{{ item.entry.proof_path }}" class="mt-1 max-h-32 rounded-lg border border-[var(--line)]">
                 {% endif %}
                 {% if item.my_status == "confirmed" %}
-                <span class="text-green-600 dark:text-green-400 text-xs flex items-center gap-1"><i data-lucide="check" style="width:0.9em;height:0.9em;"></i> Ты подтвердил</span>
+                <span class="text-[var(--success)] text-xs flex items-center gap-1"><i data-lucide="check" style="width:0.9em;height:0.9em;"></i> Ты подтвердил</span>
                 {% elif item.my_status == "doubted" %}
-                <span class="text-amber-600 dark:text-amber-400 text-xs flex items-center gap-1"><i data-lucide="help-circle" style="width:0.9em;height:0.9em;"></i> Ты усомнился</span>
+                <span class="text-[var(--coin)] text-xs flex items-center gap-1"><i data-lucide="help-circle" style="width:0.9em;height:0.9em;"></i> Ты усомнился</span>
                 {% else %}
                 <span class="flex gap-2 mt-1">
                     <form method="post" action="/confirmations/{{ item.entry.id }}/confirm">
-                        <button class="btn-press bg-green-600 text-white text-xs rounded-lg px-3 py-1 hover:bg-green-700 flex items-center gap-1"><i data-lucide="check" style="width:0.9em;height:0.9em;"></i> Подтвердить</button>
+                        <button class="btn-press bg-[var(--success)] text-white text-xs rounded-lg px-3 py-1 hover:opacity-90 flex items-center gap-1"><i data-lucide="check" style="width:0.9em;height:0.9em;"></i> Подтвердить</button>
                     </form>
                     <form method="post" action="/confirmations/{{ item.entry.id }}/doubt">
-                        <button class="btn-press bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs rounded-lg px-3 py-1 hover:bg-slate-50 dark:hover:bg-slate-900 flex items-center gap-1"><i data-lucide="help-circle" style="width:0.9em;height:0.9em;"></i> Правда?</button>
+                        <button class="btn-press bg-[var(--card)] border border-[var(--line)] text-xs rounded-lg px-3 py-1 hover:bg-[var(--sunken)] flex items-center gap-1"><i data-lucide="help-circle" style="width:0.9em;height:0.9em;"></i> Правда?</button>
                     </form>
                 </span>
                 {% endif %}
