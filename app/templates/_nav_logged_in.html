@@ -42,7 +42,10 @@
     {% if xp_level %}
     <div class="max-w-5xl mx-auto px-4 pb-2">
         <div class="flex items-center justify-between text-xs text-[var(--muted)] mb-1 numeric">
-            <span class="flex items-center gap-1 text-[var(--accent)]"><i data-lucide="star"></i> {{ xp_level.name }} · {{ xp_level.point }} XP</span>
+            <span class="flex items-center gap-3">
+                <span class="flex items-center gap-1 text-[var(--accent)]"><i data-lucide="star"></i> {{ xp_level.name }} · {{ xp_level.point }} XP</span>
+                <span class="flex items-center gap-1 text-[var(--coin)]"><i data-lucide="coins" style="width:0.9em;height:0.9em;"></i> {{ user.coins }}</span>
+            </span>
             {% if xp_next_name %}
             <span>{{ xp_points_needed }} XP до «{{ xp_next_name }}»</span>
             {% else %}

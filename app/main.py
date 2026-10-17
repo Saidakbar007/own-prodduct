@@ -38,6 +38,8 @@ from app.routers import onboarding as onboarding_router
 from app.routers.habits import _habits_context, habits_at_risk
 from app.services.achievements import ensure_achievements_seeded
 from app.services.daily_tasks import get_or_create_today_tasks
+from app.services.pentagon import pentagon_chart
+from app.services.spheres import all_spheres_progress
 from app.services.progress import dream_progress_percent
 
 load_dotenv()
@@ -159,6 +161,7 @@ def index(request: Request, user=Depends(get_current_user), db: Session = Depend
             "dream_progress": dream_progress,
             "at_risk_habits": habits_at_risk(db, user),
             "today": date.today(),
+            "hero_chart": pentagon_chart(all_spheres_progress(db, user.id)),
         },
         db=db,
         user=user,

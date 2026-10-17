@@ -14,6 +14,11 @@
         {% endif %}
     </div>
 
+    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+        <p class="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] mb-2 text-center">Профиль героя</p>
+        {% with chart = hero_chart %}{% include "_pentagon_chart.html" %}{% endwith %}
+    </div>
+
     {% if at_risk_habits %}
     <div class="bg-[var(--accent-soft)] border border-[var(--accent)] rounded-xl p-4">
         <h2 class="font-medium mb-2 text-[var(--accent)] flex items-center gap-2"><i data-lucide="heart-handshake"></i> Вчера был пропуск — ничего страшного</h2>

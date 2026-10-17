@@ -13,6 +13,7 @@ from app.database import get_session
 from app.models import Friend, Habit, HabitConfirmation, HabitHistory, Level, PointsLog, User
 from app.rendering import render
 from app.services.achievements import check_and_award_achievements
+from app.services.adaptive_plan import weekly_completion_rate
 from app.services.flash import push_flash
 from app.services.streak import best_streak_for_user
 
@@ -29,8 +30,21 @@ def _weekly_points(db: Session, uid: int) -> int:
     return sum(log.points for log in logs if log.time.date() >= week_ago)
 
 
+def _weekly_completion_percent(db: Session, uid: int) -> int:
+    """
+    % выполнения за неделю — средняя доля отмеченных дней по всем привычкам
+    пользователя. Рейтинг друзей считается по этому и по streak, а не по
+    XP — иначе выигрывал бы тот, у кого просто больше/сложнее привычек.
+    """
+    habits = db.exec(select(Habit).where(Habit.uid == uid)).all()
+    if not habits:
+        return 0
+    rates = [weekly_completion_rate(db, habit) for habit in habits]
+    return round(sum(rates) / len(rates) * 100)
+
+
 def _friend_card(db: Session, user_id: int) -> dict:
-    """Публичные данные о прогрессе пользователя: уровень + лучший streak + очки за неделю."""
+    """Публичные данные о прогрессе пользователя: уровень + лучший streak + % за неделю."""
     friend_user = db.get(User, user_id)
     level = db.exec(select(Level).where(Level.uid == user_id)).first()
     return {
@@ -39,6 +53,7 @@ def _friend_card(db: Session, user_id: int) -> dict:
         "points": level.point if level else 0,
         "streak": best_streak_for_user(db, user_id),
         "weekly_points": _weekly_points(db, user_id),
+        "weekly_completion_percent": _weekly_completion_percent(db, user_id),
         "trust_score": friend_user.trust_score if friend_user else 100,
     }
 
@@ -95,7 +110,9 @@ def _friends_context(db: Session, user: User, error: str = None) -> dict:
     friends = [_friend_card(db, fid) for fid in friend_ids]
 
     leaderboard = [_friend_card(db, user.id)] + friends
-    leaderboard.sort(key=lambda c: c["weekly_points"], reverse=True)
+    # рейтинг по % выполнения за неделю и streak, а не по XP — иначе игра
+    # в "накопить побольше очков" вытеснила бы стабильность выполнения
+    leaderboard.sort(key=lambda c: (c["weekly_completion_percent"], c["streak"]), reverse=True)
 
     incoming = db.exec(
         select(Friend).where(Friend.friend_id == user.id, Friend.status == "pending")

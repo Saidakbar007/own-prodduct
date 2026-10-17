@@ -13,6 +13,11 @@
         <span class="text-[var(--muted)]">— растёт от фото-доказательств и подтверждений друзей</span>
     </p>
 
+    <div class="mb-4">
+        <p class="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] mb-2 text-center">Профиль героя</p>
+        {% with chart = hero_chart %}{% include "_pentagon_chart.html" %}{% endwith %}
+    </div>
+
     {% if saved %}
     <div class="bg-[var(--success-soft)] text-[var(--success)] text-sm rounded-lg px-3 py-2 mb-4 flex items-center gap-2">
         <i data-lucide="check-circle-2" style="width:1em;height:1em;"></i> Сохранено

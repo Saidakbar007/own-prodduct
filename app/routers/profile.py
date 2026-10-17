@@ -9,6 +9,8 @@ from app.auth import require_user
 from app.database import get_session
 from app.models import User
 from app.rendering import render
+from app.services.pentagon import pentagon_chart
+from app.services.spheres import all_spheres_progress
 
 router = APIRouter()
 
@@ -16,7 +18,11 @@ router = APIRouter()
 @router.get("/profile")
 def profile_page(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
     """Показывает текущие данные профиля."""
-    return render(request, "profile.html", {"user": user, "saved": False}, db=db, user=user)
+    return render(
+        request, "profile.html",
+        {"user": user, "saved": False, "hero_chart": pentagon_chart(all_spheres_progress(db, user.id))},
+        db=db, user=user,
+    )
 
 
 @router.post("/profile")
@@ -35,4 +41,8 @@ def profile_update(
     db.add(user)
     db.commit()
     db.refresh(user)
-    return render(request, "profile.html", {"user": user, "saved": True}, db=db, user=user)
+    return render(
+        request, "profile.html",
+        {"user": user, "saved": True, "hero_chart": pentagon_chart(all_spheres_progress(db, user.id))},
+        db=db, user=user,
+    )

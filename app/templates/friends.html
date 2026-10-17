@@ -85,7 +85,10 @@
             {% for c in leaderboard %}
             <li class="flex items-center justify-between text-sm {{ 'font-bold text-[var(--accent)]' if c.user.id == user.id else '' }}">
                 <span>{{ loop.index }}. {{ c.user.login }}{{ " (ты)" if c.user.id == user.id else "" }}</span>
-                <span>{{ c.weekly_points }} очков</span>
+                <span class="flex items-center gap-1">
+                    {{ c.weekly_completion_percent }}% за неделю
+                    · <i data-lucide="flame" style="width:0.9em;height:0.9em;"></i> {{ c.streak }}
+                </span>
             </li>
             {% endfor %}
         </ul>
