@@ -63,11 +63,15 @@ def test_award_coins_without_harmony_no_bonus(client, session):
     assert awarded == 10
 
 
-def test_coins_for_achievement_tiers():
-    assert coins_for_achievement("first_habit") == 20
-    assert coins_for_achievement("streak_7") == 50
-    assert coins_for_achievement("streak_30") == 100
-    assert coins_for_achievement("unknown_code") == 20  # дефолт на неизвестный код
+def test_coins_for_achievement_tiers(session):
+    # тир достижения определяет монеты (v6b): bronze/silver/gold -> 20/50/100
+    assert coins_for_achievement(session, "streak_7") == 20  # bronze
+    assert coins_for_achievement(session, "streak_30") == 50  # silver
+    assert coins_for_achievement(session, "streak_100") == 100  # gold
+    # одиночные (нетировые) достижения — старые фикс. суммы, без изменений
+    assert coins_for_achievement(session, "first_habit") == 20
+    assert coins_for_achievement(session, "checks_100") == 100
+    assert coins_for_achievement(session, "unknown_code") == 20  # дефолт на неизвестный код
 
 
 def test_habit_check_awards_coins_by_difficulty(client, session):

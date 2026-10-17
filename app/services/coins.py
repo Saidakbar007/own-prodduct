@@ -5,7 +5,7 @@ XP, уровни или место в рейтинге — только мага
 рейтинг друзей и так считается по % выполнения + streak, не по XP/монетам.
 """
 
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from app.models import User
 
@@ -14,15 +14,12 @@ PROOF_PHOTO_BONUS = 1
 DAILY_TASK_COINS = 3
 DAILY_TASK_ALL_THREE_BONUS = 5
 
-# Тиры монет за достижения — разделены по "силе" достижения (см. DECISIONS.md, п.4)
-ACHIEVEMENT_COIN_TIERS = {
-    "first_habit": 20,
-    "first_friend": 20,
-    "streak_7": 50,
-    "first_goal_done": 50,
-    "streak_30": 100,
-    "checks_100": 100,
-}
+# Монеты за тир достижения (v6b) — bronze/silver/gold, см. DECISIONS.md, п.11.
+TIER_COINS = {"bronze": 20, "silver": 50, "gold": 100}
+
+# Достижения без тира (одиночные, появились до v6b) сохраняют старые
+# фиксированные суммы, чтобы их награда не изменилась ретроактивно.
+LEGACY_ACHIEVEMENT_COINS = {"first_habit": 20, "first_friend": 20, "checks_100": 100}
 
 TRUST_LOW_THRESHOLD = 40
 TRUST_HIGH_THRESHOLD = 80
@@ -62,5 +59,11 @@ def award_coins(db: Session, user: User, amount: int, apply_trust: bool = True, 
     return awarded
 
 
-def coins_for_achievement(code: str) -> int:
-    return ACHIEVEMENT_COIN_TIERS.get(code, 20)
+def coins_for_achievement(db: Session, code: str) -> int:
+    """Монеты по тиру достижения (bronze/silver/gold); для нетировых — старая фикс. сумма."""
+    from app.models import Achievement
+
+    achievement = db.exec(select(Achievement).where(Achievement.code == code)).first()
+    if achievement and achievement.tier:
+        return TIER_COINS.get(achievement.tier, 20)
+    return LEGACY_ACHIEVEMENT_COINS.get(code, 20)

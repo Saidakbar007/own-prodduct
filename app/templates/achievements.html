@@ -10,10 +10,16 @@
         {% for item in items %}
         <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center {{ '' if item.earned else 'opacity-50' }}">
             <p class="text-4xl mb-2 {{ '' if item.earned else 'grayscale' }}">{{ item.achievement.icon }}</p>
-            <p class="font-medium text-sm {{ 'text-[var(--text)]' if item.earned else 'text-[var(--muted)]' }}">
+            <p class="font-medium text-sm break-words {{ 'text-[var(--text)]' if item.earned else 'text-[var(--muted)]' }}">
                 {{ item.achievement.name }}
             </p>
-            <p class="text-xs text-[var(--muted)] mt-1">{{ item.achievement.description }}</p>
+            <p class="text-xs text-[var(--muted)] mt-1 break-words">{{ item.achievement.description }}</p>
+            {% if item.achievement.tier %}
+            <p class="text-[10px] font-mono uppercase tracking-widest mt-1
+                {{ 'rarity-legendary' if item.achievement.tier == 'gold' else ('rarity-rare' if item.achievement.tier == 'silver' else 'rarity-common') }}">
+                {{ {"bronze": "бронза", "silver": "серебро", "gold": "золото"}[item.achievement.tier] }}
+            </p>
+            {% endif %}
             {% if not item.earned %}
             <p class="text-xs text-[var(--line)] mt-1 flex items-center justify-center gap-1"><i data-lucide="lock" style="width:0.9em;height:0.9em;"></i> Не получено</p>
             {% endif %}
