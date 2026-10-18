@@ -47,7 +47,7 @@ from app.services.daily_tasks import get_or_create_today_tasks
 from app.services.pentagon import pentagon_chart
 from app.services.spheres import all_spheres_progress
 from app.services.progress import dream_progress_percent
-from app.services.game_assets import pet_image_url
+from app.services.game_assets import hero_image_url, pet_image_url
 from app.services.levels import level_progress
 from app.services.pets import PET_SPECIES, pet_profile
 
@@ -162,7 +162,8 @@ def index(request: Request, user=Depends(get_current_user), db: Session = Depend
     top_dream = db.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
     dream_progress = dream_progress_percent(db, top_dream) if top_dream else None
 
-    hero_level = level_progress(level.point if level else 0)["level"]
+    hero_progress = level_progress(level.point if level else 0)
+    hero_level = hero_progress["level"]
     pet = pet_profile(db, user, hero_level, best_streak_with_freeze_for_user(db, user))
     if pet["species"]:
         pet["image_url"] = pet_image_url(pet["species"], pet["stage"])
@@ -182,6 +183,7 @@ def index(request: Request, user=Depends(get_current_user), db: Session = Depend
             "at_risk_habits": habits_at_risk(db, user),
             "today": date.today(),
             "hero_chart": pentagon_chart(all_spheres_progress(db, user.id)),
+            "hero_image_url": hero_image_url(hero_progress["stage"]),
             "pet": pet,
             "pet_species_options": PET_SPECIES,
         },

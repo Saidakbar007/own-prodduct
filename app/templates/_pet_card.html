@@ -3,7 +3,7 @@
     <h2 class="font-medium mb-3 flex items-center gap-2"><i data-lucide="egg"></i> Питомец</h2>
     {% if pet.species %}
     <div class="flex items-center gap-3">
-        <img src="{{ pet.image_url }}" alt="{{ pet.species_name }}" style="width:64px;height:64px;" width="64" height="64">
+        <img src="{{ pet.image_url }}" alt="{{ pet.species_name }}" loading="lazy" style="width:64px;height:64px;" width="64" height="64">
         <div>
             <p class="font-medium">{{ pet.species_name }} {{ "😊" if pet.mood == "весело" else "😢" }}</p>
             <p class="text-xs text-[var(--muted)]">Стадия {{ pet.stage }}/5 · {{ pet.mood }}</p>

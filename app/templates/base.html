@@ -149,6 +149,13 @@
         .rarity-rare { color: var(--rarity-rare); }
         .rarity-epic { color: var(--rarity-epic); }
         .rarity-legendary { color: var(--rarity-legendary); }
+
+        /* Арт личностей по состоянию: дремлет — полупрозрачность,
+           спит — оттенки серого (v6c) */
+        .persona-img-dormant { opacity: 0.55; }
+        .persona-img-asleep { filter: grayscale(1) brightness(0.9); opacity: 0.8; }
+        /* Ведущая личность — мягкое свечение карточки акцентным цветом */
+        .persona-card-leading { box-shadow: 0 0 0 1px var(--accent), 0 0 20px 0 var(--accent-soft); }
     </style>
 </head>
 <body class="bg-[var(--bg)] text-[var(--text)] min-h-screen flex flex-col pb-16 sm:pb-0">

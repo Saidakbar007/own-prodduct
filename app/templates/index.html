@@ -16,7 +16,14 @@
 
     <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
         <p class="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] mb-4 text-center">Профиль героя</p>
-        {% with chart = hero_chart %}{% include "_pentagon_chart.html" %}{% endwith %}
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            {% if hero_image_url %}
+            <img src="{{ hero_image_url }}" alt="Герой" loading="lazy" class="shrink-0" style="width:140px;height:140px;object-fit:contain;" width="140" height="140">
+            {% endif %}
+            <div class="w-full max-w-[280px]">
+                {% with chart = hero_chart %}{% include "_pentagon_chart.html" %}{% endwith %}
+            </div>
+        </div>
     </div>
 
     {% include "_pet_card.html" %}
