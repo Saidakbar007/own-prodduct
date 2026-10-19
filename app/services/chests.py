@@ -78,15 +78,19 @@ def _apply_reward_for_rarity(db: Session, user: User, rarity: str) -> tuple[str,
     return "badge", "Легендарная воля 🛡️ (+150 XP, +30 монет)"
 
 
-def grant_chest(db: Session, user: User, week_start: date, habit_id: int = None) -> Chest:
+def grant_chest(db: Session, user: User, week_start: date, habit_id: int = None, forced_rarity: str = None) -> Chest:
     """
     Выдаёт сундук со случайной редкостью (с учётом trust и "гармонии") и
     применяет его награду. Используется и для недельной серии привычки,
-    и для победы над боссом (тогда habit_id=None).
+    и для победы над боссом (тогда habit_id=None). `forced_rarity` —
+    только для песочницы /admin/sandbox, пропускает случайный бросок.
     """
-    rarity = roll_chest_rarity(user.trust_score)
-    if has_harmony(db, user.id):
-        rarity = _bump_rarity(rarity)
+    if forced_rarity:
+        rarity = forced_rarity
+    else:
+        rarity = roll_chest_rarity(user.trust_score)
+        if has_harmony(db, user.id):
+            rarity = _bump_rarity(rarity)
 
     reward_type, reward_value = _apply_reward_for_rarity(db, user, rarity)
 

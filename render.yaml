@@ -12,3 +12,5 @@ services:
         generateValue: true
       - key: ANTHROPIC_API_KEY
         sync: false
+      - key: ADMIN_LOGINS
+        sync: false

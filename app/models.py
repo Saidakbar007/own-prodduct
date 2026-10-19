@@ -49,6 +49,7 @@ class User(SQLModel, table=True):
     equipped_title: Optional[str] = None  # код надетого титула (v6a)
     equipped_effect: Optional[str] = None  # код надетого эффекта отметки (v6a)
     freeze_stock: int = Field(default=0)  # запас купленных заморозок серии, максимум 2 (v6a)
+    is_test: bool = Field(default=False)  # помечен песочницей /admin/sandbox — исключён из рейтингов (v6d)
 
 
 class Habit(SQLModel, table=True):
@@ -422,3 +423,18 @@ class SeasonClaim(SQLModel, table=True):
     season_id: int = Field(foreign_key="seasons.id")
     step: int
     claimed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class SandboxSnapshot(SQLModel, table=True):
+    """
+    Снимок реального прогресса перед первой правкой в /admin/sandbox —
+    чтобы можно было вернуть аккаунт "как было" (v6d). Одна запись на
+    пользователя: повторные правки его не перезаписывают.
+    """
+
+    __tablename__ = "sandbox_snapshots"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", unique=True, index=True)
+    data: str  # JSON: level_point, sphere_xp (dict), coins, trust_score, pet {species, stage}
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

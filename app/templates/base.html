@@ -166,6 +166,13 @@
     {% include "_nav_guest.html" %}
     {% endif %}
 
+    {% if user and user.is_test %}
+    <div class="bg-[var(--coin-soft)] text-[var(--coin)] text-xs text-center py-1.5 flex items-center justify-center gap-1.5">
+        <i data-lucide="flask-conical" style="width:0.9em;height:0.9em;"></i>
+        Тестовый режим — прогресс изменён в песочнице, в рейтинги и подтверждения не попадает
+    </div>
+    {% endif %}
+
     <!-- Всплывающие уведомления -->
     {% if flashes %}
     <div class="fixed top-4 right-4 z-50 space-y-2 max-w-xs" id="toasts">

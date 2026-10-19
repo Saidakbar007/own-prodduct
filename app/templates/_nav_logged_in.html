@@ -23,6 +23,7 @@
                     <a href="/achievements" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="trophy"></i> Награды</a>
                     <a href="/coach" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="bot"></i> Коуч</a>
                     <a href="/profile" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="user-round"></i> Профиль</a>
+                    {% if is_admin %}<a href="/admin" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="shield"></i> Админка</a>{% endif %}
                     <div class="border-t border-[var(--line)] my-1"></div>
                     <div class="px-3 py-1 text-xs text-[var(--muted)]">Тема</div>
                     <button data-theme-option="light" class="w-full text-left px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="sun"></i> Светлая</button>
@@ -75,6 +76,7 @@
         <a href="/achievements" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="trophy"></i> Награды</a>
         <a href="/coach" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="bot"></i> Коуч</a>
         <a href="/profile" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="user-round"></i> Профиль</a>
+        {% if is_admin %}<a href="/admin" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="shield"></i> Админка</a>{% endif %}
         <div class="border-t border-[var(--line)] my-1"></div>
         <div class="px-4 py-1 text-xs text-[var(--muted)]">Тема</div>
         <button data-theme-option="light" class="w-full text-left px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="sun"></i> Светлая</button>

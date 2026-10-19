@@ -47,3 +47,16 @@ def require_user(request: Request, db: Session = Depends(get_session)) -> User:
     if not user:
         raise HTTPException(status_code=303, headers={"Location": "/login"})
     return user
+
+
+def require_admin(request: Request, db: Session = Depends(get_session)) -> User:
+    """
+    Зависимость для /admin/*: 404 (не 403 — не выдаём, что раздел вообще
+    есть), если пользователь не вошёл или не в ADMIN_LOGINS (v6d).
+    """
+    from app.services.admin import is_admin
+
+    user = get_current_user(request, db)
+    if not user or not is_admin(user):
+        raise HTTPException(status_code=404)
+    return user

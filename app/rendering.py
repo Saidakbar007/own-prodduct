@@ -10,6 +10,7 @@ from fastapi.templating import Jinja2Templates
 from sqlmodel import Session, select
 
 from app.models import Level, User
+from app.services.admin import is_admin
 from app.services.flash import pop_flashes
 from app.services.levels import level_progress
 
@@ -53,6 +54,7 @@ def render(
     if db is not None and user is not None:
         full_context.update(_xp_context(db, user))
 
+    full_context.setdefault("is_admin", is_admin(user))
     full_context["flashes"] = pop_flashes(request)
 
     return templates.TemplateResponse(request, name, full_context, status_code=status_code)
