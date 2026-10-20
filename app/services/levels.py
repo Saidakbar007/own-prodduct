@@ -36,6 +36,12 @@ def _build_thresholds() -> list[int]:
 _THRESHOLDS = _build_thresholds()
 
 
+def xp_threshold_for_level(level: int) -> int:
+    """Суммарный XP, нужный чтобы ДОСТИЧЬ уровня level (1 -> 0). Для /admin/sandbox."""
+    level = max(1, min(level, MAX_LEVEL))
+    return _THRESHOLDS[level - 1]
+
+
 def level_for_xp(total_xp: int) -> int:
     """Номер уровня (1-50) по суммарному накопленному XP."""
     total_xp = max(0, total_xp)

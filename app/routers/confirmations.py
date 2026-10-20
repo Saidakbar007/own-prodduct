@@ -75,8 +75,19 @@ def confirm_checkin(
 
     entry = db.get(HabitHistory, history_id)
     habit = db.get(Habit, entry.h_id) if entry else None
+    owner = db.get(User, habit.uid) if habit else None
 
-    if not entry or not habit or habit.uid == user.id or not _are_friends(db, habit.uid, user.id):
+    # Тестовый аккаунт (/admin/sandbox) не может ни подтверждать, ни быть
+    # подтверждённым — с обеих сторон (v6d, см. DECISIONS.md, п.19)
+    if (
+        not entry
+        or not habit
+        or not owner
+        or habit.uid == user.id
+        or user.is_test
+        or owner.is_test
+        or not _are_friends(db, habit.uid, user.id)
+    ):
         return render(
             request, "friends.html", _friends_context(db, user, "Нельзя подтвердить"), db=db, user=user, status_code=404
         )
@@ -168,7 +179,16 @@ def doubt_checkin(
     """Друг выражает сомнение ('правда?') — без начисления чего-либо."""
     entry = db.get(HabitHistory, history_id)
     habit = db.get(Habit, entry.h_id) if entry else None
-    if entry and habit and habit.uid != user.id and _are_friends(db, habit.uid, user.id):
+    owner = db.get(User, habit.uid) if habit else None
+    if (
+        entry
+        and habit
+        and owner
+        and habit.uid != user.id
+        and not user.is_test
+        and not owner.is_test
+        and _are_friends(db, habit.uid, user.id)
+    ):
         existing = db.exec(
             select(HabitConfirmation).where(
                 HabitConfirmation.history_id == history_id, HabitConfirmation.confirmer_uid == user.id

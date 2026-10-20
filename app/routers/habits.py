@@ -116,7 +116,11 @@ def best_streak_with_freeze_for_user(db: Session, user: User) -> int:
 
 def _habits_context(db: Session, user: User, error: str = None) -> dict:
     """Собирает данные для шаблона habits.html: привычки + streak + статус за сегодня."""
-    habits = db.exec(select(Habit).where(Habit.uid == user.id)).all()
+    from app.services.sandbox import SANDBOX_STREAK_HABIT_NAME
+
+    habits = db.exec(
+        select(Habit).where(Habit.uid == user.id, Habit.name != SANDBOX_STREAK_HABIT_NAME)
+    ).all()
     bonus_freezes = _bonus_freezes_for(db, user.id)
     habits_with_info = []
     for habit in habits:

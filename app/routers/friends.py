@@ -43,6 +43,11 @@ def _weekly_completion_percent(db: Session, uid: int) -> int:
     return round(sum(rates) / len(rates) * 100)
 
 
+def _is_test_account(db: Session, uid: int) -> bool:
+    user = db.get(User, uid)
+    return bool(user and user.is_test)
+
+
 def _friend_card(db: Session, user_id: int) -> dict:
     """Публичные данные о прогрессе пользователя: уровень + лучший streak + % за неделю."""
     friend_user = db.get(User, user_id)
@@ -107,6 +112,8 @@ def _friends_context(db: Session, user: User, error: str = None) -> dict:
         )
     ).all()
     friend_ids = [f.friend_id if f.uid == user.id else f.uid for f in accepted]
+    # Тестовые аккаунты (/admin/sandbox) не портят рейтинг реальных друзей (v6d, см. DECISIONS.md, п.19)
+    friend_ids = [fid for fid in friend_ids if not _is_test_account(db, fid)]
     friends = [_friend_card(db, fid) for fid in friend_ids]
 
     leaderboard = [_friend_card(db, user.id)] + friends

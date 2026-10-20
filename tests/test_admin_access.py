@@ -15,8 +15,16 @@ def test_admin_logins_parses_comma_separated(monkeypatch):
     assert admin_logins() == {"demo", "admin2", "boss"}
 
 
-def test_admin_logins_empty_when_unset(monkeypatch):
+def test_admin_logins_defaults_to_demo_in_local_dev_when_unset(monkeypatch):
     monkeypatch.delenv("ADMIN_LOGINS", raising=False)
+    monkeypatch.delenv("RENDER", raising=False)
+    assert admin_logins() == {"demo"}
+
+
+def test_admin_logins_empty_on_render_when_unset(monkeypatch):
+    """На проде (Render сам выставляет RENDER=true) дефолт на demo не срабатывает — нужен настоящий ADMIN_LOGINS."""
+    monkeypatch.delenv("ADMIN_LOGINS", raising=False)
+    monkeypatch.setenv("RENDER", "true")
     assert admin_logins() == set()
 
 

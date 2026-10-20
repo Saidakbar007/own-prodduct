@@ -149,7 +149,17 @@ def joinable_groups_for_user(db: Session, uid: int) -> list[BossGroup]:
         )
     ).all()
     my_group = active_group_for_user(db, uid)
-    return [g for g in groups if not my_group or g.id != my_group.id]
+    groups = [g for g in groups if not my_group or g.id != my_group.id]
+
+    # Группы, где все участники — тестовые аккаунты (/admin/sandbox), не
+    # затягивают реальных друзей в бой с "ненастоящим" HP-пулом (v6d, п.19).
+    real_groups = []
+    for group in groups:
+        member_uids = [m.uid for m in group_members(db, group.id)]
+        members = [db.get(User, m_uid) for m_uid in member_uids]
+        if any(m and not m.is_test for m in members):
+            real_groups.append(group)
+    return real_groups
 
 
 def deal_damage(db: Session, user: User, damage: int) -> BossGroup | None:
