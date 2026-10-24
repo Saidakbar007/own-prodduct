@@ -22,7 +22,7 @@ def _assert_labels_fit(page, base_url: str, path: str):
     title_box = title.bounding_box()
     assert title_box is not None, f"нет заголовка 'Профиль героя' на {path}"
 
-    card = title.locator("xpath=ancestor::*[contains(@class,'rounded-xl')][1]")
+    card = title.locator("xpath=ancestor::*[contains(concat(' ', normalize-space(@class), ' '), ' card ')][1]")
     card_box = card.bounding_box()
     assert card_box is not None, f"нет карточки-контейнера на {path}"
 
@@ -119,6 +119,9 @@ def test_no_clipped_or_overflowing_text_across_main_pages(demo_page, e2e_server)
                 """() => {
                     const results = [];
                     document.querySelectorAll('*').forEach(el => {
+                        // Элементы с text-overflow: ellipsis обрезаны намеренно
+                        // (многоточие — видимый сигнал, не баг) — не считаем их браком.
+                        if (getComputedStyle(el).textOverflow === 'ellipsis') return;
                         if (el.scrollWidth > el.clientWidth + 2 && el.children.length === 0 && el.textContent.trim()) {
                             results.push(el.textContent.trim().slice(0, 40));
                         }

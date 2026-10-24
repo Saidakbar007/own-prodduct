@@ -1,108 +1,76 @@
-<header class="bg-[var(--card)] border-b border-[var(--line)] text-[var(--text)] sticky top-0 z-20">
-    <nav class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-        <a href="/" class="font-display text-lg font-bold flex items-center gap-2 shrink-0 text-[var(--accent)]">
-            <i data-lucide="rocket"></i> <span class="hidden sm:inline">Моя жизнь</span>
+{# Мобильная навигация (<md): верхняя панель + нижняя панель из 5 пунктов.
+   На md+ экранах эта панель скрыта — там работает _sidebar.html #}
+<header class="md:hidden bg-[var(--bg-2)] border-b border-[var(--line)] text-[var(--text)] sticky top-0 z-20">
+    <nav class="px-4 py-3 flex items-center justify-between gap-3">
+        <a href="/" class="font-display text-base font-extrabold flex items-center gap-2 shrink-0">
+            <span class="w-6 h-6 rounded-lg bg-[var(--accent)] text-[var(--on-accent)] flex items-center justify-center shrink-0">
+                <i data-lucide="compass" style="width:0.9em;height:0.9em;"></i>
+            </span>
+            Моя жизнь
         </a>
 
-        <!-- Десктоп: компактное меню -->
-        <div class="hidden sm:flex items-center gap-1 text-sm font-medium">
-            <a href="/" class="px-3 py-2 rounded-lg hover:bg-[var(--sunken)] flex items-center gap-1.5"><i data-lucide="home"></i> Главная</a>
-            <a href="/habits" class="px-3 py-2 rounded-lg hover:bg-[var(--sunken)] flex items-center gap-1.5"><i data-lucide="list-checks"></i> Привычки</a>
-            <a href="/goals" class="px-3 py-2 rounded-lg hover:bg-[var(--sunken)] flex items-center gap-1.5"><i data-lucide="target"></i> Цели</a>
-            <a href="/friends" class="px-3 py-2 rounded-lg hover:bg-[var(--sunken)] flex items-center gap-1.5"><i data-lucide="users"></i> Друзья</a>
-
-            <div class="relative">
-                <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="px-3 py-2 rounded-lg hover:bg-[var(--sunken)] flex items-center gap-1.5">
-                    <i data-lucide="more-horizontal"></i> Ещё
-                </button>
-                <div class="more-menu absolute right-0 top-full mt-2 w-56 bg-[var(--card)] text-[var(--text)] rounded-xl shadow-lg border border-[var(--line)] py-1 text-sm">
-                    <a href="/stats" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="bar-chart-3"></i> Статистика</a>
-                    <a href="/hero" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="sparkles"></i> Герой</a>
-                    <a href="/shop" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="store"></i> Магазин</a>
-                    <a href="/boss" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="swords"></i> Босс недели</a>
-                    <a href="/achievements" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="trophy"></i> Награды</a>
-                    <a href="/coach" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="bot"></i> Коуч</a>
-                    <a href="/profile" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="user-round"></i> Профиль</a>
-                    {% if is_admin %}<a href="/admin" class="px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="shield"></i> Админка</a>{% endif %}
-                    <div class="border-t border-[var(--line)] my-1"></div>
-                    <div class="px-3 py-1 text-xs text-[var(--muted)]">Тема</div>
-                    <button data-theme-option="light" class="w-full text-left px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="sun"></i> Светлая</button>
-                    <button data-theme-option="dark" class="w-full text-left px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="moon"></i> Тёмная</button>
-                    <button data-theme-option="system" class="w-full text-left px-3 py-2 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="monitor"></i> Как в системе</button>
-                    <div class="border-t border-[var(--line)] my-1"></div>
-                    <a href="/logout" class="px-3 py-2 hover:bg-[var(--danger-soft)] text-[var(--danger)] flex items-center gap-2"><i data-lucide="log-out"></i> Выйти</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Мобайл: только лого + кнопка "Ещё" (разделы — в нижней панели) -->
-        <div class="sm:hidden relative">
-            <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="p-2 rounded-lg hover:bg-[var(--sunken)]" aria-label="Ещё">
+        <div class="relative">
+            <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="p-2 rounded-[var(--radius-sm)] hover:bg-[var(--hover)]" aria-label="Ещё">
                 <i data-lucide="more-horizontal"></i>
             </button>
         </div>
     </nav>
 
     {% if xp_level %}
-    <div class="max-w-5xl mx-auto px-4 pb-2">
+    <div class="px-4 pb-2">
         <div class="flex items-center justify-between text-xs text-[var(--muted)] mb-1 numeric">
             <span class="flex items-center gap-3">
                 <span class="flex items-center gap-1 text-[var(--accent)]"><i data-lucide="star"></i> Ур. {{ xp_hero_level }} · {{ xp_rank }}</span>
                 <span class="flex items-center gap-1 text-[var(--coin)]"><i data-lucide="coins" style="width:0.9em;height:0.9em;"></i> {{ user.coins }}</span>
             </span>
             {% if xp_for_next_level %}
-            <span>
-                {{ xp_into_level }}/{{ xp_for_next_level }} XP до ур. {{ xp_hero_level + 1 }}{% if xp_next_rank %} · «{{ xp_next_rank }}»{% endif %}
-            </span>
+            <span>{{ xp_into_level }}/{{ xp_for_next_level }} XP до ур. {{ xp_hero_level + 1 }}</span>
             {% else %}
-            <span class="flex items-center gap-1"><i data-lucide="trophy"></i> Максимальный уровень</span>
+            <span class="flex items-center gap-1"><i data-lucide="trophy"></i> Максимум</span>
             {% endif %}
         </div>
-        <div class="w-full bg-[var(--sunken)] rounded-full h-2">
-            <div class="bg-[var(--accent)] h-2 rounded-full transition-all" style="width: {{ xp_percent }}%"></div>
-        </div>
+        <div class="progress-track"><div class="progress-fill" style="width: {{ xp_percent }}%"></div></div>
     </div>
     {% endif %}
 </header>
 
-<!-- Мобильная версия меню "Ещё" — нижний лист (обёртка sm:hidden гарантирует,
-     что на десктопе этот блок скрыт независимо от своего open-состояния) -->
-<div class="sm:hidden">
-    <div class="more-menu fixed bottom-16 inset-x-3 bg-[var(--card)] text-[var(--text)] rounded-xl shadow-lg border border-[var(--line)] py-1 text-sm">
-        <a href="/stats" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="bar-chart-3"></i> Статистика</a>
-        <a href="/hero" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="sparkles"></i> Герой</a>
-        <a href="/shop" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="store"></i> Магазин</a>
-        <a href="/boss" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="swords"></i> Босс недели</a>
-        <a href="/achievements" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="trophy"></i> Награды</a>
-        <a href="/coach" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="bot"></i> Коуч</a>
-        <a href="/profile" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="user-round"></i> Профиль</a>
-        {% if is_admin %}<a href="/admin" class="px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="shield"></i> Админка</a>{% endif %}
+<!-- Мобильное меню "Ещё" — нижний лист -->
+<div class="md:hidden">
+    <div class="more-menu fixed bottom-16 inset-x-3 card py-1 text-sm shadow-lg">
+        <a href="/stats" class="px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="bar-chart-3"></i> Прогресс</a>
+        <a href="/hero" class="px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="sparkles"></i> Герой</a>
+        <a href="/shop" class="px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="store"></i> Магазин</a>
+        <a href="/boss" class="px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="swords"></i> Босс недели</a>
+        <a href="/achievements" class="px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="trophy"></i> Награды</a>
+        <a href="/coach" class="px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="bot"></i> Коуч</a>
+        <a href="/profile" class="px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="user-round"></i> Профиль</a>
+        {% if is_admin %}<a href="/admin" class="px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="shield"></i> Админка</a>{% endif %}
         <div class="border-t border-[var(--line)] my-1"></div>
-        <div class="px-4 py-1 text-xs text-[var(--muted)]">Тема</div>
-        <button data-theme-option="light" class="w-full text-left px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="sun"></i> Светлая</button>
-        <button data-theme-option="dark" class="w-full text-left px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="moon"></i> Тёмная</button>
-        <button data-theme-option="system" class="w-full text-left px-4 py-3 hover:bg-[var(--sunken)] flex items-center gap-2"><i data-lucide="monitor"></i> Как в системе</button>
+        <div class="px-4 py-1 text-xs text-[var(--faint)]">Тема</div>
+        <button data-theme-option="light" class="w-full text-left px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="sun"></i> Светлая</button>
+        <button data-theme-option="dark" class="w-full text-left px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="moon"></i> Тёмная</button>
+        <button data-theme-option="system" class="w-full text-left px-4 py-3 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="monitor"></i> Как в системе</button>
         <div class="border-t border-[var(--line)] my-1"></div>
         <a href="/logout" class="px-4 py-3 hover:bg-[var(--danger-soft)] text-[var(--danger)] flex items-center gap-2"><i data-lucide="log-out"></i> Выйти</a>
     </div>
 </div>
 
-<!-- Нижняя панель навигации — только на телефоне -->
-<nav class="sm:hidden fixed bottom-0 inset-x-0 z-20 bg-[var(--card)] border-t border-[var(--line)] grid grid-cols-5 text-[11px] text-[var(--muted)]"
+<!-- Нижняя панель навигации — только на телефоне/планшете -->
+<nav class="md:hidden fixed bottom-0 inset-x-0 z-20 bg-[var(--bg-2)] border-t border-[var(--line)] grid grid-cols-5 text-[11px] text-[var(--muted)]"
      style="padding-bottom: env(safe-area-inset-bottom);">
-    <a href="/" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-[var(--accent)]">
-        <i data-lucide="home"></i> Главная
+    <a href="/" class="flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] hover:text-[var(--accent)] {{ 'text-[var(--accent)]' if request.url.path == '/' }}">
+        <i data-lucide="home"></i> Обзор
     </a>
-    <a href="/habits" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-[var(--accent)]">
+    <a href="/habits" class="flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] hover:text-[var(--accent)] {{ 'text-[var(--accent)]' if request.url.path.startswith('/habits') }}">
         <i data-lucide="list-checks"></i> Привычки
     </a>
-    <a href="/goals" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-[var(--accent)]">
+    <a href="/goals" class="flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] hover:text-[var(--accent)] {{ 'text-[var(--accent)]' if request.url.path.startswith('/goals') }}">
         <i data-lucide="target"></i> Цели
     </a>
-    <a href="/friends" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-[var(--accent)]">
+    <a href="/friends" class="flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] hover:text-[var(--accent)] {{ 'text-[var(--accent)]' if request.url.path.startswith('/friends') }}">
         <i data-lucide="users"></i> Друзья
     </a>
-    <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="flex flex-col items-center justify-center gap-0.5 py-2 hover:text-[var(--accent)]">
+    <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] hover:text-[var(--accent)]">
         <i data-lucide="more-horizontal"></i> Ещё
     </button>
 </nav>

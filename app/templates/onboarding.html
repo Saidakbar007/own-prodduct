@@ -11,7 +11,7 @@
         {% endfor %}
     </div>
 
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-6 text-center">
+    <div class="card p-6 text-center">
         {% if step == 1 %}
         <i data-lucide="sparkles" class="mx-auto mb-3 text-[var(--accent)]" style="width:2.5rem;height:2.5rem;"></i>
         <h1 class="text-xl font-bold mb-2">Привет! Коротко расскажем, как это работает</h1>
@@ -19,7 +19,7 @@
             Мечта → Цель → Привычки. Отмечай привычки каждый день честно —
             получай очки, уровень растёт, а друзья видят твой прогресс.
         </p>
-        <a href="/onboarding/dream" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-[var(--accent)] text-white rounded-lg py-2.5 font-medium hover:opacity-90">
+        <a href="/onboarding/dream" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-[var(--accent)] text-[var(--on-accent)] rounded-lg py-2.5 font-medium hover:opacity-90">
             Начать <i data-lucide="arrow-right"></i>
         </a>
 
@@ -30,7 +30,7 @@
         <form method="post" action="/onboarding/dream" class="space-y-3 text-left">
             <input type="text" name="name" placeholder="Например: Стать здоровым и сильным"
                    class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-            <button type="submit" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-[var(--accent)] text-white rounded-lg py-2.5 font-medium hover:opacity-90">
+            <button type="submit" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-[var(--accent)] text-[var(--on-accent)] rounded-lg py-2.5 font-medium hover:opacity-90">
                 Далее <i data-lucide="arrow-right"></i>
             </button>
         </form>
@@ -42,7 +42,7 @@
         <form method="post" action="/onboarding/habit" class="space-y-3 text-left">
             <input type="text" name="name" placeholder="Например: Пить воду по утрам"
                    class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-            <button type="submit" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-[var(--accent)] text-white rounded-lg py-2.5 font-medium hover:opacity-90">
+            <button type="submit" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-[var(--accent)] text-[var(--on-accent)] rounded-lg py-2.5 font-medium hover:opacity-90">
                 Далее <i data-lucide="arrow-right"></i>
             </button>
         </form>
@@ -51,7 +51,7 @@
         <i data-lucide="party-popper" class="mx-auto mb-3 text-[var(--accent)]" style="width:2.5rem;height:2.5rem;"></i>
         <h1 class="text-xl font-bold mb-2">Готово!</h1>
         <p class="text-[var(--muted)] mb-6">Дальше — просто заходи каждый день и отмечай привычки.</p>
-        <a href="/" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-[var(--accent)] text-white rounded-lg py-2.5 font-medium hover:opacity-90">
+        <a href="/" class="btn-press w-full inline-flex items-center justify-center gap-2 bg-[var(--accent)] text-[var(--on-accent)] rounded-lg py-2.5 font-medium hover:opacity-90">
             Перейти в приложение <i data-lucide="arrow-right"></i>
         </a>
         {% endif %}

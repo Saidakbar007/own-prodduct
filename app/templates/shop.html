@@ -20,7 +20,7 @@
         <h2 class="font-medium mb-3">{{ slot.label }}</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {% for entry in slot.entries %}
-            <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 {{ 'opacity-60' if entry.level_locked else '' }}">
+            <div class="card p-4 {{ 'opacity-60' if entry.level_locked else '' }}">
                 <div class="flex items-center justify-between mb-1">
                     <p class="font-medium">{{ entry.item.name }}</p>
                     <span class="rarity-{{ entry.item.rarity }} text-xs font-mono uppercase tracking-widest flex items-center gap-0.5" title="{{ entry.rarity_label }}">
@@ -38,7 +38,7 @@
                 {% elif slot.code == "freeze" %}
                 <form method="post" action="/shop/buy/{{ entry.item.code }}">
                     <button type="submit" {{ 'disabled' if not entry.can_afford or user.freeze_stock >= 2 else '' }}
-                            class="btn-press w-full bg-[var(--accent)] text-white rounded-lg py-2 text-sm font-medium hover:opacity-90 disabled:opacity-40">
+                            class="btn-press w-full bg-[var(--accent)] text-[var(--on-accent)] rounded-lg py-2 text-sm font-medium hover:opacity-90 disabled:opacity-40">
                         Купить за {{ entry.item.price }} 🪙
                     </button>
                 </form>
@@ -53,7 +53,7 @@
                 {% else %}
                 <form method="post" action="/shop/buy/{{ entry.item.code }}">
                     <button type="submit" {{ 'disabled' if not entry.can_afford else '' }}
-                            class="btn-press w-full bg-[var(--accent)] text-white rounded-lg py-2 text-sm font-medium hover:opacity-90 disabled:opacity-40">
+                            class="btn-press w-full bg-[var(--accent)] text-[var(--on-accent)] rounded-lg py-2 text-sm font-medium hover:opacity-90 disabled:opacity-40">
                         Купить за {{ entry.item.price }} 🪙
                     </button>
                 </form>

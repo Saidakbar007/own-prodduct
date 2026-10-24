@@ -4,13 +4,13 @@
 
 {% block content %}
 <section class="max-w-3xl mx-auto space-y-6">
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-6 text-center">
+    <div class="card p-6 text-center">
         <img src="{{ hero_image_url }}" alt="Герой" loading="lazy" class="mx-auto mb-3" style="width:220px;height:220px;object-fit:contain;" width="220" height="220">
         <h1 class="text-xl font-bold">Ур. {{ hero_level }} · {{ hero_rank }}</h1>
         <p class="text-sm text-[var(--muted)]">Стадия героя {{ hero_stage }}/5</p>
     </div>
 
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <p class="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] mb-4 text-center">Профиль героя</p>
         {% with chart = hero_chart %}{% include "_pentagon_chart.html" %}{% endwith %}
     </div>
@@ -18,7 +18,7 @@
     {% include "_pet_card.html" %}
 
     {% if season %}
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <div class="flex items-center justify-between mb-1">
             <h2 class="font-medium flex items-center gap-2"><i data-lucide="calendar-range"></i> {{ season.name }}</h2>
             <span class="numeric text-sm text-[var(--muted)]">Ступень {{ season.step }}/{{ season.max_steps }}</span>
@@ -32,7 +32,7 @@
     {% endif %}
 
     {% if council %}
-    <div class="bg-[var(--card)] border border-[var(--accent)] rounded-xl p-4">
+    <div class="card border-[var(--accent)] p-4">
         <h2 class="font-medium mb-3 flex items-center gap-2"><i data-lucide="scroll-text"></i> Совет недели</h2>
         <ul class="space-y-2">
             {% for line in council %}
@@ -46,7 +46,7 @@
         <h2 class="font-medium mb-3 flex items-center gap-2"><i data-lucide="users"></i> Личности</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {% for p in personas %}
-            <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 {{ 'persona-card-leading' if p.is_leading else '' }}" data-persona="{{ p.sphere_code }}">
+            <div class="card p-4 {{ 'persona-card-leading' if p.is_leading else '' }}" data-persona="{{ p.sphere_code }}">
                 <div class="flex items-center gap-3 mb-2">
                     <img src="{{ p.image_url }}" alt="{{ p.persona_name }}" loading="lazy"
                          class="{{ 'persona-img-asleep' if p.state == 'спит' else ('persona-img-dormant' if p.state == 'дремлет' else '') }}"

@@ -34,64 +34,83 @@
     <!-- Lucide — единый набор иконок -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.js"></script>
 
-    <!-- Шрифты "игрового кодекса": заголовки/текст/цифры -->
+    <!-- Шрифты: Manrope — основной текст и заголовки, JetBrains Mono — цифры -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
     <!-- PWA -->
     <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#0E7C86">
+    <meta name="theme-color" content="#0B0D10">
     <link rel="apple-touch-icon" href="/static/icons/icon-192.png">
     <link rel="icon" href="/static/icons/icon-192.png">
 
     <style>
-        /* ===== Дизайн-токены "игрового кодекса" — светлая тема по умолчанию ===== */
+        /* =========================================================
+           Design tokens — светлая тема (по умолчанию, если система
+           пользователя светлая и он не выбрал тему вручную)
+           ========================================================= */
         :root {
-            --bg: #EDF1F3;
+            --bg: #F4F5F7;
+            --bg-2: #FFFFFF;
             --card: #FFFFFF;
-            --sunken: #E3E9EC;
-            --text: #13202A;
-            --muted: #566874;
-            --line: #D3DCE2;
-            --accent: #0E7C86;
-            --accent-soft: #D6EEF0;
-            --coin: #A9680A;
-            --coin-soft: #F6EAD6;
-            --rarity-common: #6B7782;
-            --rarity-rare: #13866F;
-            --rarity-epic: #9440C4;
-            --rarity-legendary: #C27407;
-            --success: #13866F;
-            --success-soft: #DCEEE8;
-            --danger: #B23B3B;
-            --danger-soft: #F7E3E1;
+            --sunken: #ECEEF1;
+            --hover: #E4E7EB;
+            --text: #12151A;
+            --muted: #5B6572;
+            --faint: #8A93A0;
+            --line: rgba(15, 20, 26, 0.09);
+            --accent: #17985F;
+            --accent-hover: #12824F;
+            --accent-soft: rgba(23, 152, 95, 0.10);
+            --on-accent: #FFFFFF;
+            --coin: #A86A12;
+            --coin-soft: rgba(168, 106, 18, 0.10);
+            --success: #1C8F58;
+            --success-soft: rgba(28, 143, 88, 0.10);
+            --danger: #C23B3B;
+            --danger-soft: rgba(194, 59, 59, 0.09);
+            --rarity-common: #6B7682;
+            --rarity-rare: #0E8C78;
+            --rarity-epic: #7B57C4;
+            --rarity-legendary: #A86A12;
+
+            --radius-sm: 9px;
+            --radius-md: 14px;
+            --radius-lg: 18px;
         }
 
-        /* ===== Тёмная тема ===== */
+        /* =========================================================
+           Design tokens — тёмная тема (флагманский вид продукта)
+           ========================================================= */
         html.dark {
-            --bg: #0C1318;
-            --card: #141D25;
-            --sunken: #0F171E;
-            --text: #E2EAEF;
-            --muted: #93A4B0;
-            --line: #25333F;
-            --accent: #3CC0C9;
-            --accent-soft: #12343A;
-            --coin: #E0A23A;
-            --coin-soft: #3A2B12;
-            --rarity-common: #93A0AC;
-            --rarity-rare: #25A88A;
-            --rarity-epic: #A876E0;
-            --rarity-legendary: #CC8C26;
-            --success: #25A88A;
-            --success-soft: #16332C;
-            --danger: #E08585;
-            --danger-soft: #3A2020;
+            --bg: #0B0D10;
+            --bg-2: #11151A;
+            --card: #171C22;
+            --sunken: #11151A;
+            --hover: #202730;
+            --text: #F5F7FA;
+            --muted: #929BA8;
+            --faint: #646E7B;
+            --line: rgba(255, 255, 255, 0.08);
+            --accent: #82E6B0;
+            --accent-hover: #A0F0C4;
+            --accent-soft: rgba(130, 230, 176, 0.10);
+            --on-accent: #0A1410;
+            --coin: #D7A33E;
+            --coin-soft: rgba(215, 163, 62, 0.12);
+            --success: #3FBE82;
+            --success-soft: rgba(63, 190, 130, 0.12);
+            --danger: #E5696D;
+            --danger-soft: rgba(229, 105, 109, 0.12);
+            --rarity-common: #8A93A0;
+            --rarity-rare: #4FC2AC;
+            --rarity-epic: #AF97E8;
+            --rarity-legendary: #D7A33E;
         }
 
-        body { font-family: 'Manrope', sans-serif; }
-        h1, h2, h3, .font-display { font-family: 'Unbounded', sans-serif; }
+        body { font-family: 'Manrope', system-ui, sans-serif; }
+        h1, h2, h3, .font-display { font-family: 'Manrope', system-ui, sans-serif; letter-spacing: -0.01em; }
 
         /* Мелкие подписи-"бровки": капс, моноширинный, разрядка, цвет акцента */
         .eyebrow {
@@ -109,42 +128,66 @@
             font-variant-numeric: tabular-nums;
         }
 
-        @keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fire-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-        @keyframes fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes chest-open {
-            0% { transform: scale(0.9) rotate(0deg); box-shadow: 0 0 0 0 currentColor; }
-            20% { transform: scale(1.02) rotate(-3deg); }
-            35% { transform: scale(1.02) rotate(3deg); }
-            50% { transform: scale(1.08) rotate(0deg); box-shadow: 0 0 18px 4px currentColor; }
-            100% { transform: scale(1) rotate(0deg); box-shadow: 0 0 0 0 currentColor; }
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+            @keyframes fire-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+            @keyframes fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+            @keyframes chest-open {
+                0% { transform: scale(0.9) rotate(0deg); box-shadow: 0 0 0 0 currentColor; }
+                20% { transform: scale(1.02) rotate(-3deg); }
+                35% { transform: scale(1.02) rotate(3deg); }
+                50% { transform: scale(1.06) rotate(0deg); box-shadow: 0 0 18px 4px currentColor; }
+                100% { transform: scale(1) rotate(0deg); box-shadow: 0 0 0 0 currentColor; }
+            }
+            .toast { animation: toast-in 0.25s ease-out; }
+            .chest-toast { animation: toast-in 0.25s ease-out, chest-open 0.7s ease-out 0.1s; border: 1px solid currentColor; }
+            .fire-pulse { animation: fire-pulse 1.6s ease-in-out infinite; display: inline-block; }
+            .fade-in { animation: fade-in 0.2s ease-out; }
+            * { transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease, transform 0.1s ease; }
         }
-        .toast { animation: toast-in 0.25s ease-out; }
-        .chest-toast { animation: toast-in 0.25s ease-out, chest-open 0.7s ease-out 0.1s; border: 2px solid currentColor; }
-        .fire-pulse { animation: fire-pulse 1.4s ease-in-out infinite; display: inline-block; }
-        .btn-press { transition: transform 0.1s ease, background-color 0.15s ease, opacity 0.15s ease; }
-        .btn-press:active { transform: scale(0.95); }
-        .fade-in { animation: fade-in 0.25s ease-out; }
-        * { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
+        }
 
+        .btn-press:active { transform: scale(0.97); }
         .more-menu { display: none; }
         .more-menu.open { display: block; }
         .theme-option-active { color: var(--accent) !important; }
-        /* Тосты всегда ниже выпадающего меню по z-index, чтобы не перекрывать и не
-           блокировать клики по его пунктам (оба живут в правом верхнем углу). */
-        #toasts { z-index: 40; }
+        #toasts { z-index: 60; }
         .more-menu { z-index: 50; }
         [data-lucide] { width: 1.1em; height: 1.1em; }
-        .btn-press[disabled] { opacity: 0.6; cursor: wait; }
+        .btn-press[disabled] { opacity: 0.55; cursor: wait; }
 
-        /* Карточки кодекса: тонкая рамка, radius 12px, без теней */
+        a, button, input, select, textarea { outline-color: var(--accent); }
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        /* Карточки: тонкая рамка, умеренный radius, без теней */
         .card {
             background: var(--card);
             border: 1px solid var(--line);
-            border-radius: 12px;
+            border-radius: var(--radius-md);
         }
 
-        /* Редкость (для будущих наград/привычек по сферам) */
+        /* Кнопки — единая система */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+            border-radius: var(--radius-sm); font-weight: 600; font-size: 0.875rem;
+            padding: 0.55rem 1.1rem; line-height: 1.2; white-space: nowrap;
+        }
+        .btn-primary { background: var(--accent); color: var(--on-accent); }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-secondary { background: var(--sunken); color: var(--text); border: 1px solid var(--line); }
+        .btn-secondary:hover { background: var(--hover); }
+        .btn-ghost { background: transparent; color: var(--muted); }
+        .btn-ghost:hover { background: var(--sunken); color: var(--text); }
+        .btn-danger { background: var(--danger-soft); color: var(--danger); border: 1px solid var(--line); }
+
+        .progress-track { width: 100%; background: var(--sunken); border-radius: 999px; height: 0.4rem; overflow: hidden; }
+        .progress-fill { background: var(--accent); height: 100%; border-radius: 999px; transition: width 0.4s ease; }
+
+        .chip { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 999px; }
+
+        /* Редкость (достижения/предметы) */
         .rarity-common { color: var(--rarity-common); }
         .rarity-rare { color: var(--rarity-rare); }
         .rarity-epic { color: var(--rarity-epic); }
@@ -154,11 +197,27 @@
            спит — оттенки серого (v6c) */
         .persona-img-dormant { opacity: 0.55; }
         .persona-img-asleep { filter: grayscale(1) brightness(0.9); opacity: 0.8; }
-        /* Ведущая личность — мягкое свечение карточки акцентным цветом */
-        .persona-card-leading { box-shadow: 0 0 0 1px var(--accent), 0 0 20px 0 var(--accent-soft); }
+        /* Ведущая личность — мягкое выделение карточки акцентным цветом */
+        .persona-card-leading { box-shadow: 0 0 0 1px var(--accent); }
+
+        /* ===== Desktop sidebar shell ===== */
+        .sidebar-link {
+            display: flex; align-items: center; gap: 0.65rem; padding: 0.55rem 0.75rem;
+            border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: var(--muted);
+        }
+        .sidebar-link:hover { background: var(--hover); color: var(--text); }
+        .sidebar-link.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+        .sidebar-section-label {
+            font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em;
+            font-size: 0.65rem; color: var(--faint); padding: 0 0.75rem; margin-top: 0.5rem;
+        }
     </style>
 </head>
-<body class="bg-[var(--bg)] text-[var(--text)] min-h-screen flex flex-col pb-16 sm:pb-0">
+<body class="bg-[var(--bg)] text-[var(--text)] min-h-screen">
+
+{% if user %}{% include "_sidebar.html" %}{% endif %}
+
+<div class="min-h-screen flex flex-col {{ 'md:pl-64' if user else '' }}">
 
     {% if user %}
     {% include "_nav_logged_in.html" %}
@@ -178,11 +237,11 @@
     <div class="fixed top-4 right-4 z-50 space-y-2 max-w-xs" id="toasts">
         {% for f in flashes %}
         {% if f.kind.startswith("chest-") %}
-        <div class="toast chest-toast rarity-{{ f.kind.split('-')[1] }} bg-[var(--card)] rounded-lg px-4 py-3 text-sm font-medium">
+        <div class="toast chest-toast rarity-{{ f.kind.split('-')[1] }} card px-4 py-3 text-sm font-medium">
             {{ f.message }}
         </div>
         {% else %}
-        <div class="toast bg-[var(--card)] border border-[var(--accent)] rounded-lg px-4 py-3 text-sm">
+        <div class="toast card border-[var(--accent)] px-4 py-3 text-sm">
             {{ f.message }}
         </div>
         {% endif %}
@@ -197,65 +256,66 @@
     {% endif %}
 
     <!-- Основной контент страницы -->
-    <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6 fade-in">
+    <main class="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 fade-in {% if user %}pb-24 md:pb-10{% endif %}" style="max-width: {{ '1180px' if user else 'none' }};">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="text-center text-xs text-[var(--muted)] py-4 {% if user %}hidden sm:block{% endif %}">
+    <footer class="text-center text-xs text-[var(--faint)] py-4 {% if user %}hidden md:block{% endif %}">
         Учебный проект · MVP
     </footer>
+</div>
 
-    {% block scripts %}{% endblock %}
+{% block scripts %}{% endblock %}
 
-    <script>
-        // Иконки Lucide
-        if (window.lucide) { lucide.createIcons(); }
+<script>
+    // Иконки Lucide
+    if (window.lucide) { lucide.createIcons(); }
 
-        // Переключатель темы (светлая / тёмная / как в системе)
-        function setTheme(pref) {
-            localStorage.setItem('theme', pref);
-            window.__applyTheme(pref);
-            document.querySelectorAll('[data-theme-option]').forEach(function (el) {
-                el.classList.toggle('theme-option-active', el.getAttribute('data-theme-option') === pref);
-            });
-            document.dispatchEvent(new CustomEvent('theme-changed'));
+    // Переключатель темы (светлая / тёмная / как в системе)
+    function setTheme(pref) {
+        localStorage.setItem('theme', pref);
+        window.__applyTheme(pref);
+        document.querySelectorAll('[data-theme-option]').forEach(function (el) {
+            el.classList.toggle('theme-option-active', el.getAttribute('data-theme-option') === pref);
+        });
+        document.dispatchEvent(new CustomEvent('theme-changed'));
+        document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.remove('open'); });
+    }
+    document.querySelectorAll('[data-theme-option]').forEach(function (el) {
+        el.addEventListener('click', function () { setTheme(el.getAttribute('data-theme-option')); });
+    });
+
+    // Меню "Ещё"
+    function toggleMoreMenu() {
+        document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.toggle('open'); });
+    }
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.more-menu') && !e.target.closest('[data-more-toggle]')) {
             document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.remove('open'); });
         }
-        document.querySelectorAll('[data-theme-option]').forEach(function (el) {
-            el.addEventListener('click', function () { setTheme(el.getAttribute('data-theme-option')); });
-        });
-
-        // Меню "Ещё"
-        function toggleMoreMenu() {
-            document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.toggle('open'); });
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.remove('open'); });
         }
-        document.addEventListener('click', function (e) {
-            if (!e.target.closest('.more-menu') && !e.target.closest('[data-more-toggle]')) {
-                document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.remove('open'); });
+    });
+
+    // Состояние загрузки: блокируем кнопку при отправке формы, чтобы не было повторных кликов
+    document.querySelectorAll('form').forEach(function (form) {
+        form.addEventListener('submit', function () {
+            var btn = form.querySelector('button[type="submit"]');
+            if (btn && !btn.disabled) {
+                btn.dataset.originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<span class="inline-block animate-spin">⏳</span> ' + (btn.dataset.loadingText || 'Секунду...');
             }
         });
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' || e.key === 'Esc') {
-                document.querySelectorAll('.more-menu').forEach(function (el) { el.classList.remove('open'); });
-            }
-        });
+    });
 
-        // Состояние загрузки: блокируем кнопку при отправке формы, чтобы не было повторных кликов
-        document.querySelectorAll('form').forEach(function (form) {
-            form.addEventListener('submit', function () {
-                var btn = form.querySelector('button[type="submit"]');
-                if (btn && !btn.disabled) {
-                    btn.dataset.originalText = btn.innerHTML;
-                    btn.disabled = true;
-                    btn.innerHTML = '<span class="inline-block animate-spin">⏳</span> ' + (btn.dataset.loadingText || 'Секунду...');
-                }
-            });
-        });
-
-        // PWA: регистрируем service worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/static/sw.js').catch(function () {});
-        }
-    </script>
+    // PWA: регистрируем service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/static/sw.js').catch(function () {});
+    }
+</script>
 </body>
 </html>

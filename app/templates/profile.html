@@ -3,7 +3,7 @@
 {% block title %}Профиль — Моя жизнь{% endblock %}
 
 {% block content %}
-<section class="max-w-md mx-auto bg-[var(--card)] rounded-xl border border-[var(--line)] p-6 mt-8">
+<section class="max-w-md mx-auto card p-6 mt-8">
     <h1 class="text-xl font-bold mb-1 flex items-center gap-2"><i data-lucide="user-round"></i> Профиль: {{ user.login }}</h1>
     <p class="text-xs font-mono uppercase tracking-widest text-[var(--accent)] mb-3">{{ persona_title }}</p>
     <p class="text-sm mb-4">
@@ -47,8 +47,7 @@
             </select>
         </div>
 
-        <button type="submit"
-                class="w-full bg-[var(--accent)] text-white rounded-lg py-2.5 font-medium hover:opacity-90">
+        <button type="submit" class="btn btn-primary btn-press w-full" style="padding:0.65rem 1rem;">
             Сохранить
         </button>
     </form>
@@ -61,9 +60,8 @@
         {% if can_change_timezone %}
         <form method="post" action="/profile/timezone" class="flex gap-2">
             <input type="text" name="timezone" value="{{ user.timezone }}"
-                   class="flex-1 border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2 text-sm">
-            <button type="submit"
-                    class="btn-press bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-4 py-2 text-sm font-medium hover:opacity-90">
+                   class="flex-1 min-w-0 border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2 text-sm">
+            <button type="submit" class="btn btn-secondary btn-press">
                 Изменить
             </button>
         </form>

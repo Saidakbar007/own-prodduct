@@ -13,19 +13,19 @@
     <div class="bg-[var(--danger-soft)] text-[var(--danger)] text-sm rounded-lg px-3 py-2 flex items-center gap-2"><i data-lucide="alert-triangle" class="shrink-0" style="width:1em;height:1em;"></i> {{ error }}</div>
     {% endif %}
 
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium mb-3">Найти друга по логину</h2>
         <form method="post" action="/friends/request" class="flex gap-2">
             <input type="text" name="login" placeholder="Логин" required
-                   class="flex-1 border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-            <button type="submit" class="bg-[var(--accent)] text-white rounded-lg px-4 py-2 hover:opacity-90">
+                   class="flex-1 min-w-0 border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
+            <button type="submit" class="btn btn-primary btn-press">
                 Отправить заявку
             </button>
         </form>
     </div>
 
     {% if incoming %}
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium mb-3">Входящие заявки</h2>
         <ul class="space-y-2">
             {% for req in incoming %}
@@ -33,10 +33,10 @@
                 <span>Заявка #{{ req.id }}</span>
                 <span class="flex gap-2">
                     <form method="post" action="/friends/{{ req.id }}/accept">
-                        <button class="bg-[var(--success)] text-white rounded-lg px-3 py-1.5 hover:opacity-90">Принять</button>
+                        <button class="btn btn-press" style="background:var(--success);color:var(--on-accent);">Принять</button>
                     </form>
                     <form method="post" action="/friends/{{ req.id }}/decline">
-                        <button class="bg-[var(--sunken)] rounded-lg px-3 py-1.5 hover:bg-[var(--line)]">Отклонить</button>
+                        <button class="btn btn-secondary btn-press">Отклонить</button>
                     </form>
                 </span>
             </li>
@@ -46,7 +46,7 @@
     {% endif %}
 
     {% if outgoing %}
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium mb-3">Исходящие заявки (ожидают ответа)</h2>
         <ul class="text-sm text-[var(--muted)] space-y-1">
             {% for req in outgoing %}
@@ -56,7 +56,7 @@
     </div>
     {% endif %}
 
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium mb-3">Мои друзья</h2>
         <ul class="space-y-2">
             {% for f in friends %}
@@ -79,7 +79,7 @@
     </div>
 
     {% if friends %}
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium mb-3 flex items-center gap-1.5"><i data-lucide="trophy"></i> Рейтинг за неделю</h2>
         <ul class="space-y-2">
             {% for c in leaderboard %}
@@ -96,7 +96,7 @@
     {% endif %}
 
     {% if feed %}
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium mb-3 flex items-center gap-1.5"><i data-lucide="megaphone"></i> Лента друзей</h2>
         <ul class="space-y-3">
             {% for item in feed %}
@@ -106,22 +106,27 @@
                     <span class="text-[var(--muted)]">{{ item.entry.time.strftime("%d.%m %H:%M") }}</span>
                 </p>
                 {% if item.entry.proof_path %}
-                <img src="/{{ item.entry.proof_path }}" class="mt-1 max-h-32 rounded-lg border border-[var(--line)]">
-                {% endif %}
-                {% if item.my_status == "confirmed" %}
-                <span class="text-[var(--success)] text-xs flex items-center gap-1"><i data-lucide="check" style="width:0.9em;height:0.9em;"></i> Ты подтвердил</span>
-                {% elif item.my_status == "doubted" %}
-                <span class="text-[var(--coin)] text-xs flex items-center gap-1"><i data-lucide="help-circle" style="width:0.9em;height:0.9em;"></i> Ты усомнился</span>
+                <span class="chip bg-[var(--accent-soft)] text-[var(--accent)] mt-1.5"><i data-lucide="image" style="width:0.8em;height:0.8em;"></i> С фото-доказательством</span>
+                <img src="/{{ item.entry.proof_path }}" class="mt-1.5 max-h-32 rounded-[var(--radius-sm)] border border-[var(--line)]">
                 {% else %}
-                <span class="flex gap-2 mt-1">
+                <span class="chip bg-[var(--sunken)] text-[var(--faint)] mt-1.5"><i data-lucide="user" style="width:0.8em;height:0.8em;"></i> Без доказательства — на честном слове</span>
+                {% endif %}
+                <div class="mt-1.5">
+                {% if item.my_status == "confirmed" %}
+                <span class="chip bg-[var(--success-soft)] text-[var(--success)]"><i data-lucide="check" style="width:0.85em;height:0.85em;"></i> Ты подтвердил</span>
+                {% elif item.my_status == "doubted" %}
+                <span class="chip bg-[var(--coin-soft)] text-[var(--coin)]"><i data-lucide="help-circle" style="width:0.85em;height:0.85em;"></i> Ты усомнился</span>
+                {% else %}
+                <span class="flex gap-2">
                     <form method="post" action="/confirmations/{{ item.entry.id }}/confirm">
-                        <button class="btn-press bg-[var(--success)] text-white text-xs rounded-lg px-3 py-1 hover:opacity-90 flex items-center gap-1"><i data-lucide="check" style="width:0.9em;height:0.9em;"></i> Подтвердить</button>
+                        <button class="btn btn-press" style="background:var(--success);color:var(--on-accent);padding:0.3rem 0.7rem;font-size:0.78rem;"><i data-lucide="check" style="width:0.85em;height:0.85em;"></i> Подтвердить</button>
                     </form>
                     <form method="post" action="/confirmations/{{ item.entry.id }}/doubt">
-                        <button class="btn-press bg-[var(--card)] border border-[var(--line)] text-xs rounded-lg px-3 py-1 hover:bg-[var(--sunken)] flex items-center gap-1"><i data-lucide="help-circle" style="width:0.9em;height:0.9em;"></i> Правда?</button>
+                        <button class="btn btn-secondary btn-press" style="padding:0.3rem 0.7rem;font-size:0.78rem;"><i data-lucide="help-circle" style="width:0.85em;height:0.85em;"></i> Правда?</button>
                     </form>
                 </span>
                 {% endif %}
+                </div>
             </li>
             {% endfor %}
         </ul>

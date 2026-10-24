@@ -16,7 +16,7 @@
     </p>
 
     <!-- Пресеты -->
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 space-y-3">
+    <div class="card p-4 space-y-3">
         <h2 class="font-semibold text-sm">Пресеты</h2>
         <div class="flex flex-wrap gap-2">
             {% for preset in presets %}
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Основная форма -->
-    <form method="post" action="/admin/sandbox/apply" class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 space-y-4">
+    <form method="post" action="/admin/sandbox/apply" class="card p-4 space-y-4">
         <div>
             <label class="text-sm font-medium flex justify-between"><span>Общий уровень героя</span><span id="hero-level-val" class="numeric">{{ hero_level }}</span></label>
             <input type="range" name="hero_level" min="1" max="50" value="{{ hero_level }}" oninput="document.getElementById('hero-level-val').textContent=this.value" class="w-full">
@@ -86,11 +86,11 @@
             </div>
         </div>
 
-        <button type="submit" class="btn-press w-full bg-[var(--accent)] text-white rounded-lg py-2.5 text-sm font-medium">Применить</button>
+        <button type="submit" class="btn-press w-full bg-[var(--accent)] text-[var(--on-accent)] rounded-lg py-2.5 text-sm font-medium">Применить</button>
     </form>
 
     <!-- Действия -->
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 space-y-3">
+    <div class="card p-4 space-y-3">
         <h2 class="font-semibold text-sm">Действия</h2>
         <div class="flex flex-wrap gap-2">
             <form method="post" action="/admin/sandbox/grant-items">

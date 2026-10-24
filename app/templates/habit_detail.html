@@ -6,7 +6,7 @@
 <section class="max-w-2xl mx-auto">
     <a href="/habits" class="text-sm text-[var(--accent)] flex items-center gap-1 w-fit"><i data-lucide="arrow-left"></i> Все привычки</a>
 
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-5 mt-3">
+    <div class="card p-5 mt-3">
         <h1 class="text-xl font-bold mb-1 flex items-center gap-2">
             <i data-lucide="{{ 'ban' if habit.habit_type == 'harmful' else 'check' }}"></i> {{ habit.name }}
         </h1>
@@ -14,17 +14,29 @@
         <p class="text-[var(--muted)] mb-3">{{ habit.description }}</p>
         {% endif %}
 
-        <p class="text-sm text-[var(--muted)] mb-1 flex items-center gap-1 flex-wrap">
+        <p class="text-sm text-[var(--muted)] mb-3 flex items-center gap-1 flex-wrap">
             <span class="{{ 'fire-pulse' if streak > 0 else '' }} flex items-center"><i data-lucide="flame" style="width:0.9em;height:0.9em;"></i></span>
-            Серия: <b>{{ streak }}</b> {{ "день" if streak == 1 else "дней" }} подряд
-            · <i data-lucide="snowflake" style="width:0.9em;height:0.9em;"></i> заморозок осталось: <b>{{ freezes_left }}/2</b> на этой неделе
+            Серия: <b class="text-[var(--text)]">{{ streak }}</b> {{ "день" if streak == 1 else "дней" }} подряд
+            · <i data-lucide="snowflake" style="width:0.9em;height:0.9em;"></i> заморозок осталось: <b class="text-[var(--text)]">{{ freezes_left }}/2</b> на этой неделе
         </p>
+
+        {% if days %}
+        <div class="flex items-center gap-1.5 mb-4" aria-label="Последние 7 дней">
+            {% for day in days[-7:] %}
+            <div class="flex-1 text-center">
+                <div title="{{ day.date }}"
+                     class="aspect-square rounded-[var(--radius-sm)] mb-1 {{ 'bg-[var(--success)]' if day.kind == 'done' else ('bg-[var(--coin)]' if day.kind == 'skip' else 'bg-[var(--hover)]') }}"></div>
+                <span class="text-[10px] text-[var(--faint)] numeric">{{ day.date.strftime('%d.%m') }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
         {% if adaptive_suggestion %}
         <div class="bg-[var(--coin-soft)] border border-[var(--coin)] rounded-xl p-4 my-4">
             <p class="text-sm text-[var(--coin)] mb-2 flex items-start gap-2"><i data-lucide="life-buoy" class="shrink-0 mt-0.5"></i> {{ adaptive_suggestion }}</p>
             <form method="post" action="/habits/{{ habit.id }}/adaptive-plan/apply">
-                <button type="submit" class="btn-press bg-[var(--coin)] text-white rounded-lg px-4 py-2 text-sm hover:opacity-90">
+                <button type="submit" class="btn-press bg-[var(--coin)] text-[var(--on-accent)] rounded-lg px-4 py-2 text-sm hover:opacity-90">
                     Перейти на 3 дня в неделю
                 </button>
             </form>
@@ -47,19 +59,16 @@
             </div>
             {% endif %}
             <div class="flex gap-2 flex-wrap">
-                <button type="submit" name="kind" value="done"
-                        class="btn-press bg-[var(--accent)] text-white text-base px-6 py-4 rounded-2xl font-bold hover:opacity-90 shadow-lg flex items-center gap-2">
+                <button type="submit" name="kind" value="done" class="btn btn-primary btn-press" style="padding:0.7rem 1.3rem;font-size:0.95rem;">
                     <i data-lucide="{{ 'shield-check' if habit.habit_type == 'harmful' else 'check' }}"></i>
                     {{ "Не сорвался" if habit.habit_type == "harmful" else "Выполнено полностью" }}
                 </button>
                 {% if habit.minimal_description %}
-                <button type="submit" name="kind" value="minimal"
-                        class="btn-press bg-[var(--card)] border border-[var(--accent)] text-[var(--accent)] text-sm px-4 py-4 rounded-2xl font-medium hover:bg-[var(--accent-soft)] flex items-center gap-2">
+                <button type="submit" name="kind" value="minimal" class="btn btn-press" style="background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent);">
                     <i data-lucide="battery-low"></i> На плохой день: {{ habit.minimal_description }}
                 </button>
                 {% endif %}
-                <button type="submit" name="kind" value="skip"
-                        class="btn-press bg-[var(--card)] border border-[var(--line)] text-[var(--muted)] text-sm px-4 py-4 rounded-2xl font-medium hover:bg-[var(--sunken)] flex items-center gap-2">
+                <button type="submit" name="kind" value="skip" class="btn btn-secondary btn-press">
                     <i data-lucide="hand"></i> Не сделал (честно) +2
                 </button>
             </div>
@@ -70,13 +79,13 @@
         <div class="grid grid-cols-10 gap-1.5 sm:gap-2 mb-2">
             {% for day in days %}
             <div title="{{ day.date }}"
-                 class="aspect-square rounded-sm {{ 'bg-[var(--success)]' if day.kind == 'done' else ('bg-[var(--coin)]/70' if day.kind == 'skip' else 'bg-[var(--sunken)]') }}"></div>
+                 class="aspect-square rounded-sm {{ 'bg-[var(--success)]' if day.kind == 'done' else ('bg-[var(--coin)]' if day.kind == 'skip' else 'bg-[var(--hover)]') }}"></div>
             {% endfor %}
         </div>
         <p class="text-xs text-[var(--muted)] mb-6 flex items-center gap-3">
             <span class="flex items-center gap-1"><span class="inline-block w-2.5 h-2.5 rounded-sm bg-[var(--success)]"></span> выполнено</span>
-            <span class="flex items-center gap-1"><span class="inline-block w-2.5 h-2.5 rounded-sm bg-[var(--coin)]/70"></span> честный пропуск</span>
-            <span class="flex items-center gap-1"><span class="inline-block w-2.5 h-2.5 rounded-sm bg-[var(--sunken)]"></span> пусто</span>
+            <span class="flex items-center gap-1"><span class="inline-block w-2.5 h-2.5 rounded-sm bg-[var(--coin)]"></span> честный пропуск</span>
+            <span class="flex items-center gap-1"><span class="inline-block w-2.5 h-2.5 rounded-sm bg-[var(--hover)]"></span> пусто</span>
         </p>
 
         {% if user.freeze_stock > 0 and missed_days %}
@@ -94,7 +103,7 @@
         {% endif %}
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="border border-[var(--line)] rounded-xl p-4">
+            <div class="card p-4">
                 <h2 class="font-medium text-sm mb-2 flex items-center gap-1.5"><i data-lucide="dices"></i> Ставка</h2>
                 {% if active_bet %}
                 <p class="text-sm text-[var(--muted)]">
@@ -108,7 +117,7 @@
                         <input type="number" name="target_days" placeholder="Дней подряд" min="1" required
                                class="border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2 text-sm">
                     </div>
-                    <button type="submit" class="btn-press bg-[var(--coin)] text-white rounded-lg px-4 py-2 text-sm w-full hover:opacity-90">
+                    <button type="submit" class="btn-press bg-[var(--coin)] text-[var(--on-accent)] rounded-lg px-4 py-2 text-sm w-full hover:opacity-90">
                         Поставить (×2 при выигрыше)
                     </button>
                 </form>
@@ -125,7 +134,7 @@
                 {% endif %}
             </div>
 
-            <div class="border border-[var(--line)] rounded-xl p-4">
+            <div class="card p-4">
                 <h2 class="font-medium text-sm mb-2 flex items-center gap-1.5"><i data-lucide="handshake"></i> Напарник</h2>
                 {% if partnership and partnership.status == "active" %}
                 <p class="text-sm text-[var(--muted)] flex items-center gap-1">
@@ -140,7 +149,7 @@
                 <form method="post" action="/habits/{{ habit.id }}/partnership" class="space-y-2 mt-2">
                     <input type="text" name="friend_login" placeholder="Логин друга" required
                            class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2 text-sm">
-                    <button type="submit" class="btn-press bg-[var(--accent)] text-white rounded-lg px-4 py-2 text-sm w-full hover:opacity-90">
+                    <button type="submit" class="btn-press bg-[var(--accent)] text-[var(--on-accent)] rounded-lg px-4 py-2 text-sm w-full hover:opacity-90">
                         Предложить
                     </button>
                 </form>

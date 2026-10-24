@@ -8,7 +8,7 @@
 
     <div class="space-y-3">
         {% for p in incoming %}
-        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+        <div class="card p-4">
             <p class="text-sm text-[var(--muted)] mb-2">Предложение #{{ p.id }} — выбери свою привычку для общей серии</p>
             <form method="post" action="/partnerships/{{ p.id }}/accept" class="flex gap-2 mb-2">
                 <select name="habit_id" required class="flex-1 border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2 text-sm">
@@ -16,7 +16,7 @@
                     <option value="{{ h.id }}">{{ h.name }}</option>
                     {% endfor %}
                 </select>
-                <button type="submit" class="btn-press bg-[var(--success)] text-white rounded-lg px-4 py-2 text-sm hover:opacity-90">
+                <button type="submit" class="btn-press bg-[var(--success)] text-[var(--on-accent)] rounded-lg px-4 py-2 text-sm hover:opacity-90">
                     Принять
                 </button>
             </form>
@@ -25,7 +25,7 @@
             </form>
         </div>
         {% else %}
-        <div class="bg-[var(--card)] border border-dashed border-[var(--line)] rounded-xl p-8 text-center">
+        <div class="card border-dashed p-8 text-center">
             <i data-lucide="handshake" class="mx-auto mb-2 text-[var(--muted)]" style="width:2rem;height:2rem;"></i>
             <p class="text-[var(--muted)] text-sm">Пока нет предложений напарника</p>
         </div>

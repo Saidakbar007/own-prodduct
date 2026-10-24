@@ -4,7 +4,7 @@
 
 {% block content %}
 <section class="max-w-2xl mx-auto space-y-6">
-    <div class="bg-[var(--card)] rounded-xl border border-[var(--line)] p-6 text-center">
+    <div class="card p-6 text-center">
         <p class="text-[var(--muted)] text-sm">Твой уровень</p>
         <h1 class="text-3xl font-bold text-[var(--accent)] mb-2">Ур. {{ hero_level }} · {{ hero_rank }}</h1>
         <p class="text-[var(--muted)] mb-4"><span class="numeric">{{ level.point }}</span> XP всего</p>
@@ -23,25 +23,25 @@
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center">
+        <div class="card p-4 text-center">
             <p class="text-2xl font-bold text-[var(--accent)] flex items-center justify-center gap-1 numeric"><i data-lucide="flame"></i> {{ cards.best_streak }}</p>
             <p class="text-xs text-[var(--muted)] mt-1">Лучшая серия</p>
         </div>
-        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center">
+        <div class="card p-4 text-center">
             <p class="text-2xl font-bold text-[var(--accent)] numeric">{{ cards.total_checks }}</p>
             <p class="text-xs text-[var(--muted)] mt-1">Всего отметок</p>
         </div>
-        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center">
+        <div class="card p-4 text-center">
             <p class="text-2xl font-bold text-[var(--accent)] numeric">{{ cards.goals_completed }}</p>
             <p class="text-xs text-[var(--muted)] mt-1">Целей выполнено</p>
         </div>
-        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4 text-center">
+        <div class="card p-4 text-center">
             <p class="text-2xl font-bold text-[var(--accent)] numeric">{{ cards.week_completion_percent }}%</p>
             <p class="text-xs text-[var(--muted)] mt-1">Выполнение за неделю</p>
         </div>
     </div>
 
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium text-sm mb-3 flex items-center gap-1.5"><i data-lucide="calendar-days"></i> Ты месяц назад vs сейчас</h2>
         <div class="grid grid-cols-2 gap-4 text-center">
             <div>
@@ -55,12 +55,12 @@
         </div>
     </div>
 
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium text-sm mb-3">Отметки привычек за 30 дней</h2>
         <canvas id="checksChart" height="100"></canvas>
     </div>
 
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium text-sm mb-3">Очки по неделям</h2>
         <canvas id="pointsChart" height="100"></canvas>
     </div>
@@ -78,10 +78,10 @@
     function chartColors() {
         var dark = document.documentElement.classList.contains('dark');
         return {
-            text: dark ? '#93A4B0' : '#566874',
-            grid: dark ? 'rgba(37,51,63,0.6)' : 'rgba(211,220,226,0.6)',
-            accent: dark ? '#3CC0C9' : '#0E7C86',
-            coin: dark ? '#E0A23A' : '#A9680A'
+            text: dark ? '#929BA8' : '#5B6572',
+            grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(15,20,26,0.08)',
+            accent: dark ? '#82E6B0' : '#17985F',
+            coin: dark ? '#D7A33E' : '#A86A12'
         };
     }
 

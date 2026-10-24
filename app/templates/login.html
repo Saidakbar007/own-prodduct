@@ -3,7 +3,7 @@
 {% block title %}Вход — Моя жизнь{% endblock %}
 
 {% block content %}
-<section class="max-w-md mx-auto bg-[var(--card)] rounded-xl border border-[var(--line)] p-6 mt-8">
+<section class="max-w-md mx-auto card p-6 mt-8">
     <h1 class="text-xl font-bold mb-4">Вход</h1>
 
     {% if error %}
@@ -25,8 +25,7 @@
                    class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
         </div>
 
-        <button type="submit"
-                class="w-full bg-[var(--accent)] text-white rounded-lg py-2.5 font-medium hover:opacity-90">
+        <button type="submit" class="btn btn-primary btn-press w-full" style="padding:0.65rem 1rem;">
             Войти
         </button>
     </form>

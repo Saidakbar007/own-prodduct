@@ -28,7 +28,7 @@
     {% for tab in gallery.tabs %}
     <div id="gpanel-{{ tab.code }}" class="gallery-panel grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         {% for entry in tab.entries %}
-        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-3">
+        <div class="card p-3">
             {% if entry.image_url %}
             <button type="button" onclick="openGalleryPreview('{{ entry.image_url }}', '{{ entry.label | e }}')"
                     class="gallery-thumb-bg w-full aspect-square rounded-lg flex items-center justify-center mb-2 overflow-hidden">
@@ -53,7 +53,7 @@
 
     <!-- Крупный просмотр -->
     <div id="gallery-preview-overlay" class="fixed inset-0 bg-black/70 z-50 items-center justify-center p-6" style="display:none;" onclick="closeGalleryPreview()">
-        <div class="bg-[var(--card)] rounded-xl p-4 max-w-lg w-full" onclick="event.stopPropagation()">
+        <div class="card p-4 max-w-lg w-full" onclick="event.stopPropagation()">
             <img id="gallery-preview-img" src="" alt="" style="width:100%;max-height:70vh;object-fit:contain;">
             <p id="gallery-preview-label" class="text-sm text-center mt-2 text-[var(--text)]"></p>
             <button type="button" onclick="closeGalleryPreview()" class="btn-press w-full mt-2 bg-[var(--sunken)] border border-[var(--line)] rounded-lg py-2 text-sm">Закрыть</button>
@@ -63,7 +63,7 @@
 
 <style>
     .gallery-tab-btn, .gallery-bg-btn { color: var(--muted); background: var(--sunken); }
-    .gallery-tab-btn.active, .gallery-bg-btn.active { color: #fff; background: var(--accent); border-color: var(--accent); }
+    .gallery-tab-btn.active, .gallery-bg-btn.active { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
     .gallery-panel { display: none; }
     .gallery-panel.active { display: grid; }
     .gallery-thumb-bg.bg-light { background: #EDF1F3; }

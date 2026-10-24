@@ -12,25 +12,26 @@
 
     <div class="space-y-4 mb-6">
         {% for item in dreams %}
-        <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
-            <p class="font-bold text-[var(--accent)] flex items-center gap-1.5"><i data-lucide="moon-star"></i> {{ item.dream.name }}</p>
+        <div class="card p-4 sm:p-5">
+            <div class="flex items-center justify-between mb-1">
+                <p class="font-bold text-[var(--text)] flex items-center gap-1.5"><i data-lucide="moon-star" class="text-[var(--accent)]"></i> {{ item.dream.name }}</p>
+                <span class="numeric text-sm font-semibold text-[var(--accent)]">{{ item.progress }}%</span>
+            </div>
             {% if item.dream.description %}
             <p class="text-sm text-[var(--muted)] mb-2">{{ item.dream.description }}</p>
             {% endif %}
 
-            <div class="w-full bg-[var(--sunken)] rounded-full h-2 mb-3">
-                <div class="bg-[var(--accent)] h-2 rounded-full transition-all" style="width: {{ item.progress }}%"></div>
-            </div>
+            <div class="progress-track mb-3"><div class="progress-fill" style="width: {{ item.progress }}%"></div></div>
 
-            <ul class="space-y-1 mb-3 ml-4">
+            <ul class="space-y-1.5 mb-3">
                 {% for c in item.children %}
-                <li class="text-sm flex items-center justify-between">
-                    <a href="/goals/{{ c.goal.id }}" class="hover:text-[var(--accent)] flex items-center gap-1.5">
-                        <i data-lucide="{{ 'check-circle-2' if c.goal.status == 'completed' else 'target' }}" style="width:0.95em;height:0.95em;"></i>
-                        {{ c.goal.name }}
-                        {% if c.goal.deadline %}<span class="text-[var(--muted)]">(до {{ c.goal.deadline }})</span>{% endif %}
+                <li class="text-sm flex items-center justify-between gap-2 py-1 border-t border-[var(--line)] first:border-0 first:pt-0">
+                    <a href="/goals/{{ c.goal.id }}" class="hover:text-[var(--accent)] flex items-center gap-1.5 min-w-0">
+                        <i data-lucide="{{ 'check-circle-2' if c.goal.status == 'completed' else 'target' }}" style="width:0.95em;height:0.95em;" class="shrink-0 {{ 'text-[var(--success)]' if c.goal.status == 'completed' else 'text-[var(--faint)]' }}"></i>
+                        <span class="truncate">{{ c.goal.name }}</span>
+                        {% if c.goal.deadline %}<span class="text-[var(--muted)] text-xs shrink-0">(до {{ c.goal.deadline }})</span>{% endif %}
                     </a>
-                    <span class="text-[var(--muted)] text-xs">{{ c.progress }}%</span>
+                    <span class="text-[var(--muted)] text-xs numeric shrink-0">{{ c.progress }}%</span>
                 </li>
                 {% else %}
                 <li class="text-sm text-[var(--muted)]">Пока нет целей к этой мечте</li>
@@ -65,14 +66,14 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="btn-press bg-[var(--accent)] text-white rounded-lg px-4 py-2 hover:opacity-90">
+                    <button type="submit" class="btn btn-primary btn-press">
                         Добавить цель
                     </button>
                 </form>
             </details>
         </div>
         {% else %}
-        <div class="bg-[var(--card)] border border-dashed border-[var(--line)] rounded-xl p-8 text-center">
+        <div class="card border-dashed p-8 text-center">
             <i data-lucide="moon-star" class="mx-auto mb-2 text-[var(--muted)]" style="width:2rem;height:2rem;"></i>
             <p class="text-[var(--muted)] mb-1">Пока нет мечт</p>
             <p class="text-[var(--muted)] text-sm">Добавь первую ниже — например, «Стать здоровым и сильным»</p>
@@ -80,7 +81,7 @@
         {% endfor %}
     </div>
 
-    <div class="bg-[var(--card)] border border-[var(--line)] rounded-xl p-4">
+    <div class="card p-4">
         <h2 class="font-medium mb-3">Новая мечта</h2>
         <form method="post" action="/goals" class="space-y-3">
             <div>
@@ -93,8 +94,7 @@
                 <input type="text" name="description" placeholder="Расскажи, почему это важно для тебя"
                        class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
             </div>
-            <button type="submit"
-                    class="btn-press w-full bg-[var(--accent)] text-white rounded-lg py-2.5 font-medium hover:opacity-90">
+            <button type="submit" class="btn btn-primary btn-press w-full" style="padding:0.65rem 1rem;">
                 Добавить мечту
             </button>
         </form>

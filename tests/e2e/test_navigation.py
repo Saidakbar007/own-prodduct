@@ -25,18 +25,13 @@ def test_desktop_nav_links_navigate(demo_page, e2e_server):
     demo_page.wait_for_url(re.compile(r".*/friends"))
 
 
-def test_more_menu_opens_and_item_click_navigates(demo_page, e2e_server):
+def test_sidebar_link_navigates_on_desktop(demo_page, e2e_server):
+    """На md+ ширине вторичные разделы — прямые ссылки в сайдбаре, без меню "Ещё"."""
     demo_page.set_viewport_size({"width": 1280, "height": 900})
     demo_page.goto(e2e_server)
 
-    toggle = demo_page.locator("[data-more-toggle]").first
-    toggle.click()
-
-    menu = demo_page.locator(".more-menu.open").first
-    menu.wait_for(state="visible", timeout=3000)
-
-    stats_link = menu.locator('a[href="/stats"]').first
-    stats_link.click()
+    sidebar = demo_page.locator("aside").first
+    sidebar.locator('a[href="/stats"]').first.click()
     demo_page.wait_for_url(re.compile(r".*/stats"))
 
 
@@ -107,10 +102,12 @@ def test_bottom_nav_more_opens_sheet_at_375(demo_page, e2e_server):
     demo_page.wait_for_url(re.compile(r".*/profile"))
 
 
-def test_more_menu_clickable_while_flash_toast_visible(demo_page, e2e_server):
+def test_sidebar_clickable_while_flash_toast_visible(demo_page, e2e_server):
     """
-    Баг: тост (+X очков) и меню "Ещё" оба в правом верхнем углу — тост
-    мог визуально перекрыть и заблокировать клики по пунктам меню.
+    Баг (до перехода на сайдбар): тост (+X очков) и меню "Ещё" оба были в
+    правом верхнем углу — тост мог перекрыть и заблокировать клики по меню.
+    Теперь на md+ ширине проверяем, что тост не блокирует прямые ссылки
+    сайдбара (он слева, а не в верхнем углу).
     """
     demo_page.set_viewport_size({"width": 1280, "height": 900})
     demo_page.goto(f"{e2e_server}/habits")
@@ -128,11 +125,8 @@ def test_more_menu_clickable_while_flash_toast_visible(demo_page, e2e_server):
     toast = demo_page.locator("#toasts")
     assert toast.is_visible()
 
-    demo_page.locator("[data-more-toggle]").first.click()
-    menu = demo_page.locator(".more-menu.open:visible").first
-    menu.wait_for(state="visible", timeout=3000)
-
-    menu.locator('a[href="/stats"]').first.click(timeout=3000)
+    sidebar = demo_page.locator("aside").first
+    sidebar.locator('a[href="/stats"]').first.click(timeout=3000)
     demo_page.wait_for_url(re.compile(r".*/stats"))
 
 

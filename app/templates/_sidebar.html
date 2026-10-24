@@ -1,0 +1,61 @@
+{# Боковая навигация — только на md+ экранах. На мобильных её заменяют
+   верхняя панель и нижняя навигация из _nav_logged_in.html #}
+<aside class="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:left-0 md:w-64 border-r border-[var(--line)] bg-[var(--bg-2)] z-30">
+    <a href="/" class="flex items-center gap-2 px-5 h-16 shrink-0 font-display text-base font-extrabold text-[var(--text)]">
+        <span class="w-7 h-7 rounded-lg bg-[var(--accent)] text-[var(--on-accent)] flex items-center justify-center shrink-0">
+            <i data-lucide="compass" style="width:1em;height:1em;"></i>
+        </span>
+        Моя жизнь
+    </a>
+
+    <nav class="flex-1 overflow-y-auto px-3 pb-4 space-y-0.5">
+        {% set p = request.url.path %}
+        <a href="/" class="sidebar-link {{ 'active' if p == '/' }}"><i data-lucide="home"></i> Обзор</a>
+        <a href="/goals" class="sidebar-link {{ 'active' if p.startswith('/goals') }}"><i data-lucide="target"></i> Мои цели</a>
+        <a href="/habits" class="sidebar-link {{ 'active' if p.startswith('/habits') }}"><i data-lucide="list-checks"></i> Привычки</a>
+        <a href="/boss" class="sidebar-link {{ 'active' if p.startswith('/boss') }}"><i data-lucide="swords"></i> Босс недели</a>
+        <a href="/stats" class="sidebar-link {{ 'active' if p.startswith('/stats') }}"><i data-lucide="bar-chart-3"></i> Прогресс</a>
+        <a href="/friends" class="sidebar-link {{ 'active' if p.startswith('/friends') or p.startswith('/confirmations') }}"><i data-lucide="users"></i> Друзья</a>
+
+        <p class="sidebar-section-label">Герой</p>
+        <a href="/hero" class="sidebar-link {{ 'active' if p.startswith('/hero') }}"><i data-lucide="sparkles"></i> Герой и личности</a>
+        <a href="/achievements" class="sidebar-link {{ 'active' if p.startswith('/achievements') }}"><i data-lucide="trophy"></i> Награды</a>
+        <a href="/shop" class="sidebar-link {{ 'active' if p.startswith('/shop') }}"><i data-lucide="store"></i> Магазин</a>
+        <a href="/coach" class="sidebar-link {{ 'active' if p.startswith('/coach') }}"><i data-lucide="bot"></i> AI-коуч</a>
+
+        {% if is_admin %}
+        <p class="sidebar-section-label">Админ</p>
+        <a href="/admin" class="sidebar-link {{ 'active' if p.startswith('/admin') }}"><i data-lucide="shield"></i> Админка</a>
+        {% endif %}
+    </nav>
+
+    <div class="border-t border-[var(--line)] p-3 space-y-2">
+        {% if xp_level %}
+        <a href="/stats" class="block px-2 py-1.5 rounded-[var(--radius-sm)] hover:bg-[var(--hover)]">
+            <div class="flex items-center justify-between text-xs mb-1">
+                <span class="flex items-center gap-1 font-semibold text-[var(--text)]"><i data-lucide="star" style="width:0.9em;height:0.9em;" class="text-[var(--accent)]"></i> Ур. {{ xp_hero_level }} · {{ xp_rank }}</span>
+                <span class="flex items-center gap-1 text-[var(--coin)] numeric"><i data-lucide="coins" style="width:0.85em;height:0.85em;"></i>{{ user.coins }}</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width: {{ xp_percent }}%"></div></div>
+        </a>
+        {% endif %}
+        <div class="flex items-center gap-1 px-1">
+            <a href="/profile" class="sidebar-link flex-1 {{ 'active' if p.startswith('/profile') }}" style="padding-left:0.5rem;padding-right:0.5rem;">
+                <i data-lucide="user-round"></i> {{ user.login }}
+            </a>
+            <div class="relative">
+                <button type="button" data-more-toggle onclick="toggleMoreMenu()" class="p-2 rounded-[var(--radius-sm)] hover:bg-[var(--hover)] text-[var(--muted)]" aria-label="Тема и выход">
+                    <i data-lucide="sun-moon"></i>
+                </button>
+                <div class="more-menu absolute left-0 bottom-full mb-2 w-48 card py-1 text-sm shadow-lg">
+                    <div class="px-3 py-1 text-xs text-[var(--faint)]">Тема</div>
+                    <button data-theme-option="light" class="w-full text-left px-3 py-2 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="sun"></i> Светлая</button>
+                    <button data-theme-option="dark" class="w-full text-left px-3 py-2 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="moon"></i> Тёмная</button>
+                    <button data-theme-option="system" class="w-full text-left px-3 py-2 hover:bg-[var(--hover)] flex items-center gap-2"><i data-lucide="monitor"></i> Как в системе</button>
+                    <div class="border-t border-[var(--line)] my-1"></div>
+                    <a href="/logout" class="px-3 py-2 hover:bg-[var(--danger-soft)] text-[var(--danger)] flex items-center gap-2"><i data-lucide="log-out"></i> Выйти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
