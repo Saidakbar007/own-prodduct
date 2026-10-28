@@ -1,0 +1,51 @@
+id: muscle_gain
+version: 1
+title: "Сезон: набор мышц для новичка"
+title_uz: "Mavsum: yangi boshlovchi uchun mushak oʻsishi"
+category: fitness
+metric: { name: "Рабочий вес в приседе (5 повторений)", unit: "кг", direction: up }
+lengths: [90]
+target_default: 20
+baseline_test:
+  prompt: "Какой у тебя сейчас рабочий вес в приседе на 5 повторений (в кг)? Если не приседал(а) с отягощением — укажи 0"
+  input: number
+  min: 0
+  max: 200
+eligibility:
+  min_age: 18
+  warnings:
+    - "При болях в спине или коленях — сначала проконсультируйся с врачом или тренером"
+schedule: { train_days: [1, 3, 5], minutes: [40, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Фулбоди — техника"
+        instructions: "Присед с весом тела 3×12, отжимания 3×10, тяга резины к поясу 3×12, планка 3×30 сек. Между упражнениями отдых 60–90 сек."
+        minimal: "1 круг упражнений в половину объёма"
+        expected_progress: 0.3
+  - phase: 2
+    unlock_if_baseline_gte: 20
+    days:
+      - title: "Фулбоди — прогрессия повторений"
+        instructions: "Присед с отягощением 4×8, жим лёжа или отжимания с весом 4×8, тяга в наклоне 4×8, подъём на носки 3×15. Отдых 90 сек."
+        minimal: "2 рабочих упражнения вместо 4"
+        expected_progress: 0.4
+  - phase: 3
+    unlock_if_baseline_gte: 50
+    days:
+      - title: "Фулбоди — прогрессия веса"
+        instructions: "Присед 5×5 с ростом рабочего веса, жим лёжа 5×5, тяга штанги в наклоне 4×6, подъём на носки 3×15. Отдых 2 минуты между базовыми упражнениями."
+        minimal: "Присед 3×5 и одно дополнительное упражнение"
+        expected_progress: 0.5
+rest_day:
+  title: "День восстановления"
+  instructions: "Лёгкая растяжка 15 минут или прогулка; сон 7–9 часов особенно важен в этом сезоне"
+measure_every_days: 7
+measure:
+  prompt: "Какой у тебя рабочий вес в приседе на 5 повторений сегодня (в кг)?"
+  proof: optional
+  progress_photo: true
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2
