@@ -1,0 +1,36 @@
+{
+  "common.app_name": "Сезоны",
+
+  "auth.register_title": "Регистрация",
+  "auth.login_title": "Вход",
+  "auth.name_label": "Имя",
+  "auth.birth_year_label": "Год рождения",
+  "auth.age_confirm_label": "Мне есть 18 лет",
+  "auth.email_label": "Почта",
+  "auth.login_label": "Логин",
+  "auth.password_label": "Пароль",
+  "auth.password_confirm_label": "Повтори пароль",
+  "auth.submit_register": "Создать аккаунт",
+  "auth.submit_login": "Войти",
+  "auth.have_account": "Уже есть аккаунт?",
+  "auth.no_account": "Ещё нет аккаунта?",
+  "auth.go_login": "Войти",
+  "auth.go_register": "Зарегистрироваться",
+  "auth.error_age_confirm": "Подтверди, что тебе есть 18 лет",
+  "auth.error_age_limit": "Регистрация доступна только с 18 лет",
+  "auth.error_password_mismatch": "Пароли не совпадают",
+  "auth.error_taken": "Эта почта или логин уже используются",
+  "auth.error_invalid_credentials": "Неверный логин или пароль",
+  "auth.welcome_flash": "Добро пожаловать в Сезоны",
+
+  "home.guest_subtitle": "Личный челлендж на 30, 60 или 90 дней: одно действие в день, честный прогресс, Reveal в финале.",
+  "home.cta_register": "Начать сезон",
+  "home.cta_login": "У меня есть аккаунт",
+  "home.logged_greeting": "Привет, {name}",
+  "home.placeholder_notice": "Экраны сезона появятся в следующей фазе — пока здесь просто каркас.",
+  "home.logout": "Выйти",
+
+  "not_found.title": "Страница не найдена",
+  "not_found.body": "Такой страницы нет.",
+  "not_found.home_link": "На главную"
+}

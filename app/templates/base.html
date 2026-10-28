@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="{{ lang }}" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{% block title %}{{ t('common.app_name') }}{% endblock %}</title>
+<link rel="stylesheet" href="/design/tokens.css" />
+<link rel="stylesheet" href="/design/base.css" />
+<link rel="stylesheet" href="/design/components.css" />
+<link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+
+{% if flashes %}
+<div class="flash-stack">
+  {% for f in flashes %}
+  <span class="toast {% if f.kind == 'success' %}toast--success{% elif f.kind == 'error' %}toast--error{% endif %}">{{ t(f.message) }}</span>
+  {% endfor %}
+</div>
+{% endif %}
+
+<main class="page">
+  {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

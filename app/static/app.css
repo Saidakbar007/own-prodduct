@@ -1,0 +1,105 @@
+/* Минимальные стили для форм и каркасных страниц — поверх design/ (дизайн-система
+   описывает компоненты продукта, а не HTML-формы напрямую). */
+
+.page {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-5) var(--space-16);
+  min-height: 100dvh;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.field label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.field input {
+  min-height: var(--touch-min);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--text-base);
+  font-family: var(--font-body);
+}
+.field input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+.checkbox-field input {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.form-error {
+  color: var(--status-missed);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+}
+
+.auth-card {
+  padding: var(--space-6);
+  margin-top: var(--space-8);
+}
+.auth-switch {
+  text-align: center;
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.flash-stack {
+  position: fixed;
+  top: var(--space-4);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+}
+
+.home-hero {
+  text-align: center;
+  padding: var(--space-16) 0 var(--space-6);
+}
+.home-hero h1 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-3);
+}
+.home-hero p {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+.home-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+.placeholder-notice {
+  margin-top: var(--space-10);
+  text-align: center;
+  color: var(--text-faint);
+  font-size: var(--text-xs);
+}

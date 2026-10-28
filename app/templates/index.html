@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user %}
+  <div class="home-hero">
+    <h1>{{ t('home.logged_greeting', name=user.name) }}</h1>
+  </div>
+  <p class="placeholder-notice">{{ t('home.placeholder_notice') }}</p>
+  <div class="home-actions">
+    <a class="btn btn--secondary btn--block" href="/logout">{{ t('home.logout') }}</a>
+  </div>
+{% else %}
+  <div class="home-hero">
+    <h1>{{ t('common.app_name') }}</h1>
+    <p>{{ t('home.guest_subtitle') }}</p>
+  </div>
+  <div class="home-actions">
+    <a class="btn btn--primary btn--block" href="/register">{{ t('home.cta_register') }}</a>
+    <a class="btn btn--secondary btn--block" href="/login">{{ t('home.cta_login') }}</a>
+  </div>
+{% endif %}
+{% endblock %}

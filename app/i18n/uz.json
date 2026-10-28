@@ -1,0 +1,36 @@
+{
+  "common.app_name": "Mavsumlar",
+
+  "auth.register_title": "Roʻyxatdan oʻtish",
+  "auth.login_title": "Kirish",
+  "auth.name_label": "Ism",
+  "auth.birth_year_label": "Tugʻilgan yil",
+  "auth.age_confirm_label": "Menga 18 yosh toʻldi",
+  "auth.email_label": "Pochta",
+  "auth.login_label": "Login",
+  "auth.password_label": "Parol",
+  "auth.password_confirm_label": "Parolni takrorlang",
+  "auth.submit_register": "Hisob yaratish",
+  "auth.submit_login": "Kirish",
+  "auth.have_account": "Hisobingiz bormi?",
+  "auth.no_account": "Hisobingiz yoʻqmi?",
+  "auth.go_login": "Kirish",
+  "auth.go_register": "Roʻyxatdan oʻtish",
+  "auth.error_age_confirm": "18 yoshga toʻlganingizni tasdiqlang",
+  "auth.error_age_limit": "Roʻyxatdan oʻtish faqat 18 yoshdan boshlab",
+  "auth.error_password_mismatch": "Parollar mos kelmadi",
+  "auth.error_taken": "Bu pochta yoki login band",
+  "auth.error_invalid_credentials": "Login yoki parol notoʻgʻri",
+  "auth.welcome_flash": "Mavsumlarga xush kelibsiz",
+
+  "home.guest_subtitle": "30, 60 yoki 90 kunlik shaxsiy challenge: har kuni bitta harakat, halol progress, yakunida Reveal.",
+  "home.cta_register": "Mavsumni boshlash",
+  "home.cta_login": "Hisobim bor",
+  "home.logged_greeting": "Salom, {name}",
+  "home.placeholder_notice": "Mavsum ekranlari keyingi bosqichda paydo boʻladi — hozircha bu shunchaki karkas.",
+  "home.logout": "Chiqish",
+
+  "not_found.title": "Sahifa topilmadi",
+  "not_found.body": "Bunday sahifa yoʻq.",
+  "not_found.home_link": "Bosh sahifaga"
+}
