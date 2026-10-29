@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="home-hero" style="padding-top:var(--space-8)">
+  <h1>{{ t('onboarding.baseline_title') }}</h1>
+</div>
+
+{% if error %}<p class="form-error">{{ t(error) }}</p>{% endif %}
+
+<form method="post" action="/onboarding/baseline" class="card" style="padding:var(--space-6)">
+  <div class="field">
+    <label for="value">{{ template.baseline_test.prompt }}</label>
+    <input id="value" name="value" type="number" step="0.1" min="{{ template.baseline_test.min }}" max="{{ template.baseline_test.max }}" required />
+  </div>
+  <button class="btn btn--primary btn--block" type="submit">{{ t('onboarding.continue') }}</button>
+</form>
+{% endblock %}

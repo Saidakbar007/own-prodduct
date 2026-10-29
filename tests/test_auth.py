@@ -20,10 +20,12 @@ def _register_payload(unique: str, **overrides):
     return payload
 
 
-def test_register_success_logs_in_and_shows_greeting(client, unique):
+def test_register_success_logs_in_and_lands_on_onboarding(client, unique):
+    # Без черновика онбординга (прямой POST /register) — "/" ведёт на "/today",
+    # а там без активного сезона — на "/onboarding" (выбор цели).
     resp = client.post("/register", data=_register_payload(unique), follow_redirects=True)
     assert resp.status_code == 200
-    assert "Тест Тестов" in resp.text
+    assert "Какой у тебя будет сезон" in resp.text
 
 
 def test_register_without_age_confirm_is_rejected(client, unique):
@@ -75,7 +77,7 @@ def test_login_success_and_logout(client, unique):
         data={"login": payload["login"], "password": payload["password"]},
         follow_redirects=True,
     )
-    assert payload["name"] in login_resp.text
+    assert "Какой у тебя будет сезон" in login_resp.text
 
     client.get("/logout")
     home = client.get("/")

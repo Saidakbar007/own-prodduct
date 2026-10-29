@@ -1,0 +1,60 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('measure.title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'season' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('measure.title') }}</h1>
+</div>
+
+{% if not result %}
+<form method="post" action="/measure" enctype="multipart/form-data" class="card" style="padding:var(--space-6)">
+  <div class="field">
+    <label for="value">{{ template.measure.prompt }}</label>
+    <input id="value" name="value" type="number" step="0.1" required />
+  </div>
+  {% if season.secondary_metric_name %}
+  <div class="field">
+    <label for="secondary_value">{{ season.secondary_metric_name }} ({{ season.secondary_metric_unit }})</label>
+    <input id="secondary_value" name="secondary_value" type="number" step="0.1" />
+  </div>
+  {% endif %}
+  {% if template.measure.proof != 'optional' or template.measure.progress_photo %}
+  <div class="field">
+    <label for="photo">{{ t('measure.photo_label') }}</label>
+    <input id="photo" name="photo" type="file" accept="image/*" capture="environment" />
+  </div>
+  {% endif %}
+  <button class="btn btn--primary btn--block" type="submit">{{ t('measure.submit') }}</button>
+</form>
+{% else %}
+
+{% include "_mascot.html" %}
+
+<div class="card measure-tile" style="margin-bottom:var(--space-5)">
+  <div class="measure-tile__top">
+    <div><span class="measure-tile__value tabular">{{ result.value }}</span><span class="measure-tile__unit"> {{ season.metric_unit }}</span></div>
+    <span class="measure-tile__delta">{{ t('measure.expected_was', value=result.expected) }}</span>
+  </div>
+  {% if not result.plausible %}
+  <p style="font-size:var(--text-xs);color:var(--status-missed)">{{ t('measure.implausible_notice') }}</p>
+  {% endif %}
+</div>
+
+{% if result.suggested_phase != result.current_phase %}
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <h3 style="margin-bottom:var(--space-3)">{{ t('measure.adapt_title') }}</h3>
+  <p style="color:var(--text-muted);font-size:var(--text-sm);margin-bottom:var(--space-4)">
+    {% if result.suggested_phase > result.current_phase %}{{ t('measure.adapt_up') }}{% else %}{{ t('measure.adapt_down') }}{% endif %}
+  </p>
+  <form method="post" action="/measure/adapt" style="display:flex;gap:var(--space-3)">
+    <input type="hidden" name="phase" value="{{ result.suggested_phase }}" />
+    <button class="btn btn--primary" type="submit" name="accept" value="true">{{ t('measure.adapt_accept') }}</button>
+    <button class="btn btn--secondary" type="submit" name="accept" value="false">{{ t('measure.adapt_decline') }}</button>
+  </form>
+</div>
+{% endif %}
+
+<a href="/season" class="btn btn--secondary btn--block">{{ t('measure.back_to_season') }}</a>
+{% endif %}
+{% endblock %}

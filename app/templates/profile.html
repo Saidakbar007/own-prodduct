@@ -1,0 +1,57 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('nav.profile') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'profile' %}
+
+<div class="hero-slot" style="margin-bottom:var(--space-5)">
+  <img class="hero-slot__art" src="/assets/art/hero/hero_{{ hero_stage }}.webp" alt="" />
+  <span class="hero-slot__stage">{{ t('profile.stage', n=hero_stage) }}</span>
+  <span class="hero-slot__caption">{{ t('profile.seasons_completed', n=completed|length) }}</span>
+</div>
+
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.shelf_title') }}</h2>
+{% if completed %}
+<div style="display:flex;gap:var(--space-3);overflow-x:auto;padding-bottom:var(--space-2);margin-bottom:var(--space-6)">
+  {% for season in completed %}
+  <a href="/season/{{ season.id }}/reveal" class="card" style="min-width:140px;padding:var(--space-4);flex:none">
+    <strong style="font-size:var(--text-sm)">{{ season.title }}</strong>
+    <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ reveals[season.id].tier if reveals.get(season.id) else '' }}</div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<p style="color:var(--text-faint);font-size:var(--text-sm);margin-bottom:var(--space-6)">{{ t('profile.shelf_empty') }}</p>
+{% endif %}
+
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.settings_title') }}</h2>
+
+<form method="post" action="/profile/language" class="card" style="padding:var(--space-5);margin-bottom:var(--space-3)">
+  <div class="field">
+    <label for="language">{{ t('profile.language_label') }}</label>
+    <select id="language" name="language" style="min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);padding:0 var(--space-4)">
+      <option value="ru" {% if user.language == 'ru' %}selected{% endif %}>Русский</option>
+      <option value="uz" {% if user.language == 'uz' %}selected{% endif %}>Oʻzbekcha</option>
+    </select>
+  </div>
+  <button class="btn btn--secondary" type="submit">{{ t('profile.save') }}</button>
+</form>
+
+<form method="post" action="/profile/timezone" class="card" style="padding:var(--space-5);margin-bottom:var(--space-3)">
+  <div class="field">
+    <label for="timezone">{{ t('profile.timezone_label') }}</label>
+    <input id="timezone" name="timezone" type="text" value="{{ user.timezone }}" {% if not can_change_timezone %}disabled{% endif %} />
+  </div>
+  <button class="btn btn--secondary" type="submit" {% if not can_change_timezone %}disabled{% endif %}>{{ t('profile.save') }}</button>
+  {% if not can_change_timezone %}<p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('profile.timezone_cooldown_notice') }}</p>{% endif %}
+</form>
+
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-3)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-2)">{{ t('profile.privacy_title') }}</h3>
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin-bottom:var(--space-3)">{{ t('profile.privacy_body') }}</p>
+  <form method="post" action="/profile/delete-photos">
+    <button class="btn btn--secondary btn--sm" type="submit">{{ t('profile.delete_photos') }}</button>
+  </form>
+</div>
+
+<a href="/logout" class="btn btn--text" style="display:block;text-align:center;margin-top:var(--space-4)">{{ t('home.logout') }}</a>
+{% endblock %}

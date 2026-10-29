@@ -24,9 +24,11 @@ class User(SQLModel, table=True):
     password_hash: str
     name: str
     birth_year: int
+    height_cm: Optional[int] = None  # для ИМТ (fat_loss_safe) — собирается в онбординге
     timezone: str = Field(default="UTC")
     timezone_changed_at: Optional[datetime] = None
     language: str = Field(default="ru")
+    trust_score: int = Field(default=100)  # честность (§9) — анти-сговор, подозрительные паттерны
     created_at: datetime = Field(default_factory=_utcnow)
 
 
@@ -74,6 +76,14 @@ class Season(SQLModel, table=True):
     status: str = Field(default="prologue")  # prologue | active | finished | abandoned
     result_tier: Optional[str] = None  # clean | passed | completed
     second_chances_left: int
+    current_phase: int = Field(default=1)
+    # Вторая метрика (пока только muscle_gain: вес тела рядом с рабочим весом,
+    # §7 задачи Фазы 2) — nullable, большинство сезонов её не используют.
+    secondary_metric_name: Optional[str] = None
+    secondary_metric_unit: Optional[str] = None
+    secondary_direction: Optional[str] = None  # "up" | "down"
+    secondary_baseline_value: Optional[float] = None
+    secondary_target_value: Optional[float] = None
     created_at: datetime = Field(default_factory=_utcnow)
 
 
@@ -92,7 +102,7 @@ class SeasonDay(SQLModel, table=True):
     minimal_version: str
     status: str = Field(default="planned")  # planned|done|minimal|missed|rescued|rest
     done_at: Optional[datetime] = None  # серверное время отметки
-    proof_id: Optional[str] = None
+    proof_id: Optional[int] = Field(default=None, foreign_key="proof.id")
 
 
 class Measurement(SQLModel, table=True):
@@ -104,9 +114,25 @@ class Measurement(SQLModel, table=True):
     season_id: int = Field(foreign_key="season.id", index=True)
     day_number: int
     value: float
+    secondary_value: Optional[float] = None  # вторая метрика (см. Season)
     measured_at: datetime = Field(default_factory=_utcnow)  # серверное время
-    proof_id: Optional[str] = None
+    proof_id: Optional[int] = Field(default=None, foreign_key="proof.id")
     photo_pose: Optional[str] = None  # front | side | none
+
+
+class Proof(SQLModel, table=True):
+    """Фото-доказательство (§9): приватное по умолчанию, непредсказуемое имя файла."""
+
+    __tablename__ = "proof"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    filename: str  # непредсказуемое имя в uploads/, не выдаём по порядковому id
+    content_type: str
+    phash: Optional[str] = None  # перцептивный хэш — поиск повторно используемых фото
+    is_blurry: bool = Field(default=False)
+    is_blank: bool = Field(default=False)
+    created_at: datetime = Field(default_factory=_utcnow)
 
 
 class Episode(SQLModel, table=True):

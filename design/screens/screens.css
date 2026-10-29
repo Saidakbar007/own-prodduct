@@ -218,13 +218,17 @@
 .reveal-compare {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-4);
   margin-bottom: var(--space-6);
+  width: 100%;
 }
 .reveal-compare__stat {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 0;
+  max-width: 45%;
 }
 .reveal-compare__value {
   font-family: var(--font-display);

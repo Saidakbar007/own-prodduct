@@ -14,6 +14,7 @@ from app.database import get_session
 from app.models import User
 from app.rendering import render
 from app.services.flash import push_flash
+from app.services.seasons import create_season
 from app.services.usertime import DEFAULT_TIMEZONE, is_valid_timezone
 
 router = APIRouter()
@@ -60,6 +61,8 @@ def register_submit(
     # Часовой пояс определяется в браузере; на сервере проверяем, что он валиден
     safe_timezone = timezone if is_valid_timezone(timezone) else DEFAULT_TIMEZONE
 
+    draft = request.session.get("onboarding") or {}
+
     user = User(
         name=name,
         birth_year=birth_year,
@@ -67,6 +70,7 @@ def register_submit(
         login=login,
         password_hash=hash_password(password),
         timezone=safe_timezone,
+        height_cm=draft.get("height_cm"),
     )
     db.add(user)
     db.commit()
@@ -74,6 +78,20 @@ def register_submit(
 
     request.session["user_id"] = user.id
     push_flash(request, "auth.welcome_flash", "success")
+
+    if draft.get("template_id") and "baseline_value" in draft and "length_days" in draft:
+        create_season(
+            db,
+            uid=user.id,
+            template_id=draft["template_id"],
+            length_days=draft["length_days"],
+            baseline_value=draft["baseline_value"],
+            reference_date=date.today(),
+            secondary_baseline_value=draft.get("secondary_baseline_value"),
+        )
+        request.session.pop("onboarding", None)
+        return RedirectResponse("/today", status_code=303)
+
     return RedirectResponse("/", status_code=303)
 
 

@@ -17,7 +17,9 @@ os.environ.setdefault("SECRET_KEY", "test-secret-key")
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
+from sqlmodel import Session  # noqa: E402
 
+from app.database import engine  # noqa: E402
 from app.main import app  # noqa: E402
 
 
@@ -38,3 +40,11 @@ def client():
 def unique():
     """Короткий уникальный суффикс для логинов/почт, чтобы тесты не конфликтовали."""
     return uuid.uuid4().hex[:8]
+
+
+@pytest.fixture()
+def db_session():
+    """Прямой доступ к той же тестовой базе — для раскладки данных "задним
+    числом" (например, чтобы довести сезон до финала без ожидания реальных дней)."""
+    with Session(engine) as session:
+        yield session

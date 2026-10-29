@@ -1,0 +1,6 @@
+<nav class="bottom-nav" style="max-width:520px;margin:0 auto;width:100%">
+  <a href="/today" class="bottom-nav__item{% if active == 'today' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-home"/></svg>{{ t('nav.today') }}</a>
+  <a href="/season" class="bottom-nav__item{% if active == 'season' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-calendar"/></svg>{{ t('nav.season') }}</a>
+  <a href="/squad" class="bottom-nav__item{% if active == 'squad' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-users"/></svg>{{ t('nav.squad') }}</a>
+  <a href="/profile" class="bottom-nav__item{% if active == 'profile' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-user"/></svg>{{ t('nav.profile') }}</a>
+</nav>

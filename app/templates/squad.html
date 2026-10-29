@@ -1,0 +1,35 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('nav.squad') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'squad' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('squad.title') }}</h1>
+  <p>{{ t('squad.subtitle') }}</p>
+</div>
+
+{% if members %}
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+  {% for m in members %}
+  <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-4)">
+    <div style="display:flex;align-items:center;gap:var(--space-3)">
+      <span class="avatar{% if m.is_me %} avatar--secondary{% endif %}" style="margin-left:0">{{ m.nick[:2]|upper }}{% if m.checked_in_today %}<span class="avatar__today"></span>{% endif %}</span>
+      <div>
+        <strong style="font-size:var(--text-sm)">{{ m.nick }}{% if m.is_me %} · {{ t('squad.you') }}{% endif %}</strong>
+        <div style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('today.day_of', n=m.day_number, total='—') }} · {{ t('squad.streak', n=m.streak) }}</div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% if overflow > 0 %}
+  <p style="text-align:center;color:var(--text-faint);font-size:var(--text-xs)">{{ t('squad.overflow', n=overflow) }}</p>
+  {% endif %}
+</div>
+{% else %}
+<div class="card empty-state">
+  <svg class="icon"><use href="#i-users"/></svg>
+  <h3>{{ t('squad.empty_title') }}</h3>
+  <p>{{ t('squad.empty_body') }}</p>
+</div>
+{% endif %}
+{% endblock %}

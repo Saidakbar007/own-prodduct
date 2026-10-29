@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="home-hero">
+  <h1>{{ t('onboarding.bmi_blocked_title') }}</h1>
+  <p>{{ t('onboarding.bmi_blocked_body') }}</p>
+</div>
+<div class="home-actions">
+  <form method="post" action="/onboarding/goal">
+    <input type="hidden" name="template_id" value="muscle_gain" />
+    <button class="btn btn--primary btn--block" type="submit">{{ t('onboarding.bmi_blocked_cta') }}</button>
+  </form>
+  <a class="btn btn--text" href="/onboarding">{{ t('onboarding.back_to_goals') }}</a>
+</div>
+{% endblock %}

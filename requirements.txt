@@ -12,6 +12,9 @@ psycopg[binary]
 pyyaml
 pydantic
 tzdata
+Pillow
+imageio-ffmpeg
+anthropic
 pytest
 httpx
 playwright

@@ -32,5 +32,16 @@
 
   "not_found.title": "Sahifa topilmadi",
   "not_found.body": "Bunday sahifa yoʻq.",
-  "not_found.home_link": "Bosh sahifaga"
+  "not_found.home_link": "Bosh sahifaga",
+
+  "onboarding.goal_title": "Qanday mavsuming boʻladi?",
+  "onboarding.goal_subtitle": "Tayyor shablonni tanlang yoki oʻz maqsadingizni yozing.",
+  "onboarding.days_suffix": "kun",
+  "onboarding.continue": "Davom etish",
+  "onboarding.trailer_cta": "Roʻyxatdan oʻtish va boshlash",
+
+  "nav.today": "Bugun",
+  "nav.season": "Mavsum",
+  "nav.squad": "Tarkib",
+  "nav.profile": "Profil"
 }
