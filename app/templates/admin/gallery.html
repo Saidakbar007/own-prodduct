@@ -1,0 +1,45 @@
+{% extends "shell_base.html" %}
+{% block title %}Админка — галерея{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">Сезоны — галерея шаблонов</h1>
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3)">
+    <a href="/admin" class="btn--text">Дашборд</a>
+    <a href="/admin/sandbox" class="btn--text">Песочница</a>
+  </div>
+</div>
+
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Библиотека ({{ templates|length }})</h3>
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-6)">
+  {% for t in templates %}
+  <div class="card" style="padding:var(--space-4)">
+    <strong style="font-size:var(--text-sm)">{{ t.title }}</strong>
+    <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">
+      {{ t.id }} · {{ t.phases|length }} фаз · {{ t.lengths|join(' / ') }} дней · метрика: {{ t.metric.name }} ({{ t.metric.unit }})
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">ИИ-черновики "своей цели" ({{ drafts|length }})</h3>
+{% if drafts %}
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+  {% for d in drafts %}
+  <div class="card" style="padding:var(--space-4)">
+    <strong style="font-size:var(--text-sm)">{{ d.goal_text }}</strong>
+    <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ d.template_id }}</div>
+    {% if d.approved %}
+    <span class="legend__item" style="margin-top:var(--space-2);color:var(--status-done)">✓ утверждён</span>
+    {% else %}
+    <form method="post" action="/admin/gallery/approve/{{ d.id }}" style="margin-top:var(--space-3)">
+      <button class="btn btn--secondary btn--sm" type="submit">Утвердить</button>
+    </form>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p style="color:var(--text-faint);font-size:var(--text-sm)">Пока никто не предложил свою цель.</p>
+{% endif %}
+{% endblock %}

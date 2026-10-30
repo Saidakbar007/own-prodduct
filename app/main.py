@@ -23,6 +23,7 @@ from app.auth import get_current_user
 from app.database import engine
 from app.migrations_runner import run_migrations
 from app.rendering import render
+from app.routers import admin as admin_router
 from app.routers import auth as auth_router
 from app.routers import challenge as challenge_router
 from app.routers import measure as measure_router
@@ -95,6 +96,7 @@ app.include_router(squad_router.router)
 app.include_router(profile_router.router)
 app.include_router(proofs_router.router)
 app.include_router(telegram_router.router)
+app.include_router(admin_router.router)
 
 
 @app.exception_handler(StarletteHTTPException)

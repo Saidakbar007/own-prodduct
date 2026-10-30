@@ -22,6 +22,7 @@ from app.services.challenges import (
     pending_disputed_days,
 )
 from app.services.collusion import is_suspicious_pair
+from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.seasons import get_active_season, today_day_number
 from app.services.usertime import today_for
@@ -35,6 +36,7 @@ def create(request: Request, user: User = Depends(require_user), db: Session = D
     if not season:
         return RedirectResponse("/onboarding", status_code=303)
     challenge = create_challenge(db, user.id, season.id)
+    log_event_safe(db, "challenge_sent", uid=user.id, season_id=season.id)
     return RedirectResponse(f"/challenge/{challenge.id}", status_code=303)
 
 
@@ -79,6 +81,7 @@ def accept(code: str, request: Request, user: User = Depends(require_user), db: 
         return RedirectResponse(f"/challenge/join/{code}", status_code=303)
 
     accept_challenge(db, challenge, user.id, my_season.id)
+    log_event_safe(db, "challenge_accepted", uid=user.id, season_id=my_season.id)
 
     if is_suspicious_pair(db, challenge.from_uid, user.id):
         # Не блокируем вызов — просто небольшой штраф на будущее (§3: анти-сговор).

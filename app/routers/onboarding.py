@@ -19,6 +19,7 @@ from app.rendering import render
 from app.seasons import engine
 from app.seasons_library.loader import get_template, load_library
 from app.services.custom_goal import ai_generation_available, generate_custom_template
+from app.services.events import log_event_safe
 from app.services.seasons import get_or_create_wave, wave_composition_count
 
 router = APIRouter(prefix="/onboarding")
@@ -33,7 +34,8 @@ def _draft(request: Request) -> dict:
 
 
 @router.get("")
-def goal_picker(request: Request):
+def goal_picker(request: Request, db: Session = Depends(get_session)):
+    log_event_safe(db, "onboarding_started")
     tiles = [
         {"id": t.id, "title": t.title, "category": t.category, "lengths": t.lengths}
         for t in load_library().values()
@@ -47,13 +49,18 @@ def goal_picker(request: Request):
 
 
 @router.post("/goal")
-def goal_submit(request: Request, template_id: str = Form(...), custom_text: str = Form("")):
+def goal_submit(
+    request: Request,
+    template_id: str = Form(...),
+    custom_text: str = Form(""),
+    db: Session = Depends(get_session),
+):
     if template_id == "custom":
-        template = generate_custom_template(custom_text)
+        template = generate_custom_template(db, custom_text)
         if template is None:
             return render(request, "onboarding/custom_unavailable.html", {"goal_text": custom_text})
-        # Фаза 4: сгенерированный шаблон сохраняется как draft и используется так же,
-        # как библиотечный — здесь просто продолжаем с его id.
+        # Сгенерированный шаблон сохранён как draft и используется так же, как
+        # библиотечный — здесь просто продолжаем с его id.
         template_id = template.id
 
     draft = _draft(request)
@@ -178,6 +185,8 @@ def trailer(request: Request, db: Session = Depends(get_session)):
     # Предварительный просмотр состава — не создаёт волну в БД раньше времени
     wave = get_or_create_wave(db, wave_start, template_id)
     composition = wave_composition_count(db, wave.id)
+
+    log_event_safe(db, "trailer_shown", meta={"template_id": template_id})
 
     forecast = engine.forecast_by_plan(
         current_value=draft["baseline_value"],

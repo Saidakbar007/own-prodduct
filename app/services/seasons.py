@@ -13,6 +13,7 @@ from app.models import Measurement, Season, SeasonDay, Wave
 from app.seasons import engine
 from app.seasons.schema import Phase, SeasonTemplate
 from app.seasons_library.loader import get_template
+from app.services.events import log_event_safe
 from app.services.squads import assign_squad
 
 ROLLING_WINDOW_DAYS = 14
@@ -170,6 +171,14 @@ def ensure_days_built_for_today(db: Session, season: Season, today: date) -> Non
     build_upcoming_days(db, season, template, phase, until_date=today + timedelta(days=ROLLING_WINDOW_DAYS))
 
 
+def build_all_days(db: Session, season: Season) -> None:
+    """Песочница админки (§14): строит сразу весь сезон, а не скользящее
+    окно — чтобы можно было помечать любой день сразу после создания."""
+    template = get_template(season.template_id)
+    phase = next(p for p in template.phases if p.phase == season.current_phase)
+    build_upcoming_days(db, season, template, phase, until_date=season.end_date)
+
+
 def get_active_season(db: Session, uid: int) -> Optional[Season]:
     """Текущий (ещё не завершённый) сезон пользователя, последний созданный."""
     return db.exec(
@@ -212,6 +221,7 @@ def sync_season_state(db: Session, season: Season, today: date) -> Season:
             day.status = "missed"
             db.add(day)
             changed = True
+            log_event_safe(db, "day_missed", uid=season.uid, season_id=season.id)
 
         last_day = get_day(db, season.id, season.length_days)
         if last_day and last_day.status not in ("planned", "rest"):

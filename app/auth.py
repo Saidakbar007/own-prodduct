@@ -4,6 +4,7 @@
 - получение текущего пользователя из cookie-сессии
 """
 
+import os
 from typing import Optional
 
 from fastapi import Depends, HTTPException, Request
@@ -39,4 +40,21 @@ def require_user(request: Request, db: Session = Depends(get_session)) -> User:
     user = get_current_user(request, db)
     if not user:
         raise HTTPException(status_code=303, headers={"Location": "/login"})
+    return user
+
+
+def is_admin(user: Optional[User]) -> bool:
+    """§14: доступ по ADMIN_LOGINS (через запятую). Без переменной — админов нет."""
+    if not user:
+        return False
+    logins = {login.strip() for login in os.getenv("ADMIN_LOGINS", "").split(",") if login.strip()}
+    return user.login in logins
+
+
+def require_admin(request: Request, db: Session = Depends(get_session)) -> User:
+    """Зависимость для /admin/*: 404 (не 403 — не выдаём, что раздел вообще
+    есть), если не вошёл или не в ADMIN_LOGINS."""
+    user = get_current_user(request, db)
+    if not user or not is_admin(user):
+        raise HTTPException(status_code=404)
     return user

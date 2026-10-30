@@ -9,6 +9,6 @@
 
 <img src="/season/{{ season.id }}/episode/{{ episode.week_number }}/card.png" alt="{{ episode.title }}" style="width:100%;border-radius:var(--radius-lg);margin-bottom:var(--space-5)" />
 
-<a class="btn btn--primary btn--block" href="/season/{{ season.id }}/episode/{{ episode.week_number }}/card.png" download>Поделиться</a>
+<a class="btn btn--primary btn--block" href="/season/{{ season.id }}/episode/{{ episode.week_number }}/card.png?share=1" download>Поделиться</a>
 <a class="btn btn--text" href="/season" style="display:block;text-align:center;margin-top:var(--space-4)">К сезону</a>
 {% endblock %}

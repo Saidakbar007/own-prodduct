@@ -16,6 +16,7 @@ from app.rendering import render
 from app.services import mascot
 from app.services.cards import CARDS_DIR, save_card
 from app.services.episodes import episode_card_png, get_or_create_episode
+from app.services.events import log_event_safe
 from app.services.reveals import get_or_create_reveal, reveal_card_png
 from app.services.seasons import sync_season_state
 from app.services.usertime import today_for
@@ -43,6 +44,7 @@ def episode_page(
     episode = get_or_create_episode(db, season, week_number)
     if not episode:
         raise HTTPException(status_code=404)
+    log_event_safe(db, "episode_viewed", uid=user.id, season_id=season.id)
     return render(
         request,
         "episode.html",
@@ -54,6 +56,7 @@ def episode_page(
 def episode_card(
     season_id: int,
     week_number: int,
+    request: Request,
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
@@ -61,6 +64,9 @@ def episode_card(
     episode = get_or_create_episode(db, season, week_number)
     if not episode:
         raise HTTPException(status_code=404)
+
+    if request.query_params.get("share"):
+        log_event_safe(db, "card_shared", uid=user.id, season_id=season.id)
 
     if episode.card_image_path and os.path.exists(episode.card_image_path):
         with open(episode.card_image_path, "rb") as f:
@@ -87,6 +93,7 @@ def reveal_page(
         return RedirectResponse("/today", status_code=303)
 
     reveal = get_or_create_reveal(db, season)
+    log_event_safe(db, "reveal_viewed", uid=user.id, season_id=season.id)
     mascot_event = f"reveal_{reveal.tier}"
 
     proof_ids = db.exec(
@@ -158,11 +165,15 @@ def reveal_video(
 @router.get("/season/{season_id}/reveal/card.png")
 def reveal_card(
     season_id: int,
+    request: Request,
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
     season = _own_season(db, season_id, user)
     reveal = get_or_create_reveal(db, season)
+
+    if request.query_params.get("share"):
+        log_event_safe(db, "reveal_shared", uid=user.id, season_id=season.id)
 
     if reveal.card_image_path and os.path.exists(reveal.card_image_path):
         with open(reveal.card_image_path, "rb") as f:
@@ -181,7 +192,8 @@ def next_season(
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
-    """«Следующий сезон» (§7.8) — в Фазе 2 просто ведёт обратно в онбординг
-    (выбор следующего уровня той же цели или новой — делает человек сам)."""
-    _own_season(db, season_id, user)
+    """«Следующий сезон» (§7.8) — ведёт обратно в онбординг (выбор следующего
+    уровня той же цели или новой — делает человек сам)."""
+    season = _own_season(db, season_id, user)
+    log_event_safe(db, "next_season_started", uid=user.id, season_id=season.id)
     return RedirectResponse("/onboarding", status_code=303)

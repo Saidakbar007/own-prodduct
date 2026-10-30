@@ -13,6 +13,7 @@ from app.auth import hash_password, verify_password
 from app.database import get_session
 from app.models import User
 from app.rendering import render
+from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.seasons import create_season
 from app.services.usertime import DEFAULT_TIMEZONE, is_valid_timezone
@@ -81,9 +82,10 @@ def register_submit(
 
     request.session["user_id"] = user.id
     push_flash(request, "auth.welcome_flash", "success")
+    log_event_safe(db, "signup", uid=user.id)
 
     if draft.get("template_id") and "baseline_value" in draft and "length_days" in draft:
-        create_season(
+        season = create_season(
             db,
             uid=user.id,
             template_id=draft["template_id"],
@@ -92,6 +94,8 @@ def register_submit(
             reference_date=date.today(),
             secondary_baseline_value=draft.get("secondary_baseline_value"),
         )
+        event_type = "prologue_started" if season.status == "prologue" else "season_started"
+        log_event_safe(db, event_type, uid=user.id, season_id=season.id)
         request.session.pop("onboarding", None)
         return RedirectResponse("/today", status_code=303)
 

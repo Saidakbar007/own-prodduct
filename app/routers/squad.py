@@ -12,6 +12,7 @@ from app.auth import require_user
 from app.database import get_session
 from app.models import Season, SeasonDay, User
 from app.rendering import render
+from app.services.events import log_event_safe
 from app.services.seasons import get_active_season, today_day_number
 from app.services.squads import (
     active_members,
@@ -101,8 +102,8 @@ def react(
 ):
     season = get_active_season(db, user.id)
     membership = my_squad_membership(db, user.id, season.id) if season else None
-    if membership:
-        add_reaction(db, membership.squad_id, user.id, to_uid, today_for(user))
+    if membership and add_reaction(db, membership.squad_id, user.id, to_uid, today_for(user)):
+        log_event_safe(db, "squad_reaction", uid=user.id, season_id=season.id)
     return RedirectResponse("/squad", status_code=303)
 
 

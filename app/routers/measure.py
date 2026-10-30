@@ -17,6 +17,7 @@ from app.rendering import render
 from app.seasons import engine
 from app.seasons_library.loader import get_template
 from app.services import mascot
+from app.services.events import log_event_safe
 from app.services.seasons import ensure_days_built_for_today, get_active_season, today_day_number
 from app.services.trust import PENALTY_BLURRY_OR_BLANK_PHOTO, apply_trust_penalty, is_measurement_plausible
 from app.services.uploads import analyze_photo, save_photo_bytes
@@ -111,6 +112,7 @@ async def measure_submit(
         db.add(day)
 
     db.commit()
+    log_event_safe(db, "measurement_logged", uid=user.id, season_id=season.id)
 
     phase = next(p for p in template.phases if p.phase == season.current_phase)
     expected_value = season.baseline_value + phase.days[0].expected_progress * day_number

@@ -1,0 +1,48 @@
+{% extends "shell_base.html" %}
+{% block title %}Админка — метрики{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">Воронка и удержание</h1>
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3)">
+    <a href="/admin/gallery" class="btn--text">Галерея</a>
+    <a href="/admin/sandbox" class="btn--text">Песочница</a>
+  </div>
+</div>
+
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Воронка онбординга</h3>
+  {% for step, count in funnel.items() %}
+  <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <span style="color:var(--text-muted)">{{ step }}</span>
+    <strong class="tabular">{{ count }}</strong>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Удержание (когорта 30 дней назад)</h3>
+  {% for r in retention %}
+  <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <span style="color:var(--text-muted)">D{{ r.horizon }} ({{ r.cohort_size }} в когорте)</span>
+    <strong class="tabular">{{ "%.0f%%"|format(r.rate*100) if r.rate is not none else "—" }}</strong>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card" style="padding:var(--space-5)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Прочее</h3>
+  <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <span style="color:var(--text-muted)">Доля дошедших до Reveal</span>
+    <strong class="tabular">{{ "%.0f%%"|format(reveal_rate*100) if reveal_rate is not none else "—" }}</strong>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <span style="color:var(--text-muted)">Доля начавших следующий сезон</span>
+    <strong class="tabular">{{ "%.0f%%"|format(next_season_rate*100) if next_season_rate is not none else "—" }}</strong>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-2) 0">
+    <span style="color:var(--text-muted)">Вирусность (вызовы/пользователя)</span>
+    <strong class="tabular">{{ "%.2f"|format(virality) if virality is not none else "—" }}</strong>
+  </div>
+</div>
+{% endblock %}

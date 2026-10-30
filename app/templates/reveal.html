@@ -35,7 +35,7 @@
     <form method="post" action="/season/{{ season.id }}/next">
       <button class="btn btn--primary btn--block" type="submit">Следующий сезон</button>
     </form>
-    <a class="btn btn--secondary btn--block" href="/season/{{ season.id }}/reveal/card.png" download>Поделиться карточкой</a>
+    <a class="btn btn--secondary btn--block" href="/season/{{ season.id }}/reveal/card.png?share=1" download>Поделиться карточкой</a>
   </div>
 </div>
 {% endblock %}

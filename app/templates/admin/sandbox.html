@@ -1,0 +1,84 @@
+{% extends "shell_base.html" %}
+{% block title %}Админка — песочница{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">Песочница</h1>
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3)">
+    <a href="/admin" class="btn--text">Дашборд</a>
+    <a href="/admin/gallery" class="btn--text">Галерея</a>
+  </div>
+</div>
+
+{% if not season_detail %}
+<form method="post" action="/admin/sandbox/create" class="card" style="padding:var(--space-5);margin-bottom:var(--space-6)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Создать сезон задним числом</h3>
+  <div class="field">
+    <label for="template_id">Шаблон</label>
+    <select id="template_id" name="template_id" style="min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);padding:0 var(--space-4)">
+      {% for t in templates %}<option value="{{ t.id }}">{{ t.title }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="length_days">Длина (дней)</label>
+    <input id="length_days" name="length_days" type="number" value="30" required />
+  </div>
+  <div class="field">
+    <label for="baseline_value">Baseline</label>
+    <input id="baseline_value" name="baseline_value" type="number" step="0.1" value="5" required />
+  </div>
+  <div class="field">
+    <label for="days_ago">На сколько дней назад стартовать</label>
+    <input id="days_ago" name="days_ago" type="number" value="12" required />
+  </div>
+  <button class="btn btn--primary btn--block" type="submit">Создать</button>
+</form>
+
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Мои тестовые сезоны ({{ seasons|length }})</h3>
+<div style="display:flex;flex-direction:column;gap:var(--space-2)">
+  {% for s in seasons %}
+  <a href="/admin/sandbox/{{ s.id }}" class="card" style="padding:var(--space-4);display:block">
+    <strong style="font-size:var(--text-sm)">{{ s.title }}</strong>
+    <span style="font-size:var(--text-xs);color:var(--text-faint);margin-left:var(--space-2)">{{ s.status }}</span>
+  </a>
+  {% endfor %}
+</div>
+
+{% else %}
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <strong>{{ season_detail.title }}</strong> — {{ season_detail.status }}
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3);flex-wrap:wrap">
+    <form method="post" action="/admin/sandbox/{{ season_detail.id }}/finish">
+      <button class="btn btn--secondary btn--sm" type="submit">Завершить и сгенерировать Reveal</button>
+    </form>
+    <form method="post" action="/admin/sandbox/{{ season_detail.id }}/episode">
+      <input type="hidden" name="week_number" value="1" />
+      <button class="btn btn--secondary btn--sm" type="submit">Сгенерировать серию 1</button>
+    </form>
+  </div>
+</div>
+
+<form method="post" action="/admin/sandbox/{{ season_detail.id }}/measure" class="card" style="padding:var(--space-5);margin-bottom:var(--space-5);display:flex;gap:var(--space-3);align-items:flex-end;flex-wrap:wrap">
+  <div class="field" style="margin-bottom:0"><label>День</label><input name="day_number" type="number" min="0" required /></div>
+  <div class="field" style="margin-bottom:0"><label>Значение</label><input name="value" type="number" step="0.1" required /></div>
+  <button class="btn btn--secondary" type="submit">Добавить замер</button>
+</form>
+
+<div style="display:flex;flex-direction:column;gap:var(--space-2)">
+  {% for day in days %}
+  <div class="card" style="padding:var(--space-3) var(--space-4);display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap">
+    <span style="font-size:var(--text-sm)">{{ day.day_number }}. {{ day.title }} <span style="color:var(--text-faint)">({{ day.status }})</span></span>
+    <form method="post" action="/admin/sandbox/{{ season_detail.id }}/mark" style="display:flex;gap:var(--space-2)">
+      <input type="hidden" name="day_number" value="{{ day.day_number }}" />
+      <select name="status" style="min-height:36px;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text)">
+        {% for s in ['done','minimal','missed','rescued','rest','planned'] %}
+        <option value="{{ s }}" {% if day.status == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn--secondary btn--sm" type="submit">OK</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

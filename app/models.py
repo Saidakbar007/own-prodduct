@@ -243,3 +243,37 @@ class ChallengeDispute(SQLModel, table=True):
     status: str = Field(default="pending")  # pending|confirmed|expired
     created_at: datetime = Field(default_factory=_utcnow)
     confirmed_at: Optional[datetime] = None
+
+
+# ---------------------------------------------------------------------------
+# Своя цель и метрики (§5, §13, §14 ТЗ) — Фаза 4.
+# ---------------------------------------------------------------------------
+
+
+class CustomTemplateDraft(SQLModel, table=True):
+    """ИИ-сгенерированный шаблон "своей цели" (§5): кэш по тексту цели,
+    админ может утвердить (approved=True) — тогда он доступен как обычный
+    библиотечный шаблон наравне с пятью стартовыми."""
+
+    __tablename__ = "custom_template_draft"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    goal_text: str
+    goal_text_hash: str = Field(unique=True, index=True)
+    template_id: str = Field(unique=True, index=True)
+    template_yaml: str
+    approved: bool = Field(default=False)
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class Event(SQLModel, table=True):
+    """Событие метрик (§13): воронка онбординга, удержание, вирусность."""
+
+    __tablename__ = "event"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    event_type: str = Field(index=True)
+    uid: Optional[int] = Field(default=None, foreign_key="users.id", index=True)
+    season_id: Optional[int] = Field(default=None, foreign_key="season.id")
+    meta_json: Optional[str] = None
+    created_at: datetime = Field(default_factory=_utcnow, index=True)

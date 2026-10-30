@@ -18,6 +18,7 @@ from app.rendering import render
 from app.seasons import engine
 from app.seasons_library.loader import get_template
 from app.services import mascot
+from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.seasons import (
     ensure_days_built_for_today,
@@ -181,6 +182,7 @@ async def mark_done(
     day.proof_id = proof_id
     db.add(day)
     db.commit()
+    log_event_safe(db, "day_done", uid=user.id, season_id=season.id)
 
     push_flash(request, mascot.phrase_for("done", user.language), "success")
     return RedirectResponse("/today", status_code=303)
@@ -198,6 +200,7 @@ def mark_minimal(request: Request, user: User = Depends(require_user), db: Sessi
         day.done_at = engine_now()
         db.add(day)
         db.commit()
+        log_event_safe(db, "day_minimal", uid=user.id, season_id=season.id)
         push_flash(request, mascot.phrase_for("minimal", user.language), "info")
     return RedirectResponse("/today", status_code=303)
 
@@ -227,6 +230,7 @@ def rescue_today(request: Request, user: User = Depends(require_user), db: Sessi
     db.add(day)
     db.add(season)
     db.commit()
+    log_event_safe(db, "second_chance_used", uid=user.id, season_id=season.id)
 
     push_flash(request, mascot.phrase_for("second_chance_used", user.language), "success")
     return RedirectResponse("/today", status_code=303)
