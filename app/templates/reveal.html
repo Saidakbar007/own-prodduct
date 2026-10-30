@@ -26,6 +26,9 @@
     <p>«{{ mascot_phrase }}»</p>
   </div>
 
+  {% if has_video %}
+  <video src="/season/{{ season.id }}/reveal/video.mp4" controls style="width:100%;border-radius:var(--radius-lg);margin-bottom:var(--space-6)"></video>
+  {% endif %}
   <img src="/season/{{ season.id }}/reveal/card.png" alt="Reveal" style="width:100%;border-radius:var(--radius-lg);margin-bottom:var(--space-6)" />
 
   <div class="reveal-screen__actions">

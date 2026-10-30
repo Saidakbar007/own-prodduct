@@ -48,4 +48,7 @@
 {% endif %}
 
 <a href="/measure" class="btn btn--secondary btn--block">{{ t('season.cta_measure') }}</a>
+<form method="post" action="/challenge/create" style="margin-top:var(--space-3)">
+  <button class="btn btn--text" type="submit" style="display:block;width:100%;text-align:center">{{ t('season.cta_challenge') }}</button>
+</form>
 {% endblock %}

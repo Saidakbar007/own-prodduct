@@ -13,6 +13,7 @@ from app.models import Measurement, Season, SeasonDay, Wave
 from app.seasons import engine
 from app.seasons.schema import Phase, SeasonTemplate
 from app.seasons_library.loader import get_template
+from app.services.squads import assign_squad
 
 ROLLING_WINDOW_DAYS = 14
 MUSCLE_GAIN_BODYWEIGHT_DEFAULT_GAIN_RATIO = 1.05  # дефолтный ориентир +5% веса тела за сезон
@@ -107,6 +108,8 @@ def create_season(
     db.add(season)
     db.commit()
     db.refresh(season)
+
+    assign_squad(db, wave.id, template.id, season.id, uid)
 
     build_upcoming_days(db, season, template, phase, until_date=reference_date + timedelta(days=ROLLING_WINDOW_DAYS))
 

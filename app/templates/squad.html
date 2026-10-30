@@ -13,17 +13,33 @@
   {% for m in members %}
   <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-4)">
     <div style="display:flex;align-items:center;gap:var(--space-3)">
-      <span class="avatar{% if m.is_me %} avatar--secondary{% endif %}" style="margin-left:0">{{ m.nick[:2]|upper }}{% if m.checked_in_today %}<span class="avatar__today"></span>{% endif %}</span>
+      <span class="avatar{% if m.is_me %} avatar--secondary{% endif %}" style="margin-left:0">{% if '#' in m.nick %}{{ m.nick.split('#')[1][:2] }}{% else %}{{ m.nick[:2]|upper }}{% endif %}{% if m.checked_in_today %}<span class="avatar__today"></span>{% endif %}</span>
       <div>
         <strong style="font-size:var(--text-sm)">{{ m.nick }}{% if m.is_me %} · {{ t('squad.you') }}{% endif %}</strong>
-        <div style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('today.day_of', n=m.day_number, total='—') }} · {{ t('squad.streak', n=m.streak) }}</div>
+        <div style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('squad.streak', n=m.streak) }}</div>
       </div>
     </div>
+    {% if not m.is_me %}
+    <form method="post" action="/squad/react">
+      <input type="hidden" name="to_uid" value="{{ m.uid }}" />
+      <button class="btn btn--secondary btn--sm" type="submit">🔥 {{ m.reactions_today }}</button>
+    </form>
+    {% endif %}
   </div>
   {% endfor %}
-  {% if overflow > 0 %}
-  <p style="text-align:center;color:var(--text-faint);font-size:var(--text-xs)">{{ t('squad.overflow', n=overflow) }}</p>
-  {% endif %}
+</div>
+
+<div class="card" style="padding:var(--space-5);margin-top:var(--space-6)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">{{ t('squad.settings_title') }}</h3>
+  <form method="post" action="/squad/anonymous" style="margin-bottom:var(--space-3)">
+    <input type="hidden" name="anonymous" value="{{ 'false' if membership.anonymous else 'true' }}" />
+    <button class="btn btn--secondary btn--sm" type="submit">
+      {% if membership.anonymous %}{{ t('squad.reveal_name') }}{% else %}{{ t('squad.hide_name') }}{% endif %}
+    </button>
+  </form>
+  <form method="post" action="/squad/leave">
+    <button class="btn btn--text" type="submit">{{ t('squad.leave') }}</button>
+  </form>
 </div>
 {% else %}
 <div class="card empty-state">

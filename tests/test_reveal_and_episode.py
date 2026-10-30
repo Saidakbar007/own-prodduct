@@ -2,6 +2,7 @@
 
 from datetime import date
 
+from PIL import Image
 from sqlmodel import select
 
 from app.models import Season, SeasonDay
@@ -103,3 +104,49 @@ def test_proof_file_is_only_visible_to_owner(client, unique):
     _create_short_season(client, unique)
     resp = client.get("/proofs/999999")
     assert resp.status_code == 404
+
+
+def test_reveal_video_404_without_any_proof_photos(client, unique, db_session):
+    _create_short_season(client, unique)
+    season = db_session.exec(select(Season).order_by(Season.id.desc())).first()
+    _force_finish_season(db_session, season.id)
+
+    client.get(f"/season/{season.id}/reveal")  # создаёт Reveal
+    resp = client.get(f"/season/{season.id}/reveal/video.mp4")
+    assert resp.status_code == 404
+
+
+def test_reveal_video_generates_mp4_when_proof_photos_exist(client, unique, db_session):
+    import io
+
+    from app.services import video as video_service
+
+    if not video_service.ffmpeg_available():
+        import pytest
+
+        pytest.skip("ffmpeg недоступен в этом окружении")
+
+    _create_short_season(client, unique)
+
+    # Сезон мог начаться прологом (если сегодня не понедельник) — переносим
+    # start_date на сегодня, чтобы день 1 существовал и /today/done сработал.
+    season = db_session.exec(select(Season).order_by(Season.id.desc())).first()
+    season.start_date = date.today()
+    season.status = "active"
+    db_session.add(season)
+    db_session.commit()
+
+    img = Image.new("RGB", (300, 300), (10, 120, 60))
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG")
+    buf.seek(0)
+    client.post("/today/done", files={"photo": ("proof.jpg", buf, "image/jpeg")})
+
+    season = db_session.exec(select(Season).order_by(Season.id.desc())).first()
+    _force_finish_season(db_session, season.id)
+
+    client.get(f"/season/{season.id}/reveal")
+    resp = client.get(f"/season/{season.id}/reveal/video.mp4")
+    assert resp.status_code == 200
+    assert resp.headers["content-type"] == "video/mp4"
+    assert len(resp.content) > 1000

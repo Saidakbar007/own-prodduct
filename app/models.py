@@ -29,6 +29,8 @@ class User(SQLModel, table=True):
     timezone_changed_at: Optional[datetime] = None
     language: str = Field(default="ru")
     trust_score: int = Field(default=100)  # честность (§9) — анти-сговор, подозрительные паттерны
+    telegram_user_id: Optional[int] = Field(default=None, unique=True, index=True)
+    reminder_time: Optional[str] = None  # "HH:MM" по часовому поясу пользователя — напоминания бота
     created_at: datetime = Field(default_factory=_utcnow)
 
 
@@ -103,6 +105,7 @@ class SeasonDay(SQLModel, table=True):
     status: str = Field(default="planned")  # planned|done|minimal|missed|rescued|rest
     done_at: Optional[datetime] = None  # серверное время отметки
     proof_id: Optional[int] = Field(default=None, foreign_key="proof.id")
+    reminder_sent: bool = Field(default=False)  # §12: без дублей напоминаний бота
 
 
 class Measurement(SQLModel, table=True):
@@ -163,3 +166,80 @@ class Reveal(SQLModel, table=True):
     video_path: Optional[str] = None
     shared: bool = Field(default=False)
     created_at: datetime = Field(default_factory=_utcnow)
+
+
+# ---------------------------------------------------------------------------
+# Люди (§4, §7 п.6-7 ТЗ) — Фаза 3.
+# ---------------------------------------------------------------------------
+
+
+class Squad(SQLModel, table=True):
+    """Состав: до 8 человек волны с похожей целью (один шаблон)."""
+
+    __tablename__ = "squad"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    wave_id: int = Field(foreign_key="wave.id", index=True)
+    template_id: str
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class SquadMember(SQLModel, table=True):
+    """Членство в составе. Анонимно по умолчанию, выход — в один клик."""
+
+    __tablename__ = "squad_member"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    squad_id: int = Field(foreign_key="squad.id", index=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    season_id: int = Field(foreign_key="season.id", index=True)
+    anonymous: bool = Field(default=True)
+    joined_at: datetime = Field(default_factory=_utcnow)
+    left_at: Optional[datetime] = None
+
+
+class SquadReaction(SQLModel, table=True):
+    """Реакция-"огонёк" на отметку участника состава (без личных сообщений)."""
+
+    __tablename__ = "squad_reaction"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    squad_id: int = Field(foreign_key="squad.id", index=True)
+    from_uid: int = Field(foreign_key="users.id", index=True)
+    to_uid: int = Field(foreign_key="users.id", index=True)
+    reacted_on: date  # день, к которому относится реакция
+    emoji: str = Field(default="🔥")
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class Challenge(SQLModel, table=True):
+    """Вызов "Спорим?" (§7 п.7): дуэль двух сезонов по одному шаблону."""
+
+    __tablename__ = "challenge"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    from_uid: int = Field(foreign_key="users.id", index=True)
+    to_uid: Optional[int] = Field(default=None, foreign_key="users.id", index=True)
+    invite_code: str = Field(unique=True, index=True)
+    season_id_from: int = Field(foreign_key="season.id")
+    season_id_to: Optional[int] = Field(default=None, foreign_key="season.id")
+    terms_text: str
+    status: str = Field(default="pending")  # pending|active|finished|declined
+    winner_uid: Optional[int] = Field(default=None, foreign_key="users.id")
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class ChallengeDispute(SQLModel, table=True):
+    """«Сомневаюсь» (§7 п.7): соперник оспаривает отметку дня внутри вызова —
+    не трогает честность самого сезона, только зачёт в этом конкретном вызове."""
+
+    __tablename__ = "challenge_dispute"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    challenge_id: int = Field(foreign_key="challenge.id", index=True)
+    day_number: int
+    uid: int = Field(foreign_key="users.id")  # чья отметка оспаривается
+    disputed_by: int = Field(foreign_key="users.id")
+    status: str = Field(default="pending")  # pending|confirmed|expired
+    created_at: datetime = Field(default_factory=_utcnow)
+    confirmed_at: Optional[datetime] = None

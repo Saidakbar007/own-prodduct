@@ -71,10 +71,13 @@ def register_submit(
         password_hash=hash_password(password),
         timezone=safe_timezone,
         height_cm=draft.get("height_cm"),
+        telegram_user_id=request.session.get("telegram_pending_id"),
     )
     db.add(user)
     db.commit()
     db.refresh(user)
+    request.session.pop("telegram_pending_id", None)
+    request.session.pop("telegram_pending_name", None)
 
     request.session["user_id"] = user.id
     push_flash(request, "auth.welcome_flash", "success")

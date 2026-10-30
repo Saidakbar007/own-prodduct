@@ -1,10 +1,10 @@
 """
-«Состав» (§7.6) — облегчённая версия Фазы 2: до 8 человек волны с похожей
-целью, ник, "день N", отметился ли сегодня, серия дней подряд. Реакции и
-полноценная анонимность/выход из состава — Фаза 3.
+«Состав» (§7.6, Фаза 3): до 8 человек волны с похожей целью — ник
+(анонимно по умолчанию), "день N", отметился ли сегодня, серия дней,
+реакции-"огоньки". Выйти — в один клик.
 """
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
@@ -13,12 +13,18 @@ from app.database import get_session
 from app.models import Season, SeasonDay, User
 from app.rendering import render
 from app.services.seasons import get_active_season, today_day_number
-from app.services.trust import meets_squad_trust_threshold
+from app.services.squads import (
+    active_members,
+    add_reaction,
+    display_name,
+    leave_squad,
+    my_squad_membership,
+    reaction_count,
+    set_anonymous,
+)
 from app.services.usertime import today_for
 
 router = APIRouter()
-
-MAX_SQUAD_SIZE = 8
 
 
 def _streak(db: Session, season_id: int, up_to_day: int) -> int:
@@ -44,36 +50,80 @@ def squad_page(request: Request, user: User = Depends(require_user), db: Session
     if not season:
         return RedirectResponse("/onboarding", status_code=303)
 
-    today = today_for(user)
-    rows_query = db.exec(
-        select(Season, User).where(Season.wave_id == season.wave_id).join(User, Season.uid == User.id)
-    ).all()
+    membership = my_squad_membership(db, user.id, season.id)
+    if not membership:
+        return render(request, "squad.html", {"members": [], "overflow": 0, "membership": None, "lang": user.language})
 
-    members = []
-    for member_season, member_user in rows_query:
-        if not meets_squad_trust_threshold(member_user.trust_score):
-            continue
+    today = today_for(user)
+    members_rows = []
+    for member in active_members(db, membership.squad_id):
+        member_user = db.get(User, member.uid)
+        member_season = db.get(Season, member.season_id)
         day_number = today_day_number(member_season, today)
         today_status = db.exec(
             select(SeasonDay.status).where(
                 SeasonDay.season_id == member_season.id, SeasonDay.day_number == day_number
             )
         ).first()
-        members.append(
+        members_rows.append(
             {
+                "uid": member_user.id,
                 "is_me": member_user.id == user.id,
-                "nick": member_user.name.split(" ")[0] if member_user.id == user.id else member_user.login,
+                "nick": display_name(member_user, member),
                 "day_number": max(day_number, 0),
                 "checked_in_today": today_status in ("done", "minimal", "rescued"),
-                "streak": _streak(db, member_season.id, day_number),
+                "streak": _streak(db, member_season.id, max(day_number, 0)),
+                "reactions_today": reaction_count(db, membership.squad_id, member_user.id, today),
+                "i_reacted_today": False,
             }
         )
 
-    members.sort(key=lambda m: (-m["streak"], m["nick"]))
-    overflow = max(0, len(members) - MAX_SQUAD_SIZE)
+    members_rows.sort(key=lambda m: (-m["streak"], m["nick"]))
 
     return render(
         request,
         "squad.html",
-        {"members": members[:MAX_SQUAD_SIZE], "overflow": overflow, "lang": user.language},
+        {
+            "members": members_rows,
+            "overflow": 0,
+            "membership": membership,
+            "lang": user.language,
+        },
     )
+
+
+@router.post("/squad/react")
+def react(
+    request: Request,
+    to_uid: int = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    season = get_active_season(db, user.id)
+    membership = my_squad_membership(db, user.id, season.id) if season else None
+    if membership:
+        add_reaction(db, membership.squad_id, user.id, to_uid, today_for(user))
+    return RedirectResponse("/squad", status_code=303)
+
+
+@router.post("/squad/leave")
+def leave(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
+    season = get_active_season(db, user.id)
+    membership = my_squad_membership(db, user.id, season.id) if season else None
+    if membership:
+        leave_squad(db, user.id, membership.squad_id)
+    return RedirectResponse("/squad", status_code=303)
+
+
+@router.post("/squad/anonymous")
+def toggle_anonymous(
+    request: Request,
+    anonymous: bool = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    season = get_active_season(db, user.id)
+    membership = my_squad_membership(db, user.id, season.id) if season else None
+    if membership:
+        set_anonymous(db, user.id, membership.squad_id, anonymous)
+    return RedirectResponse("/squad", status_code=303)
