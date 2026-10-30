@@ -1,73 +1,57 @@
-{% extends "base.html" %}
-
-{% block title %}Профиль — Моя жизнь{% endblock %}
-
+{% extends "shell_base.html" %}
+{% block title %}{{ t('nav.profile') }} — {{ t('common.app_name') }}{% endblock %}
 {% block content %}
-<section class="max-w-md mx-auto card p-6 mt-8">
-    <h1 class="text-xl font-bold mb-1 flex items-center gap-2"><i data-lucide="user-round"></i> Профиль: {{ user.login }}</h1>
-    <p class="text-xs font-mono uppercase tracking-widest text-[var(--accent)] mb-3">{{ persona_title }}</p>
-    <p class="text-sm mb-4">
-        Trust score:
-        <span class="font-bold inline-flex items-center gap-1 {{ 'text-[var(--success)]' if user.trust_score >= 80 else ('text-[var(--coin)]' if user.trust_score >= 50 else 'text-[var(--danger)]') }}">
-            <i data-lucide="shield-check" style="width:0.95em;height:0.95em;"></i> {{ user.trust_score }}/100
-        </span>
-        <span class="text-[var(--muted)]">— растёт от фото-доказательств и подтверждений друзей</span>
-    </p>
+{% set active = 'profile' %}
 
-    <div class="mb-4">
-        <p class="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] mb-4 text-center">Профиль героя</p>
-        {% with chart = hero_chart %}{% include "_pentagon_chart.html" %}{% endwith %}
-    </div>
+<div class="hero-slot" style="margin-bottom:var(--space-5)">
+  <img class="hero-slot__art" src="/assets/art/hero/hero_{{ hero_stage }}.webp" alt="" />
+  <span class="hero-slot__stage">{{ t('profile.stage', n=hero_stage) }}</span>
+  <span class="hero-slot__caption">{{ t('profile.seasons_completed', n=completed|length) }}</span>
+</div>
 
-    {% if saved %}
-    <div class="bg-[var(--success-soft)] text-[var(--success)] text-sm rounded-lg px-3 py-2 mb-4 flex items-center gap-2">
-        <i data-lucide="check-circle-2" style="width:1em;height:1em;"></i> Сохранено
-    </div>
-    {% endif %}
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.shelf_title') }}</h2>
+{% if completed %}
+<div style="display:flex;gap:var(--space-3);overflow-x:auto;padding-bottom:var(--space-2);margin-bottom:var(--space-6)">
+  {% for season in completed %}
+  <a href="/season/{{ season.id }}/reveal" class="card" style="min-width:140px;padding:var(--space-4);flex:none">
+    <strong style="font-size:var(--text-sm)">{{ season.title }}</strong>
+    <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ reveals[season.id].tier if reveals.get(season.id) else '' }}</div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<p style="color:var(--text-faint);font-size:var(--text-sm);margin-bottom:var(--space-6)">{{ t('profile.shelf_empty') }}</p>
+{% endif %}
 
-    <form method="post" action="/profile" class="space-y-3">
-        <div>
-            <label class="block text-sm font-medium mb-1">Вес (кг)</label>
-            <input type="number" step="0.1" name="weight" value="{{ user.weight or '' }}" placeholder="Например: 70"
-                   class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-        </div>
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.settings_title') }}</h2>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">Рост (см)</label>
-            <input type="number" step="0.1" name="hight" value="{{ user.hight or '' }}" placeholder="Например: 175"
-                   class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-        </div>
+<form method="post" action="/profile/language" class="card" style="padding:var(--space-5);margin-bottom:var(--space-3)">
+  <div class="field">
+    <label for="language">{{ t('profile.language_label') }}</label>
+    <select id="language" name="language" style="min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);padding:0 var(--space-4)">
+      <option value="ru" {% if user.language == 'ru' %}selected{% endif %}>Русский</option>
+      <option value="uz" {% if user.language == 'uz' %}selected{% endif %}>Oʻzbekcha</option>
+    </select>
+  </div>
+  <button class="btn btn--secondary" type="submit">{{ t('profile.save') }}</button>
+</form>
 
-        <div>
-            <label class="block text-sm font-medium mb-1">Семейное положение</label>
-            <select name="familly_stat" class="w-full border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2">
-                <option value="" {% if not user.familly_stat %}selected{% endif %}>Не указано</option>
-                <option value="single" {% if user.familly_stat == "single" %}selected{% endif %}>Холост/не замужем</option>
-                <option value="married" {% if user.familly_stat == "married" %}selected{% endif %}>В браке</option>
-            </select>
-        </div>
+<form method="post" action="/profile/timezone" class="card" style="padding:var(--space-5);margin-bottom:var(--space-3)">
+  <div class="field">
+    <label for="timezone">{{ t('profile.timezone_label') }}</label>
+    <input id="timezone" name="timezone" type="text" value="{{ user.timezone }}" {% if not can_change_timezone %}disabled{% endif %} />
+  </div>
+  <button class="btn btn--secondary" type="submit" {% if not can_change_timezone %}disabled{% endif %}>{{ t('profile.save') }}</button>
+  {% if not can_change_timezone %}<p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('profile.timezone_cooldown_notice') }}</p>{% endif %}
+</form>
 
-        <button type="submit" class="btn btn-primary btn-press w-full" style="padding:0.65rem 1rem;">
-            Сохранить
-        </button>
-    </form>
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-3)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-2)">{{ t('profile.privacy_title') }}</h3>
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin-bottom:var(--space-3)">{{ t('profile.privacy_body') }}</p>
+  <form method="post" action="/profile/delete-photos">
+    <button class="btn btn--secondary btn--sm" type="submit">{{ t('profile.delete_photos') }}</button>
+  </form>
+</div>
 
-    <div class="mt-6 pt-4 border-t border-[var(--line)]">
-        <label class="block text-sm font-medium mb-1">Часовой пояс</label>
-        <p class="text-xs text-[var(--muted)] mb-2">
-            Текущий: <span class="numeric">{{ user.timezone }}</span> — по нему считается «сегодня» для отметок.
-        </p>
-        {% if can_change_timezone %}
-        <form method="post" action="/profile/timezone" class="flex gap-2">
-            <input type="text" name="timezone" value="{{ user.timezone }}"
-                   class="flex-1 min-w-0 border border-[var(--line)] bg-[var(--sunken)] text-[var(--text)] rounded-lg px-3 py-2 text-sm">
-            <button type="submit" class="btn btn-secondary btn-press">
-                Изменить
-            </button>
-        </form>
-        {% else %}
-        <p class="text-xs text-[var(--danger)]">Часовой пояс можно менять не чаще раза в 30 дней</p>
-        {% endif %}
-    </div>
-</section>
+<a href="/logout" class="btn btn--text" style="display:block;text-align:center;margin-top:var(--space-4)">{{ t('home.logout') }}</a>
 {% endblock %}

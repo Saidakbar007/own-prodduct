@@ -1,131 +1,84 @@
-{% extends "base.html" %}
-
-{% block title %}Песочница — Админка{% endblock %}
-
+{% extends "shell_base.html" %}
+{% block title %}Админка — песочница{% endblock %}
+{% block nav %}{% endblock %}
 {% block content %}
-<section class="max-w-3xl mx-auto space-y-5">
-    <div class="flex items-center justify-between flex-wrap gap-2">
-        <h1 class="text-xl font-bold flex items-center gap-2"><i data-lucide="flask-conical"></i> Песочница</h1>
-        {% if user.is_test %}
-        <span class="text-xs bg-[var(--coin-soft)] text-[var(--coin)] rounded-lg px-3 py-1.5">Тестовый режим активен</span>
-        {% endif %}
-    </div>
-    <p class="text-sm text-[var(--muted)]">
-        Меняет прогресс твоего собственного аккаунта напрямую — для осмотра визуальных состояний игры.
-        Любая правка помечает аккаунт как тестовый (не попадает в рейтинги друзей и бои с боссом других игроков).
-    </p>
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">Песочница</h1>
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3)">
+    <a href="/admin" class="btn--text">Дашборд</a>
+    <a href="/admin/gallery" class="btn--text">Галерея</a>
+  </div>
+</div>
 
-    <!-- Пресеты -->
-    <div class="card p-4 space-y-3">
-        <h2 class="font-semibold text-sm">Пресеты</h2>
-        <div class="flex flex-wrap gap-2">
-            {% for preset in presets %}
-            <form method="post" action="/admin/sandbox/preset">
-                <input type="hidden" name="preset" value="{{ preset.code }}">
-                <button type="submit" class="btn-press text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-3 py-2">{{ preset.label }}</button>
-            </form>
-            {% endfor %}
-        </div>
-    </div>
+{% if not season_detail %}
+<form method="post" action="/admin/sandbox/create" class="card" style="padding:var(--space-5);margin-bottom:var(--space-6)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Создать сезон задним числом</h3>
+  <div class="field">
+    <label for="template_id">Шаблон</label>
+    <select id="template_id" name="template_id" style="min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);padding:0 var(--space-4)">
+      {% for t in templates %}<option value="{{ t.id }}">{{ t.title }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="length_days">Длина (дней)</label>
+    <input id="length_days" name="length_days" type="number" value="30" required />
+  </div>
+  <div class="field">
+    <label for="baseline_value">Baseline</label>
+    <input id="baseline_value" name="baseline_value" type="number" step="0.1" value="5" required />
+  </div>
+  <div class="field">
+    <label for="days_ago">На сколько дней назад стартовать</label>
+    <input id="days_ago" name="days_ago" type="number" value="12" required />
+  </div>
+  <button class="btn btn--primary btn--block" type="submit">Создать</button>
+</form>
 
-    <!-- Основная форма -->
-    <form method="post" action="/admin/sandbox/apply" class="card p-4 space-y-4">
-        <div>
-            <label class="text-sm font-medium flex justify-between"><span>Общий уровень героя</span><span id="hero-level-val" class="numeric">{{ hero_level }}</span></label>
-            <input type="range" name="hero_level" min="1" max="50" value="{{ hero_level }}" oninput="document.getElementById('hero-level-val').textContent=this.value" class="w-full">
-        </div>
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Мои тестовые сезоны ({{ seasons|length }})</h3>
+<div style="display:flex;flex-direction:column;gap:var(--space-2)">
+  {% for s in seasons %}
+  <a href="/admin/sandbox/{{ s.id }}" class="card" style="padding:var(--space-4);display:block">
+    <strong style="font-size:var(--text-sm)">{{ s.title }}</strong>
+    <span style="font-size:var(--text-xs);color:var(--text-faint);margin-left:var(--space-2)">{{ s.status }}</span>
+  </a>
+  {% endfor %}
+</div>
 
-        <div class="space-y-3">
-            <h3 class="text-sm font-semibold">Личности (уровень сферы и состояние)</h3>
-            {% for p in personas %}
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center border-t border-[var(--line)] pt-2 first:border-0 first:pt-0">
-                <span class="text-sm">{{ p.persona_name }} <span class="text-[var(--muted)]">({{ p.sphere_name }})</span></span>
-                <div class="flex items-center gap-2">
-                    <input type="range" name="{{ p.sphere_code }}_level" min="1" max="{{ sphere_max_level }}" value="{{ p.level }}"
-                           oninput="document.getElementById('lvl-{{ p.sphere_code }}').textContent=this.value" class="w-full">
-                    <span id="lvl-{{ p.sphere_code }}" class="numeric text-xs w-6 text-right">{{ p.level }}</span>
-                </div>
-                <select name="{{ p.sphere_code }}_state" class="text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-2 py-1.5">
-                    {% for state in sphere_states %}
-                    <option value="{{ state }}" {% if p.state == state %}selected{% endif %}>{{ state }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            {% endfor %}
-        </div>
-
-        <div>
-            <label class="text-sm font-medium flex justify-between"><span>Серия дней</span><span id="streak-val" class="numeric">{{ streak }}</span></label>
-            <input type="range" name="streak_days" min="0" max="400" value="{{ streak }}" oninput="document.getElementById('streak-val').textContent=this.value" class="w-full">
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-            <div>
-                <label class="text-sm font-medium">Вид питомца</label>
-                <select name="pet_species" class="w-full text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-2 py-1.5 mt-1">
-                    <option value="">Яйцо (не вылупился)</option>
-                    {% for code, name in pet_species.items() %}
-                    <option value="{{ code }}" {% if pet.species == code %}selected{% endif %}>{{ name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div>
-                <label class="text-sm font-medium flex justify-between"><span>Стадия питомца</span><span id="pet-stage-val" class="numeric">{{ pet.best_stage_reached }}</span></label>
-                <input type="range" name="pet_stage" min="1" max="5" value="{{ pet.best_stage_reached }}" oninput="document.getElementById('pet-stage-val').textContent=this.value" class="w-full">
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-            <div>
-                <label class="text-sm font-medium flex justify-between"><span>Монеты</span><span id="coins-val" class="numeric">{{ user.coins }}</span></label>
-                <input type="range" name="coins" min="0" max="2000" step="10" value="{{ user.coins }}" oninput="document.getElementById('coins-val').textContent=this.value" class="w-full">
-            </div>
-            <div>
-                <label class="text-sm font-medium flex justify-between"><span>Trust score</span><span id="trust-val" class="numeric">{{ user.trust_score }}</span></label>
-                <input type="range" name="trust_score" min="0" max="100" value="{{ user.trust_score }}" oninput="document.getElementById('trust-val').textContent=this.value" class="w-full">
-            </div>
-        </div>
-
-        <button type="submit" class="btn-press w-full bg-[var(--accent)] text-[var(--on-accent)] rounded-lg py-2.5 text-sm font-medium">Применить</button>
+{% else %}
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <strong>{{ season_detail.title }}</strong> — {{ season_detail.status }}
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3);flex-wrap:wrap">
+    <form method="post" action="/admin/sandbox/{{ season_detail.id }}/finish">
+      <button class="btn btn--secondary btn--sm" type="submit">Завершить и сгенерировать Reveal</button>
     </form>
-
-    <!-- Действия -->
-    <div class="card p-4 space-y-3">
-        <h2 class="font-semibold text-sm">Действия</h2>
-        <div class="flex flex-wrap gap-2">
-            <form method="post" action="/admin/sandbox/grant-items">
-                <button type="submit" class="btn-press text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-3 py-2">Выдать все предметы</button>
-            </form>
-            <form method="post" action="/admin/sandbox/grant-achievements">
-                <button type="submit" class="btn-press text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-3 py-2">Выдать все достижения</button>
-            </form>
-            <form method="post" action="/admin/sandbox/council">
-                <button type="submit" class="btn-press text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-3 py-2">Запустить совет недели</button>
-            </form>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-            <form method="post" action="/admin/sandbox/open-chest" class="flex items-center gap-2">
-                <select name="rarity" class="text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-2 py-1.5">
-                    {% for r in rarities %}
-                    <option value="{{ r }}">{{ r }}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit" class="btn-press text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-3 py-2">Открыть сундук нужной редкости</button>
-            </form>
-        </div>
-        <div class="flex flex-wrap gap-2">
-            <form method="post" action="/admin/sandbox/boss-damage">
-                <input type="hidden" name="amount" value="20">
-                <button type="submit" class="btn-press text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-3 py-2">Босс: нанести урон (20)</button>
-            </form>
-            <form method="post" action="/admin/sandbox/boss-defeat">
-                <button type="submit" class="btn-press text-sm bg-[var(--sunken)] border border-[var(--line)] rounded-lg px-3 py-2">Босс: победить</button>
-            </form>
-        </div>
-    </div>
-
-    <form method="post" action="/admin/sandbox/reset">
-        <button type="submit" class="btn-press w-full bg-[var(--danger-soft)] text-[var(--danger)] border border-[var(--line)] rounded-lg py-2.5 text-sm font-medium">Сбросить к реальному прогрессу</button>
+    <form method="post" action="/admin/sandbox/{{ season_detail.id }}/episode">
+      <input type="hidden" name="week_number" value="1" />
+      <button class="btn btn--secondary btn--sm" type="submit">Сгенерировать серию 1</button>
     </form>
-</section>
+  </div>
+</div>
+
+<form method="post" action="/admin/sandbox/{{ season_detail.id }}/measure" class="card" style="padding:var(--space-5);margin-bottom:var(--space-5);display:flex;gap:var(--space-3);align-items:flex-end;flex-wrap:wrap">
+  <div class="field" style="margin-bottom:0"><label>День</label><input name="day_number" type="number" min="0" required /></div>
+  <div class="field" style="margin-bottom:0"><label>Значение</label><input name="value" type="number" step="0.1" required /></div>
+  <button class="btn btn--secondary" type="submit">Добавить замер</button>
+</form>
+
+<div style="display:flex;flex-direction:column;gap:var(--space-2)">
+  {% for day in days %}
+  <div class="card" style="padding:var(--space-3) var(--space-4);display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap">
+    <span style="font-size:var(--text-sm)">{{ day.day_number }}. {{ day.title }} <span style="color:var(--text-faint)">({{ day.status }})</span></span>
+    <form method="post" action="/admin/sandbox/{{ season_detail.id }}/mark" style="display:flex;gap:var(--space-2)">
+      <input type="hidden" name="day_number" value="{{ day.day_number }}" />
+      <select name="status" style="min-height:36px;border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text)">
+        {% for s in ['done','minimal','missed','rescued','rest','planned'] %}
+        <option value="{{ s }}" {% if day.status == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn--secondary btn--sm" type="submit">OK</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
 {% endblock %}

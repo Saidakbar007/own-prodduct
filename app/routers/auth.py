@@ -2,17 +2,25 @@
 Роуты для регистрации, входа и выхода.
 """
 
+from datetime import date
+from typing import Optional
+
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
 from app.auth import hash_password, verify_password
 from app.database import get_session
-from app.models import Level, Registration, User
+from app.models import User
 from app.rendering import render
+from app.services.events import log_event_safe
+from app.services.flash import push_flash
+from app.services.seasons import create_season
 from app.services.usertime import DEFAULT_TIMEZONE, is_valid_timezone
 
 router = APIRouter()
+
+MIN_AGE = 18
 
 
 @router.get("/register")
@@ -25,9 +33,9 @@ def register_page(request: Request):
 def register_submit(
     request: Request,
     name: str = Form(...),
-    age: int = Form(None),
-    gender: str = Form(None),
-    mail: str = Form(...),
+    birth_year: int = Form(...),
+    age_confirm: Optional[str] = Form(None),
+    email: str = Form(...),
     login: str = Form(...),
     password: str = Form(...),
     password_confirm: str = Form(...),
@@ -36,48 +44,62 @@ def register_submit(
 ):
     """Обрабатывает отправленную форму регистрации."""
 
-    # Проверка совпадения паролей
-    if password != password_confirm:
-        return render(request, "register.html", {"error": "Пароли не совпадают"})
+    if not age_confirm:
+        return render(request, "register.html", {"error": "auth.error_age_confirm"})
 
-    # Проверка, что почта или логин уже не заняты
+    if date.today().year - birth_year < MIN_AGE:
+        return render(request, "register.html", {"error": "auth.error_age_limit"})
+
+    if password != password_confirm:
+        return render(request, "register.html", {"error": "auth.error_password_mismatch"})
+
     existing = db.exec(
-        select(Registration).where(
-            (Registration.mail == mail) | (Registration.login == login)
-        )
+        select(User).where((User.email == email) | (User.login == login))
     ).first()
     if existing:
-        return render(request, "register.html", {"error": "Эта почта или логин уже используются"})
-
-    # Создаём запись регистрации (с хешем пароля)
-    registration = Registration(
-        name=name,
-        age=age,
-        gender=gender,
-        mail=mail,
-        login=login,
-        password=hash_password(password),
-    )
-    db.add(registration)
-    db.commit()
+        return render(request, "register.html", {"error": "auth.error_taken"})
 
     # Часовой пояс определяется в браузере; на сервере проверяем, что он валиден
     safe_timezone = timezone if is_valid_timezone(timezone) else DEFAULT_TIMEZONE
 
-    # Создаём профиль пользователя
-    user = User(mail=mail, login=login, habits=0, goals=0, timezone=safe_timezone)
+    draft = request.session.get("onboarding") or {}
+
+    user = User(
+        name=name,
+        birth_year=birth_year,
+        email=email,
+        login=login,
+        password_hash=hash_password(password),
+        timezone=safe_timezone,
+        height_cm=draft.get("height_cm"),
+        telegram_user_id=request.session.get("telegram_pending_id"),
+    )
     db.add(user)
     db.commit()
     db.refresh(user)
+    request.session.pop("telegram_pending_id", None)
+    request.session.pop("telegram_pending_name", None)
 
-    # Создаём стартовый уровень пользователя
-    level = Level(uid=user.id, point=0, name="Новичок")
-    db.add(level)
-    db.commit()
-
-    # Сразу авторизуем нового пользователя и ведём на короткий онбординг
     request.session["user_id"] = user.id
-    return RedirectResponse("/onboarding", status_code=303)
+    push_flash(request, "auth.welcome_flash", "success")
+    log_event_safe(db, "signup", uid=user.id)
+
+    if draft.get("template_id") and "baseline_value" in draft and "length_days" in draft:
+        season = create_season(
+            db,
+            uid=user.id,
+            template_id=draft["template_id"],
+            length_days=draft["length_days"],
+            baseline_value=draft["baseline_value"],
+            reference_date=date.today(),
+            secondary_baseline_value=draft.get("secondary_baseline_value"),
+        )
+        event_type = "prologue_started" if season.status == "prologue" else "season_started"
+        log_event_safe(db, event_type, uid=user.id, season_id=season.id)
+        request.session.pop("onboarding", None)
+        return RedirectResponse("/today", status_code=303)
+
+    return RedirectResponse("/", status_code=303)
 
 
 @router.get("/login")
@@ -95,25 +117,11 @@ def login_submit(
 ):
     """Проверяет логин и пароль, при успехе открывает сессию."""
 
-    registration = db.exec(
-        select(Registration).where(Registration.login == login)
-    ).first()
-
-    if not registration or not verify_password(password, registration.password):
-        return render(request, "login.html", {"error": "Неверный логин или пароль"})
-
-    user = db.exec(select(User).where(User.login == registration.login)).first()
+    user = db.exec(select(User).where(User.login == login)).first()
+    if not user or not verify_password(password, user.password_hash):
+        return render(request, "login.html", {"error": "auth.error_invalid_credentials"})
 
     request.session["user_id"] = user.id
-    return RedirectResponse("/", status_code=303)
-
-
-@router.get("/try-demo")
-def try_demo(request: Request, db: Session = Depends(get_session)):
-    """Входит под демо-аккаунтом в один клик (для кнопки на лендинге)."""
-    user = db.exec(select(User).where(User.login == "demo")).first()
-    if user:
-        request.session["user_id"] = user.id
     return RedirectResponse("/", status_code=303)
 
 

@@ -3,83 +3,76 @@
 Здесь создаётся объект FastAPI, подключаются шаблоны и роутеры.
 """
 
+import asyncio
+import contextlib
+import logging
 import os
 from contextlib import asynccontextmanager
-from datetime import date
 
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Request
 from fastapi.exception_handlers import http_exception_handler as default_http_exception_handler
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from sqlmodel import Session, select
+from sqlmodel import Session
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
 
-from app.auth import get_current_user
-from app.database import engine, get_session
 from app import models  # noqa: F401 — импорт нужен, чтобы таблицы попали в metadata
+from app.auth import get_current_user
+from app.database import engine
 from app.migrations_runner import run_migrations
-from app.models import Goal, Level, User, UserAchievement, Achievement
 from app.rendering import render
-from app.routers import auth as auth_router
-from app.routers import profile as profile_router
-from app.routers import habits as habits_router
-from app.routers import goals as goals_router
-from app.routers import stats as stats_router
-from app.routers import programs as programs_router
-from app.routers import friends as friends_router
-from app.routers import coach as coach_router
-from app.routers import achievements as achievements_router
-from app.routers import daily_tasks as daily_tasks_router
-from app.routers import confirmations as confirmations_router
-from app.routers import bets as bets_router
-from app.routers import partnerships as partnerships_router
-from app.routers import onboarding as onboarding_router
 from app.routers import admin as admin_router
-from app.routers import boss as boss_router
-from app.routers import game_assets as game_assets_router
-from app.routers import hero as hero_router
-from app.routers import shop as shop_router
-from app.routers.habits import _habits_context, best_streak_with_freeze_for_user, habits_at_risk
-from app.services.achievements import ensure_achievements_seeded
-from app.services.seasons import ensure_season_seeded
-from app.services.shop import ensure_shop_seeded
-from app.services.daily_tasks import get_or_create_today_tasks
-from app.services.pentagon import pentagon_chart
-from app.services.spheres import all_spheres_progress
-from app.services.progress import dream_progress_percent
-from app.services.game_assets import hero_image_url, pet_image_url
-from app.services.levels import level_progress
-from app.services.pets import PET_SPECIES, pet_profile
+from app.routers import auth as auth_router
+from app.routers import challenge as challenge_router
+from app.routers import measure as measure_router
+from app.routers import onboarding as onboarding_router
+from app.routers import profile as profile_router
+from app.routers import proofs as proofs_router
+from app.routers import reveal as reveal_router
+from app.routers import season as season_router
+from app.routers import squad as squad_router
+from app.routers import telegram as telegram_router
+from app.routers import today as today_router
+from app.services.telegram_api import is_configured as telegram_is_configured
+from app.services.telegram_bot import run_due_reminders
 
 load_dotenv()
 
-os.makedirs("uploads", exist_ok=True)
+REMINDER_INTERVAL_SECONDS = 60
+
+
+async def _reminder_loop() -> None:
+    """Напоминания бота (§12) — без отдельного cron: тот же процесс веб-
+    сервиса, фоновый цикл раз в минуту. При нескольких инстансах Render
+    напоминания задублируются — пока единственный инстанс, это не проблема
+    (см. DECISIONS.md)."""
+    while True:
+        try:
+            if telegram_is_configured():
+                with Session(engine) as db:
+                    run_due_reminders(db)
+        except Exception:
+            logging.getLogger("sezony.telegram").exception("reminder loop failed")
+        await asyncio.sleep(REMINDER_INTERVAL_SECONDS)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    При старте сервера: применяем миграции Alembic (создают/обновляют таблицы),
-    заполняем каталог достижений, и если база пустая — запускаем seed автоматически.
-    """
+    """При старте сервера применяем миграции Alembic и запускаем фоновый
+    цикл напоминаний бота."""
     run_migrations()
-    with Session(engine) as db:
-        ensure_achievements_seeded(db)
-        ensure_shop_seeded(db)
-        ensure_season_seeded(db)
-
-        from app.models import Registration
-
-        if not db.exec(select(Registration)).first():
-            import seed
-
-            seed.main()
-
-    yield
+    task = asyncio.create_task(_reminder_loop())
+    try:
+        yield
+    finally:
+        task.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await task
 
 
-app = FastAPI(title="Моя жизнь (MVP)", lifespan=lifespan)
+app = FastAPI(title="Сезоны", lifespan=lifespan)
 
 # Подпись cookie-сессий секретным ключом из .env
 app.add_middleware(
@@ -87,108 +80,36 @@ app.add_middleware(
     secret_key=os.getenv("SECRET_KEY", "dev-secret-key-change-me"),
 )
 
-# Статика и загруженные фото-доказательства
+# Дизайн-система (DESIGN.md) и 3D-арт — те же каталоги, что использует /design для показа
+app.mount("/design", StaticFiles(directory="design"), name="design")
+app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-# Роуты
 app.include_router(auth_router.router)
-app.include_router(profile_router.router)
-app.include_router(habits_router.router)
-app.include_router(goals_router.router)
-app.include_router(stats_router.router)
-app.include_router(programs_router.router)
-app.include_router(friends_router.router)
-app.include_router(coach_router.router)
-app.include_router(achievements_router.router)
-app.include_router(daily_tasks_router.router)
-app.include_router(confirmations_router.router)
-app.include_router(bets_router.router)
-app.include_router(partnerships_router.router)
 app.include_router(onboarding_router.router)
-app.include_router(game_assets_router.router)
-app.include_router(hero_router.router)
-app.include_router(shop_router.router)
-app.include_router(boss_router.router)
+app.include_router(today_router.router)
+app.include_router(season_router.router)
+app.include_router(reveal_router.router)
+app.include_router(measure_router.router)
+app.include_router(challenge_router.router)
+app.include_router(squad_router.router)
+app.include_router(profile_router.router)
+app.include_router(proofs_router.router)
+app.include_router(telegram_router.router)
 app.include_router(admin_router.router)
 
 
 @app.exception_handler(StarletteHTTPException)
 async def custom_404_handler(request: Request, exc: StarletteHTTPException):
-    """Красивая 404-страница для несуществующих адресов; все остальные статусы — как обычно."""
+    """Единообразная 404-страница; все остальные статусы — как обычно."""
     if exc.status_code != 404:
         return await default_http_exception_handler(request, exc)
-
-    user = None
-    user_id = request.session.get("user_id")
-    if user_id:
-        with Session(engine) as db:
-            user = db.get(User, user_id)
-
-    return render(request, "404.html", {"user": user}, status_code=404)
+    return render(request, "404.html", {}, status_code=404)
 
 
 @app.get("/")
-def index(request: Request, user=Depends(get_current_user), db: Session = Depends(get_session)):
-    """
-    Главная страница.
-    Гостю показывает приглашение зарегистрироваться.
-    Вошедшему — дашборд: сегодняшние привычки, уровень, ежедневное задание,
-    ближайшие дедлайны, последнее достижение, прогресс к мечте и мягкий
-    экран возврата для пропущенных вчера привычек.
-    """
-    if not user:
-        return render(request, "index.html", {"user": None})
-
-    habits_context = _habits_context(db, user)
-    level = db.exec(select(Level).where(Level.uid == user.id)).first()
-
-    deadlines = db.exec(
-        select(Goal)
-        .where(Goal.uid == user.id, Goal.status != "completed", Goal.deadline != None)  # noqa: E711
-        .order_by(Goal.deadline.asc())
-        .limit(5)
-    ).all()
-
-    daily_tasks = get_or_create_today_tasks(db, user)
-
-    last_user_achievement = db.exec(
-        select(UserAchievement)
-        .where(UserAchievement.uid == user.id)
-        .order_by(UserAchievement.earned_date.desc())
-    ).first()
-    last_achievement = None
-    if last_user_achievement:
-        last_achievement = db.get(Achievement, last_user_achievement.achievement_id)
-
-    top_dream = db.exec(select(Goal).where(Goal.uid == user.id, Goal.parent_id == None)).first()  # noqa: E711
-    dream_progress = dream_progress_percent(db, top_dream) if top_dream else None
-
-    hero_progress = level_progress(level.point if level else 0)
-    hero_level = hero_progress["level"]
-    pet = pet_profile(db, user, hero_level, best_streak_with_freeze_for_user(db, user))
-    if pet["species"]:
-        pet["image_url"] = pet_image_url(pet["species"], pet["stage"])
-
-    return render(
-        request,
-        "index.html",
-        {
-            "user": user,
-            "habits": habits_context["habits"],
-            "level": level,
-            "deadlines": deadlines,
-            "daily_tasks": daily_tasks,
-            "last_achievement": last_achievement,
-            "top_dream": top_dream,
-            "dream_progress": dream_progress,
-            "at_risk_habits": habits_at_risk(db, user),
-            "today": date.today(),
-            "hero_chart": pentagon_chart(all_spheres_progress(db, user.id)),
-            "hero_image_url": hero_image_url(hero_progress["stage"]),
-            "pet": pet,
-            "pet_species_options": PET_SPECIES,
-        },
-        db=db,
-        user=user,
-    )
+def index(request: Request, user=Depends(get_current_user)):
+    """Гостю — приглашение начать сезон; вошедшему — сразу «Сегодня»."""
+    if user:
+        return RedirectResponse("/today", status_code=303)
+    return render(request, "index.html", {"user": None, "lang": None})

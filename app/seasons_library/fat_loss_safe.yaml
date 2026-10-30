@@ -1,0 +1,52 @@
+id: fat_loss_safe
+version: 1
+title: "Сезон: снижение веса безопасно"
+title_uz: "Mavsum: vaznni xavfsiz kamaytirish"
+category: fitness
+metric: { name: "Вес", unit: "кг", direction: down }
+lengths: [30, 60, 90]
+target_default: 6
+baseline_test:
+  prompt: "Какой у тебя сейчас вес (в кг)?"
+  input: number
+  min: 35
+  max: 250
+eligibility:
+  min_age: 18
+  warnings:
+    - "Это не медицинская рекомендация. При хронических заболеваниях — проконсультируйся с врачом"
+    - "Темп снижения веса ограничен безопасным пределом (не быстрее 1% массы тела в неделю) — это не обсуждается шаблоном"
+schedule: { train_days: [1, 3, 5], minutes: [25, 40] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Шаги и базовая сила"
+        instructions: "7000–8000 шагов за день (можно дробно). 2 круга: 10 приседаний, 10 отжиманий от опоры, 10 выпадов на ногу, планка 20 сек."
+        minimal: "4000 шагов и один круг упражнений"
+        expected_progress: 0.08
+  - phase: 2
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Силовая — объём"
+        instructions: "3 круга: 12 приседаний, 10 отжиманий, 10 тяг резины к поясу, планка 30 сек. Плюс 8000 шагов за день."
+        minimal: "1 круг упражнений и 5000 шагов"
+        expected_progress: 0.1
+  - phase: 3
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Силовая — интенсивность"
+        instructions: "4 круга: 15 приседаний, 12 отжиманий, 12 тяг резины, выпады 10 на ногу, планка 40 сек. Плюс 9000 шагов за день."
+        minimal: "2 круга упражнений и 6000 шагов"
+        expected_progress: 0.1
+rest_day:
+  title: "День восстановления"
+  instructions: "Лёгкая прогулка 20–30 минут, без силовых упражнений"
+measure_every_days: 7
+measure:
+  prompt: "Какой у тебя вес сегодня (в кг)?"
+  proof: optional
+  progress_photo: true
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2

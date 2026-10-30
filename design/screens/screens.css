@@ -1,0 +1,286 @@
+.screens-page {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-10);
+  justify-content: center;
+  padding: var(--space-8) var(--space-5) var(--space-20);
+  position: relative;
+  z-index: 1;
+}
+.screens-page__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+.screens-page__label {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.phone-frame {
+  width: 375px;
+  max-width: 100%;
+  height: 812px;
+  border-radius: 44px;
+  border: 10px solid var(--surface-sunken);
+  background: var(--bg);
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+}
+.phone-frame__status {
+  height: calc(28px + var(--safe-top));
+  flex: none;
+}
+.phone-frame__screen {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Экран: Трейлер сезона ===== */
+
+.trailer-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-6) var(--space-5) var(--space-8);
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(255, 182, 72, 0.22), transparent 60%),
+    linear-gradient(195deg, #241c12, var(--bg) 65%);
+  position: relative;
+}
+.trailer-screen__art {
+  position: absolute;
+  right: -40px;
+  bottom: 160px;
+  width: 280px;
+  opacity: 0.9;
+  filter: drop-shadow(0 30px 40px rgba(0,0,0,.5));
+}
+.trailer-screen__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.trailer-screen__dots {
+  display: flex;
+  gap: 6px;
+}
+.trailer-screen__dots span {
+  width: 20px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--border-strong);
+}
+.trailer-screen__dots span.active {
+  background: var(--accent);
+  width: 28px;
+}
+.trailer-screen__body {
+  position: relative;
+}
+.trailer-screen__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-4);
+}
+.trailer-screen__title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-3);
+  max-width: 11ch;
+}
+.trailer-screen__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-5);
+}
+.trailer-screen__facts strong {
+  color: var(--text);
+}
+.trailer-screen__wave {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+.trailer-screen__footer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ===== Экран: Сегодня ===== */
+
+.today-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.today-screen__scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.today-screen__greeting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.today-screen__greeting h2 {
+  font-size: var(--text-md);
+  font-family: var(--font-body);
+  font-weight: 700;
+}
+.today-screen__greeting p {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+/* ===== Экран: Reveal ===== */
+
+.reveal-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-8) var(--space-6) var(--space-6);
+  background:
+    radial-gradient(90% 50% at 50% 0%, rgba(255, 182, 72, 0.3), transparent 60%),
+    radial-gradient(70% 40% at 20% 85%, rgba(31, 190, 140, 0.18), transparent 60%),
+    linear-gradient(200deg, #241c12, var(--bg) 60%);
+  position: relative;
+  overflow: hidden;
+}
+.reveal-screen__spark {
+  position: absolute;
+  color: var(--accent);
+  opacity: 0.55;
+}
+.reveal-screen__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--status-done-soft);
+  color: var(--status-done);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin-bottom: var(--space-5);
+}
+.reveal-screen__title {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-2);
+}
+.reveal-screen__subtitle {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-6);
+  max-width: 28ch;
+}
+.reveal-compare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  width: 100%;
+}
+.reveal-compare__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  max-width: 45%;
+}
+.reveal-compare__value {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  line-height: 1;
+}
+.reveal-compare__tag {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-top: var(--space-2);
+}
+.reveal-compare__value--after {
+  color: var(--accent-strong);
+}
+.reveal-screen__quote {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: left;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+.reveal-screen__quote p {
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+.reveal-proofs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  width: 100%;
+  margin-bottom: var(--space-6);
+}
+.reveal-proofs__shot {
+  aspect-ratio: 3/4;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(160deg, var(--surface-raised), var(--surface-sunken));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-faint);
+  border: 1px solid var(--border);
+}
+.reveal-screen__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: auto;
+}

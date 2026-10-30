@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Сезоны — эталонные экраны</title>
+<link rel="stylesheet" href="/design/tokens.css" />
+<link rel="stylesheet" href="/design/base.css" />
+<link rel="stylesheet" href="/design/components.css" />
+<link rel="stylesheet" href="/design/screens/screens.css" />
+</head>
+<body>
+
+<svg class="sr-only" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" stroke-width="1.75" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.4" stroke-width="1.75"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-5H9v5H5a1 1 0 0 1-1-1z" stroke-width="1.75" stroke-linejoin="round"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="15" rx="2" stroke-width="1.75"/><path d="M4 10h16M8 3.5v4M16 3.5v4" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3" stroke-width="1.75"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0" stroke-width="1.75" stroke-linecap="round"/><path d="M16 7.5a3 3 0 1 1 3.2 3M15 13.2A5.2 5.2 0 0 1 20.5 19" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5" stroke-width="1.75"/><path d="M4.5 19.5a7.5 7.5 0 0 1 15 0" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.4" stroke-width="1.75"/><circle cx="6" cy="12" r="2.4" stroke-width="1.75"/><circle cx="18" cy="19" r="2.4" stroke-width="1.75"/><path d="M8.2 10.8l7.6-4.2M8.2 13.2l7.6 4.2" stroke-width="1.75"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0z" stroke-width="1.75" stroke-linejoin="round"/><path d="M12 13v3m-3 3h6" stroke-width="1.75" stroke-linecap="round"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3" stroke-width="1.75"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 10a6 6 0 1 1 12 0c0 4 1.5 5 1.5 5h-15S6 14 6 10z" stroke-width="1.75" stroke-linejoin="round"/><path d="M10 18a2 2 0 0 0 4 0" stroke-width="1.75"/></symbol>
+</svg>
+
+<header class="showcase__header" style="max-width:1040px;margin:0 auto;padding:var(--space-8) var(--space-5) 0;position:relative;z-index:1">
+  <div>
+    <h1 class="showcase__title">Эталонные экраны</h1>
+    <p class="showcase__subtitle">375 px. Компоненты — <a href="/design" class="btn--text" style="text-decoration:underline">/design</a>.</p>
+  </div>
+  <button class="theme-toggle" data-theme-toggle>☾ Тёмная</button>
+</header>
+
+<div class="screens-page">
+
+  <!-- ========== 1. Трейлер сезона ========== -->
+  <div class="screens-page__col">
+    <div class="phone-frame">
+      <div class="phone-frame__status"></div>
+      <div class="phone-frame__screen">
+        <div class="trailer-screen">
+          <img class="trailer-screen__art" src="/assets/art/hero/hero_2.webp" alt="" aria-hidden="true" />
+          <div class="trailer-screen__top">
+            <span style="font-size:var(--text-xs);color:var(--text-faint)">Шаг 4 из 4</span>
+            <div class="trailer-screen__dots"><span></span><span></span><span></span><span class="active"></span></div>
+          </div>
+          <div class="trailer-screen__body">
+            <span class="trailer-screen__eyebrow"><svg class="icon" style="width:1em;height:1em"><use href="#i-sparkle"/></svg>Твой сезон готов</span>
+            <h1 class="trailer-screen__title">Бег: с нуля до 5 км</h1>
+            <div class="trailer-screen__facts">
+              <span>30 дней · старт в <strong>понедельник, 3 ноября</strong></span>
+              <span>4 дня в неделю · 25–35 минут</span>
+              <span>К финалу — прогноз <strong>5.2 км</strong> без остановки</span>
+            </div>
+            <div class="trailer-screen__wave">
+              <div class="wave-row">
+                <span class="avatar">АМ</span>
+                <span class="avatar avatar--secondary">ДК</span>
+                <span class="avatar avatar--muted">НР</span>
+                <span class="avatar avatar--overflow">+44</span>
+              </div>
+              <span style="font-size:var(--text-xs);color:var(--text-muted)">уже готовятся начать</span>
+            </div>
+          </div>
+          <div class="trailer-screen__footer">
+            <button class="btn btn--primary btn--block">Зарегистрироваться и начать</button>
+            <button class="btn btn--text">Уже есть аккаунт? Войти</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="screens-page__label">1. Трейлер сезона (онбординг)</p>
+  </div>
+
+  <!-- ========== 2. Сегодня ========== -->
+  <div class="screens-page__col">
+    <div class="phone-frame">
+      <div class="phone-frame__status"></div>
+      <div class="phone-frame__screen">
+        <div class="today-screen">
+          <div class="today-screen__scroll">
+            <div class="today-screen__greeting">
+              <div>
+                <h2>Привет, Диёр</h2>
+                <p>Понедельник, 18 ноября</p>
+              </div>
+              <button class="icon-btn"><svg class="icon"><use href="#i-bell"/></svg></button>
+            </div>
+
+            <div class="season-progress">
+              <div class="season-progress__ring">
+                <svg viewBox="0 0 84 84">
+                  <circle class="season-progress__track" cx="42" cy="42" r="36"/>
+                  <circle class="season-progress__value" cx="42" cy="42" r="36" stroke-dasharray="226" stroke-dashoffset="68"/>
+                </svg>
+                <div class="season-progress__label">
+                  <span class="season-progress__day tabular">12</span>
+                  <span class="season-progress__total">из 30</span>
+                </div>
+              </div>
+              <div class="season-progress__meta">
+                <h3>Бег: с нуля до 5 км</h3>
+                <p>Прогноз к финалу — 5.2 км</p>
+              </div>
+            </div>
+
+            <div class="action-card">
+              <span class="action-card__kicker">Действие дня</span>
+              <h3 class="action-card__title">Бег 25 минут в спокойном темпе</h3>
+              <p class="action-card__body">Держи пульс в разговорном темпе. Тяжело — переходи на быстрый шаг.</p>
+              <div class="action-card__actions">
+                <button class="btn btn--primary"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-camera"/></svg>Сделал</button>
+                <button class="btn btn--secondary">Минимум</button>
+              </div>
+              <button class="btn btn--text action-card__skip">Не получится сегодня</button>
+            </div>
+
+            <div class="wave-summary card" style="padding:var(--space-4)">
+              <div class="wave-row">
+                <span class="avatar">АМ<span class="avatar__today"></span></span>
+                <span class="avatar avatar--secondary">ДК<span class="avatar__today"></span></span>
+                <span class="avatar avatar--muted">НР</span>
+                <span class="avatar avatar--overflow">+5</span>
+              </div>
+              <span class="wave-summary__text"><strong>4 из 8</strong> сегодня</span>
+            </div>
+          </div>
+          <nav class="bottom-nav">
+            <button class="bottom-nav__item bottom-nav__item--active"><svg class="icon"><use href="#i-home"/></svg>Сегодня</button>
+            <button class="bottom-nav__item"><svg class="icon"><use href="#i-calendar"/></svg>Сезон</button>
+            <button class="bottom-nav__item"><svg class="icon"><use href="#i-users"/></svg>Состав</button>
+            <button class="bottom-nav__item"><svg class="icon"><use href="#i-user"/></svg>Профиль</button>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <p class="screens-page__label">2. Сегодня</p>
+  </div>
+
+  <!-- ========== 3. Reveal ========== -->
+  <div class="screens-page__col">
+    <div class="phone-frame">
+      <div class="phone-frame__status"></div>
+      <div class="phone-frame__screen">
+        <div class="reveal-screen">
+          <svg class="icon reveal-screen__spark" style="width:18px;height:18px;top:70px;left:24px"><use href="#i-sparkle"/></svg>
+          <svg class="icon reveal-screen__spark" style="width:12px;height:12px;top:120px;right:34px"><use href="#i-sparkle"/></svg>
+          <svg class="icon reveal-screen__spark" style="width:14px;height:14px;top:210px;left:50px"><use href="#i-sparkle"/></svg>
+
+          <span class="reveal-screen__badge"><svg class="icon" style="width:1em;height:1em"><use href="#i-trophy"/></svg>Сезон пройден</span>
+          <h1 class="reveal-screen__title">30 дней позади</h1>
+          <p class="reveal-screen__subtitle">Бег: с нуля до 5 км — ты прошёл сезон до конца</p>
+
+          <div class="reveal-compare">
+            <div class="reveal-compare__stat">
+              <span class="reveal-compare__value tabular">0 км</span>
+              <span class="reveal-compare__tag">день 0</span>
+            </div>
+            <svg class="icon" style="color:var(--text-faint)"><use href="#i-sparkle"/></svg>
+            <div class="reveal-compare__stat">
+              <span class="reveal-compare__value reveal-compare__value--after tabular">5.2 км</span>
+              <span class="reveal-compare__tag">день 30</span>
+            </div>
+          </div>
+
+          <div class="reveal-screen__quote">
+            <div class="mascot mascot--glad" style="width:48px;height:48px"><span class="mascot__face" style="gap:8px"><span class="mascot__eye" style="width:4px;height:6px"></span><span class="mascot__eye" style="width:4px;height:6px"></span></span></div>
+            <p>«Ты сделал то, на что решаются единицы. Горжусь тобой.»</p>
+          </div>
+
+          <div class="reveal-proofs">
+            <div class="reveal-proofs__shot"><svg class="icon" style="width:18px;height:18px"><use href="#i-camera"/></svg></div>
+            <div class="reveal-proofs__shot"><svg class="icon" style="width:18px;height:18px"><use href="#i-camera"/></svg></div>
+            <div class="reveal-proofs__shot"><svg class="icon" style="width:18px;height:18px"><use href="#i-camera"/></svg></div>
+            <div class="reveal-proofs__shot"><svg class="icon" style="width:18px;height:18px"><use href="#i-camera"/></svg></div>
+          </div>
+
+          <div class="reveal-screen__actions">
+            <button class="btn btn--primary btn--block">Следующий сезон: 10 км</button>
+            <button class="btn btn--secondary btn--block"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-share"/></svg>Поделиться карточкой</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="screens-page__label">3. Reveal (финал сезона)</p>
+  </div>
+
+</div>
+
+<script src="/design/js/theme.js"></script>
+</body>
+</html>

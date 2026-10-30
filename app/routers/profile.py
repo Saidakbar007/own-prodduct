@@ -1,85 +1,88 @@
 """
-Профиль пользователя: вес, рост, семейное положение.
+«Профиль» (§7.9): аватар (3D-герой), полка пройденных сезонов, настройки
+(тема, язык, часовой пояс, приватность), выход.
 """
 
+import os
 from datetime import datetime, timezone as dt_timezone
 
 from fastapi import APIRouter, Depends, Form, Request
+from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import Level, User
+from app.models import Proof, Reveal, Season, User
 from app.rendering import render
 from app.services.flash import push_flash
-from app.services.levels import level_progress
-from app.services.pentagon import pentagon_chart
-from app.services.personas import PERSONAS, leading_persona_sphere
-from app.services.spheres import all_spheres_progress
-from app.services.usertime import TIMEZONE_CHANGE_COOLDOWN_DAYS, can_change_timezone, is_valid_timezone
+from app.services.usertime import can_change_timezone, is_valid_timezone
 
 router = APIRouter()
 
+HERO_STAGES = 5
 
-def _profile_context(db: Session, user: User, saved: bool = False) -> dict:
-    level = db.exec(select(Level).where(Level.uid == user.id)).first()
-    rank = level_progress(level.point if level else 0)["rank"]
-    leading_code = leading_persona_sphere(db, user.id)
 
-    return {
-        "user": user,
-        "saved": saved,
-        "hero_chart": pentagon_chart(all_spheres_progress(db, user.id)),
-        "can_change_timezone": can_change_timezone(user),
-        "persona_title": f"{PERSONAS[leading_code]} · {rank}",
-    }
+def hero_stage_for(completed_count: int) -> int:
+    return min(HERO_STAGES, 1 + completed_count)
 
 
 @router.get("/profile")
 def profile_page(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
-    """Показывает текущие данные профиля."""
-    return render(request, "profile.html", _profile_context(db, user), db=db, user=user)
+    completed = db.exec(
+        select(Season)
+        .where(Season.uid == user.id, Season.status == "finished")
+        .order_by(Season.created_at.desc())
+    ).all()
+    reveals = {
+        s.id: db.exec(select(Reveal).where(Reveal.season_id == s.id)).first() for s in completed
+    }
+    stage = hero_stage_for(len(completed))
+
+    return render(
+        request,
+        "profile.html",
+        {
+            "user": user,
+            "completed": completed,
+            "reveals": reveals,
+            "hero_stage": stage,
+            "can_change_timezone": can_change_timezone(user),
+            "lang": user.language,
+        },
+    )
 
 
-@router.post("/profile")
-def profile_update(
-    request: Request,
-    weight: float = Form(None),
-    hight: float = Form(None),
-    familly_stat: str = Form(None),
-    user: User = Depends(require_user),
-    db: Session = Depends(get_session),
-):
-    """Сохраняет изменения профиля. Пользователь может менять только свои данные."""
-    user.weight = weight
-    user.hight = hight
-    user.familly_stat = familly_stat
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return render(request, "profile.html", _profile_context(db, user, saved=True), db=db, user=user)
+@router.post("/profile/language")
+def set_language(request: Request, language: str = Form(...), user: User = Depends(require_user), db: Session = Depends(get_session)):
+    if language in ("ru", "uz"):
+        user.language = language
+        db.add(user)
+        db.commit()
+    return RedirectResponse("/profile", status_code=303)
 
 
 @router.post("/profile/timezone")
-def profile_timezone_update(
-    request: Request,
-    timezone: str = Form(...),
-    user: User = Depends(require_user),
-    db: Session = Depends(get_session),
-):
-    """Меняет часовой пояс — не чаще раза в 30 дней, и только на валидный пояс IANA."""
-    if not is_valid_timezone(timezone):
-        push_flash(request, "Неизвестный часовой пояс", "error")
-        return render(request, "profile.html", _profile_context(db, user), db=db, user=user, status_code=400)
-
+def set_timezone(request: Request, timezone: str = Form(...), user: User = Depends(require_user), db: Session = Depends(get_session)):
     if not can_change_timezone(user):
-        push_flash(request, f"Часовой пояс можно менять не чаще раза в {TIMEZONE_CHANGE_COOLDOWN_DAYS} дней", "error")
-        return render(request, "profile.html", _profile_context(db, user), db=db, user=user, status_code=400)
+        push_flash(request, "profile.error_timezone_cooldown", "error")
+        return RedirectResponse("/profile", status_code=303)
+    if is_valid_timezone(timezone):
+        user.timezone = timezone
+        user.timezone_changed_at = datetime.now(dt_timezone.utc)
+        db.add(user)
+        db.commit()
+    return RedirectResponse("/profile", status_code=303)
 
-    user.timezone = timezone
-    user.timezone_changed_at = datetime.now(dt_timezone.utc)
-    db.add(user)
+
+@router.post("/profile/delete-photos")
+def delete_all_photos(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
+    """§9: кнопка "удалить все мои фото"."""
+    proofs = db.exec(select(Proof).where(Proof.uid == user.id)).all()
+    for proof in proofs:
+        path = os.path.join("uploads", proof.filename)
+        if os.path.exists(path):
+            os.remove(path)
+        db.delete(proof)
     db.commit()
-    db.refresh(user)
-    push_flash(request, f"Часовой пояс изменён на {timezone}")
-    return render(request, "profile.html", _profile_context(db, user), db=db, user=user)
+    push_flash(request, "profile.photos_deleted", "success")
+    return RedirectResponse("/profile", status_code=303)

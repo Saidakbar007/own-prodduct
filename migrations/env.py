@@ -10,6 +10,7 @@ from alembic import context
 # Путь к проекту, чтобы можно было импортировать пакет app
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from app.database import normalize_database_url  # noqa: E402
 from app.models import SQLModel  # noqa: E402 — импорт нужен после sys.path.insert
 from app import models  # noqa: F401, E402 — регистрирует все таблицы в metadata
 
@@ -21,7 +22,7 @@ config = context.config
 # если задана — иначе используем значение из alembic.ini
 database_url = os.getenv("DATABASE_URL")
 if database_url:
-    config.set_main_option("sqlalchemy.url", database_url)
+    config.set_main_option("sqlalchemy.url", normalize_database_url(database_url))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

@@ -1,110 +1,45 @@
-{% extends "base.html" %}
-
-{% block title %}Галерея ассетов — Админка{% endblock %}
-
+{% extends "shell_base.html" %}
+{% block title %}Админка — галерея{% endblock %}
+{% block nav %}{% endblock %}
 {% block content %}
-<section class="max-w-5xl mx-auto space-y-4">
-    <div class="flex items-center justify-between flex-wrap gap-2">
-        <h1 class="text-xl font-bold flex items-center gap-2"><i data-lucide="image"></i> Галерея ассетов</h1>
-        <span class="numeric text-sm bg-[var(--sunken)] rounded-lg px-3 py-1.5">Готово {{ gallery.done }} из {{ gallery.total }}</span>
-    </div>
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">Сезоны — галерея шаблонов</h1>
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3)">
+    <a href="/admin" class="btn--text">Дашборд</a>
+    <a href="/admin/sandbox" class="btn--text">Песочница</a>
+  </div>
+</div>
 
-    <div class="flex items-center gap-2">
-        <span class="text-xs text-[var(--muted)]">Фон превью:</span>
-        <button type="button" onclick="setGalleryBg('light')" id="bg-btn-light" class="gallery-bg-btn text-xs px-3 py-1.5 rounded-lg border border-[var(--line)]">Светлый</button>
-        <button type="button" onclick="setGalleryBg('dark')" id="bg-btn-dark" class="gallery-bg-btn text-xs px-3 py-1.5 rounded-lg border border-[var(--line)]">Тёмный</button>
-        <button type="button" onclick="setGalleryBg('checker')" id="bg-btn-checker" class="gallery-bg-btn text-xs px-3 py-1.5 rounded-lg border border-[var(--line)]">Шахматка</button>
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Библиотека ({{ templates|length }})</h3>
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-6)">
+  {% for t in templates %}
+  <div class="card" style="padding:var(--space-4)">
+    <strong style="font-size:var(--text-sm)">{{ t.title }}</strong>
+    <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">
+      {{ t.id }} · {{ t.phases|length }} фаз · {{ t.lengths|join(' / ') }} дней · метрика: {{ t.metric.name }} ({{ t.metric.unit }})
     </div>
+  </div>
+  {% endfor %}
+</div>
 
-    <div class="flex gap-1 flex-wrap" role="tablist">
-        {% for tab in gallery.tabs %}
-        <button type="button" onclick="selectGalleryTab('{{ tab.code }}')" id="gtab-{{ tab.code }}"
-                class="gallery-tab-btn text-xs sm:text-sm font-medium rounded-lg px-3 py-2 border border-[var(--line)]">
-            {{ tab.label }} ({{ tab.entries | length }})
-        </button>
-        {% endfor %}
-    </div>
-
-    {% for tab in gallery.tabs %}
-    <div id="gpanel-{{ tab.code }}" class="gallery-panel grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-        {% for entry in tab.entries %}
-        <div class="card p-3">
-            {% if entry.image_url %}
-            <button type="button" onclick="openGalleryPreview('{{ entry.image_url }}', '{{ entry.label | e }}')"
-                    class="gallery-thumb-bg w-full aspect-square rounded-lg flex items-center justify-center mb-2 overflow-hidden">
-                <img src="{{ entry.image_url }}" alt="{{ entry.label }}" loading="lazy" style="max-width:100%;max-height:100%;object-fit:contain;">
-            </button>
-            {% else %}
-            <div class="w-full aspect-square rounded-lg flex items-center justify-center mb-2 bg-[var(--sunken)] text-3xl">
-                {{ entry.icon or "🔤" }}
-            </div>
-            {% endif %}
-            <p class="text-xs font-medium">{{ entry.label }}</p>
-            {% if entry.sublabel %}
-            <p class="text-[11px] text-[var(--muted)]">{{ entry.sublabel }}</p>
-            {% endif %}
-            {% if entry.get("needs_art", True) and not entry.has_art %}
-            <p class="text-[10px] font-mono uppercase tracking-widest text-[var(--danger)] mt-1">заглушка</p>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
-    {% endfor %}
-
-    <!-- Крупный просмотр -->
-    <div id="gallery-preview-overlay" class="fixed inset-0 bg-black/70 z-50 items-center justify-center p-6" style="display:none;" onclick="closeGalleryPreview()">
-        <div class="card p-4 max-w-lg w-full" onclick="event.stopPropagation()">
-            <img id="gallery-preview-img" src="" alt="" style="width:100%;max-height:70vh;object-fit:contain;">
-            <p id="gallery-preview-label" class="text-sm text-center mt-2 text-[var(--text)]"></p>
-            <button type="button" onclick="closeGalleryPreview()" class="btn-press w-full mt-2 bg-[var(--sunken)] border border-[var(--line)] rounded-lg py-2 text-sm">Закрыть</button>
-        </div>
-    </div>
-</section>
-
-<style>
-    .gallery-tab-btn, .gallery-bg-btn { color: var(--muted); background: var(--sunken); }
-    .gallery-tab-btn.active, .gallery-bg-btn.active { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
-    .gallery-panel { display: none; }
-    .gallery-panel.active { display: grid; }
-    .gallery-thumb-bg.bg-light { background: #EDF1F3; }
-    .gallery-thumb-bg.bg-dark { background: #0C1318; }
-    .gallery-thumb-bg.bg-checker {
-        background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%),
-                           linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%);
-        background-size: 16px 16px;
-        background-position: 0 0, 0 8px, 8px -8px, -8px 0;
-        background-color: #fff;
-    }
-</style>
-<script>
-    function selectGalleryTab(code) {
-        document.querySelectorAll('.gallery-panel').forEach(function (el) {
-            el.classList.toggle('active', el.id === 'gpanel-' + code);
-        });
-        document.querySelectorAll('.gallery-tab-btn').forEach(function (el) {
-            el.classList.toggle('active', el.id === 'gtab-' + code);
-        });
-    }
-    function setGalleryBg(mode) {
-        document.querySelectorAll('.gallery-thumb-bg').forEach(function (el) {
-            el.classList.remove('bg-light', 'bg-dark', 'bg-checker');
-            el.classList.add('bg-' + mode);
-        });
-        document.querySelectorAll('.gallery-bg-btn').forEach(function (el) {
-            el.classList.toggle('active', el.id === 'bg-btn-' + mode);
-        });
-    }
-    function openGalleryPreview(src, label) {
-        document.getElementById('gallery-preview-img').src = src;
-        document.getElementById('gallery-preview-label').textContent = label;
-        document.getElementById('gallery-preview-overlay').style.display = 'flex';
-    }
-    function closeGalleryPreview() {
-        document.getElementById('gallery-preview-overlay').style.display = 'none';
-    }
-    {% if gallery.tabs %}
-    selectGalleryTab('{{ gallery.tabs[0].code }}');
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">ИИ-черновики "своей цели" ({{ drafts|length }})</h3>
+{% if drafts %}
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+  {% for d in drafts %}
+  <div class="card" style="padding:var(--space-4)">
+    <strong style="font-size:var(--text-sm)">{{ d.goal_text }}</strong>
+    <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ d.template_id }}</div>
+    {% if d.approved %}
+    <span class="legend__item" style="margin-top:var(--space-2);color:var(--status-done)">✓ утверждён</span>
+    {% else %}
+    <form method="post" action="/admin/gallery/approve/{{ d.id }}" style="margin-top:var(--space-3)">
+      <button class="btn btn--secondary btn--sm" type="submit">Утвердить</button>
+    </form>
     {% endif %}
-    setGalleryBg('light');
-</script>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p style="color:var(--text-faint);font-size:var(--text-sm)">Пока никто не предложил свою цель.</p>
+{% endif %}
 {% endblock %}

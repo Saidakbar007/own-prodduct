@@ -7,10 +7,15 @@ bcrypt==4.0.1
 python-multipart
 itsdangerous
 python-dotenv
-anthropic
 alembic
+psycopg[binary]
+pyyaml
+pydantic
+tzdata
+Pillow
+imageio-ffmpeg
+anthropic
 pytest
 httpx
 playwright
 pytest-playwright
-tzdata

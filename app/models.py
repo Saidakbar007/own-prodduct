@@ -1,9 +1,6 @@
 """
-Модели базы данных (SQLModel).
-
-Названия таблиц и полей взяты из ER-диаграммы проекта и не меняются,
-даже если где-то есть опечатки (например "hight", "familly_stat") —
-это сделано специально, чтобы совпадать с диаграммой.
+Модели данных (SQLModel). Таблицы создаются и обновляются миграциями Alembic
+(app/migrations_runner.py), а не напрямую через SQLModel.metadata.
 """
 
 from datetime import date, datetime, timezone
@@ -12,429 +9,271 @@ from typing import Optional
 from sqlmodel import Field, SQLModel
 
 
-class Registration(SQLModel, table=True):
-    """Таблица регистрации: данные, которые пользователь вводит при создании аккаунта."""
-
-    __tablename__ = "registration"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    name: str
-    age: Optional[int] = None
-    gender: Optional[str] = None
-    mail: str = Field(unique=True, index=True)
-    login: str = Field(unique=True, index=True)
-    password: str  # хранится только хеш пароля, никогда открытый текст
+def _utcnow() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 class User(SQLModel, table=True):
-    """Профиль пользователя: данные о здоровье/статусе + счётчики привычек и целей."""
+    """Аккаунт. Продукт 18+ — возраст подтверждается при регистрации (§9 ТЗ)."""
 
-    __tablename__ = "users"
+    __tablename__ = "users"  # "user" — зарезервированное слово в PostgreSQL
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    mail: str = Field(unique=True, index=True)
     login: str = Field(unique=True, index=True)
-    weight: Optional[float] = None
-    hight: Optional[float] = None
-    familly_stat: Optional[str] = None
-    status: Optional[str] = None
-    habits: int = Field(default=0)  # количество привычек, обновляется автоматически
-    goals: int = Field(default=0)   # количество целей, обновляется автоматически
-    trust_score: int = Field(default=100)  # 0-100, пересчитывается после отметок/подтверждений (v3)
-    coins: int = Field(default=0)  # валюта за подтверждения друзей, никогда не XP (v5)
-    timezone: str = Field(default="UTC")  # IANA-имя пояса, задаётся при регистрации (v5)
-    timezone_changed_at: Optional[datetime] = None  # когда пояс меняли — не чаще раза в 30 дней (v5)
-    equipped_bg: Optional[str] = None  # код надетого фона профиля из магазина (v6a)
-    equipped_frame: Optional[str] = None  # код надетой рамки аватара (v6a)
-    equipped_title: Optional[str] = None  # код надетого титула (v6a)
-    equipped_effect: Optional[str] = None  # код надетого эффекта отметки (v6a)
-    freeze_stock: int = Field(default=0)  # запас купленных заморозок серии, максимум 2 (v6a)
-    is_test: bool = Field(default=False)  # помечен песочницей /admin/sandbox — исключён из рейтингов (v6d)
-
-
-class Habit(SQLModel, table=True):
-    """Привычка пользователя."""
-
-    __tablename__ = "habits"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
+    email: str = Field(unique=True, index=True)
+    password_hash: str
     name: str
-    description: Optional[str] = None
-    time_start: Optional[datetime] = None
-    time_end: Optional[datetime] = None
-    status: str = Field(default="active")
-    point: int = Field(default=0)        # базовые очки за одну отметку (считает сервер по сложности)
-    story_point: float = Field(default=1.0)  # множитель сложности привычки
-    habit_type: str = Field(default="useful")  # useful (полезная) / harmful (вредная, "день без срыва")
-    frequency: str = Field(default="daily")    # daily (каждый день) / weekly (по дням недели)
-    weekdays: Optional[str] = None  # для frequency="weekly": дни недели CSV, "0,2,4" (0=понедельник)
-    requires_proof: bool = Field(default=False)  # нужно фото-доказательство при отметке (v3)
-    minimal_description: Optional[str] = None  # что считается "минимальной версией на плохой день" (v3)
-    sphere: str = Field(default="discipline")  # strength/intellect/discipline/health/charisma (v5)
-    catalog_code: Optional[str] = None  # код из каталога типовых привычек, если выбрана не своя (v5)
-    last_recalibration: Optional[date] = None  # дата последнего снижения сложности за 30 дней 100% (v5)
+    birth_year: int
+    height_cm: Optional[int] = None  # для ИМТ (fat_loss_safe) — собирается в онбординге
+    timezone: str = Field(default="UTC")
+    timezone_changed_at: Optional[datetime] = None
+    language: str = Field(default="ru")
+    trust_score: int = Field(default=100)  # честность (§9) — анти-сговор, подозрительные паттерны
+    telegram_user_id: Optional[int] = Field(default=None, unique=True, index=True)
+    reminder_time: Optional[str] = None  # "HH:MM" по часовому поясу пользователя — напоминания бота
+    created_at: datetime = Field(default_factory=_utcnow)
 
 
-class HabitHistory(SQLModel, table=True):
-    """История отметок привычки (антиобман: время ставит сервер)."""
-
-    __tablename__ = "habits_history"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    h_id: int = Field(foreign_key="habits.id")
-    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    kind: str = Field(default="done")  # done (полная версия) / minimal (на плохой день) / skip (честный пропуск)
-    proof_path: Optional[str] = None  # путь к загруженному фото-доказательству (v3)
+# ---------------------------------------------------------------------------
+# Сезоны (§4 ТЗ). season_template в БД не хранится — он версионируется в
+# app/seasons_library/*.yaml (app/seasons/schema.py — pydantic-схема).
+# ---------------------------------------------------------------------------
 
 
-class HabitConfirmation(SQLModel, table=True):
-    """Подтверждение отметки другом: confirmed (+бонус) или doubted ('правда?') (v3)."""
+class Wave(SQLModel, table=True):
+    """Волна: общий старт по понедельникам."""
 
-    __tablename__ = "habit_confirmations"
+    __tablename__ = "wave"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    history_id: int = Field(foreign_key="habits_history.id")
-    confirmer_uid: int = Field(foreign_key="users.id")
-    status: str  # confirmed / doubted
-    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class Goal(SQLModel, table=True):
-    """Цель пользователя. Мечта хранится как цель верхнего уровня (parent_id = None)."""
-
-    __tablename__ = "goals"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    name: str
-    status: str = Field(default="active")
-    time_start: Optional[datetime] = None
-    time_end: Optional[datetime] = None
-    description: Optional[str] = None
-    deadline: Optional[date] = None
-    point: int = Field(default=0)
-    story_point: float = Field(default=1.0)
-    parent_id: Optional[int] = Field(default=None, foreign_key="goals.id")  # мечта = цель без родителя
-
-
-class GoalHistory(SQLModel, table=True):
-    """История прогресса по цели."""
-
-    __tablename__ = "goals_history"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    h_id: int = Field(foreign_key="goals.id")
-    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class GoalStep(SQLModel, table=True):
-    """Шаг внутри цели (v2). Прогресс цели = доля выполненных шагов."""
-
-    __tablename__ = "goal_steps"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    goal_id: int = Field(foreign_key="goals.id")
-    name: str
-    done: bool = Field(default=False)
-    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class Level(SQLModel, table=True):
-    """Уровень пользователя: сумма очков и название текущего уровня."""
-
-    __tablename__ = "level"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    point: int = Field(default=0)
-    name: str = Field(default="Новичок")
-
-
-class Training(SQLModel, table=True):
-    """Тренировочная программа, привязанная к цели."""
-
-    __tablename__ = "Training"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    g_id: int = Field(foreign_key="goals.id")
-    name: str
-    program: Optional[str] = None
-
-
-class Education(SQLModel, table=True):
-    """Образовательная программа, привязанная к цели."""
-
-    __tablename__ = "education"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    g_id: int = Field(foreign_key="goals.id")
-    name: str
-    program: Optional[str] = None
-
-
-class Friend(SQLModel, table=True):
-    """Связь между друзьями со статусом заявки."""
-
-    __tablename__ = "Friends"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    friend_id: int = Field(foreign_key="users.id")
-    status: str = Field(default="pending")  # pending / accepted / declined
-    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    update_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
-
-
-class Achievement(SQLModel, table=True):
-    """Каталог достижений (v2). Заполняется один раз при старте сервера."""
-
-    __tablename__ = "achievements"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    code: str = Field(unique=True, index=True)
-    name: str
-    description: str
-    icon: str = Field(default="🏆")
-    category: Optional[str] = None  # streak/sphere/honesty/boss/goals/comeback/personas (v6b)
-    tier: Optional[str] = None  # bronze/silver/gold, либо None для одиночных ачивок (v6b)
-
-
-class UserAchievement(SQLModel, table=True):
-    """Какие достижения получил пользователь и когда (v2)."""
-
-    __tablename__ = "user_achievements"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    achievement_id: int = Field(foreign_key="achievements.id")
-    earned_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class DailyTask(SQLModel, table=True):
-    """Ежедневное мини-задание с бонусными очками (v2)."""
-
-    __tablename__ = "daily_tasks"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    date: date
-    description: str
-    points: int = Field(default=20)
-    done: bool = Field(default=False)
-
-
-class PointsLog(SQLModel, table=True):
-    """
-    Журнал начислений очков с отметкой времени (v2).
-    Нужен, чтобы считать очки за неделю (рейтинг друзей), а не только общую сумму.
-    """
-
-    __tablename__ = "points_log"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    points: int
-    sphere: Optional[str] = None  # заполнено для XP от привычек — идёт и в общий уровень, и в сферу (v5)
-    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class CoachMessage(SQLModel, table=True):
-    """Сообщение в истории переписки с AI-коучем (v2)."""
-
-    __tablename__ = "coach_messages"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    role: str  # "user" или "coach"
-    text: str
-    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    persona_code: Optional[str] = None  # если реплика от конкретной личности — её код сферы (v6a)
-
-
-class Partnership(SQLModel, table=True):
-    """Напарник: общая серия двух друзей, сгорает, если пропустил любой из двух (v3)."""
-
-    __tablename__ = "partnerships"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid_a: int = Field(foreign_key="users.id")
-    habit_id_a: int = Field(foreign_key="habits.id")
-    uid_b: int = Field(foreign_key="users.id")
-    habit_id_b: Optional[int] = Field(default=None, foreign_key="habits.id")  # выбирает B при принятии
-    status: str = Field(default="pending")  # pending / active / declined / broken
-    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class Bet(SQLModel, table=True):
-    """Ставка очков на выполнение привычки N дней подряд (v3)."""
-
-    __tablename__ = "bets"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    habit_id: int = Field(foreign_key="habits.id")
-    stake_points: int
-    target_days: int
-    start_date: date
-    status: str = Field(default="active")  # active / won / lost
-    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class Chest(SQLModel, table=True):
-    """Награда за неделю без пропусков (v3)."""
-
-    __tablename__ = "chests"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    habit_id: Optional[int] = Field(default=None, foreign_key="habits.id")  # None — награда за босса, не за привычку (v6b)
-    week_start: date
-    reward_type: str  # points / freeze / badge
-    reward_value: str
-    rarity: Optional[str] = None  # common/rare/epic/legendary — по весам из v6b, старые записи без неё (v6b)
-    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class BonusFreeze(SQLModel, table=True):
-    """Дополнительная заморозка серии на конкретную неделю, выданная сундуком (v3)."""
-
-    __tablename__ = "bonus_freezes"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    week_key: str  # например "2026-W03"
-    amount: int = Field(default=1)
-
-
-class ShopItem(SQLModel, table=True):
-    """Каталог магазина (v6a): фоны/рамки/титулы/эффекты отметки + заморозка серии."""
-
-    __tablename__ = "shop_items"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    code: str = Field(unique=True, index=True)
-    slot: str  # bg / frame / title / effect / freeze (freeze — расходуемый, не экипируется)
-    rarity: str  # common / rare / epic / legendary
-    name: str
-    description: Optional[str] = None
-    price: Optional[int] = None  # None = не продаётся (легендарные)
-    min_hero_level: int = Field(default=1)  # эпические требуют урovень героя >= 20
-    image_name: Optional[str] = None  # имя файла без категории, для game_asset_url()
-    season_code: Optional[str] = None  # код сезона, если предмет выдаётся только через сезонный трек (v6b)
-
-
-class InventoryItem(SQLModel, table=True):
-    """Предмет, купленный пользователем (v6a)."""
-
-    __tablename__ = "inventory_items"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    item_code: str = Field(foreign_key="shop_items.code")
-    acquired_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class Pet(SQLModel, table=True):
-    """Питомец героя (v6b): яйцо с ур.3, вид выбирается при вылуплении."""
-
-    __tablename__ = "pets"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id", unique=True, index=True)
-    species: Optional[str] = None  # fox / owl / drake — None до вылупления
-    hatched_at: Optional[datetime] = None
-    best_stage_reached: int = Field(default=1)  # стадия не откатывается (v6b)
-
-
-class BossGroup(SQLModel, table=True):
-    """Группа друзей, сражающаяся с боссом недели (v6b)."""
-
-    __tablename__ = "boss_groups"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    week_key: str = Field(index=True)  # например "2026-W03"
-    boss_code: str  # laziness/procrastination/sleepiness/sugar/scroll/doubt
-    hp_total: int
-    hp_remaining: int
-    status: str = Field(default="active")  # active / won / expired
-    created_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class BossGroupMember(SQLModel, table=True):
-    """Участник группы босса недели (v6b)."""
-
-    __tablename__ = "boss_group_members"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    group_id: int = Field(foreign_key="boss_groups.id")
-    uid: int = Field(foreign_key="users.id")
-    joined_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class BossHit(SQLModel, table=True):
-    """Один удар по боссу недели — лента ударов участников (v6b)."""
-
-    __tablename__ = "boss_hits"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    group_id: int = Field(foreign_key="boss_groups.id")
-    uid: int = Field(foreign_key="users.id")
-    damage: int
-    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-class WeeklyCouncilMessage(SQLModel, table=True):
-    """5 реплик личностей по воскресеньям, с 10 ур. героя (v6b)."""
-
-    __tablename__ = "weekly_council_messages"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    week_key: str = Field(index=True)
-    persona_code: str
-    text: str
-    time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    start_date: date = Field(index=True)
+    template_id: Optional[str] = Field(default=None, index=True)
+    created_at: datetime = Field(default_factory=_utcnow)
 
 
 class Season(SQLModel, table=True):
-    """Сезон (4 недели): тема + бесплатный трек на 30 ступеней (v6b)."""
+    """Сезон пользователя — один конкретный проход по шаблону."""
 
-    __tablename__ = "seasons"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    code: str = Field(unique=True, index=True)
-    name: str
-    theme: str
-    start_date: datetime
-    end_date: datetime
-
-
-class SeasonClaim(SQLModel, table=True):
-    """Какую ступень сезонного трека пользователь уже получил (v6b)."""
-
-    __tablename__ = "season_claims"
+    __tablename__ = "season"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id")
-    season_id: int = Field(foreign_key="seasons.id")
-    step: int
-    claimed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    uid: int = Field(foreign_key="users.id", index=True)
+    template_id: str
+    template_version: int
+    title: str
+    length_days: int
+    wave_id: int = Field(foreign_key="wave.id", index=True)
+    prologue_start: Optional[date] = None
+    start_date: date
+    end_date: date
+    metric_name: str
+    metric_unit: str
+    direction: str  # "up" | "down"
+    baseline_value: float
+    target_value: float
+    projected_value: Optional[float] = None
+    days_per_week: int
+    weekdays_json: str  # JSON-список чисел 1..7 (пн..вс)
+    minutes_per_day: int
+    status: str = Field(default="prologue")  # prologue | active | finished | abandoned
+    result_tier: Optional[str] = None  # clean | passed | completed
+    second_chances_left: int
+    current_phase: int = Field(default=1)
+    # Вторая метрика (пока только muscle_gain: вес тела рядом с рабочим весом,
+    # §7 задачи Фазы 2) — nullable, большинство сезонов её не используют.
+    secondary_metric_name: Optional[str] = None
+    secondary_metric_unit: Optional[str] = None
+    secondary_direction: Optional[str] = None  # "up" | "down"
+    secondary_baseline_value: Optional[float] = None
+    secondary_target_value: Optional[float] = None
+    created_at: datetime = Field(default_factory=_utcnow)
 
 
-class SandboxSnapshot(SQLModel, table=True):
-    """
-    Снимок реального прогресса перед первой правкой в /admin/sandbox —
-    чтобы можно было вернуть аккаунт "как было" (v6d). Одна запись на
-    пользователя: повторные правки его не перезаписывают.
-    """
+class SeasonDay(SQLModel, table=True):
+    """Один день сезона."""
 
-    __tablename__ = "sandbox_snapshots"
+    __tablename__ = "season_day"
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    uid: int = Field(foreign_key="users.id", unique=True, index=True)
-    data: str  # JSON: level_point, sphere_xp (dict), coins, trust_score, pet {species, stage}
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    season_id: int = Field(foreign_key="season.id", index=True)
+    day_number: int
+    calendar_date: date = Field(index=True)
+    kind: str  # train | rest | measure | active_rest
+    title: str
+    instructions: str
+    minimal_version: str
+    status: str = Field(default="planned")  # planned|done|minimal|missed|rescued|rest
+    done_at: Optional[datetime] = None  # серверное время отметки
+    proof_id: Optional[int] = Field(default=None, foreign_key="proof.id")
+    reminder_sent: bool = Field(default=False)  # §12: без дублей напоминаний бота
+
+
+class Measurement(SQLModel, table=True):
+    """Замер метрики сезона."""
+
+    __tablename__ = "measurement"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    season_id: int = Field(foreign_key="season.id", index=True)
+    day_number: int
+    value: float
+    secondary_value: Optional[float] = None  # вторая метрика (см. Season)
+    measured_at: datetime = Field(default_factory=_utcnow)  # серверное время
+    proof_id: Optional[int] = Field(default=None, foreign_key="proof.id")
+    photo_pose: Optional[str] = None  # front | side | none
+
+
+class Proof(SQLModel, table=True):
+    """Фото-доказательство (§9): приватное по умолчанию, непредсказуемое имя файла."""
+
+    __tablename__ = "proof"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    filename: str  # непредсказуемое имя в uploads/, не выдаём по порядковому id
+    content_type: str
+    phash: Optional[str] = None  # перцептивный хэш — поиск повторно используемых фото
+    is_blurry: bool = Field(default=False)
+    is_blank: bool = Field(default=False)
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class Episode(SQLModel, table=True):
+    """Серия — итог недели."""
+
+    __tablename__ = "episode"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    season_id: int = Field(foreign_key="season.id", index=True)
+    week_number: int
+    title: str
+    summary_json: str
+    card_image_path: Optional[str] = None
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class Reveal(SQLModel, table=True):
+    """Финал сезона."""
+
+    __tablename__ = "reveal"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    season_id: int = Field(foreign_key="season.id", unique=True, index=True)
+    tier: str  # clean | passed | completed
+    before_value: float
+    after_value: float
+    card_image_path: Optional[str] = None
+    video_path: Optional[str] = None
+    shared: bool = Field(default=False)
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+# ---------------------------------------------------------------------------
+# Люди (§4, §7 п.6-7 ТЗ) — Фаза 3.
+# ---------------------------------------------------------------------------
+
+
+class Squad(SQLModel, table=True):
+    """Состав: до 8 человек волны с похожей целью (один шаблон)."""
+
+    __tablename__ = "squad"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    wave_id: int = Field(foreign_key="wave.id", index=True)
+    template_id: str
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class SquadMember(SQLModel, table=True):
+    """Членство в составе. Анонимно по умолчанию, выход — в один клик."""
+
+    __tablename__ = "squad_member"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    squad_id: int = Field(foreign_key="squad.id", index=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    season_id: int = Field(foreign_key="season.id", index=True)
+    anonymous: bool = Field(default=True)
+    joined_at: datetime = Field(default_factory=_utcnow)
+    left_at: Optional[datetime] = None
+
+
+class SquadReaction(SQLModel, table=True):
+    """Реакция-"огонёк" на отметку участника состава (без личных сообщений)."""
+
+    __tablename__ = "squad_reaction"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    squad_id: int = Field(foreign_key="squad.id", index=True)
+    from_uid: int = Field(foreign_key="users.id", index=True)
+    to_uid: int = Field(foreign_key="users.id", index=True)
+    reacted_on: date  # день, к которому относится реакция
+    emoji: str = Field(default="🔥")
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class Challenge(SQLModel, table=True):
+    """Вызов "Спорим?" (§7 п.7): дуэль двух сезонов по одному шаблону."""
+
+    __tablename__ = "challenge"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    from_uid: int = Field(foreign_key="users.id", index=True)
+    to_uid: Optional[int] = Field(default=None, foreign_key="users.id", index=True)
+    invite_code: str = Field(unique=True, index=True)
+    season_id_from: int = Field(foreign_key="season.id")
+    season_id_to: Optional[int] = Field(default=None, foreign_key="season.id")
+    terms_text: str
+    status: str = Field(default="pending")  # pending|active|finished|declined
+    winner_uid: Optional[int] = Field(default=None, foreign_key="users.id")
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class ChallengeDispute(SQLModel, table=True):
+    """«Сомневаюсь» (§7 п.7): соперник оспаривает отметку дня внутри вызова —
+    не трогает честность самого сезона, только зачёт в этом конкретном вызове."""
+
+    __tablename__ = "challenge_dispute"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    challenge_id: int = Field(foreign_key="challenge.id", index=True)
+    day_number: int
+    uid: int = Field(foreign_key="users.id")  # чья отметка оспаривается
+    disputed_by: int = Field(foreign_key="users.id")
+    status: str = Field(default="pending")  # pending|confirmed|expired
+    created_at: datetime = Field(default_factory=_utcnow)
+    confirmed_at: Optional[datetime] = None
+
+
+# ---------------------------------------------------------------------------
+# Своя цель и метрики (§5, §13, §14 ТЗ) — Фаза 4.
+# ---------------------------------------------------------------------------
+
+
+class CustomTemplateDraft(SQLModel, table=True):
+    """ИИ-сгенерированный шаблон "своей цели" (§5): кэш по тексту цели,
+    админ может утвердить (approved=True) — тогда он доступен как обычный
+    библиотечный шаблон наравне с пятью стартовыми."""
+
+    __tablename__ = "custom_template_draft"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    goal_text: str
+    goal_text_hash: str = Field(unique=True, index=True)
+    template_id: str = Field(unique=True, index=True)
+    template_yaml: str
+    approved: bool = Field(default=False)
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class Event(SQLModel, table=True):
+    """Событие метрик (§13): воронка онбординга, удержание, вирусность."""
+
+    __tablename__ = "event"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    event_type: str = Field(index=True)
+    uid: Optional[int] = Field(default=None, foreign_key="users.id", index=True)
+    season_id: Optional[int] = Field(default=None, foreign_key="season.id")
+    meta_json: Optional[str] = None
+    created_at: datetime = Field(default_factory=_utcnow, index=True)

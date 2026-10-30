@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Сезоны — дизайн-система</title>
+<link rel="stylesheet" href="/design/tokens.css" />
+<link rel="stylesheet" href="/design/base.css" />
+<link rel="stylesheet" href="/design/components.css" />
+</head>
+<body>
+
+<svg class="sr-only" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-half" viewBox="0 0 24 24"><path d="M5 12.5l3 3L12 11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-life" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke-width="1.75"/><circle cx="12" cy="12" r="3" stroke-width="1.75"/><path d="M6.3 6.3l3.1 3.1M17.7 6.3l-3.1 3.1M6.3 17.7l3.1-3.1M17.7 17.7l-3.1-3.1" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" stroke-width="1.75" stroke-linejoin="round"/></symbol>
+  <symbol id="i-dash" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke-width="1.75" stroke-dasharray="3 4"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3-2 4-2 7a4 4 0 1 0 8 0c0-1.5-1-2.5-1-2.5.4 2-1 3-1 3 .5-3-1.5-4.5-2-5.5-.3 1-1.2 1.6-1 3.3C12.3 7 11.6 5 12 3z" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" stroke-width="1.75" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.4" stroke-width="1.75"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 10a6 6 0 1 1 12 0c0 4 1.5 5 1.5 5h-15S6 14 6 10z" stroke-width="1.75" stroke-linejoin="round"/><path d="M10 18a2 2 0 0 0 4 0" stroke-width="1.75"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-5H9v5H5a1 1 0 0 1-1-1z" stroke-width="1.75" stroke-linejoin="round"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="15" rx="2" stroke-width="1.75"/><path d="M4 10h16M8 3.5v4M16 3.5v4" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3" stroke-width="1.75"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0" stroke-width="1.75" stroke-linecap="round"/><path d="M16 7.5a3 3 0 1 1 3.2 3M15 13.2A5.2 5.2 0 0 1 20.5 19" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5" stroke-width="1.75"/><path d="M4.5 19.5a7.5 7.5 0 0 1 15 0" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" stroke-width="1.75" stroke-linejoin="round"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.4" stroke-width="1.75"/><circle cx="6" cy="12" r="2.4" stroke-width="1.75"/><circle cx="18" cy="19" r="2.4" stroke-width="1.75"/><path d="M8.2 10.8l7.6-4.2M8.2 13.2l7.6 4.2" stroke-width="1.75"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0z" stroke-width="1.75" stroke-linejoin="round"/><path d="M12 13v3m-3 3h6" stroke-width="1.75" stroke-linecap="round"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3" stroke-width="1.75"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" stroke-width="1.75"/><path d="M12 7.5V12l3 2" stroke-width="1.75" stroke-linecap="round"/></symbol>
+</svg>
+
+<main class="showcase">
+  <header class="showcase__header">
+    <div>
+      <h1 class="showcase__title">Сезоны — дизайн-система</h1>
+      <p class="showcase__subtitle">Токены и живые компоненты. Макеты экранов — <a href="/design/screens" class="btn--text" style="text-decoration:underline">/design/screens</a>.</p>
+    </div>
+    <button class="theme-toggle" data-theme-toggle>☾ Тёмная</button>
+  </header>
+
+  <!-- ===== Цвет ===== -->
+  <section class="section">
+    <h2 class="section__title">Цвет — поверхности и акценты</h2>
+    <div class="swatch-grid">
+      <div class="swatch" style="background:var(--bg)"><div class="swatch__name">bg</div><div class="swatch__value">--bg</div></div>
+      <div class="swatch" style="background:var(--surface)"><div class="swatch__name">surface</div><div class="swatch__value">--surface</div></div>
+      <div class="swatch" style="background:var(--surface-raised)"><div class="swatch__name">surface-raised</div><div class="swatch__value">--surface-raised</div></div>
+      <div class="swatch" style="background:var(--accent);border-color:transparent"><div class="swatch__name" style="color:var(--on-accent)">accent</div><div class="swatch__value" style="color:var(--on-accent)">--accent</div></div>
+      <div class="swatch" style="background:var(--accent-secondary);border-color:transparent"><div class="swatch__name" style="color:var(--on-accent-secondary)">accent-secondary</div><div class="swatch__value" style="color:var(--on-accent-secondary)">--accent-secondary</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section__title">Статусы дня сезона</h2>
+    <div class="swatch-grid">
+      <div class="swatch" style="background:var(--status-done-soft)"><svg class="icon" style="color:var(--status-done)"><use href="#i-check"/></svg><div class="swatch__name">done</div></div>
+      <div class="swatch" style="background:var(--status-minimal-soft)"><svg class="icon" style="color:var(--status-minimal)"><use href="#i-half"/></svg><div class="swatch__name">minimal</div></div>
+      <div class="swatch" style="background:var(--status-rescued-soft)"><svg class="icon" style="color:var(--status-rescued)"><use href="#i-life"/></svg><div class="swatch__name">rescued</div></div>
+      <div class="swatch" style="background:var(--status-missed-soft)"><svg class="icon" style="color:var(--status-missed)"><use href="#i-x"/></svg><div class="swatch__name">missed</div></div>
+      <div class="swatch" style="background:var(--status-rest-soft)"><svg class="icon" style="color:var(--status-rest)"><use href="#i-moon"/></svg><div class="swatch__name">rest</div></div>
+      <div class="swatch" style="background:var(--status-future-soft)"><svg class="icon" style="color:var(--text-faint)"><use href="#i-dash"/></svg><div class="swatch__name">future</div></div>
+    </div>
+  </section>
+
+  <!-- ===== Типографика ===== -->
+  <section class="section">
+    <h2 class="section__title">Типографика — Unbounded / Golos Text</h2>
+    <div class="card" style="padding:var(--space-6)">
+      <div class="type-sample"><span class="type-sample__tag">display 2xl</span><span style="font-family:var(--font-display);font-size:var(--text-2xl)">День 12 из 30</span></div>
+      <div class="type-sample"><span class="type-sample__tag">display lg</span><span style="font-family:var(--font-display);font-size:var(--text-lg)">Серия 3: Oʻzingga ishon</span></div>
+      <div class="type-sample"><span class="type-sample__tag">body base</span><span style="font-family:var(--font-body)">Сделал — отметь действие дня одним касанием.</span></div>
+      <div class="type-sample"><span class="type-sample__tag">body sm</span><span style="font-family:var(--font-body);font-size:var(--text-sm);color:var(--text-muted)">Gʻalaba kuningizni oʻtkazib yubormang — bugun harakat qiling.</span></div>
+      <div class="type-sample" style="border-bottom:none"><span class="type-sample__tag">label</span><span style="font-size:var(--text-xs);letter-spacing:var(--tracking-wider);text-transform:uppercase;color:var(--text-faint)">состав волны · сегодня</span></div>
+    </div>
+  </section>
+
+  <!-- ===== Кнопки ===== -->
+  <section class="section">
+    <h2 class="section__title">Кнопки</h2>
+    <div class="row">
+      <button class="btn btn--primary">Сделал</button>
+      <button class="btn btn--secondary">Сделал минимум</button>
+      <button class="btn btn--text">Не получится сегодня</button>
+      <button class="btn btn--primary" disabled>Недоступно</button>
+    </div>
+  </section>
+
+  <!-- ===== Действие дня ===== -->
+  <section class="section">
+    <h2 class="section__title">Карточка «Действие дня»</h2>
+    <div class="action-card" style="max-width:420px">
+      <span class="action-card__kicker"><svg class="icon" style="width:1em;height:1em"><use href="#i-flame"/></svg>День 12 из 30</span>
+      <h3 class="action-card__title">Бег 25 минут в спокойном темпе</h3>
+      <p class="action-card__body">Держи пульс в разговорном темпе. Если тяжело — переходи на быстрый шаг, это тоже считается.</p>
+      <div class="action-card__actions">
+        <button class="btn btn--primary" data-demo-done><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-camera"/></svg>Сделал</button>
+        <button class="btn btn--secondary">Сделал минимум</button>
+      </div>
+      <button class="btn btn--text action-card__skip">Не получится сегодня</button>
+    </div>
+    <div class="toast toast--success" data-demo-toast hidden style="margin-top:var(--space-4)">
+      <svg class="icon"><use href="#i-check"/></svg> Записано. Серия продолжается — 12 дней подряд.
+    </div>
+  </section>
+
+  <!-- ===== Прогресс сезона ===== -->
+  <section class="section">
+    <h2 class="section__title">Прогресс сезона</h2>
+    <div class="card" style="padding:var(--space-6);max-width:460px">
+      <div class="season-progress" style="margin-bottom:var(--space-6)">
+        <div class="season-progress__ring">
+          <svg viewBox="0 0 84 84">
+            <circle class="season-progress__track" cx="42" cy="42" r="36"/>
+            <circle class="season-progress__value" cx="42" cy="42" r="36" stroke-dasharray="226" stroke-dashoffset="68"/>
+          </svg>
+          <div class="season-progress__label">
+            <span class="season-progress__day tabular">12</span>
+            <span class="season-progress__total">из 30</span>
+          </div>
+        </div>
+        <div class="season-progress__meta">
+          <h3>Бег: с нуля до 5 км</h3>
+          <p>К финалу — прогноз 5.2 км без остановки</p>
+        </div>
+      </div>
+      <div class="season-bar"><div class="season-bar__fill" style="width:40%"></div></div>
+    </div>
+  </section>
+
+  <!-- ===== Календарь сезона ===== -->
+  <section class="section">
+    <h2 class="section__title">Календарь сезона — все статусы</h2>
+    <div class="card" style="padding:var(--space-6);max-width:460px">
+      <div class="calendar-grid" id="calendar-demo"></div>
+      <div class="legend" style="margin-top:var(--space-5)">
+        <span class="legend__item"><span class="legend__swatch" style="background:var(--status-done)"></span>сделано</span>
+        <span class="legend__item"><span class="legend__swatch" style="background:var(--status-minimal)"></span>минимум</span>
+        <span class="legend__item"><span class="legend__swatch" style="background:var(--status-rescued)"></span>спасено</span>
+        <span class="legend__item"><span class="legend__swatch" style="background:var(--status-missed)"></span>пропущено</span>
+        <span class="legend__item"><span class="legend__swatch" style="background:var(--status-rest)"></span>отдых</span>
+        <span class="legend__item"><span class="legend__swatch" style="background:var(--status-future)"></span>будущее</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Замер ===== -->
+  <section class="section">
+    <h2 class="section__title">Плитка замера</h2>
+    <div class="card measure-tile" style="max-width:420px">
+      <div class="measure-tile__top">
+        <div>
+          <span class="measure-tile__value tabular">4.1</span><span class="measure-tile__unit"> км без остановки</span>
+        </div>
+        <span class="measure-tile__delta">+0.6 за неделю</span>
+      </div>
+      <svg class="sparkline" viewBox="0 0 280 48" preserveAspectRatio="none">
+        <path class="area" d="M0 40 L40 36 L80 32 L120 26 L160 24 L200 16 L240 12 L280 8 L280 48 L0 48 Z"/>
+        <path class="line" d="M0 40 L40 36 L80 32 L120 26 L160 24 L200 16 L240 12 L280 8"/>
+        <circle cx="280" cy="8" r="4"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ===== Серия ===== -->
+  <section class="section">
+    <h2 class="section__title">Карточка серии</h2>
+    <div class="episode-card" style="max-width:420px">
+      <div class="episode-card__eyebrow">Серия 3</div>
+      <h3 class="episode-card__title">Первые 10 минут без остановки</h3>
+      <div class="episode-card__meta"><span>12–18 ноября</span><span>5 из 7 дней</span></div>
+      <p class="episode-card__quote">«Сегодня я не остановился на середине — и это было легче, чем вчера.»</p>
+      <div class="episode-card__footer">
+        <span style="font-size:var(--text-xs);color:rgba(245,239,228,.65)">Дальше: длинная дистанция недели</span>
+        <button class="btn btn--primary btn--sm"><svg class="icon" style="width:1em;height:1em"><use href="#i-share"/></svg>Поделиться</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Состав волны ===== -->
+  <section class="section">
+    <h2 class="section__title">Состав волны</h2>
+    <div class="card" style="padding:var(--space-5);max-width:460px">
+      <div class="wave-summary">
+        <div class="wave-row">
+          <span class="avatar">АМ<span class="avatar__today"></span></span>
+          <span class="avatar avatar--secondary">ДК<span class="avatar__today"></span></span>
+          <span class="avatar avatar--muted">НР</span>
+          <span class="avatar avatar--muted">+5</span>
+        </div>
+        <span class="wave-summary__text"><strong>4 из 8</strong> отметились сегодня</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Ведущий ===== -->
+  <section class="section">
+    <h2 class="section__title">Ведущий — состояния (заглушка)</h2>
+    <div class="row">
+      <div style="text-align:center">
+        <div class="mascot mascot--glad"><span class="mascot__face"><span class="mascot__eye"></span><span class="mascot__eye"></span></span></div>
+        <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">рад</p>
+      </div>
+      <div style="text-align:center">
+        <div class="mascot mascot--calm"><span class="mascot__face"><span class="mascot__eye"></span><span class="mascot__eye"></span></span></div>
+        <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">спокоен</p>
+      </div>
+      <div style="text-align:center">
+        <div class="mascot mascot--worried"><span class="mascot__face"><span class="mascot__eye"></span><span class="mascot__eye"></span></span></div>
+        <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">волнуется</p>
+      </div>
+      <div style="text-align:center">
+        <div class="mascot mascot--asleep"><span class="mascot__face"><span class="mascot__eye"></span><span class="mascot__eye"></span></span></div>
+        <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">спит</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3D-герой ===== -->
+  <section class="section">
+    <h2 class="section__title">Слот 3D-героя</h2>
+    <div class="row">
+      <div class="hero-slot" style="width:200px">
+        <img class="hero-slot__art" src="/assets/art/hero/hero_1.webp" alt="Герой, стадия 1" />
+        <span class="hero-slot__stage">Стадия 1</span>
+        <span class="hero-slot__caption">0 пройденных сезонов</span>
+      </div>
+      <div class="hero-slot" style="width:200px">
+        <img class="hero-slot__art" src="/assets/art/hero/hero_3.webp" alt="Герой, стадия 3" />
+        <span class="hero-slot__stage">Стадия 3</span>
+        <span class="hero-slot__caption">2 пройденных сезона</span>
+      </div>
+      <div class="hero-slot" style="width:200px">
+        <img class="hero-slot__art" src="/assets/art/hero/hero_5.webp" alt="Герой, стадия 5" />
+        <span class="hero-slot__stage">Стадия 5</span>
+        <span class="hero-slot__caption">4+ пройденных сезона</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Нижняя панель ===== -->
+  <section class="section">
+    <h2 class="section__title">Нижняя панель</h2>
+    <div class="card" style="max-width:420px;overflow:hidden">
+      <nav class="bottom-nav">
+        <button class="bottom-nav__item bottom-nav__item--active"><svg class="icon"><use href="#i-home"/></svg>Сегодня</button>
+        <button class="bottom-nav__item"><svg class="icon"><use href="#i-calendar"/></svg>Сезон</button>
+        <button class="bottom-nav__item"><svg class="icon"><use href="#i-users"/></svg>Состав</button>
+        <button class="bottom-nav__item"><svg class="icon"><use href="#i-user"/></svg>Профиль</button>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ===== Тосты ===== -->
+  <section class="section">
+    <h2 class="section__title">Тосты</h2>
+    <div class="row" style="flex-direction:column;align-items:flex-start">
+      <span class="toast toast--success"><svg class="icon"><use href="#i-check"/></svg>Серия продолжается — 12 дней</span>
+      <span class="toast"><svg class="icon"><use href="#i-bell"/></svg>Замер через 2 дня</span>
+      <span class="toast toast--error"><svg class="icon"><use href="#i-x"/></svg>Не удалось загрузить фото — попробуй ещё раз</span>
+    </div>
+  </section>
+
+  <!-- ===== Пустое состояние ===== -->
+  <section class="section">
+    <h2 class="section__title">Пустое состояние</h2>
+    <div class="card empty-state" style="max-width:420px">
+      <svg class="icon"><use href="#i-users"/></svg>
+      <h3>Пока никого в составе</h3>
+      <p>Состав появится, как только ещё кто-то начнёт сезон в твоей волне.</p>
+      <button class="btn btn--secondary btn--sm">Пригласить друга</button>
+    </div>
+  </section>
+
+  <!-- ===== Скелетоны ===== -->
+  <section class="section">
+    <h2 class="section__title">Скелетоны загрузки</h2>
+    <div class="card" style="padding:var(--space-6);max-width:420px;display:flex;flex-direction:column;gap:var(--space-4)">
+      <div class="skeleton" style="height:96px"></div>
+      <div class="skeleton" style="height:16px;width:70%"></div>
+      <div class="skeleton" style="height:16px;width:45%"></div>
+    </div>
+  </section>
+
+  <!-- ===== Модальное окно ===== -->
+  <section class="section">
+    <h2 class="section__title">Модальное окно «Второй шанс»</h2>
+    <button class="btn btn--secondary" data-open-modal="modal-second-chance">Открыть модалку</button>
+  </section>
+</main>
+
+<div class="modal-scrim" id="modal-second-chance" hidden>
+  <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-sheet__handle"></div>
+    <div class="modal-sheet__icon"><svg class="icon"><use href="#i-life"/></svg></div>
+    <h3 id="modal-title">Используешь второй шанс?</h3>
+    <p>Сезон не обнулится. День будет отмечен как «спасён», осталось ещё 2 попытки в этом сезоне.</p>
+    <div class="modal-sheet__actions">
+      <button class="btn btn--primary btn--block" data-close-modal>Спасти день</button>
+      <button class="btn btn--text" data-close-modal>Не сейчас</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var statuses = ["done","done","minimal","done","rescued","rest","done","done","done","missed","done","today-active","future","future","future","future","future","rest","future","future","future","future","future","future","rest","future","future","future","future","future"];
+    var icons = {done:"i-check",minimal:"i-half",rescued:"i-life",missed:"i-x",rest:"i-moon",future:"i-dash"};
+    var el = document.getElementById("calendar-demo");
+    statuses.forEach(function (s, i) {
+      var today = s === "today-active";
+      var key = today ? "future" : s;
+      var cell = document.createElement("div");
+      cell.className = "day-cell day-cell--" + key + (today ? " day-cell--today" : "");
+      cell.innerHTML = key === "future" ? (i + 1) : '<svg class="icon"><use href="#' + icons[key] + '"/></svg>';
+      el.appendChild(cell);
+    });
+  })();
+</script>
+<script src="/design/js/theme.js"></script>
+</body>
+</html>

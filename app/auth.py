@@ -1,9 +1,10 @@
 """
 Всё, что связано с авторизацией:
 - хеширование и проверка пароля
-- получение текущего пользователя из сессии (cookie)
+- получение текущего пользователя из cookie-сессии
 """
 
+import os
 from typing import Optional
 
 from fastapi import Depends, HTTPException, Request
@@ -13,7 +14,6 @@ from sqlmodel import Session
 from app.database import get_session
 from app.models import User
 
-# Контекст passlib для хеширования паролей через bcrypt
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -28,10 +28,7 @@ def verify_password(password: str, password_hash: str) -> bool:
 
 
 def get_current_user(request: Request, db: Session = Depends(get_session)) -> Optional[User]:
-    """
-    Достаёт текущего пользователя из cookie-сессии.
-    Если пользователь не вошёл в систему — возвращает None.
-    """
+    """Достаёт текущего пользователя из cookie-сессии (или None, если гость)."""
     user_id = request.session.get("user_id")
     if not user_id:
         return None
@@ -39,23 +36,24 @@ def get_current_user(request: Request, db: Session = Depends(get_session)) -> Op
 
 
 def require_user(request: Request, db: Session = Depends(get_session)) -> User:
-    """
-    Зависимость для защищённых страниц.
-    Если пользователь не вошёл — редиректит на /login (303 See Other).
-    """
+    """Зависимость для защищённых страниц: редирект на /login, если не вошёл."""
     user = get_current_user(request, db)
     if not user:
         raise HTTPException(status_code=303, headers={"Location": "/login"})
     return user
 
 
-def require_admin(request: Request, db: Session = Depends(get_session)) -> User:
-    """
-    Зависимость для /admin/*: 404 (не 403 — не выдаём, что раздел вообще
-    есть), если пользователь не вошёл или не в ADMIN_LOGINS (v6d).
-    """
-    from app.services.admin import is_admin
+def is_admin(user: Optional[User]) -> bool:
+    """§14: доступ по ADMIN_LOGINS (через запятую). Без переменной — админов нет."""
+    if not user:
+        return False
+    logins = {login.strip() for login in os.getenv("ADMIN_LOGINS", "").split(",") if login.strip()}
+    return user.login in logins
 
+
+def require_admin(request: Request, db: Session = Depends(get_session)) -> User:
+    """Зависимость для /admin/*: 404 (не 403 — не выдаём, что раздел вообще
+    есть), если не вошёл или не в ADMIN_LOGINS."""
     user = get_current_user(request, db)
     if not user or not is_admin(user):
         raise HTTPException(status_code=404)

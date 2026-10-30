@@ -7,10 +7,20 @@ services:
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.9
+        value: 3.12.7
       - key: SECRET_KEY
         generateValue: true
+      - key: DATABASE_URL
+        sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: ADMIN_LOGINS
         sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_WEBHOOK_SECRET
+        sync: false
+      # APP_BASE_URL не нужен отдельно — бот берёт RENDER_EXTERNAL_URL
+      # (Render подставляет её сам для любого веб-сервиса).
+    # Миграции Alembic применяются при каждом старте процесса — см.
+    # app/main.py lifespan (run_migrations()), отдельного шага деплоя не нужно.

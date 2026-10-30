@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="home-hero" style="padding-top:var(--space-8)">
+  <h1>{{ t('onboarding.schedule_title') }}</h1>
+  <p>{{ t('onboarding.schedule_subtitle', days=template.schedule.train_days|length, minutes=template.schedule.minutes[1]) }}</p>
+</div>
+
+<form method="post" action="/onboarding/schedule" class="card" style="padding:var(--space-6)">
+  <div class="field">
+    <label>{{ t('onboarding.length_label') }}</label>
+    <div style="display:flex;gap:var(--space-3);flex-wrap:wrap">
+      {% for length in template.lengths %}
+      <label class="checkbox-field" style="border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);margin-bottom:0">
+        <input type="radio" name="length_days" value="{{ length }}" {% if loop.first %}checked{% endif %} />
+        <span>{{ length }} {{ t('onboarding.days_suffix') }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  <button class="btn btn--primary btn--block" type="submit">{{ t('onboarding.show_trailer') }}</button>
+</form>
+{% endblock %}

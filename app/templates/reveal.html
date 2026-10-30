@@ -1,0 +1,41 @@
+{% extends "cinematic_base.html" %}
+{% block title %}Reveal — {{ season.title }}{% endblock %}
+{% block content %}
+<div class="reveal-screen" style="min-height:100dvh;max-width:480px;margin:0 auto">
+  <svg class="icon reveal-screen__spark" style="width:18px;height:18px;top:70px;left:24px"><use href="#i-sparkle"/></svg>
+  <svg class="icon reveal-screen__spark" style="width:12px;height:12px;top:120px;right:34px"><use href="#i-sparkle"/></svg>
+
+  <span class="reveal-screen__badge"><svg class="icon" style="width:1em;height:1em"><use href="#i-trophy"/></svg>{{ season.result_tier }}</span>
+  <h1 class="reveal-screen__title">{{ season.title }}</h1>
+  <p class="reveal-screen__subtitle">{{ season.length_days }} дней позади</p>
+
+  <div class="reveal-compare">
+    <div class="reveal-compare__stat">
+      <span class="reveal-compare__value tabular">{{ reveal.before_value }}</span>
+      <span class="reveal-compare__tag">{{ season.metric_unit }} · день 0</span>
+    </div>
+    <svg class="icon" style="color:var(--text-faint)"><use href="#i-sparkle"/></svg>
+    <div class="reveal-compare__stat">
+      <span class="reveal-compare__value reveal-compare__value--after tabular">{{ reveal.after_value }}</span>
+      <span class="reveal-compare__tag">{{ season.metric_unit }} · день {{ season.length_days }}</span>
+    </div>
+  </div>
+
+  <div class="reveal-screen__quote">
+    <div class="mascot mascot--glad" style="width:48px;height:48px"><span class="mascot__face" style="gap:8px"><span class="mascot__eye" style="width:4px;height:6px"></span><span class="mascot__eye" style="width:4px;height:6px"></span></span></div>
+    <p>«{{ mascot_phrase }}»</p>
+  </div>
+
+  {% if has_video %}
+  <video src="/season/{{ season.id }}/reveal/video.mp4" controls style="width:100%;border-radius:var(--radius-lg);margin-bottom:var(--space-6)"></video>
+  {% endif %}
+  <img src="/season/{{ season.id }}/reveal/card.png" alt="Reveal" style="width:100%;border-radius:var(--radius-lg);margin-bottom:var(--space-6)" />
+
+  <div class="reveal-screen__actions">
+    <form method="post" action="/season/{{ season.id }}/next">
+      <button class="btn btn--primary btn--block" type="submit">Следующий сезон</button>
+    </form>
+    <a class="btn btn--secondary btn--block" href="/season/{{ season.id }}/reveal/card.png?share=1" download>Поделиться карточкой</a>
+  </div>
+</div>
+{% endblock %}

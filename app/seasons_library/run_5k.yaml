@@ -1,0 +1,65 @@
+id: run_5k
+version: 1
+title: "Сезон: 5 км без остановки"
+title_uz: "Mavsum: 5 km toʻxtovsiz"
+category: fitness
+metric: { name: "Непрерывный бег", unit: "мин", direction: up }
+lengths: [60, 90]
+target_default: 30
+baseline_test:
+  prompt: "Сколько минут подряд ты можешь бежать в спокойном темпе?"
+  input: number
+  min: 0
+  max: 60
+eligibility:
+  min_age: 18
+  warnings:
+    - "Если есть проблемы с сердцем или суставами — сначала проконсультируйся с врачом"
+schedule: { train_days: [2, 4, 6], minutes: [20, 40] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Бег/ходьба 1 : 1,5"
+        instructions: "Разминка 5 мин ходьбы. 8 раз: 1 мин бег + 1,5 мин ходьба. Заминка 5 мин."
+        minimal: "15 минут быстрой ходьбы"
+        expected_progress: 0.4
+  - phase: 2
+    unlock_if_baseline_gte: 5
+    days:
+      - title: "Бег/ходьба 2 : 1,5"
+        instructions: "Разминка 5 мин ходьбы. 8 раз: 2 мин бег + 1,5 мин ходьба. Заминка 5 мин."
+        minimal: "18 минут быстрой ходьбы"
+        expected_progress: 0.5
+  - phase: 3
+    unlock_if_baseline_gte: 10
+    days:
+      - title: "Бег/ходьба 4 : 1"
+        instructions: "Разминка 5 мин ходьбы. 6 раз: 4 мин бег + 1 мин ходьба. Заминка 5 мин."
+        minimal: "20 минут быстрой ходьбы"
+        expected_progress: 0.6
+  - phase: 4
+    unlock_if_baseline_gte: 18
+    days:
+      - title: "Бег/ходьба 8 : 1"
+        instructions: "Разминка 5 мин ходьбы. 3 раза: 8 мин бег + 1 мин ходьба. Заминка 5 мин."
+        minimal: "20 минут бега и ходьбы в своём темпе"
+        expected_progress: 0.5
+  - phase: 5
+    unlock_if_baseline_gte: 24
+    days:
+      - title: "Непрерывный бег 25–30 минут"
+        instructions: "Разминка 5 мин ходьбы. Бег в спокойном разговорном темпе без остановки. Заминка 5 мин."
+        minimal: "15 минут непрерывного бега в любом темпе"
+        expected_progress: 0.3
+rest_day:
+  title: "День восстановления"
+  instructions: "Прогулка 20–30 минут или растяжка 10 минут"
+measure_every_days: 7
+measure:
+  prompt: "Пробеги сколько получится без остановки. Сколько минут?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 1

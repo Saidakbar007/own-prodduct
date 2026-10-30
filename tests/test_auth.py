@@ -1,53 +1,105 @@
-"""Тесты регистрации, входа, выхода и защиты страниц."""
+"""Регистрация, вход, выход."""
 
-from tests.conftest import register_user
+from datetime import date
 
-
-def test_register_creates_user_and_logs_in(client):
-    resp = register_user(client, login="alice", mail="alice@example.com")
-    assert resp.status_code == 303
-    assert resp.headers["location"] == "/onboarding"  # сразу залогинен, но сначала короткий онбординг
-
-    home = client.get("/")
-    assert home.status_code == 200
-    assert "alice" in home.text
+THIS_YEAR = date.today().year
 
 
-def test_register_duplicate_login_fails(client):
-    register_user(client, login="bob", mail="bob1@example.com")
-    client.get("/logout")
-    resp = register_user(client, login="bob", mail="bob2@example.com")
-    assert resp.status_code == 200  # форма повторно показана с ошибкой
+def _register_payload(unique: str, **overrides):
+    payload = {
+        "name": "Тест Тестов",
+        "birth_year": THIS_YEAR - 20,
+        "age_confirm": "1",
+        "email": f"user-{unique}@example.com",
+        "login": f"user-{unique}",
+        "password": "s3cret-pass",
+        "password_confirm": "s3cret-pass",
+        "timezone": "UTC",
+    }
+    payload.update(overrides)
+    return payload
+
+
+def test_register_success_logs_in_and_lands_on_onboarding(client, unique):
+    # Без черновика онбординга (прямой POST /register) — "/" ведёт на "/today",
+    # а там без активного сезона — на "/onboarding" (выбор цели).
+    resp = client.post("/register", data=_register_payload(unique), follow_redirects=True)
+    assert resp.status_code == 200
+    assert "Какой у тебя будет сезон" in resp.text
+
+
+def test_register_without_age_confirm_is_rejected(client, unique):
+    payload = _register_payload(unique)
+    del payload["age_confirm"]
+    resp = client.post("/register", data=payload)
+    assert resp.status_code == 200
+    assert "18" in resp.text
+
+
+def test_register_under_18_is_rejected(client, unique):
+    payload = _register_payload(unique, birth_year=THIS_YEAR - 10)
+    resp = client.post("/register", data=payload)
+    assert resp.status_code == 200
+    assert "18" in resp.text
+    # пользователь не должен был быть создан — логин свободен для следующей попытки
+    login_resp = client.post(
+        "/login", data={"login": payload["login"], "password": payload["password"]}
+    )
+    assert "Неверный логин" in login_resp.text
+
+
+def test_register_password_mismatch_is_rejected(client, unique):
+    resp = client.post("/register", data=_register_payload(unique, password_confirm="other"))
+    assert "не совпадают" in resp.text
+
+
+def test_register_duplicate_login_or_email_is_rejected(client, unique):
+    payload = _register_payload(unique)
+    first = client.post("/register", data=payload)
+    assert first.status_code in (200, 303)
+
+    other_client_payload = _register_payload(unique)  # тот же login/email, другой клиент
+    import app.main  # noqa: F401
+    from fastapi.testclient import TestClient
+
+    second_client = TestClient(app.main.app)
+    resp = second_client.post("/register", data=other_client_payload)
     assert "уже используются" in resp.text
 
 
-def test_login_logout(client):
-    register_user(client, login="carol", mail="carol@example.com", password="mypassword")
+def test_login_success_and_logout(client, unique):
+    payload = _register_payload(unique)
+    client.post("/register", data=payload)
     client.get("/logout")
 
-    bad = client.post("/login", data={"login": "carol", "password": "wrong"})
-    assert "Неверный логин" in bad.text
-
-    good = client.post(
-        "/login", data={"login": "carol", "password": "mypassword"}, follow_redirects=False
+    login_resp = client.post(
+        "/login",
+        data={"login": payload["login"], "password": payload["password"]},
+        follow_redirects=True,
     )
-    assert good.status_code == 303
-
-    home = client.get("/")
-    assert "carol" in home.text
+    assert "Какой у тебя будет сезон" in login_resp.text
 
     client.get("/logout")
-    home_after_logout = client.get("/")
-    assert "carol" not in home_after_logout.text
+    home = client.get("/")
+    assert payload["name"] not in home.text
 
 
-def test_protected_page_redirects_when_not_logged_in(client):
-    resp = client.get("/profile", follow_redirects=False)
-    assert resp.status_code == 303
-    assert resp.headers["location"] == "/login"
+def test_login_wrong_password_is_rejected(client, unique):
+    payload = _register_payload(unique)
+    client.post("/register", data=payload)
+    client.get("/logout")
+
+    resp = client.post("/login", data={"login": payload["login"], "password": "wrong"})
+    assert "Неверный логин" in resp.text
 
 
-def test_protected_page_accessible_when_logged_in(client):
-    register_user(client, login="dave", mail="dave@example.com")
-    resp = client.get("/profile")
+def test_guest_home_shows_cta(client):
+    resp = client.get("/")
     assert resp.status_code == 200
+    assert "Сезоны" in resp.text
+
+
+def test_unknown_page_returns_branded_404(client):
+    resp = client.get("/this-page-does-not-exist")
+    assert resp.status_code == 404
+    assert "не найдена" in resp.text

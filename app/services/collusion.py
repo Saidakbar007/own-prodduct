@@ -1,79 +1,49 @@
 """
-Анти-сговор друзей: подтверждения другом имеют вес, а не считаются
-поровну — ноль, если у подтверждающего низкий trust, и ×0.25, если пара
-подозрительно подтверждает только друг друга (взаимная накрутка).
+Анти-сговор в вызовах "Спорим?" (перенесено из archive/v6 app/services/
+collusion.py и переписано под новую модель — там считался вес подтверждений
+привычек, здесь считаем долю вызовов на одного и того же соперника).
+
+Подозрительный паттерн — пара, которая снова и снова вызывает только друг
+друга и никогда не оспаривает отметки друг друга даже при явно
+неправдоподобных замерах. Это не блокирует вызовы — только помечает пару
+для честности (снижение trust_score и исключение из публичных составов,
+см. app.services.trust.meets_squad_trust_threshold), не блокирует продукт.
 """
 
 from datetime import datetime, timedelta, timezone
 
 from sqlmodel import Session, select
 
-from app.models import Habit, HabitConfirmation, HabitHistory, User
+from app.models import Challenge
 
-MUTUAL_PAIR_WINDOW_DAYS = 14
+MUTUAL_PAIR_WINDOW_DAYS = 90
 MUTUAL_PAIR_THRESHOLD = 0.8
-LOW_TRUST_THRESHOLD = 40
-MUTUAL_PAIR_WEIGHT = 0.25
+MUTUAL_PAIR_MIN_CHALLENGES = 3
 
 
-def habit_owner_for_history(db: Session, history_id: int) -> int | None:
-    """Владелец привычки, к которой относится конкретная запись истории."""
-    history = db.get(HabitHistory, history_id)
-    if not history:
-        return None
-    habit = db.get(Habit, history.h_id)
-    return habit.uid if habit else None
-
-
-def _confirmation_pairs_for(db: Session, uid: int, days: int) -> list[int]:
-    """
-    Список "второй стороны" для всех подтверждений, связанных с uid за
-    последние `days` дней — и тех, что uid выдал сам, и тех, что получил.
-    """
+def _opponents_for(db: Session, uid: int, days: int = MUTUAL_PAIR_WINDOW_DAYS) -> list[int]:
     cutoff = datetime.now(timezone.utc) - timedelta(days=days)
-    others = []
-
-    given = db.exec(
-        select(HabitConfirmation).where(HabitConfirmation.confirmer_uid == uid, HabitConfirmation.time >= cutoff)
+    challenges = db.exec(
+        select(Challenge).where(
+            ((Challenge.from_uid == uid) | (Challenge.to_uid == uid)),
+            Challenge.created_at >= cutoff,
+            Challenge.to_uid.is_not(None),
+        )
     ).all()
-    for c in given:
-        owner = habit_owner_for_history(db, c.history_id)
-        if owner is not None:
-            others.append(owner)
-
-    my_habit_ids = [h.id for h in db.exec(select(Habit).where(Habit.uid == uid)).all()]
-    if my_habit_ids:
-        my_history_ids = [
-            h.id for h in db.exec(select(HabitHistory).where(HabitHistory.h_id.in_(my_habit_ids))).all()
-        ]
-        if my_history_ids:
-            received = db.exec(
-                select(HabitConfirmation).where(
-                    HabitConfirmation.history_id.in_(my_history_ids), HabitConfirmation.time >= cutoff
-                )
-            ).all()
-            others.extend(c.confirmer_uid for c in received)
-
-    return others
+    opponents = []
+    for c in challenges:
+        other = c.to_uid if c.from_uid == uid else c.from_uid
+        if other is not None:
+            opponents.append(other)
+    return opponents
 
 
-def is_mutual_pair(db: Session, uid_a: int, uid_b: int, days: int = MUTUAL_PAIR_WINDOW_DAYS) -> bool:
-    """
-    ≥80% подтверждений, связанных с uid_a за последние N дней, — именно с
-    uid_b (и наоборот) -> похоже на пару, подтверждающую только друг друга.
-    """
-    others = _confirmation_pairs_for(db, uid_a, days)
-    if not others:
+def is_suspicious_pair(db: Session, uid_a: int, uid_b: int) -> bool:
+    """≥80% вызовов uid_a за последние 90 дней — именно с uid_b, и их не
+    меньше MUTUAL_PAIR_MIN_CHALLENGES — похоже на пару, которая вызывает
+    только друг друга, а не честно соревнуется с составом волны."""
+    opponents = _opponents_for(db, uid_a)
+    if len(opponents) < MUTUAL_PAIR_MIN_CHALLENGES:
         return False
-    matching = sum(1 for o in others if o == uid_b)
-    return (matching / len(others)) >= MUTUAL_PAIR_THRESHOLD
-
-
-def confirmation_weight(db: Session, confirmation: HabitConfirmation, owner_uid: int) -> float:
-    """Вес конкретного подтверждения для расчёта trust score владельца отметки."""
-    confirmer = db.get(User, confirmation.confirmer_uid)
-    if not confirmer or confirmer.trust_score < LOW_TRUST_THRESHOLD:
-        return 0.0
-    if is_mutual_pair(db, owner_uid, confirmation.confirmer_uid):
-        return MUTUAL_PAIR_WEIGHT
-    return 1.0
+    matching = sum(1 for o in opponents if o == uid_b)
+    return (matching / len(opponents)) >= MUTUAL_PAIR_THRESHOLD

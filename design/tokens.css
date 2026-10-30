@@ -1,0 +1,163 @@
+/* Сезоны — дизайн-токены. Тёмная тема — основная (:root), светлая — [data-theme="light"]. */
+
+:root {
+  color-scheme: dark;
+
+  /* --- Поверхности --- */
+  --bg: #15120f;
+  --bg-elevated: #1b1713;
+  --surface: #211c17;
+  --surface-raised: #2a241d;
+  --surface-sunken: #0f0d0a;
+  --border: #38322a;
+  --border-strong: #4a4237;
+  --scrim: rgba(10, 8, 6, 0.64);
+
+  /* --- Текст --- */
+  --text: #f5efe4;
+  --text-muted: #b9ad9c;
+  --text-faint: #867a69;
+  --on-accent: #211405;
+  --on-accent-secondary: #06231a;
+
+  /* --- Акценты --- */
+  --accent: #ffb648;
+  --accent-strong: #ffcb75;
+  --accent-soft: rgba(255, 182, 72, 0.16);
+  --accent-secondary: #1fbe8c;
+  --accent-secondary-soft: rgba(31, 190, 140, 0.16);
+
+  /* --- Статусы дня сезона --- */
+  --status-done: #3dcb83;
+  --status-done-soft: rgba(61, 203, 131, 0.16);
+  --status-minimal: #d9a441;
+  --status-minimal-soft: rgba(217, 164, 65, 0.16);
+  --status-rescued: #e8795a;
+  --status-rescued-soft: rgba(232, 121, 90, 0.16);
+  --status-missed: #c9513f;
+  --status-missed-soft: rgba(201, 81, 63, 0.14);
+  --status-rest: #7c8794;
+  --status-rest-soft: rgba(124, 135, 148, 0.14);
+  --status-future: #4a4237;
+  --status-future-soft: rgba(74, 66, 55, 0.4);
+
+  --danger: #e2493a;
+  --focus-ring: #ffcb75;
+
+  /* --- Типографика --- */
+  --font-display: "Unbounded", "Golos Text", system-ui, sans-serif;
+  --font-body: "Golos Text", system-ui, -apple-system, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 3rem;
+  --text-4xl: 3.75rem;
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.3;
+  --leading-normal: 1.55;
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.12em;
+
+  /* --- Отступы (база 4px) --- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* --- Радиусы --- */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* --- Тени / свечение --- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.36);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.44);
+  --glow-accent: 0 0 0 1px rgba(255, 182, 72, 0.3), 0 8px 32px rgba(255, 182, 72, 0.22);
+  --glow-secondary: 0 0 0 1px rgba(31, 190, 140, 0.28), 0 8px 28px rgba(31, 190, 140, 0.2);
+
+  /* --- Движение --- */
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --duration-slow: 420ms;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Прочее --- */
+  --touch-min: 44px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --nav-height: 64px;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #faf6ee;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-raised: #f3ede1;
+  --surface-sunken: #ece4d4;
+  --border: #e4dac7;
+  --border-strong: #d3c5a9;
+  --scrim: rgba(43, 32, 16, 0.42);
+
+  --text: #231c12;
+  --text-muted: #6b5f4c;
+  --text-faint: #978b76;
+  --on-accent: #241404;
+  --on-accent-secondary: #06231a;
+
+  --accent: #c97a12;
+  --accent-strong: #a9650c;
+  --accent-soft: rgba(201, 122, 18, 0.12);
+  --accent-secondary: #16936b;
+  --accent-secondary-soft: rgba(22, 147, 107, 0.12);
+
+  --status-done: #1f9a5f;
+  --status-done-soft: rgba(31, 154, 95, 0.14);
+  --status-minimal: #b17c1f;
+  --status-minimal-soft: rgba(177, 124, 31, 0.14);
+  --status-rescued: #c85a38;
+  --status-rescued-soft: rgba(200, 90, 56, 0.14);
+  --status-missed: #b23327;
+  --status-missed-soft: rgba(178, 51, 39, 0.12);
+  --status-rest: #5c6774;
+  --status-rest-soft: rgba(92, 103, 116, 0.12);
+  --status-future: #d3c5a9;
+  --status-future-soft: rgba(211, 197, 169, 0.5);
+
+  --danger: #b23327;
+  --focus-ring: #a9650c;
+
+  --shadow-sm: 0 1px 2px rgba(35, 28, 18, 0.08);
+  --shadow-md: 0 8px 24px rgba(35, 28, 18, 0.1);
+  --shadow-lg: 0 20px 48px rgba(35, 28, 18, 0.14);
+  --glow-accent: 0 0 0 1px rgba(201, 122, 18, 0.22), 0 8px 28px rgba(201, 122, 18, 0.16);
+  --glow-secondary: 0 0 0 1px rgba(22, 147, 107, 0.2), 0 8px 24px rgba(22, 147, 107, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 1ms;
+    --duration-base: 1ms;
+    --duration-slow: 1ms;
+  }
+}

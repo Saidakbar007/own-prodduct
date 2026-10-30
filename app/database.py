@@ -1,19 +1,29 @@
 """
-Подключение к базе данных SQLite через SQLModel.
-Таблицы создаются и обновляются миграциями Alembic (app/migrations_runner.py),
-а не напрямую через SQLModel.metadata.
+Подключение к базе данных через SQLModel.
+SQLite по умолчанию (разработка и тесты); PostgreSQL — если задан
+DATABASE_URL (Render/Neon отдают схему `postgres://` — нормализуем её под
+драйвер psycopg3, который используем для обеих баз одинаково через SQLAlchemy).
 """
 
 import os
 
 from sqlmodel import Session, create_engine
 
-# Файл базы данных лежит в корне проекта (можно переопределить через DATABASE_URL,
-# например для временной БД при проверке миграции схемы)
-sqlite_url = os.getenv("DATABASE_URL", "sqlite:///app.db")
 
-# check_same_thread=False нужен, т.к. FastAPI может обращаться к базе из разных потоков
-engine = create_engine(sqlite_url, echo=False, connect_args={"check_same_thread": False})
+def normalize_database_url(url: str) -> str:
+    """Приводит URL к виду, который понимает SQLAlchemy + psycopg3."""
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://"):]
+    if url.startswith("postgresql://") and "+psycopg" not in url:
+        url = "postgresql+psycopg://" + url[len("postgresql://"):]
+    return url
+
+
+DATABASE_URL = normalize_database_url(os.getenv("DATABASE_URL", "sqlite:///app.db"))
+
+# check_same_thread нужен только SQLite: FastAPI обращается к базе из разных потоков.
+connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+engine = create_engine(DATABASE_URL, echo=False, connect_args=connect_args)
 
 
 def get_session():

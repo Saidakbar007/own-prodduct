@@ -1,0 +1,65 @@
+id: pullups_10
+version: 1
+title: "Сезон: 10 подтягиваний"
+title_uz: "Mavsum: 10 marta turnikda tortilish"
+category: fitness
+metric: { name: "Подтягивания подряд", unit: "повторения", direction: up }
+lengths: [60, 90]
+target_default: 10
+baseline_test:
+  prompt: "Сколько подтягиваний ты можешь сделать подряд (полных, без рывка)?"
+  input: number
+  min: 0
+  max: 12
+eligibility:
+  min_age: 18
+  warnings:
+    - "При болях в плечах или локтях — сначала проконсультируйся с врачом"
+schedule: { train_days: [2, 4, 6], minutes: [15, 30] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Вис и негативы"
+        instructions: "3 подхода виса на перекладине (до 20–30 сек). 5 подходов негативов: запрыгнуть в верхнюю точку, опускаться 4–5 сек."
+        minimal: "3 подхода виса по 10 секунд"
+        expected_progress: 0.1
+  - phase: 2
+    unlock_if_baseline_gte: 1
+    days:
+      - title: "Негативы и австралийские подтягивания"
+        instructions: "4 подхода негативов по 3 повторения. 3 подхода австралийских подтягиваний (горизонтальная тяга) по 8–10 раз."
+        minimal: "4 подхода негативов по 1 повторению"
+        expected_progress: 0.15
+  - phase: 3
+    unlock_if_baseline_gte: 3
+    days:
+      - title: "Подтягивания с резинкой"
+        instructions: "5 подходов подтягиваний с резиновой петлёй по 5 повторений, отдых 90 сек между подходами."
+        minimal: "3 подхода по 3 повторения с резинкой"
+        expected_progress: 0.2
+  - phase: 4
+    unlock_if_baseline_gte: 6
+    days:
+      - title: "Подходы без помощи"
+        instructions: "5 подходов полных подтягиваний на максимум чистой техники, отдых 2 минуты между подходами."
+        minimal: "3 подхода по 2 повторения"
+        expected_progress: 0.25
+  - phase: 5
+    unlock_if_baseline_gte: 9
+    days:
+      - title: "Полировка результата"
+        instructions: "Разминка. 1 подход на максимум подряд в начале тренировки, затем 4 подхода по 70% от максимума."
+        minimal: "1 подход на максимум подряд"
+        expected_progress: 0.15
+rest_day:
+  title: "День восстановления"
+  instructions: "Растяжка плеч и спины 10 минут или лёгкая прогулка"
+measure_every_days: 7
+measure:
+  prompt: "Сколько подтягиваний подряд получилось сегодня?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2

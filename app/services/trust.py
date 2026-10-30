@@ -1,66 +1,40 @@
 """
-Trust score (0-100): доля отметок с доказательством/подтверждением другом,
-минус штраф за подозрительные паттерны. Используется как множитель очков.
-Подтверждения друзей взвешены (см. app/services/collusion.py) — ноль для
-подтверждающих с низким trust, ×0.25 для подозрительных взаимных пар.
+Trust score (0-100, §9): штрафы за подозрительные паттерны — повторно
+используемое фото (perceptual hash), пустой/смазанный снимок, неправдоподобный
+скачок в замере. При trust < 40 человек не попадает в общие составы волны (§9).
 """
 
-from sqlmodel import Session, select
+MIN_TRUST_FOR_SQUAD = 40
 
-from app.models import Habit, HabitConfirmation, HabitHistory
-from app.services.collusion import confirmation_weight
+PENALTY_DUPLICATE_PHOTO = 15
+PENALTY_BLURRY_OR_BLANK_PHOTO = 5
+PENALTY_IMPLAUSIBLE_MEASUREMENT = 20
 
-
-def compute_trust_score(db: Session, uid: int) -> int:
-    """Пересчитывает trust score пользователя с нуля по его истории отметок."""
-    habit_ids = [h.id for h in db.exec(select(Habit).where(Habit.uid == uid)).all()]
-    if not habit_ids:
-        return 100
-
-    entries = db.exec(select(HabitHistory).where(HabitHistory.h_id.in_(habit_ids))).all()
-    completions = [e for e in entries if e.kind in ("done", "minimal")]
-    if not completions:
-        return 100
-
-    confirmations_by_history = {}
-    for c in db.exec(select(HabitConfirmation).where(HabitConfirmation.status == "confirmed")).all():
-        confirmations_by_history.setdefault(c.history_id, []).append(c)
-
-    verified_weight = 0.0
-    for e in completions:
-        if e.proof_path:
-            verified_weight += 1.0
-            continue
-        confirmations = confirmations_by_history.get(e.id, [])
-        if confirmations:
-            # берём лучшее (максимальное) подтверждение, если их несколько
-            verified_weight += max(confirmation_weight(db, c, uid) for c in confirmations)
-
-    score = int(verified_weight / len(completions) * 100)
-
-    # штраф: подавляющее большинство отметок — буквально "в последнюю минуту" суток
-    late_night = sum(1 for e in completions if e.time.hour == 23 and e.time.minute >= 58)
-    if late_night / len(completions) > 0.5:
-        score -= 15
-
-    # штраф: отметки "пачками" — 5+ подряд в пределах одной минуты (похоже на массовую подделку задним числом)
-    sorted_times = sorted(e.time for e in entries)
-    for i in range(len(sorted_times) - 4):
-        if (sorted_times[i + 4] - sorted_times[i]).total_seconds() <= 60:
-            score -= 20
-            break
-
-    return max(0, min(100, score))
+DEFAULT_MAX_RELATIVE_JUMP = 0.25  # 25% от предыдущего замера за одну неделю
 
 
-def trust_multiplier(trust_score: int) -> float:
-    """Множитель очков от trust score: 0 -> 0.5x, 100 -> 1.0x."""
-    return 0.5 + 0.5 * (trust_score / 100)
+def apply_trust_penalty(current_score: int, penalty: int) -> int:
+    return max(0, min(100, current_score - penalty))
 
 
-def refresh_trust_score(db: Session, user) -> int:
-    """Пересчитывает и сохраняет trust score пользователя."""
-    user.trust_score = compute_trust_score(db, user.id)
-    db.add(user)
-    db.commit()
-    return user.trust_score
+def apply_trust_bonus(current_score: int, bonus: int) -> int:
+    return max(0, min(100, current_score + bonus))
+
+
+def is_measurement_plausible(
+    previous_value: float | None,
+    new_value: float,
+    max_relative_jump: float = DEFAULT_MAX_RELATIVE_JUMP,
+) -> bool:
+    """Неправдоподобный скачок замера — изменение больше max_relative_jump от
+    предыдущего значения за один шаг (замеры раз в неделю). Первый замер
+    сезона (нет предыдущего) всегда правдоподобен."""
+    if previous_value is None or previous_value == 0:
+        return True
+    relative_change = abs(new_value - previous_value) / abs(previous_value)
+    return relative_change <= max_relative_jump
+
+
+def meets_squad_trust_threshold(trust_score: int) -> bool:
+    """§9: при trust < 40 человек не попадает в общие составы волны."""
+    return trust_score >= MIN_TRUST_FOR_SQUAD

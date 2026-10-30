@@ -1,0 +1,48 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('challenge.title') }}{% endblock %}
+{% block content %}
+{% set active = 'squad' %}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('challenge.duel_title') }}</h1>
+  <p>{{ challenge.terms_text }}</p>
+</div>
+
+{% if challenge.status == 'pending' %}
+<div class="card" style="padding:var(--space-5)">
+  <p style="font-size:var(--text-sm);color:var(--text-muted);margin-bottom:var(--space-3)">{{ t('challenge.waiting_for_opponent') }}</p>
+  <p style="font-size:var(--text-xs);color:var(--text-faint);word-break:break-all">{{ invite_url }}</p>
+</div>
+{% elif challenge.status == 'declined' %}
+<div class="card empty-state"><p>{{ t('challenge.declined_notice') }}</p></div>
+{% elif sides %}
+<div class="grid-2" style="margin-bottom:var(--space-5)">
+  {% for side in [sides.me, sides.opponent] %}
+  <div class="card" style="padding:var(--space-5)">
+    <strong style="font-size:var(--text-sm)">{{ side.label }}</strong>
+    <div style="font-family:var(--font-display);font-size:var(--text-xl);margin-top:var(--space-2)">{{ side.counted }}</div>
+    <div style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('today.day_of', n=side.day_number, total=side.length_days) }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+{% if sides.me.pending_disputes %}
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">{{ t('challenge.my_disputed_days') }}</h3>
+  {% for day in sides.me.pending_disputes %}
+  <form method="post" action="/challenge/{{ challenge.id }}/confirm" style="margin-bottom:var(--space-2)">
+    <input type="hidden" name="day_number" value="{{ day }}" />
+    <button class="btn btn--secondary btn--sm" type="submit">{{ t('challenge.confirm_day', day=day) }}</button>
+  </form>
+  {% endfor %}
+</div>
+{% endif %}
+
+<form method="post" action="/challenge/{{ challenge.id }}/dispute">
+  <div class="field">
+    <label for="day_number">{{ t('challenge.dispute_label') }}</label>
+    <input id="day_number" name="day_number" type="number" min="1" required />
+  </div>
+  <button class="btn btn--secondary btn--block" type="submit">{{ t('challenge.dispute_submit') }}</button>
+</form>
+{% endif %}
+{% endblock %}

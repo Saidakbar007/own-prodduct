@@ -1,14 +1,18 @@
 /**
- * Service worker: кэширует статическую "оболочку" приложения, чтобы его
- * можно было установить на телефон (PWA) и чтобы иконки/манифест грузились
- * из кэша при плохой связи. Страницы с данными всегда идут в сеть первыми.
+ * Service worker: кэширует статическую "оболочку" приложения (PWA, §2/§9
+ * принципы ТЗ — "ощущение приложения, а не сайта"). Страницы с данными
+ * всегда идут в сеть напрямую — честность "сегодня" важнее офлайн-кэша.
  */
 
-const CACHE_NAME = "zhizn-shell-v1";
+const CACHE_NAME = "sezony-shell-v1";
 const SHELL_ASSETS = [
   "/static/manifest.json",
   "/static/icons/icon-192.png",
   "/static/icons/icon-512.png",
+  "/design/tokens.css",
+  "/design/base.css",
+  "/design/components.css",
+  "/static/app.css",
 ];
 
 self.addEventListener("install", (event) => {
@@ -30,13 +34,12 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  // Статика (/static/...) — сначала кэш, потом сеть
-  if (url.pathname.startsWith("/static/")) {
+  if (url.pathname.startsWith("/static/") || url.pathname.startsWith("/design/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => cached || fetch(event.request))
     );
     return;
   }
 
-  // Все остальные запросы (страницы, формы) — всегда из сети напрямую
+  // Все остальные запросы (страницы, формы, замеры) — всегда из сети напрямую
 });

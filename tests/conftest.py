@@ -1,55 +1,50 @@
 """
-Общие фикстуры для тестов: тестовая БД в памяти + тестовый клиент FastAPI.
+Общие фикстуры для тестов. Все тесты работают против одной временной SQLite
+базы (создаётся и мигрируется один раз за сессию) — тесты не должны зависеть
+от порядка выполнения, поэтому логины/почты в тестах всегда уникальны
+(см. фикстуру `unique`).
 """
 
-import pytest
-from fastapi.testclient import TestClient
-from sqlmodel import Session, SQLModel, create_engine
-from sqlmodel.pool import StaticPool
+import os
+import tempfile
+import uuid
 
-from app.database import get_session
-from app.main import app
-from app.services.achievements import ensure_achievements_seeded
-from app.services.seasons import ensure_season_seeded
-from app.services.shop import ensure_shop_seeded
+# DATABASE_URL должен быть выставлен ДО первого импорта app.* — модуль
+# app.database создаёт engine один раз при импорте.
+_tmp_dir = tempfile.mkdtemp(prefix="sezony-test-")
+os.environ["DATABASE_URL"] = f"sqlite:///{os.path.join(_tmp_dir, 'test.db')}"
+os.environ.setdefault("SECRET_KEY", "test-secret-key")
+
+import pytest  # noqa: E402
+from fastapi.testclient import TestClient  # noqa: E402
+from sqlmodel import Session  # noqa: E402
+
+from app.database import engine  # noqa: E402
+from app.main import app  # noqa: E402
 
 
-@pytest.fixture(name="session")
-def session_fixture():
-    engine = create_engine(
-        "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
-    )
-    SQLModel.metadata.create_all(engine)
+@pytest.fixture(scope="session", autouse=True)
+def _migrated_app():
+    """Запускает lifespan (и миграции Alembic) ровно один раз за тестовую сессию."""
+    with TestClient(app):
+        yield
+
+
+@pytest.fixture()
+def client():
+    """Свежий TestClient на каждый тест — у каждого своя cookie-сессия."""
+    return TestClient(app)
+
+
+@pytest.fixture()
+def unique():
+    """Короткий уникальный суффикс для логинов/почт, чтобы тесты не конфликтовали."""
+    return uuid.uuid4().hex[:8]
+
+
+@pytest.fixture()
+def db_session():
+    """Прямой доступ к той же тестовой базе — для раскладки данных "задним
+    числом" (например, чтобы довести сезон до финала без ожидания реальных дней)."""
     with Session(engine) as session:
-        ensure_achievements_seeded(session)
-        ensure_shop_seeded(session)
-        ensure_season_seeded(session)
         yield session
-
-
-@pytest.fixture(name="client")
-def client_fixture(session):
-    def get_session_override():
-        return session
-
-    app.dependency_overrides[get_session] = get_session_override
-    client = TestClient(app)
-    yield client
-    app.dependency_overrides.clear()
-
-
-def register_user(client, login="user1", mail="user1@example.com", password="secret123"):
-    """Вспомогательная функция: регистрирует пользователя и возвращает клиент с активной сессией."""
-    return client.post(
-        "/register",
-        data={
-            "name": "Тест",
-            "age": 20,
-            "gender": "male",
-            "mail": mail,
-            "login": login,
-            "password": password,
-            "password_confirm": password,
-        },
-        follow_redirects=False,
-    )

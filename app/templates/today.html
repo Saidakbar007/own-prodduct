@@ -1,0 +1,78 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('today.title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'today' %}
+
+<div class="season-progress" style="margin-bottom:var(--space-5)">
+  <div class="season-progress__ring">
+    <svg viewBox="0 0 84 84">
+      <circle class="season-progress__track" cx="42" cy="42" r="36"/>
+      <circle class="season-progress__value" cx="42" cy="42" r="36" stroke-dasharray="{{ ring_circumference }}" stroke-dashoffset="{{ ring_offset }}"/>
+    </svg>
+    <div class="season-progress__label">
+      <span class="season-progress__day tabular">{{ day_number }}</span>
+      <span class="season-progress__total">{{ t('today.of', total=season.length_days) }}</span>
+    </div>
+  </div>
+  <div class="season-progress__meta">
+    <h3>{{ season.title }}</h3>
+    <p>{{ t('today.forecast', value=forecast, unit=season.metric_unit) }}</p>
+  </div>
+</div>
+
+{% include "_mascot.html" %}
+
+{% if day.kind == 'measure' %}
+<div class="action-card">
+  <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
+  <h3 class="action-card__title">{{ day.title }}</h3>
+  <p class="action-card__body">{{ day.instructions }}</p>
+  <div class="action-card__actions">
+    <a class="btn btn--primary" href="/measure"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-check"/></svg>{{ t('today.go_measure') }}</a>
+  </div>
+</div>
+{% elif day.status in ('done', 'minimal', 'rescued') %}
+<div class="action-card action-card--done">
+  <span class="action-card__kicker"><svg class="icon" style="width:1em;height:1em"><use href="#i-check"/></svg>{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
+  <h3 class="action-card__title">{{ t('today.already_' + day.status) }}</h3>
+  <p class="action-card__body">{{ day.title }}</p>
+</div>
+{% elif day.kind == 'rest' %}
+<div class="action-card">
+  <span class="action-card__kicker"><svg class="icon" style="width:1em;height:1em"><use href="#i-moon"/></svg>{{ t('today.rest_kicker') }}</span>
+  <h3 class="action-card__title">{{ day.title }}</h3>
+  <p class="action-card__body">{{ day.instructions }}</p>
+</div>
+{% else %}
+<div class="action-card">
+  <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
+  <h3 class="action-card__title">{{ day.title }}</h3>
+  <p class="action-card__body">{{ day.instructions }}</p>
+  <form method="post" action="/today/done" enctype="multipart/form-data" style="display:flex;flex-direction:column;gap:var(--space-3)">
+    <input type="file" name="photo" accept="image/*" capture="environment" class="sr-only" id="proof-photo" />
+    <div class="action-card__actions">
+      <button class="btn btn--primary" type="submit"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-camera"/></svg>{{ t('today.cta_done') }}</button>
+      <label for="proof-photo" class="btn btn--secondary" style="cursor:pointer">{{ t('today.cta_attach_photo') }}</label>
+    </div>
+  </form>
+  <form method="post" action="/today/minimal">
+    <button class="btn btn--secondary" type="submit" style="margin-top:var(--space-3)">{{ t('today.cta_minimal') }}</button>
+  </form>
+  <details style="margin-top:var(--space-4)">
+    <summary class="btn--text" style="cursor:pointer;display:inline">{{ t('today.cta_skip') }}</summary>
+    <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('today.skip_explainer', chances=season.second_chances_left) }}</p>
+  </details>
+</div>
+{% endif %}
+
+{% if season.second_chances_left > 0 %}
+<form method="post" action="/today/rescue" style="margin-top:var(--space-4)">
+  <button class="btn btn--text" type="submit">{{ t('today.cta_rescue') }}</button>
+</form>
+{% endif %}
+
+<div class="wave-summary card" style="padding:var(--space-4);margin-top:var(--space-5)">
+  <span class="wave-summary__text">{{ t('today.wave_checkins', checked=checkins, total=wave_size) }}</span>
+  <a href="/squad" class="btn--text">{{ t('today.wave_see_all') }}</a>
+</div>
+{% endblock %}
