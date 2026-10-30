@@ -81,7 +81,7 @@ app.add_middleware(
 )
 
 # Дизайн-система (DESIGN.md) и 3D-арт — те же каталоги, что использует /design для показа
-app.mount("/design", StaticFiles(directory="design"), name="design")
+app.mount("/design", StaticFiles(directory="design", html=True), name="design")
 app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
