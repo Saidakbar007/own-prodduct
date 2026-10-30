@@ -30,7 +30,9 @@ def is_quiet_hours(moment_time: time) -> bool:
 
 
 def app_base_url() -> str:
-    return os.getenv("APP_BASE_URL", "")
+    """APP_BASE_URL — ручной override; иначе RENDER_EXTERNAL_URL, который
+    Render сам подставляет каждому веб-сервису (публичный https-адрес)."""
+    return os.getenv("APP_BASE_URL") or os.getenv("RENDER_EXTERNAL_URL", "")
 
 
 def open_app_keyboard() -> dict:
