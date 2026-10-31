@@ -1,7 +1,8 @@
 """
-Демо-данные (§15 Фаза 2 / деплой): пользователь demo примерно на 12-м дне
-сезона «5 км» (с пропуском, спасённым вторым шансом, и двумя замерами) +
-один завершённый сезон с Reveal. Запускать только на пустой базе:
+Демо-данные (§15 Фаза 2 / деплой; обновлено UX-правкой — пролога больше
+нет, сезон стартует сразу): пользователь demo на 12-м дне сезона «5 км»
+(с пропуском, спасённым вторым шансом, и двумя замерами) + один
+завершённый сезон с Reveal. Запускать только на пустой базе:
 
     python scripts/seed_demo.py
 
@@ -31,13 +32,7 @@ from app.services.seasons import build_all_days, create_season, today_day_number
 
 DEMO_LOGIN = "demo"
 DEMO_PASSWORD = "DemoSezony2026"
-TARGET_DAY = 12  # "примерно" — фактический день зависит от ближайшего понедельника
-
-
-def _monday_on_or_before(day: date) -> date:
-    while day.weekday() != 0:
-        day -= timedelta(days=1)
-    return day
+TARGET_DAY = 12  # сезон стартует сразу (без прологa) — день считается точно
 
 
 def main() -> None:
@@ -60,9 +55,9 @@ def main() -> None:
         db.commit()
         db.refresh(demo)
 
-        # --- Сезон 1: run_5k, сегодня — примерно день 12, в процессе ---
+        # --- Сезон 1: run_5k, сегодня — ровно день 12, в процессе ---
         today = date.today()
-        active_start = _monday_on_or_before(today - timedelta(days=TARGET_DAY - 1))
+        active_start = today - timedelta(days=TARGET_DAY - 1)
         season = create_season(
             db, uid=demo.id, template_id="run_5k", length_days=60,
             baseline_value=5, reference_date=active_start,
@@ -90,12 +85,13 @@ def main() -> None:
             0, season_engine.second_chances_for_length(60) - (1 if rescue_day_number else 0)
         )
         db.add(season)
+        db.add(Measurement(season_id=season.id, day_number=1, value=5.0))  # точка старта (день 1)
         db.add(Measurement(season_id=season.id, day_number=7, value=8.0))
         db.commit()
         db.refresh(season)
 
         # --- Сезон 2: pushups_50, завершён, с Reveal ---
-        past_start = _monday_on_or_before(today - timedelta(days=45))
+        past_start = today - timedelta(days=45)
         season2 = create_season(
             db, uid=demo.id, template_id="pushups_50", length_days=30,
             baseline_value=5, reference_date=past_start,
