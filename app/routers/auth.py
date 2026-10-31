@@ -94,10 +94,10 @@ def register_submit(
             reference_date=date.today(),
             secondary_baseline_value=draft.get("secondary_baseline_value"),
         )
-        event_type = "prologue_started" if season.status == "prologue" else "season_started"
-        log_event_safe(db, event_type, uid=user.id, season_id=season.id)
+        log_event_safe(db, "season_started", uid=user.id, season_id=season.id)
         request.session.pop("onboarding", None)
-        return RedirectResponse("/today", status_code=303)
+        request.session["current_season_id"] = season.id
+        return RedirectResponse("/today?tour=1", status_code=303)
 
     return RedirectResponse("/", status_code=303)
 

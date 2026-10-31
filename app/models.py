@@ -41,7 +41,9 @@ class User(SQLModel, table=True):
 
 
 class Wave(SQLModel, table=True):
-    """Волна: общий старт по понедельникам."""
+    """Волна: метка недели (понедельник), по которой людей группируют в
+    команду. С UX-правки сезон не ждёт понедельника — start_date здесь не
+    момент старта, а бакет для группировки (см. DECISIONS.md)."""
 
     __tablename__ = "wave"
 
@@ -63,7 +65,6 @@ class Season(SQLModel, table=True):
     title: str
     length_days: int
     wave_id: int = Field(foreign_key="wave.id", index=True)
-    prologue_start: Optional[date] = None
     start_date: date
     end_date: date
     metric_name: str
@@ -75,7 +76,7 @@ class Season(SQLModel, table=True):
     days_per_week: int
     weekdays_json: str  # JSON-список чисел 1..7 (пн..вс)
     minutes_per_day: int
-    status: str = Field(default="prologue")  # prologue | active | finished | abandoned
+    status: str = Field(default="active")  # active | finished | abandoned
     result_tier: Optional[str] = None  # clean | passed | completed
     second_chances_left: int
     current_phase: int = Field(default=1)

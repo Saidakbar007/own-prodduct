@@ -103,3 +103,265 @@
   color: var(--text-faint);
   font-size: var(--text-xs);
 }
+
+/* ============ Постер шаблона (обложка) ============ */
+
+.template-poster {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-sunken);
+  display: flex;
+  align-items: flex-end;
+}
+.template-poster__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+.template-poster__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, var(--scrim) 100%);
+}
+.template-poster__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+  padding: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+.template-poster--sm {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+}
+.template-poster--sm .template-poster__title {
+  display: none;
+}
+.template-poster--md {
+  aspect-ratio: 16 / 10;
+}
+.template-poster--catalog {
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
+}
+.template-poster--catalog .template-poster__title {
+  font-size: var(--text-md);
+  padding: var(--space-4);
+}
+
+/* ============ "Откуда → куда" (детальная страница сезона) ============ */
+
+.season-range__values {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-family: var(--font-display);
+}
+.season-range__value {
+  font-size: var(--text-2xl);
+  color: var(--text-muted);
+}
+.season-range__value--target {
+  color: var(--accent);
+}
+.season-range__unit {
+  font-size: var(--text-sm);
+  color: var(--text-faint);
+}
+.season-range__caption {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+.season-range__forecast {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.progress-bar {
+  margin-top: var(--space-3);
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  overflow: hidden;
+}
+.progress-bar__fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+  transition: width var(--duration-slow) var(--ease-standard);
+}
+
+.calendar-grid--compact {
+  gap: 4px;
+}
+.calendar-grid--compact .day-cell {
+  font-size: var(--text-xs);
+  min-height: 28px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* ============ Переключатель сезонов (до 2 активных, "Сегодня") ============ */
+
+.season-switcher {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.season-switcher__current {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* ============ Переключатель (видимость имени в команде) ============ */
+
+.switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.switch__track {
+  width: 44px;
+  height: 26px;
+  flex: none;
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  position: relative;
+  transition: background var(--duration-base) var(--ease-standard);
+}
+.switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  transition: transform var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard);
+}
+.switch input:checked + .switch__track {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.switch input:checked + .switch__track .switch__thumb {
+  transform: translateX(18px);
+  background: var(--accent);
+}
+.switch input:focus-visible + .switch__track {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.switch__label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* ============ Термин-подсказка ("?" с объяснением, нативный popover) ============ */
+
+.info-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text-faint);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+.info-dot:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+.term-popover {
+  max-width: 280px;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-size: var(--text-sm);
+  box-shadow: var(--shadow-md);
+}
+.term-popover::backdrop {
+  background: transparent;
+}
+
+/* ============ Онбординг-тур (3–4 подсказки, пропускаемый) ============ */
+
+.tour-highlight {
+  position: relative;
+  z-index: 55;
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-md);
+}
+.tour-sheet {
+  position: fixed;
+  left: var(--space-4);
+  right: var(--space-4);
+  bottom: calc(var(--space-4) + var(--safe-bottom));
+  z-index: 56;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-5);
+}
+.tour-sheet__step {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--space-2);
+}
+.tour-sheet__title {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  margin-bottom: var(--space-2);
+}
+.tour-sheet__text {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+.tour-sheet__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-4);
+}

@@ -1,0 +1,5 @@
+{# Term tooltip: "?" рядом с понятием, объяснение всплывает по тапу (нативный
+   popover — без JS). Использование: {% include "_term.html" %} с переменными
+   term_id (уникальный), term_text (объяснение). #}
+<button type="button" class="info-dot" popovertarget="term-{{ term_id }}" aria-label="{{ t('common.what_is_this') }}">?</button>
+<div id="term-{{ term_id }}" popover class="term-popover">{{ term_text }}</div>

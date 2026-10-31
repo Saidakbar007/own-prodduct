@@ -16,8 +16,8 @@ _CACHE: dict | None = None
 
 EVENT_STATE: dict[str, MascotState] = {
     "trailer": "glad",
-    "prologue": "calm",
     "wave_start": "glad",
+    "pending": "calm",
     "done": "glad",
     "minimal": "calm",
     "skip": "worried",

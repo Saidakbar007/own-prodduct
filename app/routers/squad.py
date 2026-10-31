@@ -1,7 +1,8 @@
 """
-«Состав» (§7.6, Фаза 3): до 8 человек волны с похожей целью — ник
-(анонимно по умолчанию), "день N", отметился ли сегодня, серия дней,
-реакции-"огоньки". Выйти — в один клик.
+«Команда» (§7.6, Фаза 3; внутри кода и модели данных — Squad, см. §4 ТЗ):
+до 8 человек волны с похожей целью — ник (анонимно по умолчанию), "день N",
+отметился ли сегодня, серия дней, реакции-"огоньки". Выйти — в один клик.
+Меньше 3 человек — считаем, что команда ещё собирается (§UX-правка).
 """
 
 from fastapi import APIRouter, Depends, Form, Request
@@ -13,8 +14,9 @@ from app.database import get_session
 from app.models import Season, SeasonDay, User
 from app.rendering import render
 from app.services.events import log_event_safe
-from app.services.seasons import get_active_season, today_day_number
+from app.services.seasons import get_current_season, today_day_number
 from app.services.squads import (
+    MAX_SQUAD_SIZE,
     active_members,
     add_reaction,
     display_name,
@@ -26,6 +28,8 @@ from app.services.squads import (
 from app.services.usertime import today_for
 
 router = APIRouter()
+
+TEAM_GATHERING_MIN_SIZE = 3
 
 
 def _streak(db: Session, season_id: int, up_to_day: int) -> int:
@@ -45,15 +49,27 @@ def _streak(db: Session, season_id: int, up_to_day: int) -> int:
     return streak
 
 
-@router.get("/squad")
-def squad_page(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
-    season = get_active_season(db, user.id)
+@router.get("/team")
+def team_page(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
+    season = get_current_season(db, user.id, request)
     if not season:
         return RedirectResponse("/onboarding", status_code=303)
 
     membership = my_squad_membership(db, user.id, season.id)
     if not membership:
-        return render(request, "squad.html", {"members": [], "overflow": 0, "membership": None, "lang": user.language})
+        return render(
+            request,
+            "squad.html",
+            {
+                "members": [],
+                "gathering": True,
+                "team_size": 0,
+                "max_squad_size": MAX_SQUAD_SIZE,
+                "membership": None,
+                "season": season,
+                "lang": user.language,
+            },
+        )
 
     today = today_for(user)
     members_rows = []
@@ -86,45 +102,48 @@ def squad_page(request: Request, user: User = Depends(require_user), db: Session
         "squad.html",
         {
             "members": members_rows,
-            "overflow": 0,
+            "gathering": len(members_rows) < TEAM_GATHERING_MIN_SIZE,
+            "team_size": len(members_rows),
+            "max_squad_size": MAX_SQUAD_SIZE,
             "membership": membership,
+            "season": season,
             "lang": user.language,
         },
     )
 
 
-@router.post("/squad/react")
+@router.post("/team/react")
 def react(
     request: Request,
     to_uid: int = Form(...),
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
-    season = get_active_season(db, user.id)
+    season = get_current_season(db, user.id, request)
     membership = my_squad_membership(db, user.id, season.id) if season else None
     if membership and add_reaction(db, membership.squad_id, user.id, to_uid, today_for(user)):
         log_event_safe(db, "squad_reaction", uid=user.id, season_id=season.id)
-    return RedirectResponse("/squad", status_code=303)
+    return RedirectResponse("/team", status_code=303)
 
 
-@router.post("/squad/leave")
+@router.post("/team/leave")
 def leave(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
-    season = get_active_season(db, user.id)
+    season = get_current_season(db, user.id, request)
     membership = my_squad_membership(db, user.id, season.id) if season else None
     if membership:
         leave_squad(db, user.id, membership.squad_id)
-    return RedirectResponse("/squad", status_code=303)
+    return RedirectResponse("/team", status_code=303)
 
 
-@router.post("/squad/anonymous")
+@router.post("/team/anonymous")
 def toggle_anonymous(
     request: Request,
     anonymous: bool = Form(...),
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
-    season = get_active_season(db, user.id)
+    season = get_current_season(db, user.id, request)
     membership = my_squad_membership(db, user.id, season.id) if season else None
     if membership:
         set_anonymous(db, user.id, membership.squad_id, anonymous)
-    return RedirectResponse("/squad", status_code=303)
+    return RedirectResponse("/team", status_code=303)

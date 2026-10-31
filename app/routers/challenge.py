@@ -24,7 +24,7 @@ from app.services.challenges import (
 from app.services.collusion import is_suspicious_pair
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
-from app.services.seasons import get_active_season, today_day_number
+from app.services.seasons import get_current_season, today_day_number
 from app.services.usertime import today_for
 
 router = APIRouter()
@@ -32,7 +32,7 @@ router = APIRouter()
 
 @router.post("/challenge/create")
 def create(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
-    season = get_active_season(db, user.id)
+    season = get_current_season(db, user.id, request)
     if not season:
         return RedirectResponse("/onboarding", status_code=303)
     challenge = create_challenge(db, user.id, season.id)
@@ -52,7 +52,7 @@ def join_page(code: str, request: Request, user: User = Depends(require_user), d
 
     from_user = db.get(User, challenge.from_uid)
     from_season = db.get(Season, challenge.season_id_from)
-    my_season = get_active_season(db, user.id)
+    my_season = get_current_season(db, user.id, request)
     can_accept = bool(my_season and my_season.template_id == from_season.template_id)
 
     return render(
@@ -74,7 +74,7 @@ def accept(code: str, request: Request, user: User = Depends(require_user), db: 
     if not challenge or challenge.status != "pending" or challenge.from_uid == user.id:
         raise HTTPException(status_code=404)
 
-    my_season = get_active_season(db, user.id)
+    my_season = get_current_season(db, user.id, request)
     from_season = db.get(Season, challenge.season_id_from)
     if not my_season or my_season.template_id != from_season.template_id:
         push_flash(request, "challenge.need_matching_season", "error")

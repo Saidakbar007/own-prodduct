@@ -8,4 +8,24 @@
   <a class="btn btn--primary btn--block" href="/onboarding">{{ t('home.cta_register') }}</a>
   <a class="btn btn--secondary btn--block" href="/login">{{ t('home.cta_login') }}</a>
 </div>
+<script>
+  // Mini App: если открыты изнутри Telegram с initData — сразу авторизуемся
+  // или уходим на привязку аккаунта, минуя эту страницу (только тут, не на
+  // уже авторизованных экранах — те рендерятся сервером и никогда не
+  // показывают этот гостевой экран залогиненному человеку).
+  (function () {
+    var tg = window.Telegram && window.Telegram.WebApp;
+    if (!tg || !tg.initData) return;
+    var form = document.createElement("form");
+    form.method = "post";
+    form.action = "/telegram/auth";
+    var input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "init_data";
+    input.value = tg.initData;
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+  })();
+</script>
 {% endblock %}

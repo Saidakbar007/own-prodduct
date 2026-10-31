@@ -48,7 +48,5 @@ def test_onboarding_and_registration_emit_funnel_events(client, unique, db_sessi
     types = set(
         db_session.exec(select(Event.event_type).where(Event.created_at >= marker)).all()
     )
-    for expected in ("onboarding_started", "trailer_shown", "signup"):
+    for expected in ("onboarding_started", "trailer_shown", "signup", "season_started"):
         assert expected in types
-    # prologue_started либо season_started — в зависимости от дня недели теста
-    assert "prologue_started" in types or "season_started" in types

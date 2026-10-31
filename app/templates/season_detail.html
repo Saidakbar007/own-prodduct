@@ -1,0 +1,75 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ season.title }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'seasons' %}
+
+{% with poster_title=season.title, poster_size='md' %}{% include "_poster.html" %}{% endwith %}
+
+<div class="season-range" style="margin:var(--space-5) 0">
+  <div class="season-range__values">
+    <span class="season-range__value tabular">{{ season.baseline_value|round(1) }}</span>
+    <svg class="icon" style="color:var(--text-faint)"><use href="#i-sparkle"/></svg>
+    <span class="season-range__value season-range__value--target tabular">{{ season.target_value|round(1) }}</span>
+    <span class="season-range__unit">{{ season.metric_unit }}</span>
+  </div>
+  <p class="season-range__caption">{{ t('season.day_of', n=today_number, total=season.length_days) }}</p>
+  <div class="progress-bar">
+    <div class="progress-bar__fill" style="width:{{ (today_number / season.length_days * 100)|round(1) }}%"></div>
+  </div>
+  <p class="season-range__forecast">{{ t('season.forecast_plain', value=forecast, unit=season.metric_unit) }}</p>
+</div>
+
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <div class="calendar-grid calendar-grid--compact">
+    {% for day in days %}
+    {% set cls = 'future' %}
+    {% if day.status in ('done','minimal','rescued','missed','rest') %}{% set cls = day.status %}{% endif %}
+    <div class="day-cell day-cell--{{ cls }}{% if day.day_number == today_number %} day-cell--today{% endif %}">
+      {% if cls == 'done' %}<svg class="icon"><use href="#i-check"/></svg>
+      {% elif cls == 'minimal' %}<svg class="icon"><use href="#i-half"/></svg>
+      {% elif cls == 'rescued' %}<svg class="icon"><use href="#i-life"/></svg>
+      {% elif cls == 'missed' %}<svg class="icon"><use href="#i-x"/></svg>
+      {% elif cls == 'rest' %}<svg class="icon"><use href="#i-moon"/></svg>
+      {% else %}{{ day.day_number }}
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% if present_statuses %}
+  <div class="legend" style="margin-top:var(--space-5)">
+    {% if 'done' in present_statuses %}<span class="legend__item"><span class="legend__swatch" style="background:var(--status-done)"></span>{{ t('season.legend_done') }}</span>{% endif %}
+    {% if 'minimal' in present_statuses %}<span class="legend__item"><span class="legend__swatch" style="background:var(--status-minimal)"></span>{{ t('season.legend_minimal') }}</span>{% endif %}
+    {% if 'rescued' in present_statuses %}<span class="legend__item"><span class="legend__swatch" style="background:var(--status-rescued)"></span>{{ t('season.legend_rescued') }}</span>{% endif %}
+    {% if 'missed' in present_statuses %}<span class="legend__item"><span class="legend__swatch" style="background:var(--status-missed)"></span>{{ t('season.legend_missed') }}</span>{% endif %}
+    {% if 'rest' in present_statuses %}<span class="legend__item"><span class="legend__swatch" style="background:var(--status-rest)"></span>{{ t('season.legend_rest') }}</span>{% endif %}
+    {% if 'future' in present_statuses %}<span class="legend__item"><span class="legend__swatch" style="background:var(--status-future)"></span>{{ t('season.legend_future') }}</span>{% endif %}
+  </div>
+  {% endif %}
+</div>
+
+{% if sparkline.has_data %}
+<div class="card measure-tile" style="margin-bottom:var(--space-5)">
+  <div class="measure-tile__top">
+    <div><span class="measure-tile__value tabular">{{ measurements[-1].value }}</span><span class="measure-tile__unit"> {{ season.metric_unit }}</span></div>
+  </div>
+  <svg class="sparkline" viewBox="0 0 280 48" preserveAspectRatio="none">
+    <path class="area" d="{{ sparkline.area }}"/>
+    <path class="line" d="{{ sparkline.line }}"/>
+    <circle cx="{{ sparkline.last_x }}" cy="{{ sparkline.last_y }}" r="4"/>
+  </svg>
+</div>
+{% endif %}
+
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-4)">
+  <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2)">
+    <h3 style="font-size:var(--text-sm)">{{ t('season.measure_section_title') }}</h3>
+    {% with term_id='measure', term_text=t('terms.measure') %}{% include "_term.html" %}{% endwith %}
+  </div>
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin-bottom:var(--space-4)">{{ t('season.measure_section_body') }}</p>
+  <a href="/measure" class="btn btn--secondary btn--block">{{ t('season.cta_measure') }}</a>
+</div>
+
+<form method="post" action="/challenge/create">
+  <button class="btn btn--text" type="submit" style="display:block;width:100%;text-align:center">{{ t('season.cta_challenge') }}</button>
+</form>
+{% endblock %}

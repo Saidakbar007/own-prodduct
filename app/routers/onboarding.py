@@ -14,13 +14,22 @@ from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session
 
+from app.auth import get_current_user, require_user
 from app.database import get_session
+from app.models import User
 from app.rendering import render
 from app.seasons import engine
 from app.seasons_library.loader import get_template, load_library
 from app.services.custom_goal import ai_generation_available, generate_custom_template
 from app.services.events import log_event_safe
-from app.services.seasons import get_or_create_wave, wave_composition_count
+from app.services.flash import push_flash
+from app.services.seasons import (
+    MAX_ACTIVE_SEASONS,
+    create_season,
+    get_active_seasons,
+    get_or_create_wave,
+    wave_composition_count,
+)
 
 router = APIRouter(prefix="/onboarding")
 
@@ -170,7 +179,11 @@ def schedule_submit(request: Request, length_days: int = Form(...)):
 
 
 @router.get("/trailer")
-def trailer(request: Request, db: Session = Depends(get_session)):
+def trailer(
+    request: Request,
+    db: Session = Depends(get_session),
+    user: Optional[User] = Depends(get_current_user),
+):
     draft = _draft(request)
     template_id = draft.get("template_id")
     if not template_id or "baseline_value" not in draft or "length_days" not in draft:
@@ -178,12 +191,11 @@ def trailer(request: Request, db: Session = Depends(get_session)):
 
     template = get_template(template_id)
     today = date.today()
-    wave_start = engine.compute_wave_start(today)
-    prologue_days = engine.prologue_length_days(today, wave_start)
+    week_bucket = engine.week_bucket_start(today)
     phase = engine.select_starting_phase(template, draft["baseline_value"])
 
-    # Предварительный просмотр состава — не создаёт волну в БД раньше времени
-    wave = get_or_create_wave(db, wave_start, template_id)
+    # Предварительный просмотр команды — не создаёт волну в БД раньше времени
+    wave = get_or_create_wave(db, week_bucket, template_id)
     composition = wave_composition_count(db, wave.id)
 
     log_event_safe(db, "trailer_shown", meta={"template_id": template_id})
@@ -195,17 +207,52 @@ def trailer(request: Request, db: Session = Depends(get_session)):
         adherence=1.0,
     )
 
+    active_count = len(get_active_seasons(db, user.id)) if user else 0
+
     return render(
         request,
         "onboarding/trailer.html",
         {
             "template": template,
             "length_days": draft["length_days"],
-            "wave_start": wave_start,
-            "prologue_days": prologue_days,
             "composition": composition,
             "forecast": round(forecast, 1),
             "days_per_week": len(template.schedule.train_days),
             "minutes_per_day": template.schedule.minutes[1],
+            "user": user,
+            "can_start": active_count < MAX_ACTIVE_SEASONS,
+            "lang": user.language if user else None,
         },
     )
+
+
+@router.post("/start")
+def start_for_existing_user(
+    request: Request,
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    """Старт сезона для уже вошедшего человека (новая цель или следующий
+    сезон после Reveal) — минует регистрацию, использует тот же черновик."""
+    draft = _draft(request)
+    template_id = draft.get("template_id")
+    if not template_id or "baseline_value" not in draft or "length_days" not in draft:
+        return RedirectResponse("/onboarding", status_code=303)
+
+    if len(get_active_seasons(db, user.id)) >= MAX_ACTIVE_SEASONS:
+        push_flash(request, "onboarding.error_too_many_active", "error")
+        return RedirectResponse("/seasons", status_code=303)
+
+    season = create_season(
+        db,
+        uid=user.id,
+        template_id=template_id,
+        length_days=draft["length_days"],
+        baseline_value=draft["baseline_value"],
+        reference_date=date.today(),
+        secondary_baseline_value=draft.get("secondary_baseline_value"),
+    )
+    log_event_safe(db, "season_started", uid=user.id, season_id=season.id)
+    request.session.pop("onboarding", None)
+    request.session["current_season_id"] = season.id
+    return RedirectResponse("/today", status_code=303)

@@ -1,0 +1,23 @@
+{# Тур из 4 подсказок поверх интерфейса после регистрации — пропускаемый,
+   показывается один раз (today.py передаёт show_tour только при ?tour=1
+   сразу после /register или /onboarding/start). Логика — app/static/tour.js. #}
+<div class="tour-sheet" id="tour-sheet" hidden data-next-label="{{ t('tour.next') }}" data-done-label="{{ t('tour.done') }}">
+  <div class="tour-sheet__body">
+    <p class="tour-sheet__step" id="tour-step-counter">1/4</p>
+    <h3 class="tour-sheet__title" id="tour-title"></h3>
+    <p class="tour-sheet__text" id="tour-text"></p>
+  </div>
+  <div class="tour-sheet__actions">
+    <button type="button" class="btn btn--text" id="tour-skip">{{ t('tour.skip') }}</button>
+    <button type="button" class="btn btn--primary" id="tour-next">{{ t('tour.next') }}</button>
+  </div>
+</div>
+<script>
+  window.__tourSteps = [
+    { selector: '[data-tour="progress"]', title: {{ t('tour.step1_title')|tojson }}, text: {{ t('tour.step1_text')|tojson }} },
+    { selector: '[data-tour="action"]', title: {{ t('tour.step2_title')|tojson }}, text: {{ t('tour.step2_text')|tojson }} },
+    { selector: '[data-tour="mascot"]', title: {{ t('tour.step3_title')|tojson }}, text: {{ t('tour.step3_text')|tojson }} },
+    { selector: '.bottom-nav', title: {{ t('tour.step4_title')|tojson }}, text: {{ t('tour.step4_text')|tojson }} }
+  ];
+</script>
+<script src="/static/tour.js"></script>

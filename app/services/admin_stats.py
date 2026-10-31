@@ -11,7 +11,7 @@ from sqlmodel import Session, func, select
 
 from app.models import Challenge, Event, User
 
-FUNNEL_STEPS = ["onboarding_started", "trailer_shown", "signup", "prologue_started", "season_started"]
+FUNNEL_STEPS = ["onboarding_started", "trailer_shown", "signup", "season_started"]
 RETENTION_HORIZONS = (1, 7, 30)
 
 

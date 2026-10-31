@@ -1,7 +1,7 @@
 {% extends "shell_base.html" %}
 {% block title %}{{ t('measure.title') }} — {{ t('common.app_name') }}{% endblock %}
 {% block content %}
-{% set active = 'season' %}
+{% set active = 'seasons' %}
 
 <div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
   <h1 style="font-size:var(--text-xl)">{{ t('measure.title') }}</h1>
@@ -55,6 +55,6 @@
 </div>
 {% endif %}
 
-<a href="/season" class="btn btn--secondary btn--block">{{ t('measure.back_to_season') }}</a>
+<a href="/season/{{ season.id }}" class="btn btn--secondary btn--block">{{ t('measure.back_to_season') }}</a>
 {% endif %}
 {% endblock %}

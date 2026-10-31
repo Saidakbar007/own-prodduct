@@ -16,7 +16,6 @@ EVENT_TYPES = (
     "onboarding_started",
     "trailer_shown",
     "signup",
-    "prologue_started",
     "season_started",
     "day_done",
     "day_minimal",

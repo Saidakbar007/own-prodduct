@@ -13,20 +13,21 @@ from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import Measurement, Proof, Season, SeasonDay, User
+from app.models import Proof, Season, SeasonDay, User
 from app.rendering import render
 from app.seasons import engine
-from app.seasons_library.loader import get_template
 from app.services import mascot
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.seasons import (
+    compute_forecast,
     ensure_days_built_for_today,
-    get_active_season,
+    get_active_seasons,
+    get_current_season,
     get_day,
+    set_current_season,
     sync_season_state,
     today_day_number,
-    wave_composition_count,
 )
 from app.services.trust import PENALTY_BLURRY_OR_BLANK_PHOTO, apply_trust_penalty
 from app.services.uploads import analyze_photo, save_photo_bytes
@@ -39,7 +40,7 @@ RING_CIRCUMFERENCE = 2 * math.pi * RING_RADIUS
 
 
 def _prepare_season(request: Request, user: User, db: Session) -> Optional[Season]:
-    season = get_active_season(db, user.id)
+    season = get_current_season(db, user.id, request)
     if not season:
         return None
     today = today_for(user)
@@ -79,35 +80,11 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
     day_number = today_day_number(season, today)
     day = get_day(db, season.id, day_number)
     if not day:
-        # пролог: до первого дня сезона ещё есть время
-        return render(
-            request,
-            "today_prologue.html",
-            {"season": season, "days_left": (season.start_date - today).days, "lang": user.language},
-        )
+        # Защитный случай (не должен случаться: день 1 строится сразу при
+        # создании сезона) — безопаснее отправить в онбординг, чем падать.
+        return RedirectResponse("/onboarding", status_code=303)
 
-    template = get_template(season.template_id)
-    adherence = engine.adherence_14d(
-        db.exec(
-            select(SeasonDay.status)
-            .where(SeasonDay.season_id == season.id, SeasonDay.day_number < day_number)
-            .order_by(SeasonDay.day_number.desc())
-            .limit(14)
-        ).all()
-    )
-    remaining_sessions = max(0, season.days_per_week * (season.length_days - day_number) // 7)
-    phase = next(p for p in template.phases if p.phase == season.current_phase)
-    measurement_values = db.exec(
-        select(Measurement.value).where(Measurement.season_id == season.id).order_by(Measurement.day_number)
-    ).all()
-    forecast = engine.forecast_result(
-        current_value=measurement_values[-1] if measurement_values else season.baseline_value,
-        remaining_sessions=remaining_sessions,
-        expected_progress_per_session=phase.days[0].expected_progress,
-        adherence=adherence,
-        measurement_values=measurement_values,
-        remaining_weeks=(season.length_days - day_number) / 7,
-    )
+    forecast = compute_forecast(db, season, day_number)
 
     checkins = _wave_today_checkins(db, season, today)
     wave_size = len(db.exec(select(Season.id).where(Season.wave_id == season.wave_id)).all())
@@ -118,7 +95,9 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
         "minimal": "minimal",
         "rescued": "second_chance_used",
         "missed": "skip",
-    }.get(day.status, "wave_start" if day_number == 1 else "prologue")
+    }.get(day.status, "wave_start" if day_number == 1 else "pending")
+
+    other_seasons = [s for s in get_active_seasons(db, user.id) if s.id != season.id]
 
     return render(
         request,
@@ -134,9 +113,24 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
             "wave_size": wave_size,
             "mascot_phrase": mascot.phrase_for(mascot_event, user.language),
             "mascot_state": mascot.state_for(mascot_event),
+            "other_seasons": other_seasons,
+            "show_tour": request.query_params.get("tour") == "1",
             "lang": user.language,
         },
     )
+
+
+@router.post("/today/switch-season")
+def switch_season(
+    request: Request,
+    season_id: int = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    season = db.get(Season, season_id)
+    if season and season.uid == user.id and season.status == "active":
+        set_current_season(request, season.id)
+    return RedirectResponse("/today", status_code=303)
 
 
 @router.post("/today/done")
@@ -151,6 +145,10 @@ async def mark_done(
         return RedirectResponse("/onboarding", status_code=303)
     today = today_for(user)
     day = get_day(db, season.id, today_day_number(season, today))
+    if day and day.kind == "measure":
+        # Дни-замеры (включая день 1 — точку старта) отмечаются через
+        # /measure, не через эту форму (её вообще нет на экране для них).
+        return RedirectResponse("/measure", status_code=303)
     if not day or day.status not in ("planned",):
         return RedirectResponse("/today", status_code=303)
 
@@ -195,6 +193,8 @@ def mark_minimal(request: Request, user: User = Depends(require_user), db: Sessi
         return RedirectResponse("/onboarding", status_code=303)
     today = today_for(user)
     day = get_day(db, season.id, today_day_number(season, today))
+    if day and day.kind == "measure":
+        return RedirectResponse("/measure", status_code=303)
     if day and day.status == "planned":
         day.status = "minimal"
         day.done_at = engine_now()

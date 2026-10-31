@@ -118,29 +118,18 @@ def test_library_templates_respect_safety(template_id):
     assert engine.schedule_respects_safety(get_template(template_id)) is True
 
 
-# ---------------------------------------------------------------- compute_wave_start
+# ----------------------------------------------------------- week_bucket_start
 
 @pytest.mark.parametrize(
     "reference,expected",
     [
-        (date(2026, 11, 2), date(2026, 11, 2)),  # понедельник -> сам себе старт
-        (date(2026, 11, 3), date(2026, 11, 9)),  # вторник -> следующий понедельник
-        (date(2026, 11, 8), date(2026, 11, 9)),  # воскресенье -> завтра
+        (date(2026, 11, 2), date(2026, 11, 2)),  # понедельник -> сам себе бакет
+        (date(2026, 11, 3), date(2026, 11, 2)),  # вторник -> понедельник той же недели
+        (date(2026, 11, 8), date(2026, 11, 2)),  # воскресенье -> понедельник той же недели
     ],
 )
-def test_compute_wave_start(reference, expected):
-    assert engine.compute_wave_start(reference) == expected
-
-
-def test_prologue_length_days_zero_when_today_is_monday():
-    monday = date(2026, 11, 2)
-    assert engine.prologue_length_days(monday, engine.compute_wave_start(monday)) == 0
-
-
-def test_prologue_length_days_counts_days_until_monday():
-    tuesday = date(2026, 11, 3)
-    wave_start = engine.compute_wave_start(tuesday)
-    assert engine.prologue_length_days(tuesday, wave_start) == 6
+def test_week_bucket_start(reference, expected):
+    assert engine.week_bucket_start(reference) == expected
 
 
 # ------------------------------------------------------------- второй шанс
@@ -170,8 +159,9 @@ def test_build_season_days_assigns_kinds_by_schedule():
 
     assert len(days) == 10
     kinds = {d.day_number: d.kind for d in days}
-    assert kinds[1] == "train"  # понедельник — тренировочный день
+    assert kinds[1] == "measure"  # день 1 — всегда точка старта (пролога нет)
     assert kinds[2] == "rest"  # вторник — не входит в [1,3,5]
+    assert kinds[3] == "train"  # первый обычный тренировочный день
     assert kinds[7] == "measure"  # кратно measure_every_days
     assert kinds[10] == "measure"  # финал — всегда замер
 
@@ -190,11 +180,12 @@ def test_build_season_days_cycles_through_multiple_day_templates():
     template = make_template([(1, 0)])
     template.phases[0].days = [_day(title="A"), _day(title="B")]
     start = date(2026, 11, 2)
-    # length_days=6: день 6 — последний день сезона, значит принудительно
-    # замер (а не суббота-отдых), поэтому тренировочных дней ровно три: 1,3,5
+    # length_days=6: день 1 принудительно "точка старта" (measure), день 6 —
+    # финал (тоже measure), поэтому из расписания [1,3,5] тренировочные
+    # остаются только дни 3 и 5.
     days = engine.build_season_days(template, template.phases[0], start, length_days=6, weekdays=[1, 3, 5])
     train_titles = [d.title for d in days if d.kind == "train"]
-    assert train_titles == ["A", "B", "A"]
+    assert train_titles == ["A", "B"]
 
 
 # ------------------------------------------------------------------ result_tier

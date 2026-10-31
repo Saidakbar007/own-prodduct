@@ -1,0 +1,7 @@
+{# Обложка-постер шаблона: 3D-арт героя + типографика (DESIGN.md §5,7,10).
+   Переменные: poster_title, poster_hero (1..5), poster_size ('sm'|'md'|'lg', по умолчанию 'md'). #}
+<div class="template-poster template-poster--{{ poster_size|default('md') }}">
+  <img class="template-poster__art" src="/assets/art/hero/hero_{{ poster_hero }}.webp" alt="" />
+  <div class="template-poster__scrim"></div>
+  <span class="template-poster__title">{{ poster_title }}</span>
+</div>

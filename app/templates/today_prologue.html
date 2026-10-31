@@ -1,8 +1,0 @@
-{% extends "shell_base.html" %}
-{% block content %}
-{% set active = 'today' %}
-<div class="home-hero" style="padding-top:var(--space-10)">
-  <h1>{{ t('today.prologue_title') }}</h1>
-  <p>{{ t('today.prologue_body', days=days_left) }}</p>
-</div>
-{% endblock %}

@@ -10,18 +10,28 @@
     <span class="trailer-screen__eyebrow"><svg class="icon" style="width:1em;height:1em"><use href="#i-sparkle"/></svg>{{ t('onboarding.trailer_eyebrow') }}</span>
     <h1 class="trailer-screen__title">{{ template.title }}</h1>
     <div class="trailer-screen__facts">
-      <span>{{ t('onboarding.trailer_fact_length', days=length_days) }} · {{ t('onboarding.trailer_fact_start') }} <strong>{{ wave_start.strftime('%d.%m') }}</strong></span>
+      <span>{{ t('onboarding.trailer_fact_length', days=length_days) }} · {{ t('onboarding.trailer_fact_start') }}</span>
       <span>{{ days_per_week }} {{ t('onboarding.days_per_week_suffix') }} · {{ minutes_per_day }} {{ t('onboarding.minutes_suffix') }}</span>
       <span>{{ t('onboarding.trailer_fact_forecast') }} <strong>{{ forecast }} {{ template.metric.unit }}</strong></span>
-      {% if prologue_days > 0 %}<span>{{ t('onboarding.trailer_fact_prologue', days=prologue_days) }}</span>{% endif %}
     </div>
     <div class="trailer-screen__wave">
       <span style="font-size:var(--text-sm);color:var(--text-muted)">{{ t('onboarding.trailer_composition', count=composition) }}</span>
     </div>
   </div>
   <div class="trailer-screen__footer">
+    {% if user %}
+      {% if can_start %}
+      <form method="post" action="/onboarding/start">
+        <button class="btn btn--primary btn--block" type="submit">{{ t('onboarding.trailer_cta_start') }}</button>
+      </form>
+      {% else %}
+      <p style="font-size:var(--text-sm);color:var(--text-faint);text-align:center">{{ t('onboarding.error_too_many_active') }}</p>
+      <a class="btn btn--secondary btn--block" href="/seasons">{{ t('seasons.hub_title') }}</a>
+      {% endif %}
+    {% else %}
     <a class="btn btn--primary btn--block" href="/register">{{ t('onboarding.trailer_cta') }}</a>
     <a class="btn btn--text" href="/login" style="text-align:center">{{ t('auth.have_account') }} {{ t('auth.go_login') }}</a>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

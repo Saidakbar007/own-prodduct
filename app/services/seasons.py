@@ -56,15 +56,18 @@ def create_season(
     reference_date: date,
     secondary_baseline_value: Optional[float] = None,
 ) -> Season:
-    """Создаёт волну (если нужно), сезон и первые дни (скользящее окно),
-    плюс стартовый замер (день 0 = baseline)."""
+    """Создаёт волну-бакет недели (если нужно), сезон и первые дни (скользящее
+    окно), плюс стартовый замер (день 0 = baseline). Сезон стартует сразу:
+    start_date = reference_date, без ожидания понедельника (§6 ТЗ, изменено
+    UX-правкой — см. SEASONS_SPEC.md → «Изменения»). Волна (Wave.start_date =
+    понедельник недели reference_date) остаётся только меткой для группировки
+    в команду."""
     template = get_template(template_id)
     phase = engine.select_starting_phase(template, baseline_value)
-    wave_start = engine.compute_wave_start(reference_date)
-    prologue_days = engine.prologue_length_days(reference_date, wave_start)
-    wave = get_or_create_wave(db, wave_start, template_id)
+    week_bucket = engine.week_bucket_start(reference_date)
+    wave = get_or_create_wave(db, week_bucket, template_id)
 
-    end_date = wave_start + timedelta(days=length_days - 1)
+    end_date = reference_date + timedelta(days=length_days - 1)
     target_value = _compute_target_value(template, baseline_value, length_days)
 
     secondary_fields: dict = {}
@@ -89,8 +92,7 @@ def create_season(
         title=template.title,
         length_days=length_days,
         wave_id=wave.id,
-        prologue_start=reference_date if prologue_days > 0 else None,
-        start_date=wave_start,
+        start_date=reference_date,
         end_date=end_date,
         metric_name=template.metric.name,
         metric_unit=template.metric.unit,
@@ -101,7 +103,7 @@ def create_season(
         days_per_week=len(template.schedule.train_days),
         weekdays_json=json.dumps(template.schedule.train_days),
         minutes_per_day=template.schedule.minutes[1],
-        status="prologue" if prologue_days > 0 else "active",
+        status="active",
         second_chances_left=engine.second_chances_for_length(length_days),
         current_phase=phase.phase,
         **secondary_fields,
@@ -179,13 +181,42 @@ def build_all_days(db: Session, season: Season) -> None:
     build_upcoming_days(db, season, template, phase, until_date=season.end_date)
 
 
-def get_active_season(db: Session, uid: int) -> Optional[Season]:
-    """Текущий (ещё не завершённый) сезон пользователя, последний созданный."""
+MAX_ACTIVE_SEASONS = 2
+
+
+def get_active_seasons(db: Session, uid: int) -> list[Season]:
+    """Все незавершённые сезоны пользователя (до MAX_ACTIVE_SEASONS сразу),
+    последний созданный — первым."""
     return db.exec(
         select(Season)
-        .where(Season.uid == uid, Season.status.in_(["prologue", "active"]))
+        .where(Season.uid == uid, Season.status == "active")
         .order_by(Season.created_at.desc())
-    ).first()
+    ).all()
+
+
+def get_active_season(db: Session, uid: int) -> Optional[Season]:
+    """Самый недавно созданный незавершённый сезон пользователя. Если их
+    несколько — экраны с выбором сезона используют get_current_season."""
+    seasons = get_active_seasons(db, uid)
+    return seasons[0] if seasons else None
+
+
+def get_current_season(db: Session, uid: int, request) -> Optional[Season]:
+    """«Текущий» сезон для Сегодня/Сезон/Замер/Команда: запомненный выбор
+    пользователя (переключатель на «Сегодня» при 2 активных сезонах), иначе —
+    самый недавно созданный."""
+    seasons = get_active_seasons(db, uid)
+    if not seasons:
+        return None
+    chosen_id = request.session.get("current_season_id")
+    for season in seasons:
+        if season.id == chosen_id:
+            return season
+    return seasons[0]
+
+
+def set_current_season(request, season_id: int) -> None:
+    request.session["current_season_id"] = season_id
 
 
 def get_day(db: Session, season_id: int, day_number: int) -> Optional[SeasonDay]:
@@ -200,16 +231,12 @@ def today_day_number(season: Season, today: date) -> int:
 
 def sync_season_state(db: Session, season: Season, today: date) -> Season:
     """Ленивая синхронизация без фонового планировщика (его пока нет — см.
-    DECISIONS.md): при каждом заходе пользователя — перевод prologue->active,
-    просроченные "planned" дни (кроме rest) становятся "missed", а последний
-    день с терминальным статусом переводит сезон в "finished"."""
+    DECISIONS.md): при каждом заходе пользователя просроченные "planned" дни
+    (кроме rest) становятся "missed", а последний день с терминальным
+    статусом переводит сезон в "finished"."""
     changed = False
 
-    if season.status == "prologue" and today >= season.start_date:
-        season.status = "active"
-        changed = True
-
-    if season.status in ("prologue", "active"):
+    if season.status == "active":
         overdue = db.exec(
             select(SeasonDay).where(
                 SeasonDay.season_id == season.id,
@@ -265,6 +292,33 @@ def rescue_day(db: Session, season: Season, day: SeasonDay, now) -> SeasonDay:
     db.commit()
     db.refresh(day)
     return day
+
+
+def compute_forecast(db: Session, season: Season, day_number: int) -> float:
+    """Прогноз к финалу (§6, engine.forecast_result) — общая точка для
+    «Сегодня» и «Сезон», чтобы цифра не расходилась между экранами."""
+    template = get_template(season.template_id)
+    adherence = engine.adherence_14d(
+        db.exec(
+            select(SeasonDay.status)
+            .where(SeasonDay.season_id == season.id, SeasonDay.day_number < day_number)
+            .order_by(SeasonDay.day_number.desc())
+            .limit(ROLLING_WINDOW_DAYS)
+        ).all()
+    )
+    remaining_sessions = max(0, season.days_per_week * (season.length_days - day_number) // 7)
+    phase = next(p for p in template.phases if p.phase == season.current_phase)
+    measurement_values = db.exec(
+        select(Measurement.value).where(Measurement.season_id == season.id).order_by(Measurement.day_number)
+    ).all()
+    return engine.forecast_result(
+        current_value=measurement_values[-1] if measurement_values else season.baseline_value,
+        remaining_sessions=remaining_sessions,
+        expected_progress_per_session=phase.days[0].expected_progress,
+        adherence=adherence,
+        measurement_values=measurement_values,
+        remaining_weeks=(season.length_days - day_number) / 7,
+    )
 
 
 def season_statuses(db: Session, season_id: int) -> list[str]:

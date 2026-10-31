@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{% block title %}{{ t('common.app_name') }}{% endblock %}</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="stylesheet" href="/design/tokens.css" />
 <link rel="stylesheet" href="/design/base.css" />
 <link rel="stylesheet" href="/design/components.css" />
@@ -23,5 +24,6 @@
   {% block content %}{% endblock %}
 </main>
 
+<script src="/static/telegram_mini_app.js"></script>
 </body>
 </html>

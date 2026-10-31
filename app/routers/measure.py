@@ -18,7 +18,7 @@ from app.seasons import engine
 from app.seasons_library.loader import get_template
 from app.services import mascot
 from app.services.events import log_event_safe
-from app.services.seasons import ensure_days_built_for_today, get_active_season, today_day_number
+from app.services.seasons import ensure_days_built_for_today, get_current_season, today_day_number
 from app.services.trust import PENALTY_BLURRY_OR_BLANK_PHOTO, apply_trust_penalty, is_measurement_plausible
 from app.services.uploads import analyze_photo, save_photo_bytes
 from app.services.usertime import today_for
@@ -28,7 +28,7 @@ router = APIRouter()
 
 @router.get("/measure")
 def measure_form(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
-    season = get_active_season(db, user.id)
+    season = get_current_season(db, user.id, request)
     if not season:
         return RedirectResponse("/onboarding", status_code=303)
     template = get_template(season.template_id)
@@ -49,7 +49,7 @@ async def measure_submit(
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
-    season = get_active_season(db, user.id)
+    season = get_current_season(db, user.id, request)
     if not season:
         return RedirectResponse("/onboarding", status_code=303)
 
@@ -151,9 +151,11 @@ def measure_adapt(
     user: User = Depends(require_user),
     db: Session = Depends(get_session),
 ):
-    season = get_active_season(db, user.id)
+    season = get_current_season(db, user.id, request)
     if season and accept:
         season.current_phase = phase
         db.add(season)
         db.commit()
-    return RedirectResponse("/season", status_code=303)
+    if season:
+        return RedirectResponse(f"/season/{season.id}", status_code=303)
+    return RedirectResponse("/seasons", status_code=303)

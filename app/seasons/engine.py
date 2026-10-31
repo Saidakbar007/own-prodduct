@@ -87,17 +87,16 @@ def schedule_respects_safety(template: SeasonTemplate) -> bool:
     return rest_days_per_week >= template.safety.rest_days_min_per_week
 
 
-# ------------------------------------------------------------- волны/пролог
+# --------------------------------------------------------------------- волна
 
-def compute_wave_start(reference_date: date) -> date:
-    """Ближайший понедельник на reference_date или после него."""
-    days_until_monday = (7 - reference_date.weekday()) % 7
-    return reference_date + timedelta(days=days_until_monday)
+def week_bucket_start(reference_date: date) -> date:
+    """Понедельник недели, в которую попадает reference_date.
 
-
-def prologue_length_days(reference_date: date, wave_start: date) -> int:
-    """Сколько дней длится пролог (0, если старт сегодня — понедельник)."""
-    return max(0, (wave_start - reference_date).days)
+    Сезон больше не ждёт понедельника (UX-правка): день 1 — всегда
+    reference_date. Это значение используется только как метка недели, по
+    которой человека группируют в команду с теми, кто начал сезон на той же
+    неделе — волна осталась фоном, а не точкой старта."""
+    return reference_date - timedelta(days=reference_date.weekday())
 
 
 # ------------------------------------------------------------- второй шанс
@@ -122,6 +121,13 @@ class PlannedDay:
     title: str
     instructions: str
     minimal_version: str
+
+
+DAY1_TITLE = "Точка старта"
+DAY1_INSTRUCTIONS = (
+    "Зафиксируй, с чего начинаешь, и, если хочешь, сними фото «до» — "
+    "пригодится для сравнения в финале."
+)
 
 
 def build_season_days(
@@ -152,6 +158,21 @@ def build_season_days(
         day_number = offset + 1
         calendar_date = start_date + timedelta(days=offset)
         iso_weekday = calendar_date.isoweekday()  # 1..7, пн..вс
+
+        if day_number == 1:
+            # Пролога нет (UX-правка): день 1 сам — точка старта вместо
+            # невидимого "дня 0", замер+фото "до" происходят здесь.
+            result.append(
+                PlannedDay(
+                    day_number=1,
+                    calendar_date=calendar_date,
+                    kind="measure",
+                    title=DAY1_TITLE,
+                    instructions=DAY1_INSTRUCTIONS,
+                    minimal_version="",
+                )
+            )
+            continue
 
         is_measure_day = (
             day_number % template.measure_every_days == 0 or day_number == length_days

@@ -128,19 +128,13 @@ def test_reveal_video_generates_mp4_when_proof_photos_exist(client, unique, db_s
 
     _create_short_season(client, unique)
 
-    # Сезон мог начаться прологом (если сегодня не понедельник) — переносим
-    # start_date на сегодня, чтобы день 1 существовал и /today/done сработал.
-    season = db_session.exec(select(Season).order_by(Season.id.desc())).first()
-    season.start_date = date.today()
-    season.status = "active"
-    db_session.add(season)
-    db_session.commit()
-
+    # День 1 — всегда "точка старта" (kind=measure), фото-доказательство для
+    # него проставляется через /measure, а не /today/done.
     img = Image.new("RGB", (300, 300), (10, 120, 60))
     buf = io.BytesIO()
     img.save(buf, format="JPEG")
     buf.seek(0)
-    client.post("/today/done", files={"photo": ("proof.jpg", buf, "image/jpeg")})
+    client.post("/measure", data={"value": "6"}, files={"photo": ("proof.jpg", buf, "image/jpeg")})
 
     season = db_session.exec(select(Season).order_by(Season.id.desc())).first()
     _force_finish_season(db_session, season.id)

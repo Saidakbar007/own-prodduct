@@ -38,14 +38,14 @@ def test_run_5k_full_flow_to_today_and_done(client, unique):
 
     register_resp = client.post("/register", data=_register_payload(unique), follow_redirects=True)
     assert register_resp.status_code == 200
-    # Старт сезона — ближайший понедельник: смотря в какой день недели идут
-    # тесты, человек попадает либо в пролог, либо сразу в день 1.
-    assert "Почти на старте" in register_resp.text or "День 1" in register_resp.text
+    # Пролога больше нет: сезон стартует сразу, день 1 — это сегодня.
+    assert "День 1" in register_resp.text
 
-    done_resp = client.post("/today/done", follow_redirects=True)
+    # День 1 — всегда точка старта (замер), первое действие идёт через /measure.
+    done_resp = client.post("/measure", data={"value": "6"}, follow_redirects=True)
     assert done_resp.status_code == 200
 
-    season_resp = client.get("/season")
+    season_resp = client.get("/season", follow_redirects=True)
     assert season_resp.status_code == 200
 
 
@@ -92,7 +92,7 @@ def test_muscle_gain_collects_secondary_bodyweight_metric(client, unique):
     reg = client.post("/register", data=_register_payload(unique), follow_redirects=True)
     assert reg.status_code == 200
 
-    season_page = client.get("/season")
+    season_page = client.get("/season", follow_redirects=True)
     assert season_page.status_code == 200
 
 

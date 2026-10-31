@@ -1,0 +1,61 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('nav.seasons') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'seasons' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('seasons.hub_title') }}</h1>
+</div>
+
+{% if active_cards %}
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-6)">
+  {% for card in active_cards %}
+  <a href="/season/{{ card.season.id }}" class="card" style="display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4)">
+    <div style="width:64px;flex:none">{% with poster_title='', poster_hero=card.poster_hero, poster_size='sm' %}{% include "_poster.html" %}{% endwith %}</div>
+    <div>
+      <strong style="font-size:var(--text-sm)">{{ card.season.title }}</strong>
+      <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ t('season.day_of', n=card.day_number, total=card.season.length_days) }}</div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if can_start %}
+<a href="/onboarding" class="btn btn--primary btn--block" style="margin-bottom:var(--space-8)">{{ t('seasons.start_new') }}</a>
+{% else %}
+<p style="font-size:var(--text-xs);color:var(--text-faint);text-align:center;margin-bottom:var(--space-8)">{{ t('onboarding.error_too_many_active') }}</p>
+{% endif %}
+
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('seasons.catalog_title') }}</h2>
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-8)">
+  {% for item in catalog %}
+  <form method="post" action="/onboarding/goal">
+    <input type="hidden" name="template_id" value="{{ item.template.id }}" />
+    <button type="submit" class="card" style="width:100%;text-align:left;padding:0;cursor:pointer;border:1px solid var(--border);overflow:hidden">
+      {% with poster_title=item.template.title, poster_hero=item.poster_hero, poster_size='catalog' %}{% include "_poster.html" %}{% endwith %}
+      <div style="padding:var(--space-4)">
+        <span class="badge">{{ item.meta.difficulty }}</span>
+        <p style="font-size:var(--text-xs);color:var(--text-muted);margin-top:var(--space-2)">{{ item.meta.for_whom }}</p>
+        <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ item.meta.outcome }}</p>
+        <div style="margin-top:var(--space-2);font-size:var(--text-xs);color:var(--text-faint);text-transform:uppercase;letter-spacing:var(--tracking-wide)">{{ item.template.lengths|join(' / ') }} {{ t('onboarding.days_suffix') }}</div>
+      </div>
+    </button>
+  </form>
+  {% endfor %}
+</div>
+
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.shelf_title') }}</h2>
+{% if completed %}
+<div style="display:flex;gap:var(--space-3);overflow-x:auto;padding-bottom:var(--space-2)">
+  {% for season in completed %}
+  <a href="/season/{{ season.id }}/reveal" class="card" style="min-width:140px;padding:var(--space-4);flex:none">
+    <strong style="font-size:var(--text-sm)">{{ season.title }}</strong>
+    <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ reveals[season.id].tier if reveals.get(season.id) else '' }}</div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<p style="color:var(--text-faint);font-size:var(--text-sm)">{{ t('profile.shelf_empty') }}</p>
+{% endif %}
+{% endblock %}
