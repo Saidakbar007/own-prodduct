@@ -1,0 +1,44 @@
+id: sleep_consistency
+version: 1
+title: "Сезон: наладить сон"
+title_uz: "Mavsum: uyquni tartibga solish"
+category: lifestyle
+metric: { name: "Сон", unit: "часов", direction: up }
+lengths: [30, 60]
+target_default: 1
+baseline_test:
+  prompt: "Сколько часов сна у тебя получается сейчас в среднем за ночь?"
+  input: number
+  min: 2
+  max: 12
+eligibility:
+  min_age: 18
+  warnings:
+    - "При бессоннице дольше нескольких недель или апноэ — сначала проконсультируйся с врачом"
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [10, 20] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Вечерний ритуал"
+        instructions: "Ляг в постель в одно и то же время. За 30–60 минут до сна — без экрана: приглуши свет, отложи телефон."
+        minimal: "Лечь не позже обычного хотя бы на 30 минут"
+        expected_progress: 0.05
+  - phase: 2
+    unlock_if_baseline_gte: 6.5
+    days:
+      - title: "Держим ритм"
+        instructions: "Подъём и отбой в одно время, включая выходные — разброс не больше 30 минут. Проветри комнату перед сном."
+        minimal: "Подъём в своё обычное время ± 30 минут"
+        expected_progress: 0.05
+rest_day:
+  title: "Обычный день"
+  instructions: "Сон не отменяется по выходным — ритм сегодня такой же, как в будни."
+measure_every_days: 7
+measure:
+  prompt: "Сколько часов ты проспал(а) этой ночью?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

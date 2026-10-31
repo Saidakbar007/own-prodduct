@@ -1,14 +1,18 @@
-"""Библиотека шаблонов сезонов (§5 ТЗ) — все 5 загружаются и валидны."""
+"""Библиотека шаблонов сезонов (§5 Сезоны, §7 NewLife v8) — все 7 загружаются
+и валидны (5 исходных + activity_steps/sleep_consistency из v8)."""
 
 import pytest
 
 from app.seasons.engine import schedule_respects_safety
 from app.seasons_library.loader import get_template, load_library
 
-EXPECTED_IDS = {"run_5k", "pullups_10", "pushups_50", "fat_loss_safe", "muscle_gain"}
+EXPECTED_IDS = {
+    "run_5k", "pullups_10", "pushups_50", "fat_loss_safe", "muscle_gain",
+    "activity_steps", "sleep_consistency",
+}
 
 
-def test_library_has_exactly_five_templates():
+def test_library_has_exactly_seven_templates():
     assert set(load_library().keys()) == EXPECTED_IDS
 
 

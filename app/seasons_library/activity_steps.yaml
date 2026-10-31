@@ -1,0 +1,44 @@
+id: activity_steps
+version: 1
+title: "Сезон: больше активности"
+title_uz: "Mavsum: koʻproq harakat"
+category: fitness
+metric: { name: "Шаги в день", unit: "шагов", direction: up }
+lengths: [30, 60]
+target_default: 2500
+baseline_test:
+  prompt: "Сколько шагов в среднем ты проходишь сейчас в день?"
+  input: number
+  min: 0
+  max: 30000
+eligibility:
+  min_age: 18
+  warnings:
+    - "При болях в суставах или одышке — сначала проконсультируйся с врачом"
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [20, 40] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Дневная прогулка"
+        instructions: "Набери шаги в удобном темпе — можно разбить на части: после завтрака, в обед, вечером. Не обязательно быстро, важна регулярность."
+        minimal: "10 минут лёгкой ходьбы в любое время дня"
+        expected_progress: 150
+  - phase: 2
+    unlock_if_baseline_gte: 6000
+    days:
+      - title: "Активный день"
+        instructions: "Добавь к обычным делам пешую часть: выйди на остановку раньше, пройдись перед сном. Темп — тот, при котором можно свободно говорить."
+        minimal: "15 минут лёгкой ходьбы"
+        expected_progress: 200
+rest_day:
+  title: "Обычный день"
+  instructions: "Ходьба — не нагрузка, которая требует отдыха. Если день особенно тяжёлый — просто пройди столько, сколько получится."
+measure_every_days: 7
+measure:
+  prompt: "Сколько шагов в среднем получалось в последние дни?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0
