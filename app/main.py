@@ -26,6 +26,7 @@ from app.rendering import render
 from app.routers import admin as admin_router
 from app.routers import auth as auth_router
 from app.routers import challenge as challenge_router
+from app.routers import habits as habits_router
 from app.routers import measure as measure_router
 from app.routers import onboarding as onboarding_router
 from app.routers import profile as profile_router
@@ -96,6 +97,7 @@ app.include_router(squad_router.router)
 app.include_router(profile_router.router)
 app.include_router(proofs_router.router)
 app.include_router(telegram_router.router)
+app.include_router(habits_router.router)
 app.include_router(admin_router.router)
 
 
