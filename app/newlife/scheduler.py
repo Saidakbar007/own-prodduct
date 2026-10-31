@@ -223,6 +223,18 @@ def _consume_window(windows: list[tuple[int, int]], start: int, end: int) -> lis
     return result
 
 
+def parse_hhmm(value: str) -> int:
+    """"HH:MM" -> минуты от полуночи."""
+    h, m = value.split(":")
+    return int(h) * 60 + int(m)
+
+
+def format_hhmm(minutes: int) -> str:
+    """Минуты от полуночи -> "HH:MM" (с учётом перехода через полночь)."""
+    minutes = minutes % (24 * 60)
+    return f"{minutes // 60:02d}:{minutes % 60:02d}"
+
+
 def ensure_weekly_rest_day(
     heavy_by_day: dict[int, bool], min_rest_days: int = 1
 ) -> list[int]:
