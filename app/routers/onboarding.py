@@ -118,6 +118,13 @@ def health_submit(
         request.session["onboarding"] = draft
         return RedirectResponse("/onboarding/schedule", status_code=303)
 
+    if template_id == "muscle_gain":
+        # v8 §7: вес тела — главная метрика (уже спросили здесь), баланс —
+        # на шаге /onboarding/baseline спросим вспомогательный рабочий вес.
+        draft["baseline_value"] = weight_kg
+        request.session["onboarding"] = draft
+        return RedirectResponse("/onboarding/baseline", status_code=303)
+
     return RedirectResponse("/onboarding/baseline", status_code=303)
 
 
@@ -146,9 +153,12 @@ def baseline_submit(request: Request, value: float = Form(...)):
             {"template": template, "error": "onboarding.error_baseline_range"},
         )
 
-    draft["baseline_value"] = value
     if template_id == "muscle_gain":
-        draft["secondary_baseline_value"] = draft.get("weight_kg")
+        # v8 §7: это вопрос про вспомогательный рабочий вес в приседе —
+        # baseline_value (вес тела) уже выставлен на шаге /onboarding/health.
+        draft["secondary_baseline_value"] = value
+    else:
+        draft["baseline_value"] = value
     request.session["onboarding"] = draft
     return RedirectResponse("/onboarding/schedule", status_code=303)
 
