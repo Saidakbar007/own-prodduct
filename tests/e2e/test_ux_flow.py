@@ -91,14 +91,19 @@ def test_ux_new_user_journey(page: Page, live_server_url, theme):
     _set_theme(page, theme)
     _shoot(page, "01-today", theme)
 
-    # 2. Первое действие дня (если есть форма "Сделал" — отмечаем).
+    # 2. Первое действие дня. День 1 сейчас всегда "точка старта" (замер) —
+    # идём через /measure; если когда-нибудь это изменится — есть и форма
+    # "Сделал" прямо на "Сегодня".
     done_form = page.locator('form[action="/today/done"]')
-    if done_form.count():
+    measure_link = page.locator('a[href="/measure"]')
+    if measure_link.count():
+        measure_link.click()
+        page.fill('input[name="value"]', "6")
+        page.click('button[type="submit"]')
+    elif done_form.count():
         done_form.locator('button[type="submit"]').click()
-        _set_theme(page, theme)
-        _shoot(page, "02-today-done", theme)
-    else:
-        _shoot(page, "02-today-done", theme)
+    _set_theme(page, theme)
+    _shoot(page, "02-today-done", theme)
 
     # 3. Вкладка "Сезон(ы)".
     _goto_first_ok(page, live_server_url, ("/seasons", "/season"))
@@ -199,3 +204,24 @@ def test_ux_demo_account(page: Page, live_server_url, theme):
     page.goto(f"{live_server_url}/profile")
     _set_theme(page, theme)
     _shoot(page, "09-demo-profile", theme)
+
+
+@pytest.mark.parametrize("theme", THEMES)
+def test_onboarding_tour_shown_once_and_skippable(page: Page, live_server_url, theme):
+    """Тур из 4 подсказок — ровно один раз сразу после регистрации,
+    пропускаемый (ОБЪЯСНЕНИЯ, UX-правка)."""
+    _register_new_user(page, live_server_url)
+    page.set_viewport_size(VIEWPORT)
+    _set_theme(page, theme)
+    page.goto(f"{live_server_url}/today?tour=1")
+    _set_theme(page, theme)
+    tour = page.locator("#tour-sheet")
+    tour.wait_for(state="visible")
+    _shoot(page, "10-tour", theme)
+
+    tour.locator("#tour-skip").click()
+    tour.wait_for(state="hidden")
+
+    # Обычный заход на "Сегодня" (без ?tour=1) тур больше не показывает.
+    page.goto(f"{live_server_url}/today")
+    assert page.locator("#tour-sheet").count() == 0
