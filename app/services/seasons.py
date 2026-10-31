@@ -9,9 +9,10 @@ from typing import Optional
 
 from sqlmodel import Session, select
 
-from app.models import Measurement, Season, SeasonDay, Wave
+from app.models import Goal, Measurement, Season, SeasonDay, Wave
 from app.seasons import engine
 from app.seasons.schema import Phase, SeasonTemplate
+from app.seasons_library.catalog_meta import meta_for
 from app.seasons_library.loader import get_template
 from app.services.events import log_event_safe
 from app.services.squads import assign_squad
@@ -61,13 +62,15 @@ def create_season(
     baseline_value: float,
     reference_date: date,
     secondary_baseline_value: Optional[float] = None,
+    sphere_id: Optional[str] = None,
 ) -> Season:
     """Создаёт волну-бакет недели (если нужно), сезон и первые дни (скользящее
     окно), плюс стартовый замер (день 0 = baseline). Сезон стартует сразу:
     start_date = reference_date, без ожидания понедельника (§6 ТЗ, изменено
     UX-правкой — см. SEASONS_SPEC.md → «Изменения»). Волна (Wave.start_date =
     понедельник недели reference_date) остаётся только меткой для группировки
-    в команду."""
+    в команду. sphere_id (NewLife v8 §4) — если задан, заодно заводит Goal и
+    связывает Season.goal_id с ней."""
     template = get_template(template_id)
     phase = engine.select_starting_phase(template, baseline_value)
     week_bucket = engine.week_bucket_start(reference_date)
@@ -75,6 +78,26 @@ def create_season(
 
     end_date = reference_date + timedelta(days=length_days - 1)
     target_value = _compute_target_value(template, baseline_value, length_days)
+
+    goal_id: Optional[int] = None
+    if sphere_id:
+        meta = meta_for(template_id)
+        goal = Goal(
+            uid=uid,
+            sphere_id=sphere_id,
+            template_id=template_id,
+            title=template.title,
+            metric_key=meta.get("metric_key", "custom"),
+            baseline=baseline_value,
+            target=target_value,
+            safe_rate=None,
+            projected_date=end_date,
+            status="active",
+        )
+        db.add(goal)
+        db.commit()
+        db.refresh(goal)
+        goal_id = goal.id
 
     secondary_fields: dict = {}
     if template_id == "muscle_gain" and secondary_baseline_value is not None:
@@ -111,6 +134,7 @@ def create_season(
         status="active",
         second_chances_left=engine.second_chances_for_length(length_days),
         current_phase=phase.phase,
+        goal_id=goal_id,
         **secondary_fields,
     )
     db.add(season)

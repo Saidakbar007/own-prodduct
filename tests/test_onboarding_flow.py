@@ -24,10 +24,17 @@ def _register_payload(unique: str, **overrides):
     return payload
 
 
-def test_goal_picker_lists_all_five_templates(client):
+def test_onboarding_entry_shows_philosophy_screen(client):
+    """v8 §5: /onboarding теперь экран 1 (философия), не каталог целей."""
     resp = client.get("/onboarding")
     assert resp.status_code == 200
-    for title_part in ["5 км", "подтягиваний", "отжиманий", "веса", "мышц"]:
+    assert "Начни с себя" in resp.text
+
+
+def test_goal_picker_lists_all_templates(client):
+    resp = client.get("/onboarding/goal")
+    assert resp.status_code == 200
+    for title_part in ["5 км", "подтягиваний", "отжиманий", "веса", "мышц", "активности", "сон"]:
         assert title_part in resp.text
 
 

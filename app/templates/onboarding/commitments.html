@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}{{ t('onboarding.commitments_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+<div class="onboarding-progress"><span class="onboarding-progress__fill" style="width:46%"></span></div>
+<div class="home-hero" style="padding-top:var(--space-8)">
+  <h1>{{ t('onboarding.commitments_title') }}</h1>
+  <p>{{ t('onboarding.commitments_why') }}</p>
+</div>
+
+{% if commitments %}
+<div style="display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-5)">
+  {% for c in commitments %}
+  <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-4)">
+    <div>
+      <strong style="font-size:var(--text-sm)">{{ c.title }}</strong>
+      <div style="font-size:var(--text-xs);color:var(--text-faint)">
+        {% for d in c.weekdays %}{{ weekday_labels[d-1] }}{% if not loop.last %}, {% endif %}{% endfor %}
+        · {{ c.start_time }}–{{ c.end_time }}
+      </div>
+    </div>
+    <form method="post" action="/onboarding/commitments/remove">
+      <input type="hidden" name="index" value="{{ loop.index0 }}" />
+      <button class="btn btn--text" type="submit">{{ t('onboarding.commitments_remove') }}</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<form method="post" action="/onboarding/commitments" class="card" style="padding:var(--space-6);margin-bottom:var(--space-5)">
+  <div class="field">
+    <label for="title">{{ t('onboarding.commitments_name_label') }}</label>
+    <input id="title" name="title" type="text" placeholder="{{ t('onboarding.commitments_name_placeholder') }}" />
+  </div>
+  <div class="field">
+    <label for="category">{{ t('onboarding.commitments_category_label') }}</label>
+    <select id="category" name="category" style="min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);padding:0 var(--space-4)">
+      {% for cat in categories %}
+      <option value="{{ cat }}">{{ t('onboarding.commitments_category_' + cat) }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label>{{ t('onboarding.commitments_weekdays_label') }}</label>
+    <div class="choice-pills">
+      {% for label in weekday_labels %}
+      <label class="choice-pill">
+        <input type="checkbox" name="weekdays" value="{{ loop.index }}" />
+        <span>{{ label }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  <div style="display:flex;gap:var(--space-3)">
+    <div class="field" style="flex:1">
+      <label for="start_time">{{ t('onboarding.commitments_start_label') }}</label>
+      <input id="start_time" name="start_time" type="time" />
+    </div>
+    <div class="field" style="flex:1">
+      <label for="end_time">{{ t('onboarding.commitments_end_label') }}</label>
+      <input id="end_time" name="end_time" type="time" />
+    </div>
+  </div>
+  <button class="btn btn--secondary btn--block" type="submit" name="action" value="add">{{ t('onboarding.commitments_add') }}</button>
+</form>
+
+<form method="post" action="/onboarding/commitments">
+  <input type="hidden" name="action" value="next" />
+  <div class="field">
+    <label>{{ t('onboarding.commute_label') }}</label>
+    <div class="choice-pills">
+      {% for m in [0, 30, 60, 90] %}
+      <label class="choice-pill">
+        <input type="radio" name="commute_minutes" value="{{ m }}" {% if loop.first %}checked{% endif %} />
+        <span>{{ m }} {{ t('onboarding.minutes_suffix') }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  <button class="btn btn--primary btn--block" type="submit">{{ t('onboarding.continue') }}</button>
+</form>
+{% endblock %}

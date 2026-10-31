@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ t('onboarding.spheres_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+<div class="onboarding-progress"><span class="onboarding-progress__fill" style="width:16%"></span></div>
+<div class="home-hero" style="padding-top:var(--space-8)">
+  <h1>{{ t('onboarding.spheres_title') }}</h1>
+  <p>{{ t('onboarding.spheres_subtitle') }}</p>
+</div>
+
+<form method="post" action="/onboarding/spheres">
+  <div class="choice-grid">
+    {% for sphere in spheres %}
+    <label class="choice-tile">
+      <input type="checkbox" name="sphere_ids" value="{{ sphere.id }}" {% if sphere.id in selected %}checked{% endif %} />
+      <svg class="icon choice-tile__icon"><use href="#{{ sphere.icon }}"/></svg>
+      <span>{{ t('sphere.' + sphere.id + '.name') }}</span>
+    </label>
+    {% endfor %}
+  </div>
+  <p class="onboarding-why">{{ t('onboarding.spheres_why') }}</p>
+  <button class="btn btn--primary btn--block" type="submit">{{ t('onboarding.continue') }}</button>
+</form>
+<form method="post" action="/onboarding/spheres" style="margin-top:var(--space-3)">
+  <button class="btn btn--text" type="submit" style="display:block;width:100%;text-align:center">{{ t('onboarding.skip') }}</button>
+</form>
+{% endblock %}
