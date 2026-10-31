@@ -1,0 +1,73 @@
+# Каталог плохих привычек + общий список триггеров (§10). unit — times|minutes
+# (единица, в которой человек логирует срыв). replacement_id — id привычки
+# из habit_catalog.yaml, предлагаемой как замена (Milkman — связка удовольствия,
+# либо просто разумная альтернатива).
+triggers:
+  - id: boredom
+    label: "Скука"
+  - id: stress
+    label: "Стресс"
+  - id: automatic
+    label: "Просто на автомате"
+  - id: social
+    label: "Все вокруг делают так же"
+  - id: loneliness
+    label: "Одиночество"
+  - id: procrastination
+    label: "Прокрастинация"
+  - id: tiredness
+    label: "Усталость"
+  - id: celebration
+    label: "Хочется себя наградить"
+
+bad_habits:
+  - id: social_media_scroll
+    title: "Бесцельный скролл соцсетей"
+    unit: minutes
+    triggers: [boredom, stress, automatic, procrastination]
+    replacement_id: read_book
+  - id: procrastination_work
+    title: "Откладывание важных дел"
+    unit: times
+    triggers: [stress, boredom, procrastination]
+    replacement_id: skill_practice
+  - id: late_bedtime
+    title: "Поздний отбой"
+    unit: times
+    triggers: [automatic, stress, social]
+    replacement_id: digital_sunset
+  - id: sugar_snacking
+    title: "Сладкое между приёмами пищи"
+    unit: times
+    triggers: [boredom, stress, celebration]
+    replacement_id: hydration_check
+  - id: impulse_buying
+    title: "Импульсивные покупки"
+    unit: times
+    triggers: [boredom, stress, celebration, social]
+    replacement_id: no_spend_day
+  - id: smoking
+    title: "Курение"
+    unit: times
+    triggers: [stress, social, automatic]
+    replacement_id: breathing_exercise
+  - id: junk_food
+    title: "Фастфуд вместо нормальной еды"
+    unit: times
+    triggers: [tiredness, procrastination, social]
+    replacement_id: meal_prep
+  - id: phone_in_bed
+    title: "Телефон в постели"
+    unit: minutes
+    triggers: [automatic, boredom, loneliness]
+    replacement_id: digital_sunset
+  - id: negative_self_talk
+    title: "Негативные мысли о себе"
+    unit: times
+    triggers: [stress, tiredness, loneliness]
+    replacement_id: gratitude_journal
+  - id: skipping_meals
+    title: "Пропуск приёмов пищи"
+    unit: times
+    triggers: [procrastination, stress, tiredness]
+    replacement_id: meal_prep

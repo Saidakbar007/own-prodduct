@@ -1,0 +1,256 @@
+# Каталог полезных привычек (§10 NEWLIFE_V8_SPEC.md, ~40 штук). Поле
+# spheres — список id сфер (app/newlife/spheres.py). time_pref по умолчанию,
+# пользователь может изменить при добавлении. minimal — "правило двух минут"
+# (§9 Clear) — обязательная минимальная версия у каждой привычки.
+- id: water_morning
+  title: "Стакан воды с утра"
+  spheres: [body, energy]
+  duration_min: 2
+  time_pref: morning
+  minimal: "Сделать хотя бы глоток"
+- id: stretch_morning
+  title: "Утренняя растяжка"
+  spheres: [body]
+  duration_min: 10
+  time_pref: morning
+  minimal: "2 минуты растяжки"
+- id: walk_daily
+  title: "Дневная прогулка"
+  spheres: [body, energy]
+  duration_min: 20
+  time_pref: day
+  minimal: "5 минут на свежем воздухе"
+- id: strength_home
+  title: "Силовая тренировка дома"
+  spheres: [body]
+  duration_min: 30
+  time_pref: day
+  minimal: "5 приседаний и 5 отжиманий"
+- id: posture_check
+  title: "Проверка осанки"
+  spheres: [body]
+  duration_min: 2
+  time_pref: day
+  minimal: "Один раз выпрямить спину"
+- id: cold_shower
+  title: "Контрастный душ"
+  spheres: [body, character]
+  duration_min: 5
+  time_pref: morning
+  minimal: "10 секунд холодной воды в конце"
+- id: meditation
+  title: "Медитация"
+  spheres: [mind, energy]
+  duration_min: 10
+  time_pref: morning
+  minimal: "1 минута дыхания"
+- id: gratitude_journal
+  title: "Дневник благодарности"
+  spheres: [mind, values]
+  duration_min: 5
+  time_pref: evening
+  minimal: "Одна строчка"
+- id: breathing_exercise
+  title: "Дыхательное упражнение"
+  spheres: [mind, energy]
+  duration_min: 5
+  time_pref: exact
+  minimal: "5 глубоких вдохов"
+- id: digital_sunset
+  title: "Цифровой закат (без экрана перед сном)"
+  spheres: [mind, lifestyle, energy]
+  duration_min: 30
+  time_pref: evening
+  minimal: "Отложить телефон хотя бы на 10 минут"
+- id: journaling
+  title: "Вести дневник"
+  spheres: [mind, character]
+  duration_min: 10
+  time_pref: evening
+  minimal: "Одно предложение о дне"
+- id: keep_promise
+  title: "Сдержать одно обещание себе"
+  spheres: [character]
+  duration_min: 5
+  time_pref: exact
+  minimal: "Отметить честно, получилось или нет"
+- id: cold_call_fear
+  title: "Сделать то, что откладывал(а)"
+  spheres: [character]
+  duration_min: 15
+  time_pref: day
+  minimal: "Сделать первый маленький шаг"
+- id: say_no_practice
+  title: "Практика говорить «нет»"
+  spheres: [character, relationships]
+  duration_min: 2
+  time_pref: exact
+  minimal: "Заметить момент, когда хотелось сказать да из вежливости"
+- id: call_friend
+  title: "Позвонить другу"
+  spheres: [social, relationships]
+  duration_min: 15
+  time_pref: evening
+  minimal: "Короткое сообщение вместо звонка"
+- id: new_person
+  title: "Познакомиться с новым человеком"
+  spheres: [social]
+  duration_min: 10
+  time_pref: day
+  minimal: "Улыбнуться и поздороваться"
+- id: compliment_someone
+  title: "Сделать кому-то искренний комплимент"
+  spheres: [social, relationships]
+  duration_min: 2
+  time_pref: exact
+  minimal: "Подумать, кому сказать"
+- id: family_time
+  title: "Время с семьёй без телефона"
+  spheres: [relationships]
+  duration_min: 30
+  time_pref: evening
+  minimal: "5 минут полного внимания"
+- id: date_night
+  title: "Время вдвоём с партнёром"
+  spheres: [relationships]
+  duration_min: 30
+  time_pref: evening
+  minimal: "Короткий тёплый разговор"
+- id: active_listening
+  title: "Активно слушать, не перебивая"
+  spheres: [relationships, character]
+  duration_min: 5
+  time_pref: exact
+  minimal: "Один разговор без перебивания"
+- id: skill_practice
+  title: "Практика рабочего навыка"
+  spheres: [career]
+  duration_min: 30
+  time_pref: day
+  minimal: "5 минут практики"
+- id: read_industry
+  title: "Читать по профессии"
+  spheres: [career, knowledge]
+  duration_min: 15
+  time_pref: morning
+  minimal: "Одна страница"
+- id: plan_tomorrow
+  title: "Спланировать завтрашний день"
+  spheres: [career, lifestyle]
+  duration_min: 10
+  time_pref: evening
+  minimal: "Три главных дела списком"
+- id: inbox_zero
+  title: "Разобрать почту/сообщения"
+  spheres: [career]
+  duration_min: 15
+  time_pref: day
+  minimal: "Разобрать 5 писем"
+- id: network_contact
+  title: "Написать полезному контакту"
+  spheres: [career, social]
+  duration_min: 10
+  time_pref: day
+  minimal: "Сохранить контакт на потом"
+- id: budget_review
+  title: "Проверить бюджет"
+  spheres: [finance]
+  duration_min: 10
+  time_pref: evening
+  minimal: "Посмотреть баланс карты"
+- id: no_spend_day
+  title: "День без спонтанных трат"
+  spheres: [finance]
+  duration_min: 2
+  time_pref: exact
+  minimal: "Отложить покупку на завтра"
+- id: save_money
+  title: "Отложить немного денег"
+  spheres: [finance]
+  duration_min: 2
+  time_pref: exact
+  minimal: "Отложить любую сумму"
+- id: track_expenses
+  title: "Записать расходы за день"
+  spheres: [finance]
+  duration_min: 5
+  time_pref: evening
+  minimal: "Записать одну крупную трату"
+- id: read_book
+  title: "Читать книгу"
+  spheres: [knowledge, mind]
+  duration_min: 20
+  time_pref: evening
+  minimal: "Одна страница"
+- id: learn_language
+  title: "Учить язык"
+  spheres: [knowledge]
+  duration_min: 15
+  time_pref: day
+  minimal: "5 новых слов"
+- id: documentary
+  title: "Посмотреть познавательное видео вместо развлекательного"
+  spheres: [knowledge]
+  duration_min: 20
+  time_pref: evening
+  minimal: "Один короткий ролик по теме"
+- id: podcast_learning
+  title: "Слушать обучающий подкаст"
+  spheres: [knowledge, career]
+  duration_min: 20
+  time_pref: day
+  minimal: "5 минут в дороге"
+- id: values_reflection
+  title: "Подумать, что для тебя важно сегодня"
+  spheres: [values]
+  duration_min: 5
+  time_pref: morning
+  minimal: "Одна мысль перед выходом из дома"
+- id: act_on_values
+  title: "Сделать что-то по своим ценностям"
+  spheres: [values, character]
+  duration_min: 15
+  time_pref: day
+  minimal: "Маленький жест"
+- id: declutter
+  title: "Убрать/разобрать одну зону дома"
+  spheres: [lifestyle]
+  duration_min: 15
+  time_pref: day
+  minimal: "Одна полка или ящик"
+- id: meal_prep
+  title: "Приготовить еду заранее"
+  spheres: [lifestyle, body]
+  duration_min: 30
+  time_pref: day
+  minimal: "Подготовить один приём пищи"
+- id: nature_time
+  title: "Время на природе"
+  spheres: [lifestyle, energy]
+  duration_min: 20
+  time_pref: day
+  minimal: "5 минут у окна на свежем воздухе"
+- id: morning_routine
+  title: "Утренний ритуал"
+  spheres: [lifestyle, energy]
+  duration_min: 15
+  time_pref: morning
+  minimal: "Одно действие ритуала"
+- id: power_nap
+  title: "Короткий отдых днём"
+  spheres: [energy]
+  duration_min: 15
+  time_pref: day
+  minimal: "5 минут с закрытыми глазами"
+- id: screen_break
+  title: "Перерыв от экрана каждый час"
+  spheres: [energy, body]
+  duration_min: 5
+  time_pref: exact
+  minimal: "Встать и потянуться"
+- id: hydration_check
+  title: "Проверить, достаточно ли пьёшь воды"
+  spheres: [energy, body]
+  duration_min: 2
+  time_pref: day
+  minimal: "Один стакан воды"
