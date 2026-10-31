@@ -9,14 +9,15 @@
 
 ## Чек-лист
 
-- [ ] §4 Модель данных: profile, sphere_state/history, commitment, task, goal,
+- [x] §4 Модель данных: profile, sphere_state/history, commitment, task, goal,
       habit/habit_log, bad_habit/bad_habit_log, checkin, schedule_block,
-      method_event + миграция Alembic
-- [ ] §3 Константы 11 сфер (ru/uz)
-- [ ] §8 rounding.py + тесты
-- [ ] §7 Каталог целей "Тело" (6 целей, метрики, источники) — заменяет/дополняет
-      5 текущих season-шаблонов
-- [ ] §5 Онбординг 12 экранов (point_a_rules.yaml) + первая неделя (банк вопросов)
+      method_event + миграция Alembic (b097c5eb1f02)
+- [x] §3 Константы 11 сфер (ru; uz — только nav, см. решение ниже)
+- [x] §8 rounding.py + тесты (30)
+- [x] §7 Каталог целей "Тело" (6 целей из таблицы + run_5k/pullups/pushups
+      отдельно = 7 шаблонов), метрики, источники (catalog_meta.py)
+- [x] §5 Онбординг 12 экранов (point_a_rules.yaml) — ЗАВЕРШЕНО.
+      Банк вопросов первой недели — ОТЛОЖЕНО (не начато).
 - [ ] §6 scheduler.py (детерминированный алгоритм) + тесты
 - [ ] §9 methods.py (12 правил) + method_event + страница "Методы NewLife"
 - [ ] §10 Привычки/плохие привычки (каталоги, CRUD, лог)
