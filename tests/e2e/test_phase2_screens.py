@@ -94,12 +94,12 @@ def test_measure_screen(page: Page, live_server_url, theme):
 
 
 @pytest.mark.parametrize("theme", THEMES)
-def test_squad_screen(page: Page, live_server_url, theme):
+def test_team_screen(page: Page, live_server_url, theme):
     _register_with_season(page, live_server_url)
     page.set_viewport_size(VIEWPORT)
-    page.goto(f"{live_server_url}/squad")
+    page.goto(f"{live_server_url}/team")
     _set_theme(page, theme)
-    expect(page.locator("body")).to_be_visible()
+    expect(page.get_by_role("heading", name="Команда", exact=True)).to_be_visible()
     _shoot(page, "squad", theme)
 
 
