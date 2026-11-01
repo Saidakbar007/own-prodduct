@@ -226,6 +226,18 @@ def get_or_build_schedule_for_day(db: Session, user: User, on_date: date) -> lis
     return sync_schedule_for_day(db, user, on_date)
 
 
+def move_block(db: Session, block: ScheduleBlock, start_time: str, end_time: str) -> ScheduleBlock:
+    """§6 п.8: человек перетащил блок — запоминаем новое время, блок больше
+    не трогается при пересчёте (sync_schedule_for_day)."""
+    block.start_time = start_time
+    block.end_time = end_time
+    block.moved_by_user = True
+    db.add(block)
+    db.commit()
+    db.refresh(block)
+    return block
+
+
 def week_dates(reference: date) -> list[date]:
     """Понедельник..воскресенье недели, в которую попадает reference."""
     monday = reference - timedelta(days=reference.weekday())
