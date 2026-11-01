@@ -1,0 +1,32 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('profile.commitments_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'me' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('profile.commitments_title') }}</h1>
+</div>
+
+{% if commitments %}
+<div style="display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-5)">
+  {% for c in commitments %}
+  <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-4)">
+    <div>
+      <strong style="font-size:var(--text-sm)">{{ c.title }}</strong>
+      <div style="font-size:var(--text-xs);color:var(--text-faint)">
+        {% set days = c.weekdays_json | from_json %}
+        {% for d in days %}{{ weekday_labels[d-1] }}{% if not loop.last %}, {% endif %}{% endfor %}
+        · {{ c.start_time }}–{{ c.end_time }}
+      </div>
+    </div>
+    <form method="post" action="/profile/commitments/{{ c.id }}/remove">
+      <button class="btn btn--text" type="submit">{{ t('onboarding.commitments_remove') }}</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p style="color:var(--text-faint);font-size:var(--text-sm);margin-bottom:var(--space-5)">{{ t('profile.commitments_empty') }}</p>
+{% endif %}
+<a href="/week" class="btn btn--secondary btn--block">{{ t('profile.commitments_add_cta') }}</a>
+{% endblock %}

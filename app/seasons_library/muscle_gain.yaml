@@ -1,11 +1,14 @@
 id: muscle_gain
-version: 1
+version: 2
 title: "Сезон: набор мышц для новичка"
 title_uz: "Mavsum: yangi boshlovchi uchun mushak oʻsishi"
 category: fitness
-metric: { name: "Рабочий вес в приседе (5 повторений)", unit: "кг", direction: up }
+# v8 §7: главная метрика — вес тела (скользящее среднее за 7 дней), не
+# рабочий вес в приседе — тот теперь вспомогательный индикатор тренировки
+# (Season.secondary_metric_*, собирается на шаге /onboarding/baseline).
+metric: { name: "Вес тела", unit: "кг", direction: up }
 lengths: [90]
-target_default: 20
+target_default: 4
 baseline_test:
   prompt: "Какой у тебя сейчас рабочий вес в приседе на 5 повторений (в кг)? Если не приседал(а) с отягощением — укажи 0"
   input: number
@@ -43,7 +46,7 @@ rest_day:
   instructions: "Лёгкая растяжка 15 минут или прогулка; сон 7–9 часов особенно важен в этом сезоне"
 measure_every_days: 7
 measure:
-  prompt: "Какой у тебя рабочий вес в приседе на 5 повторений сегодня (в кг)?"
+  prompt: "Сколько ты весишь сегодня (в кг)?"
   proof: optional
   progress_photo: true
 safety:

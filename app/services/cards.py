@@ -128,7 +128,7 @@ def render_episode_card(
     img = _background()
     draw = ImageDraw.Draw(img)
 
-    draw.text((MARGIN, 96), "СЕЗОНЫ", font=_font("display", 34, "Bold"), fill=COLOR_TEXT)
+    draw.text((MARGIN, 96), "NEWLIFE", font=_font("display", 34, "Bold"), fill=COLOR_TEXT)
     badge_text = f"Серия {week_number}"
     badge_font = _font("display", 28, "Bold")
     bw = draw.textlength(badge_text, font=badge_font) + 64
@@ -163,7 +163,7 @@ def render_episode_card(
     draw.rectangle([MARGIN, y, MARGIN + 6, y + 160], fill=COLOR_ACCENT)
     _text(draw, (MARGIN + 40, y), f"«{quote}»", _font("body", 38), COLOR_TEXT, max_width=CARD_W - 2 * MARGIN - 40)
 
-    _footer(draw, "sezony.app", "Начни в ПН")
+    _footer(draw, "newlife.app", "Начни сегодня")
 
     buf = io.BytesIO()
     img.save(buf, format="PNG")
@@ -183,7 +183,7 @@ def render_reveal_card(
     img = _background()
     draw = ImageDraw.Draw(img)
 
-    draw.text((MARGIN, 96), "СЕЗОНЫ", font=_font("display", 34, "Bold"), fill=COLOR_TEXT)
+    draw.text((MARGIN, 96), "NEWLIFE", font=_font("display", 34, "Bold"), fill=COLOR_TEXT)
     badge_font = _font("display", 28, "Bold")
     badge_text = "REVEAL"
     bw = draw.textlength(badge_text, font=badge_font) + 64
@@ -213,7 +213,7 @@ def render_reveal_card(
     _rounded_rect(draw, quote_box, 28, outline=COLOR_BORDER, width=2, fill=COLOR_SURFACE_RAISED)
     _text(draw, (MARGIN + 36, y + 36), f"«{quote}»", _font("body", 36), COLOR_TEXT, max_width=CARD_W - 2 * MARGIN - 72)
 
-    _footer(draw, "sezony.app · следующий сезон", next_season_label)
+    _footer(draw, "newlife.app · следующий сезон", next_season_label)
 
     buf = io.BytesIO()
     img.save(buf, format="PNG")

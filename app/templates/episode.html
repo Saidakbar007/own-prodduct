@@ -1,7 +1,7 @@
 {% extends "shell_base.html" %}
 {% block title %}Серия {{ episode.week_number }} — {{ season.title }}{% endblock %}
 {% block content %}
-{% set active = 'season' %}
+{% set active = 'seasons' %}
 <div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
   <h1 style="font-size:var(--text-xl)">Серия {{ episode.week_number }}</h1>
   <p>{{ episode.title }}</p>

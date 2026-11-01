@@ -1,5 +1,6 @@
 """
-Админка (§14 ТЗ): дашборд метрик, галерея шаблонов ("Сезоны"), песочница.
+Админка (§14 Сезоны / §15 NewLife v8): дашборд метрик, галерея шаблонов,
+каталоги (цели/привычки), сферы, песочницы сезона и расписания.
 404 (не 403) для всех, кто не в ADMIN_LOGINS — см. app.auth.require_admin.
 """
 
@@ -12,7 +13,10 @@ from sqlmodel import Session, select
 
 from app.auth import require_admin
 from app.database import get_session
-from app.models import CustomTemplateDraft, Measurement, Season, SeasonDay, User
+from app.models import CustomTemplateDraft, Measurement, Season, SeasonDay, SphereState, User
+from app.newlife.habit_catalog import load_bad_habit_catalog, load_habit_catalog
+from app.newlife.scheduler import format_hhmm
+from app.newlife.spheres import SPHERES
 from app.rendering import render
 from app.seasons.schema import SeasonTemplate
 from app.seasons_library.loader import get_template, load_approved_custom_templates, load_library
@@ -25,6 +29,7 @@ from app.services.admin_stats import (
 )
 from app.services.episodes import get_or_create_episode
 from app.services.reveals import get_or_create_reveal
+from app.services.schedule_service import build_schedule_for_day
 from app.services.seasons import build_all_days, create_season, sync_season_state
 
 router = APIRouter(prefix="/admin")
@@ -199,3 +204,50 @@ def sandbox_finish(
     db.commit()
     get_or_create_reveal(db, season)
     return RedirectResponse(f"/season/{season_id}/reveal", status_code=303)
+
+
+@router.get("/spheres")
+def spheres_admin(request: Request, user: User = Depends(require_admin), db: Session = Depends(get_session)):
+    """§15 NewLife v8: сколько людей активны в каждой сфере и средний уровень."""
+    rows = []
+    for sphere in SPHERES:
+        states = db.exec(select(SphereState).where(SphereState.sphere_id == sphere.id, SphereState.active.is_(True))).all()
+        avg_level = round(sum(s.level for s in states) / len(states), 1) if states else None
+        rows.append({"sphere": sphere, "active_count": len(states), "avg_level": avg_level})
+    return render(request, "admin/spheres.html", {"rows": rows, "lang": user.language})
+
+
+@router.get("/catalog")
+def catalog_admin(request: Request, user: User = Depends(require_admin)):
+    """§15: каталог целей (шаблоны сезонов) + каталог привычек/плохих
+    привычек — всё версионируется в YAML/git, здесь только просмотр."""
+    goal_templates = sorted(load_library().values(), key=lambda t: t.id)
+    habits = load_habit_catalog()
+    triggers, bad_habits = load_bad_habit_catalog()
+    return render(
+        request,
+        "admin/catalog.html",
+        {"goal_templates": goal_templates, "habits": habits, "bad_habits": bad_habits, "triggers": triggers, "lang": user.language},
+    )
+
+
+@router.get("/schedule-sandbox")
+def schedule_sandbox(
+    request: Request,
+    on_date: Optional[date] = None,
+    user: User = Depends(require_admin),
+    db: Session = Depends(get_session),
+):
+    """§15: песочница расписания — прогнать планировщик на дату для своего
+    же аккаунта, не сохраняя результат, чтобы увидеть алгоритм в деле."""
+    target_date = on_date or date.today()
+    result = build_schedule_for_day(db, user, target_date)
+    blocks = [
+        {"start": format_hhmm(b.start_min), "end": format_hhmm(b.end_min), "kind": b.kind, "title": b.title}
+        for b in result.blocks
+    ]
+    return render(
+        request,
+        "admin/schedule_sandbox.html",
+        {"target_date": target_date, "blocks": blocks, "unplaced": result.unplaced, "messages": result.messages, "lang": user.language},
+    )

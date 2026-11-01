@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ t('onboarding.philosophy_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+<div class="onboarding-progress"><span class="onboarding-progress__fill" style="width:8%"></span></div>
+<div class="home-hero" style="padding-top:var(--space-10)">
+  <h1>{{ t('onboarding.philosophy_title') }}</h1>
+  <p>{{ t('onboarding.philosophy_body') }}</p>
+  <p style="margin-top:var(--space-5);color:var(--accent);font-family:var(--font-display);font-size:var(--text-md)">{{ t('onboarding.philosophy_quote') }}</p>
+</div>
+<a class="btn btn--primary btn--block" href="/onboarding/spheres">{{ t('onboarding.philosophy_cta') }}</a>
+{% endblock %}

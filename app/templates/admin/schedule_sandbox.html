@@ -1,0 +1,37 @@
+{% extends "shell_base.html" %}
+{% block title %}Админка — песочница расписания{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">Песочница расписания</h1>
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3);flex-wrap:wrap">
+    <a href="/admin" class="btn--text">Дашборд</a>
+    <a href="/admin/catalog" class="btn--text">Каталог</a>
+    <a href="/admin/spheres" class="btn--text">Сферы</a>
+  </div>
+</div>
+
+<form method="get" action="/admin/schedule-sandbox" class="card" style="padding:var(--space-5);margin-bottom:var(--space-5);display:flex;gap:var(--space-3);align-items:flex-end">
+  <div class="field" style="margin-bottom:0;flex:1">
+    <label for="on_date">Дата (своя точка А и дела)</label>
+    <input id="on_date" name="on_date" type="date" value="{{ target_date }}" />
+  </div>
+  <button class="btn btn--secondary" type="submit">Прогнать</button>
+</form>
+
+{% if messages %}
+<div class="card" style="padding:var(--space-4);margin-bottom:var(--space-4);border:1px solid var(--status-minimal)">
+  {% for m in messages %}<p style="font-size:var(--text-xs);color:var(--text-muted)">{{ m }}</p>{% endfor %}
+</div>
+{% endif %}
+
+<div class="day-feed">
+  {% for block in blocks %}
+  <div class="day-feed__item day-feed__item--{{ block.kind }}">
+    <span class="day-feed__time tabular">{{ block.start }}</span>
+    <span class="day-feed__title">{{ block.title }} ({{ block.end }})</span>
+  </div>
+  {% endfor %}
+  {% if not blocks %}<p style="font-size:var(--text-xs);color:var(--text-faint)">Ничего не расставлено на эту дату.</p>{% endif %}
+</div>
+{% endblock %}

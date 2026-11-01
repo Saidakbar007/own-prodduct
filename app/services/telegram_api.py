@@ -48,7 +48,7 @@ def set_my_commands(commands: list[dict]) -> dict:
     return call("setMyCommands", commands=commands)
 
 
-def set_chat_menu_button(web_app_url: str, text: str = "Открыть Сезоны") -> dict:
+def set_chat_menu_button(web_app_url: str, text: str = "Открыть NewLife") -> dict:
     return call(
         "setChatMenuButton",
         menu_button={"type": "web_app", "text": text, "web_app": {"url": web_app_url}},

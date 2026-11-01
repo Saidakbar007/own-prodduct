@@ -1,0 +1,39 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('habits.add_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'habits' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('habits.add_title') }}</h1>
+</div>
+
+{% for sphere in spheres %}
+{% if by_sphere.get(sphere.id) %}
+<h3 style="font-size:var(--text-sm);color:var(--text-muted);margin:var(--space-5) 0 var(--space-3);display:flex;align-items:center;gap:var(--space-2)">
+  <svg class="icon" style="width:1em;height:1em"><use href="#{{ sphere.icon }}"/></svg>
+  {{ t('sphere.' + sphere.id + '.name') }}
+</h3>
+<div style="display:flex;flex-direction:column;gap:var(--space-2)">
+  {% for item in by_sphere[sphere.id] %}
+  <form method="post" action="/habits/add">
+    <input type="hidden" name="catalog_id" value="{{ item.id }}" />
+    <input type="hidden" name="time_pref" value="{{ item.time_pref }}" />
+    <button type="submit" class="card" style="width:100%;text-align:left;padding:var(--space-4);cursor:pointer;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:var(--text-sm)">{{ item.title }}</span>
+      <span style="font-size:var(--text-xs);color:var(--text-faint)">{{ item.duration_min }} {{ t('onboarding.minutes_suffix') }}</span>
+    </button>
+  </form>
+  {% endfor %}
+</div>
+{% endif %}
+{% endfor %}
+
+<h3 style="font-size:var(--text-sm);color:var(--text-muted);margin:var(--space-6) 0 var(--space-3)">{{ t('habits.custom_title') }}</h3>
+<form method="post" action="/habits/add" class="card" style="padding:var(--space-6)">
+  <div class="field">
+    <label for="custom_title">{{ t('habits.custom_label') }}</label>
+    <input id="custom_title" name="custom_title" type="text" placeholder="{{ t('habits.custom_placeholder') }}" />
+  </div>
+  <button class="btn btn--secondary btn--block" type="submit">{{ t('habits.custom_submit') }}</button>
+</form>
+{% endblock %}

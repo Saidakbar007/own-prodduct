@@ -26,6 +26,7 @@ from app.rendering import render
 from app.routers import admin as admin_router
 from app.routers import auth as auth_router
 from app.routers import challenge as challenge_router
+from app.routers import habits as habits_router
 from app.routers import measure as measure_router
 from app.routers import onboarding as onboarding_router
 from app.routers import profile as profile_router
@@ -35,6 +36,7 @@ from app.routers import season as season_router
 from app.routers import squad as squad_router
 from app.routers import telegram as telegram_router
 from app.routers import today as today_router
+from app.routers import week as week_router
 from app.services.telegram_api import is_configured as telegram_is_configured
 from app.services.telegram_bot import run_due_reminders
 
@@ -72,7 +74,7 @@ async def lifespan(app: FastAPI):
             await task
 
 
-app = FastAPI(title="Сезоны", lifespan=lifespan)
+app = FastAPI(title="NewLife", lifespan=lifespan)
 
 # Подпись cookie-сессий секретным ключом из .env
 app.add_middleware(
@@ -96,6 +98,8 @@ app.include_router(squad_router.router)
 app.include_router(profile_router.router)
 app.include_router(proofs_router.router)
 app.include_router(telegram_router.router)
+app.include_router(week_router.router)
+app.include_router(habits_router.router)
 app.include_router(admin_router.router)
 
 

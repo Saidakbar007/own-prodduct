@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ t('onboarding.woop_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+<div class="onboarding-progress"><span class="onboarding-progress__fill" style="width:84%"></span></div>
+
+{% if not obstacle %}
+<div class="home-hero" style="padding-top:var(--space-8)">
+  <h1>{{ t('onboarding.woop_obstacle_title') }}</h1>
+  <p>{{ t('onboarding.woop_why') }}</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+  {% for opt in obstacle_options %}
+  <form method="post" action="/onboarding/woop/obstacle">
+    <input type="hidden" name="main_obstacle" value="{{ opt }}" />
+    <button type="submit" class="card" style="width:100%;text-align:left;padding:var(--space-5);cursor:pointer;border:1px solid var(--border)">{{ t('onboarding.obstacle_' + opt) }}</button>
+  </form>
+  {% endfor %}
+</div>
+<form method="post" action="/onboarding/woop" style="margin-top:var(--space-4)">
+  <button class="btn btn--text" type="submit" style="display:block;width:100%;text-align:center">{{ t('onboarding.skip') }}</button>
+</form>
+{% else %}
+<div class="home-hero" style="padding-top:var(--space-8)">
+  <h1>{{ t('onboarding.woop_plan_title') }}</h1>
+  <p>{{ t('onboarding.woop_plan_subtitle', obstacle=t('onboarding.obstacle_' + obstacle)) }}</p>
+</div>
+<form method="post" action="/onboarding/woop">
+  <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+    {% for plan in plan_options %}
+    <label class="card" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-5);cursor:pointer">
+      <input type="radio" name="plan" value="{{ plan }}" {% if loop.first %}checked{% endif %} />
+      <span>{{ t('onboarding.plan_' + plan) }}</span>
+    </label>
+    {% endfor %}
+  </div>
+  <button class="btn btn--primary btn--block" type="submit" style="margin-top:var(--space-5)">{{ t('onboarding.continue') }}</button>
+</form>
+{% endif %}
+{% endblock %}

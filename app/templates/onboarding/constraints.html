@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ t('onboarding.constraints_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+<div class="onboarding-progress"><span class="onboarding-progress__fill" style="width:74%"></span></div>
+<div class="home-hero" style="padding-top:var(--space-8)">
+  <h1>{{ t('onboarding.constraints_title') }}</h1>
+  <p>{{ t('onboarding.constraints_why') }}</p>
+</div>
+<form method="post" action="/onboarding/constraints">
+  <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+    {% for opt in options %}
+    <label class="card" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-5);cursor:pointer">
+      <input type="checkbox" name="constraints" value="{{ opt }}" {% if opt in selected %}checked{% endif %} />
+      <span>{{ t('onboarding.constraint_' + opt) }}</span>
+    </label>
+    {% endfor %}
+  </div>
+  <button class="btn btn--primary btn--block" type="submit" style="margin-top:var(--space-5)">{{ t('onboarding.continue') }}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('wheel.title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'me' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('wheel.title') }}</h1>
+  <p>{{ t('wheel.subtitle') }}</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+  {% for row in rows %}
+  <div class="card" style="padding:var(--space-4)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2)">
+      <div style="display:flex;align-items:center;gap:var(--space-2)">
+        <svg class="icon" style="width:1.1em;height:1.1em;{% if not row.active %}color:var(--text-faint){% endif %}"><use href="#{{ row.sphere.icon }}"/></svg>
+        <strong style="font-size:var(--text-sm)">{{ t('sphere.' + row.sphere.id + '.name') }}</strong>
+        {% if not row.active %}<span style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('wheel.coming_soon') }}</span>{% endif %}
+      </div>
+      {% if row.level %}<span class="tabular" style="font-family:var(--font-display)">{{ row.level }}/10</span>{% endif %}
+    </div>
+    {% if row.level %}
+    <div class="life-wheel-mini__bar" style="margin-bottom:var(--space-3)"><span style="width:{{ row.level * 10 }}%"></span></div>
+    <div style="display:flex;gap:var(--space-2)">
+      <form method="post" action="/profile/wheel/{{ row.sphere.id }}/level">
+        <input type="hidden" name="delta" value="-1" />
+        <button class="btn btn--secondary btn--sm" type="submit" {% if row.level <= 1 %}disabled{% endif %}>−</button>
+      </form>
+      <form method="post" action="/profile/wheel/{{ row.sphere.id }}/level">
+        <input type="hidden" name="delta" value="1" />
+        <button class="btn btn--secondary btn--sm" type="submit" {% if row.level >= 10 %}disabled{% endif %}>+</button>
+      </form>
+    </div>
+    {% else %}
+    <p style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('wheel.not_started') }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

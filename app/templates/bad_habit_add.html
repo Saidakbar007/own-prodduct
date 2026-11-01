@@ -1,0 +1,32 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('habits.bad_add_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'habits' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('habits.bad_add_title') }}</h1>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-6)">
+  {% for item in catalog %}
+  <form method="post" action="/habits/bad/add">
+    <input type="hidden" name="catalog_id" value="{{ item.id }}" />
+    <input type="hidden" name="baseline_per_day" value="3" />
+    <button type="submit" class="card" style="width:100%;text-align:left;padding:var(--space-4);cursor:pointer;border:1px solid var(--border)">{{ item.title }}</button>
+  </form>
+  {% endfor %}
+</div>
+
+<h3 style="font-size:var(--text-sm);color:var(--text-muted);margin-bottom:var(--space-3)">{{ t('habits.custom_title') }}</h3>
+<form method="post" action="/habits/bad/add" class="card" style="padding:var(--space-6)">
+  <div class="field">
+    <label for="custom_title">{{ t('habits.bad_custom_label') }}</label>
+    <input id="custom_title" name="custom_title" type="text" />
+  </div>
+  <div class="field">
+    <label for="baseline_per_day">{{ t('habits.bad_baseline_label') }}</label>
+    <input id="baseline_per_day" name="baseline_per_day" type="number" step="1" min="1" value="3" />
+  </div>
+  <button class="btn btn--secondary btn--block" type="submit">{{ t('habits.custom_submit') }}</button>
+</form>
+{% endblock %}

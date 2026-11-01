@@ -2,6 +2,10 @@
 
 from datetime import date
 
+from sqlmodel import select
+
+from app.models import Season
+
 THIS_YEAR = date.today().year
 
 
@@ -20,10 +24,17 @@ def _register_payload(unique: str, **overrides):
     return payload
 
 
-def test_goal_picker_lists_all_five_templates(client):
+def test_onboarding_entry_shows_philosophy_screen(client):
+    """v8 §5: /onboarding теперь экран 1 (философия), не каталог целей."""
     resp = client.get("/onboarding")
     assert resp.status_code == 200
-    for title_part in ["5 км", "подтягиваний", "отжиманий", "веса", "мышц"]:
+    assert "Начни с себя" in resp.text
+
+
+def test_goal_picker_lists_all_templates(client):
+    resp = client.get("/onboarding/goal")
+    assert resp.status_code == 200
+    for title_part in ["5 км", "подтягиваний", "отжиманий", "веса", "мышц", "активности", "сон"]:
         assert title_part in resp.text
 
 
@@ -78,7 +89,9 @@ def test_fat_loss_safe_happy_path_skips_separate_baseline_question(client, uniqu
     assert reg.status_code == 200
 
 
-def test_muscle_gain_collects_secondary_bodyweight_metric(client, unique):
+def test_muscle_gain_primary_metric_is_bodyweight_not_squat(client, unique, db_session):
+    """v8 §7: главная метрика muscle_gain — вес тела, рабочий вес в приседе —
+    только вспомогательный индикатор тренировки."""
     client.post("/onboarding/goal", data={"template_id": "muscle_gain"})
     client.post(
         "/onboarding/health",
@@ -94,6 +107,13 @@ def test_muscle_gain_collects_secondary_bodyweight_metric(client, unique):
 
     season_page = client.get("/season", follow_redirects=True)
     assert season_page.status_code == 200
+
+    season = db_session.exec(select(Season).order_by(Season.id.desc())).first()
+    assert season.baseline_value == 75.0  # вес тела
+    assert season.target_value > 75.0
+    assert season.target_value <= 75.0 * 1.005 * (90 / 7) + 0.01  # безопасный лимит набора
+    assert season.secondary_baseline_value == 40.0  # рабочий вес в приседе
+    assert season.secondary_metric_name == "Рабочий вес в приседе"
 
 
 def test_custom_goal_shows_coming_soon_without_anthropic_key(client, monkeypatch):

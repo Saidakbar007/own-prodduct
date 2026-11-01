@@ -15,6 +15,7 @@ from app.models import User
 from app.rendering import render
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
+from app.services.newlife_onboarding import create_profile_from_draft
 from app.services.seasons import create_season
 from app.services.usertime import DEFAULT_TIMEZONE, is_valid_timezone
 
@@ -84,7 +85,14 @@ def register_submit(
     push_flash(request, "auth.welcome_flash", "success")
     log_event_safe(db, "signup", uid=user.id)
 
+    # NewLife v8 (§5): точка А (Profile/SphereState/Commitment) — из черновика
+    # онбординга, один раз при регистрации. Для гостя, пришедшего в обход
+    # мастера (прямой POST /register), draft пуст — Profile всё равно
+    # создастся с пустыми полями, дозаполнить можно в "Я" → профиль.
+    create_profile_from_draft(db, user.id, draft)
+
     if draft.get("template_id") and "baseline_value" in draft and "length_days" in draft:
+        sphere_id = "body" if "body" in draft.get("spheres", ["body"]) else None
         season = create_season(
             db,
             uid=user.id,
@@ -93,12 +101,14 @@ def register_submit(
             baseline_value=draft["baseline_value"],
             reference_date=date.today(),
             secondary_baseline_value=draft.get("secondary_baseline_value"),
+            sphere_id=sphere_id,
         )
         log_event_safe(db, "season_started", uid=user.id, season_id=season.id)
         request.session.pop("onboarding", None)
         request.session["current_season_id"] = season.id
         return RedirectResponse("/today?tour=1", status_code=303)
 
+    request.session.pop("onboarding", None)
     return RedirectResponse("/", status_code=303)
 
 

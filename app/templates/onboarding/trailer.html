@@ -1,5 +1,5 @@
 {% extends "cinematic_base.html" %}
-{% block title %}{{ template.title }} — {{ t('common.app_name') }}{% endblock %}
+{% block title %}{% if has_goal %}{{ template.title }}{% else %}{{ t('onboarding.reveal_title') }}{% endif %} — {{ t('common.app_name') }}{% endblock %}
 {% block content %}
 <div class="trailer-screen" style="min-height:100dvh;max-width:480px;margin:0 auto">
   <div class="trailer-screen__top">
@@ -8,6 +8,21 @@
   </div>
   <div class="trailer-screen__body">
     <span class="trailer-screen__eyebrow"><svg class="icon" style="width:1em;height:1em"><use href="#i-sparkle"/></svg>{{ t('onboarding.trailer_eyebrow') }}</span>
+
+    {% if sphere_levels %}
+    <div class="life-wheel-mini">
+      {% for sphere, level in sphere_levels.items() %}
+      <div class="life-wheel-mini__row">
+        <svg class="icon" style="width:1em;height:1em"><use href="#{{ sphere.icon }}"/></svg>
+        <span>{{ t('sphere.' + sphere.id + '.name') }}</span>
+        <span class="life-wheel-mini__bar"><span style="width:{{ level * 10 }}%"></span></span>
+        <span class="tabular">{{ level }}/10</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if has_goal %}
     <h1 class="trailer-screen__title">{{ template.title }}</h1>
     <div class="trailer-screen__facts">
       <span>{{ t('onboarding.trailer_fact_length', days=length_days) }} · {{ t('onboarding.trailer_fact_start') }}</span>
@@ -17,6 +32,19 @@
     <div class="trailer-screen__wave">
       <span style="font-size:var(--text-sm);color:var(--text-muted)">{{ t('onboarding.trailer_composition', count=composition) }}</span>
     </div>
+    {% else %}
+    <h1 class="trailer-screen__title">{{ t('onboarding.reveal_title') }}</h1>
+    <p style="color:var(--text-muted);font-size:var(--text-sm)">{{ t('onboarding.reveal_no_goal_body') }}</p>
+    {% endif %}
+
+    {% if wake_time or commitments %}
+    <div class="trailer-screen__wave" style="margin-top:var(--space-4)">
+      <span style="font-size:var(--text-sm);color:var(--text-muted)">
+        {% if wake_time %}{{ t('onboarding.reveal_mode', wake=wake_time, sleep=sleep_time) }}{% endif %}
+        {% if commitments %}· {{ t('onboarding.reveal_commitments', n=commitments|length) }}{% endif %}
+      </span>
+    </div>
+    {% endif %}
   </div>
   <div class="trailer-screen__footer">
     {% if user %}

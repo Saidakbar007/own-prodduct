@@ -113,7 +113,10 @@ def test_schedule_respects_safety_false_when_not_enough_rest():
     assert engine.schedule_respects_safety(template) is False
 
 
-@pytest.mark.parametrize("template_id", ["run_5k", "pullups_10", "pushups_50", "fat_loss_safe", "muscle_gain"])
+@pytest.mark.parametrize(
+    "template_id",
+    ["run_5k", "pullups_10", "pushups_50", "fat_loss_safe", "muscle_gain", "activity_steps", "sleep_consistency"],
+)
 def test_library_templates_respect_safety(template_id):
     assert engine.schedule_respects_safety(get_template(template_id)) is True
 

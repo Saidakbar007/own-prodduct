@@ -39,7 +39,7 @@ def open_app_keyboard() -> dict:
     url = app_base_url()
     if not url:
         return {}
-    return {"inline_keyboard": [[{"text": "Открыть Сезоны", "web_app": {"url": url}}]]}
+    return {"inline_keyboard": [[{"text": "Открыть NewLife", "web_app": {"url": url}}]]}
 
 
 def action_keyboard(season_id: int) -> dict:

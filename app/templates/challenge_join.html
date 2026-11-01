@@ -1,7 +1,7 @@
 {% extends "shell_base.html" %}
 {% block title %}{{ t('challenge.title') }}{% endblock %}
 {% block content %}
-{% set active = 'squad' %}
+{% set active = 'me' %}
 <div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
   <h1 style="font-size:var(--text-xl)">{{ t('challenge.invite_title', name=from_user.name) }}</h1>
   <p>{{ challenge.terms_text }}</p>

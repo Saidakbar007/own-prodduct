@@ -9,15 +9,21 @@ from typing import Optional
 
 from sqlmodel import Session, select
 
-from app.models import Measurement, Season, SeasonDay, Wave
+from app.models import Goal, Measurement, Season, SeasonDay, Wave
 from app.seasons import engine
 from app.seasons.schema import Phase, SeasonTemplate
+from app.seasons_library.catalog_meta import meta_for
 from app.seasons_library.loader import get_template
 from app.services.events import log_event_safe
 from app.services.squads import assign_squad
 
 ROLLING_WINDOW_DAYS = 14
-MUSCLE_GAIN_BODYWEIGHT_DEFAULT_GAIN_RATIO = 1.05  # дефолтный ориентир +5% веса тела за сезон
+MUSCLE_GAIN_SQUAT_DEFAULT_GAIN_KG = 20.0  # ориентир роста вспомогательного рабочего веса за сезон
+# v8 §7: шаблоны, где главная метрика — вес тела, поэтому к ней применяется
+# безопасный недельный лимит (engine.clamp_weight_target), а не голый
+# target_default. Другие "up"-шаблоны (run_5k, pullups_10, pushups_50) —
+# метрика не про массу тела, лимит к ним не относится.
+BODYWEIGHT_METRIC_TEMPLATES = {"fat_loss_safe": "down", "muscle_gain": "up"}
 
 
 def get_or_create_wave(db: Session, start_date: date, template_id: Optional[str] = None) -> Wave:
@@ -41,9 +47,10 @@ def wave_composition_count(db: Session, wave_id: int) -> int:
 def _compute_target_value(template: SeasonTemplate, baseline_value: float, length_days: int) -> float:
     direction_sign = 1 if template.metric.direction == "up" else -1
     raw_target = baseline_value + direction_sign * template.target_default
-    if template.metric.direction == "down":
+    bodyweight_direction = BODYWEIGHT_METRIC_TEMPLATES.get(template.id)
+    if bodyweight_direction:
         weeks = length_days / 7
-        return engine.clamp_weight_target(baseline_value, raw_target, "down", weeks)
+        return engine.clamp_weight_target(baseline_value, raw_target, bodyweight_direction, weeks)
     return raw_target
 
 
@@ -55,13 +62,15 @@ def create_season(
     baseline_value: float,
     reference_date: date,
     secondary_baseline_value: Optional[float] = None,
+    sphere_id: Optional[str] = None,
 ) -> Season:
     """Создаёт волну-бакет недели (если нужно), сезон и первые дни (скользящее
     окно), плюс стартовый замер (день 0 = baseline). Сезон стартует сразу:
     start_date = reference_date, без ожидания понедельника (§6 ТЗ, изменено
     UX-правкой — см. SEASONS_SPEC.md → «Изменения»). Волна (Wave.start_date =
     понедельник недели reference_date) остаётся только меткой для группировки
-    в команду."""
+    в команду. sphere_id (NewLife v8 §4) — если задан, заодно заводит Goal и
+    связывает Season.goal_id с ней."""
     template = get_template(template_id)
     phase = engine.select_starting_phase(template, baseline_value)
     week_bucket = engine.week_bucket_start(reference_date)
@@ -70,15 +79,34 @@ def create_season(
     end_date = reference_date + timedelta(days=length_days - 1)
     target_value = _compute_target_value(template, baseline_value, length_days)
 
+    goal_id: Optional[int] = None
+    if sphere_id:
+        meta = meta_for(template_id)
+        goal = Goal(
+            uid=uid,
+            sphere_id=sphere_id,
+            template_id=template_id,
+            title=template.title,
+            metric_key=meta.get("metric_key", "custom"),
+            baseline=baseline_value,
+            target=target_value,
+            safe_rate=None,
+            projected_date=end_date,
+            status="active",
+        )
+        db.add(goal)
+        db.commit()
+        db.refresh(goal)
+        goal_id = goal.id
+
     secondary_fields: dict = {}
     if template_id == "muscle_gain" and secondary_baseline_value is not None:
-        weeks = length_days / 7
-        raw_secondary_target = secondary_baseline_value * MUSCLE_GAIN_BODYWEIGHT_DEFAULT_GAIN_RATIO
-        secondary_target = engine.clamp_weight_target(
-            secondary_baseline_value, raw_secondary_target, "up", weeks
-        )
+        # v8 §7: рабочий вес в приседе — вспомогательный индикатор тренировки,
+        # не вес тела, поэтому лимит безопасности набора массы к нему не
+        # относится (clamp_weight_target здесь не вызываем).
+        secondary_target = secondary_baseline_value + MUSCLE_GAIN_SQUAT_DEFAULT_GAIN_KG
         secondary_fields = dict(
-            secondary_metric_name="Вес тела",
+            secondary_metric_name="Рабочий вес в приседе",
             secondary_metric_unit="кг",
             secondary_direction="up",
             secondary_baseline_value=secondary_baseline_value,
@@ -106,6 +134,7 @@ def create_season(
         status="active",
         second_chances_left=engine.second_chances_for_length(length_days),
         current_phase=phase.phase,
+        goal_id=goal_id,
         **secondary_fields,
     )
     db.add(season)

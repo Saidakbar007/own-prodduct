@@ -4,17 +4,17 @@ from app.i18n import DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES, translate
 
 
 def test_translate_known_key_in_russian():
-    assert translate("ru", "common.app_name") == "Сезоны"
+    assert translate("ru", "common.app_name") == "NewLife"
 
 
 def test_translate_known_key_in_uzbek():
-    assert translate("uz", "common.app_name") == "Mavsumlar"
+    assert translate("uz", "common.app_name") == "NewLife"
 
 
 def test_translate_falls_back_to_russian_when_language_file_is_incomplete():
     # для языка без файла переводов (или без конкретного ключа в нём) —
     # тихий откат на ru, а не ошибка и не пустая строка
-    assert translate("fr", "common.app_name") == "Сезоны"
+    assert translate("fr", "common.app_name") == "NewLife"
 
 
 def test_translate_unknown_key_returns_the_key_itself():

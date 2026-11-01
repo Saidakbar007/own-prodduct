@@ -1,0 +1,87 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('nav.week') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'week' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('nav.week') }}</h1>
+</div>
+
+{% for row in day_rows %}
+<div class="card" style="padding:var(--space-4);margin-bottom:var(--space-4);{% if row.is_today %}border:1px solid var(--accent){% endif %}">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">
+    {{ weekday_labels[row.date.isoweekday() - 1] }}, {{ row.date.strftime('%d.%m') }}
+    {% if row.is_today %}<span class="badge" style="margin-left:var(--space-2)">{{ t('week.today_badge') }}</span>{% endif %}
+  </h3>
+  {% if row.blocks %}
+  <div class="day-feed">
+    {% for block in row.blocks %}
+    <details>
+      <summary class="day-feed__item day-feed__item--{{ block.kind }}" style="cursor:pointer;list-style:none">
+        <span class="day-feed__time tabular">{{ block.start_time }}</span>
+        <span class="day-feed__title">{{ block.title }}</span>
+        {% if block.moved_by_user %}<span style="margin-left:auto;font-size:var(--text-xs);color:var(--text-faint)">{{ t('week.moved_badge') }}</span>{% endif %}
+      </summary>
+      <form method="post" action="/week/blocks/{{ block.id }}/move" style="display:flex;gap:var(--space-2);padding:var(--space-3) var(--space-2) 0 var(--space-2);align-items:center">
+        <input type="time" name="start_time" value="{{ block.start_time }}" />
+        <span>–</span>
+        <input type="time" name="end_time" value="{{ block.end_time }}" />
+        <button class="btn btn--secondary btn--sm" type="submit">{{ t('week.move_cta') }}</button>
+      </form>
+    </details>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('week.empty_day') }}</p>
+  {% endif %}
+</div>
+{% endfor %}
+
+<h2 style="font-size:var(--text-md);margin:var(--space-6) 0 var(--space-3)">{{ t('week.add_commitment_title') }}</h2>
+<form method="post" action="/week/commitments/add" class="card" style="padding:var(--space-6);margin-bottom:var(--space-6)">
+  <div class="field">
+    <label for="c_title">{{ t('onboarding.commitments_name_label') }}</label>
+    <input id="c_title" name="title" type="text" />
+  </div>
+  <div class="field">
+    <label for="c_category">{{ t('onboarding.commitments_category_label') }}</label>
+    <select id="c_category" name="category" style="min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text);padding:0 var(--space-4)">
+      {% for cat in categories %}<option value="{{ cat }}">{{ t('onboarding.commitments_category_' + cat) }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label>{{ t('onboarding.commitments_weekdays_label') }}</label>
+    <div class="choice-pills">
+      {% for label in weekday_labels %}
+      <label class="choice-pill"><input type="checkbox" name="weekdays" value="{{ loop.index }}" /><span>{{ label }}</span></label>
+      {% endfor %}
+    </div>
+  </div>
+  <div style="display:flex;gap:var(--space-3)">
+    <div class="field" style="flex:1"><label for="c_start">{{ t('onboarding.commitments_start_label') }}</label><input id="c_start" name="start_time" type="time" /></div>
+    <div class="field" style="flex:1"><label for="c_end">{{ t('onboarding.commitments_end_label') }}</label><input id="c_end" name="end_time" type="time" /></div>
+  </div>
+  <button class="btn btn--secondary btn--block" type="submit">{{ t('onboarding.commitments_add') }}</button>
+</form>
+
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('week.add_task_title') }}</h2>
+<form method="post" action="/week/tasks/add" class="card" style="padding:var(--space-6)">
+  <div class="field">
+    <label for="t_title">{{ t('onboarding.commitments_name_label') }}</label>
+    <input id="t_title" name="title" type="text" />
+  </div>
+  <div class="field">
+    <label for="t_date">{{ t('week.task_date_label') }}</label>
+    <input id="t_date" name="task_date" type="date" />
+  </div>
+  <div class="field">
+    <label>{{ t('week.task_priority_label') }}</label>
+    <div class="choice-pills">
+      {% for p in ['do', 'plan', 'delegate', 'drop'] %}
+      <label class="choice-pill"><input type="radio" name="priority" value="{{ p }}" {% if p=='plan' %}checked{% endif %} /><span>{{ t('week.priority_' + p) }}</span></label>
+      {% endfor %}
+    </div>
+  </div>
+  <button class="btn btn--secondary btn--block" type="submit">{{ t('week.add_task_cta') }}</button>
+</form>
+{% endblock %}

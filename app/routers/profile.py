@@ -1,6 +1,7 @@
 """
-«Профиль» (§7.9): аватар (3D-герой), полка пройденных сезонов, настройки
-(тема, язык, часовой пояс, приватность), выход.
+«Я» (§12, §14 NewLife v8; было «Профиль» §7.9 Сезонов): аватар (3D-герой),
+полка пройденных сезонов, колесо жизни, режим и обязательные дела,
+настройки, «Методы NewLife», «Откуда эти нормы», «О NewLife», выход.
 """
 
 import os
@@ -13,9 +14,13 @@ from sqlmodel import Session, select
 from app.auth import require_user
 from app.database import get_session
 from app.i18n import translate
-from app.models import Proof, Reveal, Season, User
+from app.models import Commitment, Profile, Proof, Reveal, Season, SphereLevelHistory, SphereState, User
+from app.newlife.methods import METHODS
+from app.newlife.spheres import SPHERE_BY_ID, SPHERES
 from app.rendering import render
+from app.seasons_library.catalog_meta import CATALOG_META
 from app.services.flash import push_flash
+from app.services.newlife_onboarding import WEEKDAY_LABELS
 from app.services.usertime import can_change_timezone, is_valid_timezone
 
 router = APIRouter()
@@ -81,11 +86,25 @@ def profile_page(request: Request, user: User = Depends(require_user), db: Sessi
     }
     stage = hero_stage_for(len(completed))
 
+    profile = db.exec(select(Profile).where(Profile.uid == user.id)).first()
+    sphere_states = db.exec(
+        select(SphereState).where(SphereState.uid == user.id, SphereState.active.is_(True))
+    ).all()
+    wheel = [
+        {"sphere": SPHERE_BY_ID[s.sphere_id], "level": s.level}
+        for s in sphere_states
+        if s.sphere_id in SPHERE_BY_ID
+    ]
+    commitments = db.exec(select(Commitment).where(Commitment.uid == user.id, Commitment.active.is_(True))).all()
+
     return render(
         request,
         "profile.html",
         {
             "user": user,
+            "profile": profile,
+            "wheel": wheel,
+            "commitments_count": len(commitments),
             "completed": completed,
             "reveals": reveals,
             "hero_stage": stage,
@@ -95,6 +114,77 @@ def profile_page(request: Request, user: User = Depends(require_user), db: Sessi
             "lang": user.language,
         },
     )
+
+
+@router.get("/profile/wheel")
+def wheel_page(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
+    states = {s.sphere_id: s for s in db.exec(select(SphereState).where(SphereState.uid == user.id)).all()}
+    rows = []
+    for sphere in SPHERES:
+        state = states.get(sphere.id)
+        rows.append({"sphere": sphere, "level": state.level if state else None, "active": bool(state and state.active)})
+    return render(request, "profile_wheel.html", {"rows": rows, "lang": user.language})
+
+
+@router.post("/profile/wheel/{sphere_id}/level")
+def adjust_sphere_level(
+    sphere_id: str,
+    delta: int = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    if sphere_id not in SPHERE_BY_ID:
+        return RedirectResponse("/profile/wheel", status_code=303)
+    state = db.exec(select(SphereState).where(SphereState.uid == user.id, SphereState.sphere_id == sphere_id)).first()
+    if not state:
+        state = SphereState(uid=user.id, sphere_id=sphere_id, level=4, priority=2, active=True)
+    state.level = max(1, min(10, state.level + delta))
+    state.updated_at = datetime.now(dt_timezone.utc)
+    db.add(state)
+    db.add(SphereLevelHistory(uid=user.id, sphere_id=sphere_id, level=state.level))
+    db.commit()
+    return RedirectResponse("/profile/wheel", status_code=303)
+
+
+@router.get("/profile/commitments")
+def commitments_page(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
+    commitments = db.exec(select(Commitment).where(Commitment.uid == user.id, Commitment.active.is_(True))).all()
+    return render(
+        request,
+        "profile_commitments.html",
+        {"commitments": commitments, "weekday_labels": WEEKDAY_LABELS, "lang": user.language},
+    )
+
+
+@router.post("/profile/commitments/{commitment_id}/remove")
+def remove_commitment(commitment_id: int, user: User = Depends(require_user), db: Session = Depends(get_session)):
+    c = db.get(Commitment, commitment_id)
+    if c and c.uid == user.id:
+        c.active = False
+        db.add(c)
+        db.commit()
+    return RedirectResponse("/profile/commitments", status_code=303)
+
+
+@router.get("/methods")
+def methods_page(request: Request, user: User = Depends(require_user)):
+    return render(request, "methods.html", {"methods": METHODS, "lang": user.language})
+
+
+@router.get("/sources")
+def sources_page(request: Request, user: User = Depends(require_user)):
+    seen = set()
+    sources = []
+    for meta in CATALOG_META.values():
+        if meta.get("source") and meta["source"] not in seen:
+            seen.add(meta["source"])
+            sources.append(meta)
+    return render(request, "sources.html", {"sources": sources, "lang": user.language})
+
+
+@router.get("/about")
+def about_page(request: Request, user: User = Depends(require_user)):
+    return render(request, "about.html", {"lang": user.language})
 
 
 @router.post("/profile/settings")

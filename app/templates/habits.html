@@ -1,0 +1,73 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('habits.title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'habits' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('habits.title') }}</h1>
+</div>
+
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('habits.good_title') }}</h2>
+{% if habit_rows %}
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-6)">
+  {% for row in habit_rows %}
+  <div class="card" style="padding:var(--space-4)">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <strong style="font-size:var(--text-sm)">{{ row.habit.title }}</strong>
+        <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">
+          {{ t('habits.streak', n=row.streak) }} · {{ t('habits.week_rate', pct=row.week_rate) }}
+        </div>
+      </div>
+      {% if row.due_today and row.today_status not in ('done', 'minimal') %}
+      <div style="display:flex;gap:var(--space-2)">
+        <form method="post" action="/habits/{{ row.habit.id }}/log">
+          <input type="hidden" name="status" value="done" />
+          <button class="btn btn--primary btn--sm" type="submit" data-haptic="success">{{ t('habits.cta_done') }}</button>
+        </form>
+        <form method="post" action="/habits/{{ row.habit.id }}/log">
+          <input type="hidden" name="status" value="minimal" />
+          <button class="btn btn--secondary btn--sm" type="submit">{{ t('habits.cta_minimal') }}</button>
+        </form>
+      </div>
+      {% elif row.due_today %}
+      <span class="badge">{{ t('habits.already_' + row.today_status) }}</span>
+      {% else %}
+      <span style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('habits.not_today') }}</span>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card empty-state" style="margin-bottom:var(--space-6)">
+  <h3>{{ t('habits.empty_title') }}</h3>
+  <p>{{ t('habits.empty_body') }}</p>
+</div>
+{% endif %}
+<a href="/habits/add" class="btn btn--secondary btn--block" style="margin-bottom:var(--space-8)">{{ t('habits.add_cta') }}</a>
+
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('habits.bad_title') }}</h2>
+{% if bad_rows %}
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-6)">
+  {% for row in bad_rows %}
+  <div class="card" style="padding:var(--space-4)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)">
+      <div>
+        <strong style="font-size:var(--text-sm)">{{ row.bad_habit.title }}</strong>
+        <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">
+          {% if row.avg_per_day is not none %}{{ t('habits.bad_trend', avg=row.avg_per_day, unit=t('habits.unit_' + row.bad_habit.unit)) }}{% else %}{{ t('habits.bad_no_data') }}{% endif %}
+        </div>
+      </div>
+      <form method="post" action="/habits/bad/{{ row.bad_habit.id }}/slip">
+        <button class="btn btn--secondary btn--sm" type="submit">{{ t('habits.cta_slip') }}</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p style="color:var(--text-faint);font-size:var(--text-sm);margin-bottom:var(--space-6)">{{ t('habits.bad_empty') }}</p>
+{% endif %}
+<a href="/habits/bad/add" class="btn btn--text" style="display:block;text-align:center">{{ t('habits.bad_add_cta') }}</a>
+{% endblock %}
