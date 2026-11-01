@@ -74,7 +74,7 @@ async def lifespan(app: FastAPI):
             await task
 
 
-app = FastAPI(title="Сезоны", lifespan=lifespan)
+app = FastAPI(title="NewLife", lifespan=lifespan)
 
 # Подпись cookie-сессий секретным ключом из .env
 app.add_middleware(

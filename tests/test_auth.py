@@ -97,7 +97,7 @@ def test_login_wrong_password_is_rejected(client, unique):
 def test_guest_home_shows_cta(client):
     resp = client.get("/")
     assert resp.status_code == 200
-    assert "Сезоны" in resp.text
+    assert "NewLife" in resp.text
 
 
 def test_unknown_page_returns_branded_404(client):

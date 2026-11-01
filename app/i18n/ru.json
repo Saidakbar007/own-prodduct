@@ -1,5 +1,5 @@
 {
-  "common.app_name": "Сезоны",
+  "common.app_name": "NewLife",
 
   "auth.register_title": "Регистрация",
   "auth.login_title": "Вход",
@@ -21,7 +21,7 @@
   "auth.error_password_mismatch": "Пароли не совпадают",
   "auth.error_taken": "Эта почта или логин уже используются",
   "auth.error_invalid_credentials": "Неверный логин или пароль",
-  "auth.welcome_flash": "Добро пожаловать в Сезоны",
+  "auth.welcome_flash": "Добро пожаловать в NewLife",
 
   "home.guest_subtitle": "Личный челлендж на 30, 60 или 90 дней: одно действие в день, честный прогресс, Reveal в финале.",
   "home.cta_register": "Начать сезон",
@@ -268,7 +268,7 @@
   "challenge.dispute_submit": "Сомневаюсь",
 
   "telegram.link_title": "Привет из Telegram",
-  "telegram.link_subtitle": "Привяжи Telegram к своему аккаунту Сезонов или начни новый сезон.",
+  "telegram.link_subtitle": "Привяжи Telegram к своему аккаунту NewLife или начни новый сезон.",
   "telegram.have_account": "Уже есть аккаунт",
   "telegram.link_cta": "Привязать Telegram",
   "telegram.no_account": "Ещё нет аккаунта?",
