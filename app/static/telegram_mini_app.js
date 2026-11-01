@@ -15,7 +15,7 @@
   } catch (e) {}
 
   // BackButton: виден на всех экранах, кроме четырёх корневых вкладок и гостевой главной.
-  var ROOT_PATHS = ["/", "/today", "/seasons", "/team", "/profile"];
+  var ROOT_PATHS = ["/", "/today", "/week", "/seasons", "/habits", "/profile"];
   try {
     if (tg.BackButton) {
       if (ROOT_PATHS.indexOf(window.location.pathname) === -1) {
