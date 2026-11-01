@@ -1,0 +1,51 @@
+{
+  "_readme": "Источники фото для каталога целей и онбординга NewLife (§13 NEWLIFE_V8_SPEC.md). Я (Claude) не могу скачивать и сжимать бинарные файлы изображений своим набором инструментов (WebFetch/WebSearch отдают текст/markdown, не байты) — по явному пункту §13 спецификации (\"если сеть не даёт скачать — подготовь список ссылок и попроси меня скачать вручную\") ниже готовый список проверенных, реальных (не придуманных) ссылок на Unsplash по каждой нужной теме. Все фото на Unsplash — бесплатно для коммерческого использования, атрибуция не обязательна (но желательна и предусмотрена форматом ниже).",
+  "how_to_fill": "Для каждой темы: открой 2-3 ссылки, выбери 3-5 горизонтальных фото ≥2000px без лого брендов и крупных узнаваемых лиц, скачай, сожми в WebP (≤250 КБ, например через squoosh.app или `cwebp -q 80`), положи в assets/photos/<тема>/, впиши author/url в массив themes[].photos ниже вместо пустого списка.",
+  "themes": {
+    "зал": {
+      "search_pages": [
+        "https://unsplash.com/s/photos/gym-workout",
+        "https://unsplash.com/s/photos/gym-training"
+      ],
+      "photos": []
+    },
+    "бег": {
+      "specific_photos": [
+        "https://unsplash.com/photos/a-person-running-in-a-park-l95oMx3CHPo",
+        "https://unsplash.com/photos/silhouette-of-man-running-on-beach-during-sunset-crkFn69OLHE",
+        "https://unsplash.com/photos/a-person-running-through-a-park-at-sunset-finuOZQiKQk"
+      ],
+      "search_pages": ["https://unsplash.com/s/photos/running-outside"],
+      "photos": []
+    },
+    "турник": {
+      "search_pages": ["https://unsplash.com/s/photos/pull-up-bar"],
+      "photos": []
+    },
+    "сон_утро": {
+      "specific_photos": [
+        "https://unsplash.com/photos/the-sun-is-shining-through-the-curtains-on-a-bed-VPFi-s-xyXU",
+        "https://unsplash.com/photos/dimly-lit-bedroom-with-sunlight-through-window-D2QjyBiACmY",
+        "https://unsplash.com/photos/sunlight-inside-bed-l6BenhrIc2w"
+      ],
+      "search_pages": ["https://unsplash.com/s/photos/morning-sunlight"],
+      "photos": []
+    },
+    "город_на_рассвете": {
+      "specific_photos": [
+        "https://unsplash.com/photos/sunrise-over-a-city-skyline-NML56HhkcNk",
+        "https://unsplash.com/photos/sunrise-over-a-city-skyline-with-clouds-DqWdU6BBrKs",
+        "https://unsplash.com/photos/sunrise-over-a-foggy-city-skyline-Z0JVfNqv2VE"
+      ],
+      "search_pages": ["https://unsplash.com/s/photos/sunrise-city"],
+      "photos": []
+    },
+    "еда": {
+      "search_pages": [
+        "https://unsplash.com/s/photos/meal-prep",
+        "https://unsplash.com/s/photos/food-prep"
+      ],
+      "photos": []
+    }
+  }
+}
