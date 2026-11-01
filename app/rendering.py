@@ -23,6 +23,7 @@ def _tojson(value) -> Markup:
 
 
 templates.env.filters["tojson"] = _tojson
+templates.env.filters["from_json"] = json.loads
 
 
 def render(

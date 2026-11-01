@@ -1,0 +1,20 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('sources.page_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'me' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('sources.page_title') }}</h1>
+  <p>{{ t('sources.page_subtitle') }}</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+  {% for s in sources %}
+  <div class="card" style="padding:var(--space-4)">
+    <strong style="font-size:var(--text-sm)">{{ s.source }}</strong>
+    <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ s.safe_rate }}</p>
+    {% if s.source_url %}<a href="{{ s.source_url }}" class="link" style="font-size:var(--text-xs)" target="_blank" rel="noopener">{{ s.source_url }}</a>{% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

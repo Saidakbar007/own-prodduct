@@ -1,12 +1,46 @@
 {% extends "shell_base.html" %}
-{% block title %}{{ t('nav.profile') }} — {{ t('common.app_name') }}{% endblock %}
+{% block title %}{{ t('nav.me') }} — {{ t('common.app_name') }}{% endblock %}
 {% block content %}
-{% set active = 'profile' %}
+{% set active = 'me' %}
 
 <div class="hero-slot" style="margin-bottom:var(--space-5)">
   <img class="hero-slot__art" src="/assets/art/hero/hero_{{ hero_stage }}.webp" alt="" />
   <span class="hero-slot__stage">{{ t('profile.stage', n=hero_stage) }}</span>
   <span class="hero-slot__caption">{{ hero_caption }}</span>
+</div>
+
+<a href="/profile/wheel" class="card" style="display:block;padding:var(--space-5);margin-bottom:var(--space-6)">
+  <h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('wheel.title') }}</h2>
+  {% if wheel %}
+  <div class="life-wheel-mini" style="margin-bottom:0">
+    {% for row in wheel %}
+    <div class="life-wheel-mini__row">
+      <svg class="icon" style="width:1em;height:1em"><use href="#{{ row.sphere.icon }}"/></svg>
+      <span>{{ t('sphere.' + row.sphere.id + '.name') }}</span>
+      <span class="life-wheel-mini__bar"><span style="width:{{ row.level * 10 }}%"></span></span>
+      <span class="tabular">{{ row.level }}/10</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('wheel.empty') }}</p>
+  {% endif %}
+</a>
+
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-6)">
+  <h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.mode_title') }}</h2>
+  {% if profile and profile.wake_time %}
+  <p style="font-size:var(--text-sm);color:var(--text-muted)">{{ t('onboarding.reveal_mode', wake=profile.wake_time, sleep=profile.sleep_time) }}</p>
+  {% if profile.daily_minutes %}<p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ profile.daily_minutes }} {{ t('onboarding.minutes_suffix') }} · {{ t('onboarding.chronotype_' + (profile.chronotype or 'varies')) }}</p>{% endif %}
+  {% else %}
+  <p style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('profile.mode_empty') }}</p>
+  {% endif %}
+  <a href="/profile/commitments" class="btn--text" style="display:inline-block;margin-top:var(--space-3)">{{ t('profile.commitments_cta', n=commitments_count) }}</a>
+</div>
+
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-6)">
+  <h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.people_title') }}</h2>
+  <a href="/team" class="btn--text" style="display:block;margin-bottom:var(--space-2)">{{ t('nav.team') }}</a>
 </div>
 
 <h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.shelf_title') }}</h2>
@@ -53,6 +87,12 @@
   <form method="post" action="/profile/delete-photos">
     <button class="btn btn--secondary btn--sm" type="submit">{{ t('profile.delete_photos') }}</button>
   </form>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:var(--space-1);margin-bottom:var(--space-4)">
+  <a href="/methods" class="btn--text" style="display:block;padding:var(--space-2) 0">{{ t('profile.methods_link') }}</a>
+  <a href="/sources" class="btn--text" style="display:block;padding:var(--space-2) 0">{{ t('profile.sources_link') }}</a>
+  <a href="/about" class="btn--text" style="display:block;padding:var(--space-2) 0">{{ t('profile.about_link') }}</a>
 </div>
 
 <a href="/logout" class="btn btn--text" style="display:block;text-align:center;margin-top:var(--space-4)">{{ t('home.logout') }}</a>
