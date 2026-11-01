@@ -332,6 +332,8 @@
   "habits.add_cta": "Добавить привычку",
   "habits.bad_title": "Хочу меньше",
   "habits.bad_trend": "в среднем {avg} {unit}/день за неделю",
+  "habits.unit_minutes": "минут",
+  "habits.unit_times": "раз",
   "habits.bad_no_data": "пока нет отметок",
   "habits.cta_slip": "Сорвался",
   "habits.bad_empty": "Пока ничего не отслеживаешь — это нормально, можно добавить позже.",

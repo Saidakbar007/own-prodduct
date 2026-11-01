@@ -56,7 +56,7 @@
       <div>
         <strong style="font-size:var(--text-sm)">{{ row.bad_habit.title }}</strong>
         <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">
-          {% if row.avg_per_day is not none %}{{ t('habits.bad_trend', avg=row.avg_per_day, unit=row.bad_habit.unit) }}{% else %}{{ t('habits.bad_no_data') }}{% endif %}
+          {% if row.avg_per_day is not none %}{{ t('habits.bad_trend', avg=row.avg_per_day, unit=t('habits.unit_' + row.bad_habit.unit)) }}{% else %}{{ t('habits.bad_no_data') }}{% endif %}
         </div>
       </div>
       <form method="post" action="/habits/bad/{{ row.bad_habit.id }}/slip">

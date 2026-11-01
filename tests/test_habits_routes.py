@@ -5,7 +5,7 @@ from datetime import date
 
 from sqlmodel import select
 
-from app.models import BadHabit, Habit
+from app.models import BadHabit, Habit, User
 
 THIS_YEAR = date.today().year
 
@@ -67,13 +67,16 @@ def test_add_custom_habit(client, unique, db_session):
 
 def test_add_bad_habit_from_catalog_and_log_slip(client, unique, db_session):
     _register(client, unique)
+    user = db_session.exec(select(User).where(User.login == f"hr-{unique}")).first()
 
     resp = client.get("/habits/bad/add")
     assert resp.status_code == 200
     assert "скролл" in resp.text.lower() or "Скролл" in resp.text
 
     client.post("/habits/bad/add", data={"catalog_id": "social_media_scroll", "baseline_per_day": "60"})
-    bad_habit = db_session.exec(select(BadHabit).where(BadHabit.catalog_id == "social_media_scroll")).first()
+    bad_habit = db_session.exec(
+        select(BadHabit).where(BadHabit.catalog_id == "social_media_scroll", BadHabit.uid == user.id)
+    ).first()
     assert bad_habit is not None
     assert bad_habit.unit == "minutes"
     assert bad_habit.target_per_day == 51.0  # 60 * 0.85
