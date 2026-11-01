@@ -1,0 +1,44 @@
+{% extends "shell_base.html" %}
+{% block title %}Админка — каталог{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">Каталог</h1>
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3);flex-wrap:wrap">
+    <a href="/admin" class="btn--text">Дашборд</a>
+    <a href="/admin/gallery" class="btn--text">Галерея</a>
+    <a href="/admin/spheres" class="btn--text">Сферы</a>
+    <a href="/admin/sandbox" class="btn--text">Песочница</a>
+  </div>
+</div>
+
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Цели ({{ goal_templates|length }})</h3>
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-6)">
+  {% for t in goal_templates %}
+  <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <span>{{ t.id }}</span>
+    <span class="tabular" style="color:var(--text-faint)">{{ t.metric.name }} ({{ t.metric.unit }})</span>
+  </div>
+  {% endfor %}
+</div>
+
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Полезные привычки ({{ habits|length }})</h3>
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-6);max-height:320px;overflow-y:auto">
+  {% for h in habits %}
+  <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <span>{{ h.title }}</span>
+    <span class="tabular" style="color:var(--text-faint)">{{ h.spheres|join(', ') }}</span>
+  </div>
+  {% endfor %}
+</div>
+
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Плохие привычки ({{ bad_habits|length }}) · триггеры ({{ triggers|length }})</h3>
+<div class="card" style="padding:var(--space-5)">
+  {% for b in bad_habits %}
+  <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <span>{{ b.title }}</span>
+    <span class="tabular" style="color:var(--text-faint)">{{ b.unit }} · замена: {{ b.replacement_id or "—" }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

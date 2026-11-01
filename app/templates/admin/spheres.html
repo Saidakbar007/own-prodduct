@@ -1,0 +1,26 @@
+{% extends "shell_base.html" %}
+{% block title %}Админка — сферы{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">Сферы</h1>
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3);flex-wrap:wrap">
+    <a href="/admin" class="btn--text">Дашборд</a>
+    <a href="/admin/gallery" class="btn--text">Галерея</a>
+    <a href="/admin/catalog" class="btn--text">Каталог</a>
+    <a href="/admin/sandbox" class="btn--text">Песочница</a>
+  </div>
+</div>
+
+<div class="card" style="padding:var(--space-5)">
+  {% for row in rows %}
+  <div style="display:flex;align-items:center;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-3) 0;border-bottom:1px solid var(--border)">
+    <div style="display:flex;align-items:center;gap:var(--space-2)">
+      <svg class="icon" style="width:1.1em;height:1.1em"><use href="#{{ row.sphere.icon }}"/></svg>
+      <span>{{ row.sphere.id }}</span>
+    </div>
+    <span class="tabular" style="color:var(--text-muted)">{{ row.active_count }} активных · средний уровень {{ row.avg_level if row.avg_level is not none else "—" }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
