@@ -87,9 +87,10 @@ def test_register_login_logout_flow_in_browser(page: Page, live_server_url):
     page.check('input[name="age_confirm"]')
     page.click('button[type="submit"]')
 
-    # Без черновика онбординга (прямая регистрация) — без активного сезона
-    # "/" ведёт на "/today", а оттуда — на выбор цели.
-    expect(page.get_by_role("heading", name="Какой у тебя будет сезон?")).to_be_visible()
+    # Без черновика онбординга (прямая регистрация) — Profile всё равно
+    # создаётся (v8 §5), поэтому "/" -> "/today" показывает "Сегодня" без
+    # цели, а не отправляет обратно в онбординг на выбор сезона.
+    expect(page.get_by_text("Пока нет активной цели")).to_be_visible()
 
     page.goto(f"{live_server_url}/logout")
     expect(page.get_by_role("link", name="Начать сезон")).to_be_visible()
@@ -99,4 +100,4 @@ def test_register_login_logout_flow_in_browser(page: Page, live_server_url):
     page.fill('input[name="password"]', "s3cret-pass")
     page.click('button[type="submit"]')
 
-    expect(page.get_by_role("heading", name="Какой у тебя будет сезон?")).to_be_visible()
+    expect(page.get_by_text("Пока нет активной цели")).to_be_visible()
