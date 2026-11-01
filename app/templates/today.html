@@ -15,6 +15,66 @@
 </div>
 {% endif %}
 
+{% if in_recovery %}
+<div class="card" style="padding:var(--space-4);margin-bottom:var(--space-4);border:1px solid var(--accent-secondary)">
+  <strong style="font-size:var(--text-sm)">{{ t('today.recovery_active_title') }}</strong>
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('today.recovery_active_body') }}</p>
+</div>
+{% elif offer_recovery %}
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-4);border:1px solid var(--accent)">
+  <strong style="font-size:var(--text-sm)">{{ t('today.recovery_offer_title') }}</strong>
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin:var(--space-2) 0 var(--space-3)">{{ t('today.recovery_offer_body') }}</p>
+  <div style="display:flex;gap:var(--space-2)">
+    <form method="post" action="/today/recovery/start" style="flex:1">
+      <button class="btn btn--primary btn--block btn--sm" type="submit">{{ t('today.recovery_cta_start') }}</button>
+    </form>
+    <form method="post" action="/today/recovery/decline" style="flex:1">
+      <button class="btn btn--secondary btn--block btn--sm" type="submit">{{ t('today.recovery_cta_decline') }}</button>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+{% if not checkin %}
+<form method="post" action="/today/checkin" class="card" style="padding:var(--space-4);margin-bottom:var(--space-5)" data-tour="checkin">
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin-bottom:var(--space-3)">{{ t('today.checkin_prompt') }}</p>
+  <div class="checkin-row">
+    <div class="checkin-row__group">
+      <span class="checkin-row__label">{{ t('today.checkin_energy') }}</span>
+      <div class="checkin-row__smileys">
+        {% for n in [1,2,3,4,5] %}
+        <label class="checkin-smiley"><input type="radio" name="energy" value="{{ n }}" {% if n==3 %}checked{% endif %} /><span>{{ n }}</span></label>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="checkin-row__group">
+      <span class="checkin-row__label">{{ t('today.checkin_stress') }}</span>
+      <div class="checkin-row__smileys">
+        {% for n in [1,2,3,4,5] %}
+        <label class="checkin-smiley"><input type="radio" name="stress" value="{{ n }}" {% if n==3 %}checked{% endif %} /><span>{{ n }}</span></label>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="checkin-row__group">
+      <span class="checkin-row__label">{{ t('today.checkin_mood') }}</span>
+      <div class="checkin-row__smileys">
+        {% for n in [1,2,3,4,5] %}
+        <label class="checkin-smiley"><input type="radio" name="mood" value="{{ n }}" {% if n==3 %}checked{% endif %} /><span>{{ n }}</span></label>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <button class="btn btn--primary btn--block" type="submit" style="margin-top:var(--space-3)">{{ t('today.checkin_submit') }}</button>
+</form>
+{% else %}
+<div class="card" style="padding:var(--space-3) var(--space-4);margin-bottom:var(--space-5);display:flex;gap:var(--space-4);font-size:var(--text-xs);color:var(--text-faint)">
+  <span>{{ t('today.checkin_energy') }}: {{ checkin.energy }}/5</span>
+  <span>{{ t('today.checkin_stress') }}: {{ checkin.stress }}/5</span>
+  <span>{{ t('today.checkin_mood') }}: {{ checkin.mood }}/5</span>
+</div>
+{% endif %}
+
+{% if has_season %}
 <div class="season-progress" style="margin-bottom:var(--space-5)" data-tour="progress">
   <div class="season-progress__ring">
     <svg viewBox="0 0 84 84">
@@ -31,63 +91,90 @@
     <p>{{ t('today.forecast', value=forecast, unit=season.metric_unit) }}</p>
   </div>
 </div>
+{% endif %}
 
 {% include "_mascot.html" %}
 
-{% if day.kind == 'measure' %}
-<div class="action-card" data-tour="action">
-  <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
-  <h3 class="action-card__title">{{ day.title }}</h3>
-  <p class="action-card__body">{{ day.instructions }}</p>
-  <div class="action-card__actions">
-    <a class="btn btn--primary" href="/measure"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-check"/></svg>{{ t('today.go_measure') }}</a>
-  </div>
-</div>
-{% elif day.status in ('done', 'minimal', 'rescued') %}
-<div class="action-card action-card--done" data-tour="action">
-  <span class="action-card__kicker"><svg class="icon" style="width:1em;height:1em"><use href="#i-check"/></svg>{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
-  <h3 class="action-card__title">{{ t('today.already_' + day.status) }}</h3>
-  <p class="action-card__body">{{ day.title }}</p>
-</div>
-{% elif day.kind == 'rest' %}
-<div class="action-card" data-tour="action">
-  <span class="action-card__kicker"><svg class="icon" style="width:1em;height:1em"><use href="#i-moon"/></svg>{{ t('today.rest_kicker') }}</span>
-  <h3 class="action-card__title">{{ day.title }}</h3>
-  <p class="action-card__body">{{ day.instructions }}</p>
-</div>
-{% else %}
-<div class="action-card" data-tour="action">
-  <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
-  <h3 class="action-card__title">{{ day.title }}</h3>
-  <p class="action-card__body">{{ day.instructions }}</p>
-  <form method="post" action="/today/done" enctype="multipart/form-data" id="today-done-form" data-main-button-label="{{ t('today.cta_done') }}" style="display:flex;flex-direction:column;gap:var(--space-3)">
-    <input type="file" name="photo" accept="image/*" capture="environment" class="sr-only" id="proof-photo" />
+{% if has_season %}
+  {% if day.kind == 'measure' %}
+  <div class="action-card" data-tour="action">
+    <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
+    <h3 class="action-card__title">{{ day.title }}</h3>
+    <p class="action-card__body">{{ day.instructions }}</p>
     <div class="action-card__actions">
-      <button class="btn btn--primary" type="submit" data-haptic="success"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-camera"/></svg>{{ t('today.cta_done') }}</button>
-      <label for="proof-photo" class="btn btn--secondary" style="cursor:pointer">{{ t('today.cta_attach_photo') }}</label>
+      <a class="btn btn--primary" href="/measure"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-check"/></svg>{{ t('today.go_measure') }}</a>
     </div>
+  </div>
+  {% elif day.status in ('done', 'minimal', 'rescued') %}
+  <div class="action-card action-card--done" data-tour="action">
+    <span class="action-card__kicker"><svg class="icon" style="width:1em;height:1em"><use href="#i-check"/></svg>{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
+    <h3 class="action-card__title">{{ t('today.already_' + day.status) }}</h3>
+    <p class="action-card__body">{{ day.title }}</p>
+  </div>
+  {% elif day.kind == 'rest' %}
+  <div class="action-card" data-tour="action">
+    <span class="action-card__kicker"><svg class="icon" style="width:1em;height:1em"><use href="#i-moon"/></svg>{{ t('today.rest_kicker') }}</span>
+    <h3 class="action-card__title">{{ day.title }}</h3>
+    <p class="action-card__body">{{ day.instructions }}</p>
+  </div>
+  {% else %}
+  <div class="action-card" data-tour="action">
+    <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
+    <h3 class="action-card__title">{{ day.title }}</h3>
+    <p class="action-card__body">{{ day.instructions }}</p>
+    <form method="post" action="/today/done" enctype="multipart/form-data" id="today-done-form" data-main-button-label="{{ t('today.cta_done') }}" style="display:flex;flex-direction:column;gap:var(--space-3)">
+      <input type="file" name="photo" accept="image/*" capture="environment" class="sr-only" id="proof-photo" />
+      <div class="action-card__actions">
+        <button class="btn btn--primary" type="submit" data-haptic="success"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-camera"/></svg>{{ t('today.cta_done') }}</button>
+        <label for="proof-photo" class="btn btn--secondary" style="cursor:pointer">{{ t('today.cta_attach_photo') }}</label>
+      </div>
+    </form>
+    <form method="post" action="/today/minimal" id="today-minimal-form">
+      <button class="btn btn--secondary" type="submit" data-haptic="light" style="margin-top:var(--space-3)">{{ t('today.cta_minimal') }}</button>
+    </form>
+    <details style="margin-top:var(--space-4)">
+      <summary class="btn--text" style="cursor:pointer;display:inline">{{ t('today.cta_skip') }}</summary>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('today.skip_explainer', chances=season.second_chances_left) }}</p>
+    </details>
+  </div>
+  {% endif %}
+
+  {% if season.second_chances_left > 0 %}
+  <form method="post" action="/today/rescue" style="margin-top:var(--space-4);display:flex;align-items:center;gap:var(--space-2)">
+    <button class="btn btn--text" type="submit">{{ t('today.cta_rescue') }}</button>
+    {% with term_id='second-chance', term_text=t('terms.second_chance') %}{% include "_term.html" %}{% endwith %}
   </form>
-  <form method="post" action="/today/minimal" id="today-minimal-form">
-    <button class="btn btn--secondary" type="submit" data-haptic="light" style="margin-top:var(--space-3)">{{ t('today.cta_minimal') }}</button>
-  </form>
-  <details style="margin-top:var(--space-4)">
-    <summary class="btn--text" style="cursor:pointer;display:inline">{{ t('today.cta_skip') }}</summary>
-    <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('today.skip_explainer', chances=season.second_chances_left) }}</p>
-  </details>
+  {% endif %}
+
+  <div class="wave-summary card" style="padding:var(--space-4);margin-top:var(--space-5)" data-tour="team">
+    <span class="wave-summary__text">{{ t('today.wave_checkins', checked=checkins, total=wave_size) }}</span>
+    <a href="/team" class="btn--text">{{ t('today.wave_see_all') }}</a>
+  </div>
+{% else %}
+<div class="card empty-state" data-tour="action">
+  <h3>{{ t('today.no_goal_title') }}</h3>
+  <p>{{ t('today.no_goal_body') }}</p>
+  <a href="/seasons" class="btn btn--primary btn--block" style="margin-top:var(--space-3)">{{ t('today.no_goal_cta') }}</a>
 </div>
 {% endif %}
 
-{% if season.second_chances_left > 0 %}
-<form method="post" action="/today/rescue" style="margin-top:var(--space-4);display:flex;align-items:center;gap:var(--space-2)">
-  <button class="btn btn--text" type="submit">{{ t('today.cta_rescue') }}</button>
-  {% with term_id='second-chance', term_text=t('terms.second_chance') %}{% include "_term.html" %}{% endwith %}
-</form>
+{% if show_sleep_hygiene %}
+<div class="card" style="padding:var(--space-4);margin-top:var(--space-5)">
+  <p style="font-size:var(--text-xs);color:var(--text-muted)">{{ t('today.sleep_hygiene_reminder') }}</p>
+</div>
 {% endif %}
 
-<div class="wave-summary card" style="padding:var(--space-4);margin-top:var(--space-5)" data-tour="team">
-  <span class="wave-summary__text">{{ t('today.wave_checkins', checked=checkins, total=wave_size) }}</span>
-  <a href="/team" class="btn--text">{{ t('today.wave_see_all') }}</a>
+{% if schedule_blocks %}
+<h2 style="font-size:var(--text-md);margin:var(--space-6) 0 var(--space-3)">{{ t('today.schedule_title') }}</h2>
+<div class="day-feed">
+  {% for block in schedule_blocks %}
+  <div class="day-feed__item day-feed__item--{{ block.kind }}">
+    <span class="day-feed__time tabular">{{ block.start_time }}</span>
+    <span class="day-feed__title">{{ block.title }}</span>
+  </div>
+  {% endfor %}
 </div>
+{% endif %}
 
 {% if show_tour %}{% include "_tour.html" %}{% endif %}
 {% endblock %}

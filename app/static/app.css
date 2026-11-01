@@ -486,3 +486,77 @@
   height: 100%;
   background: var(--accent);
 }
+
+/* ============ Чек-ин энергии/стресса/настроения (§11) ============ */
+
+.checkin-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.checkin-row__label {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-1);
+}
+.checkin-row__smileys {
+  display: flex;
+  gap: var(--space-1);
+}
+.checkin-smiley {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+.checkin-smiley input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.checkin-smiley:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ============ Лента дня (§6, §14 "Сегодня"/"Неделя") ============ */
+
+.day-feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.day-feed__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border-left: 3px solid var(--border-strong);
+}
+.day-feed__time {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+  flex: none;
+  width: 42px;
+}
+.day-feed__title {
+  font-size: var(--text-sm);
+}
+.day-feed__item--goal_action { border-left-color: var(--accent); }
+.day-feed__item--habit { border-left-color: var(--accent-secondary); }
+.day-feed__item--task { border-left-color: var(--status-minimal); }
+.day-feed__item--commitment,
+.day-feed__item--task_fixed { border-left-color: var(--text-faint); }
+.day-feed__item--sleep { border-left-color: var(--status-rest); opacity: 0.7; }

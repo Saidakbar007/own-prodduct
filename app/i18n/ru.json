@@ -179,6 +179,29 @@
   "today.wave_see_all": "Смотреть команду",
   "today.go_measure": "Пройти проверку результата",
 
+  "today.checkin_prompt": "Как ты сегодня?",
+  "today.checkin_energy": "Энергия",
+  "today.checkin_stress": "Стресс",
+  "today.checkin_mood": "Настроение",
+  "today.checkin_submit": "Отметить",
+
+  "today.recovery_offer_title": "Похоже, тебе сейчас тяжело",
+  "today.recovery_offer_body": "Можно включить режим восстановления на 7 дней — план станет легче, сон и обязательные дела не тронем.",
+  "today.recovery_cta_start": "Включить",
+  "today.recovery_cta_decline": "Не сейчас",
+  "today.recovery_started_flash": "Режим восстановления включён на 7 дней — план стал легче",
+  "today.recovery_active_title": "Режим восстановления",
+  "today.recovery_active_body": "План сейчас облегчён. Это нормально — вернёмся к обычному темпу постепенно.",
+
+  "today.no_goal_title": "Пока нет активной цели",
+  "today.no_goal_body": "Привычки и расписание уже работают. Цель можно добавить в любой момент.",
+  "today.no_goal_cta": "Выбрать цель",
+
+  "today.sleep_hygiene_reminder": "Скоро отбой — попробуй отложить экран пораньше, так проще уснуть.",
+
+  "today.schedule_title": "Сегодня по времени",
+  "today.schedule_minimal": "минимум",
+
   "season.day_of": "День {n} из {total}",
   "season.forecast_plain": "К финалу, по твоему темпу, — примерно {value} {unit}",
   "season.measure_section_title": "Проверка результата",
