@@ -30,11 +30,18 @@ def _shoot(page: Page, name: str, theme: str) -> None:
 
 
 def _register_with_season(page: Page, live_server_url: str, template_id: str = "run_5k") -> str:
+    """Экраны 1-12 онбординга v8 (§5 NEWLIFE_V8_SPEC.md) до регистрации."""
     unique = uuid.uuid4().hex[:8]
-    page.goto(f"{live_server_url}/onboarding")
+    page.goto(f"{live_server_url}/onboarding")  # экран 1: философия
+    page.click('a[href="/onboarding/spheres"]')
+
+    page.check('input[name="sphere_ids"][value="body"]')  # экран 2: сферы
+    page.locator('form[action="/onboarding/spheres"]').first.locator('button[type="submit"]').click()
+    page.locator('form[action="/onboarding/sphere-level"] button[type="submit"] >> nth=0').click()  # экран 3
+
     page.locator(f'input[name="template_id"][value="{template_id}"]').locator("..").locator(
         'button[type="submit"]'
-    ).click()
+    ).click()  # экран 4: цель
 
     if template_id in ("fat_loss_safe", "muscle_gain"):
         page.fill("#height_cm", "178")
@@ -48,8 +55,18 @@ def _register_with_season(page: Page, live_server_url: str, template_id: str = "
         page.fill("#value", "5")
         page.click('button[type="submit"]')
 
-    page.click('input[type="radio"] >> nth=0')
+    page.click('input[type="radio"] >> nth=0')  # длина сезона
     page.click('button[type="submit"]')
+
+    page.click('form[action="/onboarding/mode"] button[type="submit"]')  # экран 6: режим дня
+    page.locator('form[action="/onboarding/commitments"] input[name="action"][value="next"]').locator(
+        ".."
+    ).locator('button[type="submit"]').click()  # экран 7: обязательные дела — пропуск
+    page.click('form[action="/onboarding/daily-minutes"] button[type="submit"]')  # экран 8
+    page.click('form[action="/onboarding/chronotype"] button[type="submit"]')  # экран 9
+    page.click('form[action="/onboarding/constraints"] button[type="submit"]')  # экран 10
+    page.locator('form[action="/onboarding/woop/obstacle"] button[type="submit"] >> nth=0').click()  # экран 11
+    page.click('form[action="/onboarding/woop"] button[type="submit"]')
 
     page.goto(f"{live_server_url}/register")
     page.fill("#name", f"Экран Тест {unique}")
@@ -115,8 +132,10 @@ def test_profile_screen(page: Page, live_server_url, theme):
 
 @pytest.mark.parametrize("theme", THEMES)
 def test_onboarding_goal_screen(page: Page, live_server_url, theme):
+    """Экран цели (§4 v8) теперь на /onboarding/goal — /onboarding сам стал
+    экраном 1 "философия" (§5)."""
     page.set_viewport_size(VIEWPORT)
-    page.goto(f"{live_server_url}/onboarding")
+    page.goto(f"{live_server_url}/onboarding/goal")
     _set_theme(page, theme)
     expect(page.get_by_role("heading", name="Какой у тебя будет сезон?")).to_be_visible()
     _shoot(page, "onboarding-goal", theme)
@@ -125,6 +144,11 @@ def test_onboarding_goal_screen(page: Page, live_server_url, theme):
 @pytest.mark.parametrize("theme", THEMES)
 def test_onboarding_trailer_screen(page: Page, live_server_url, theme):
     page.goto(f"{live_server_url}/onboarding")
+    page.click('a[href="/onboarding/spheres"]')
+    page.check('input[name="sphere_ids"][value="body"]')
+    page.locator('form[action="/onboarding/spheres"]').first.locator('button[type="submit"]').click()
+    page.locator('form[action="/onboarding/sphere-level"] button[type="submit"] >> nth=0').click()
+
     page.locator('input[name="template_id"][value="run_5k"]').locator("..").locator(
         'button[type="submit"]'
     ).click()
@@ -132,6 +156,16 @@ def test_onboarding_trailer_screen(page: Page, live_server_url, theme):
     page.click('button[type="submit"]')
     page.click('input[type="radio"] >> nth=0')
     page.click('button[type="submit"]')
+
+    page.click('form[action="/onboarding/mode"] button[type="submit"]')
+    page.locator('form[action="/onboarding/commitments"] input[name="action"][value="next"]').locator(
+        ".."
+    ).locator('button[type="submit"]').click()
+    page.click('form[action="/onboarding/daily-minutes"] button[type="submit"]')
+    page.click('form[action="/onboarding/chronotype"] button[type="submit"]')
+    page.click('form[action="/onboarding/constraints"] button[type="submit"]')
+    page.locator('form[action="/onboarding/woop/obstacle"] button[type="submit"] >> nth=0').click()
+    page.click('form[action="/onboarding/woop"] button[type="submit"]')
 
     page.set_viewport_size(VIEWPORT)
     _set_theme(page, theme)
@@ -191,6 +225,11 @@ def test_episode_screen(page: Page, live_server_url, theme):
 @pytest.mark.parametrize("theme", THEMES)
 def test_fat_loss_health_screen(page: Page, live_server_url, theme):
     page.goto(f"{live_server_url}/onboarding")
+    page.click('a[href="/onboarding/spheres"]')
+    page.check('input[name="sphere_ids"][value="body"]')
+    page.locator('form[action="/onboarding/spheres"]').first.locator('button[type="submit"]').click()
+    page.locator('form[action="/onboarding/sphere-level"] button[type="submit"] >> nth=0').click()
+
     page.locator('input[name="template_id"][value="fat_loss_safe"]').locator("..").locator(
         'button[type="submit"]'
     ).click()

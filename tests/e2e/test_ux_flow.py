@@ -57,9 +57,15 @@ def _goto_first_ok(page: Page, base_url: str, paths: tuple[str, ...]) -> None:
 
 
 def _register_new_user(page: Page, live_server_url: str, template_id: str = "pushups_50") -> str:
-    """Онбординг с нуля → регистрация. pushups_50 — без доп. health-шага."""
+    """Онбординг с нуля (все 12 экранов v8, §5) → регистрация. pushups_50 —
+    без доп. health-шага."""
     unique = uuid.uuid4().hex[:8]
     page.goto(f"{live_server_url}/onboarding")
+    page.click('a[href="/onboarding/spheres"]')
+    page.check('input[name="sphere_ids"][value="body"]')
+    page.locator('form[action="/onboarding/spheres"]').first.locator('button[type="submit"]').click()
+    page.locator('form[action="/onboarding/sphere-level"] button[type="submit"] >> nth=0').click()
+
     page.locator(f'input[name="template_id"][value="{template_id}"]').locator("..").locator(
         'button[type="submit"]'
     ).click()
@@ -67,6 +73,16 @@ def _register_new_user(page: Page, live_server_url: str, template_id: str = "pus
     page.click('button[type="submit"]')
     page.click('input[type="radio"] >> nth=0')
     page.click('button[type="submit"]')
+
+    page.click('form[action="/onboarding/mode"] button[type="submit"]')
+    page.locator('form[action="/onboarding/commitments"] input[name="action"][value="next"]').locator(
+        ".."
+    ).locator('button[type="submit"]').click()
+    page.click('form[action="/onboarding/daily-minutes"] button[type="submit"]')
+    page.click('form[action="/onboarding/chronotype"] button[type="submit"]')
+    page.click('form[action="/onboarding/constraints"] button[type="submit"]')
+    page.locator('form[action="/onboarding/woop/obstacle"] button[type="submit"] >> nth=0').click()
+    page.click('form[action="/onboarding/woop"] button[type="submit"]')
 
     page.goto(f"{live_server_url}/register")
     page.fill("#name", f"UX Тест {unique}")

@@ -62,7 +62,11 @@ def test_challenge_active_duel_screen(page: Page, live_server_url, theme):
     page.click('button:has-text("Вызвать друга")')
     invite_link = page.locator("p").last.inner_text()
 
-    second_page = page.context.new_page()
+    # Отдельный контекст (не просто новая вкладка) — второй человек не должен
+    # делить cookie-сессию с первым: иначе /onboarding увидит уже вошедшего
+    # и залогиненного первого пользователя и сразу уведёт на /onboarding/goal
+    # (v8 §5 — "следующий сезон"), минуя экраны точки А для второго теста.
+    second_page = page.context.browser.new_context().new_page()
     _register_with_season(second_page, live_server_url, template_id="pullups_10")
     second_page.goto(f"{live_server_url}{invite_link}")
     second_page.click('button:has-text("Принять вызов")')
