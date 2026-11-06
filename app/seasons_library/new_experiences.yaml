@@ -1,0 +1,36 @@
+id: new_experiences
+version: 1
+title: "Сезон: новый опыт"
+title_uz: "Mavsum: yangi tajriba"
+category: lifestyle
+metric: { name: "«Впервые» в месяц", unit: "раз/мес", direction: up }
+lengths: [30, 60]
+target_default: 4
+baseline_test:
+  prompt: "Сколько раз в месяц у тебя случается что-то «впервые» (место, блюдо, занятие)?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [6, 7], minutes: [10, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Сделай что-то впервые"
+        instructions: "В воскресенье выбери, что попробуешь впервые на этой неделе (новое место, блюдо, занятие). В субботу — сделай это."
+        minimal: "Новый маршрут домой"
+        expected_progress: 1
+rest_day:
+  title: "Будние дни"
+  instructions: "Выбор и «впервые» приходятся на выходные, будни — для подготовки или отдыха"
+measure_every_days: 7
+measure:
+  prompt: "Сколько раз «впервые» было на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 5

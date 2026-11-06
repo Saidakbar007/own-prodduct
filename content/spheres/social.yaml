@@ -1,0 +1,112 @@
+# Каталог целей сферы «Социальное» (PRD 1.0). Источник: docs/content/NEWLIFE_1_0_CONTENT.md
+# (раздел "2. СОЦИАЛЬНОЕ (харизма, выступления, слушание, разговоры,
+# нетворкинг)", строки ~364-402) — приоритет выше docs/specs/NEWLIFE_V8_SPEC.md §7.
+# Схема и загрузчик — app/newlife/goal_catalog.py.
+# Сценарий сезона (день за днём) каждой цели — app/seasons_library/<id>.yaml.
+sphere: social
+goals:
+  - id: public_speaking_confidence
+    sphere: social
+    title: { ru: "Выступления без страха", uz: "Qoʻrqmasdan chiqish" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто боится говорить на публике или выступать"
+    outcome: "В конце — лестница экспозиций пройдена, выступать заметно легче"
+    metric: { key: speaking_exposures, kind: counter, unit: "экспозиций/нед", rounding: 1 }
+    secondary: ["тревога 0–10 до/после — только для графика, не оценка человека"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      6–10 недель: повторная экспозиция снижает тревогу (метаанализ VR- и
+      in-vivo-экспозиции при страхе выступлений). Лестница: запись на видео →
+      1 друг → 3–5 человек → группа/пара → аудитория; перескочить ступень
+      нельзя, каждый шаг можно пропустить без штрафа (§F).
+    week_skeleton: "2 экспозиции + 1 репетиция в неделю"
+    minimal_version: "Записать 30-секундное видео"
+    source:
+      name: "Метаанализ VR/in-vivo экспозиции (2023)"
+      url: "https://www.frontiersin.org/journals/virtual-reality/articles/10.3389/frvir.2023.1240778/pdf"
+    template_id: public_speaking_confidence
+
+  - id: active_listening
+    sphere: social
+    title: { ru: "Активное слушание", uz: "Faol tinglash" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет, чтобы собеседник чувствовал себя понятым"
+    outcome: "В конце — перефраз в разговоре входит в привычку"
+    metric: { key: listening_paraphrases, kind: counter, unit: "раз/нед", rounding: 1 }
+    secondary: ["число уточняющих вопросов"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      4 недели (Weger 2014). Важная оговорка: перефраз усиливает ощущение,
+      что собеседника поняли, но не повышает симпатию к слушающему заметно
+      сильнее простых знаков согласия — метод подаём как «чтобы человек
+      чувствовал, что его поняли», а не как способ понравиться.
+    week_skeleton: "Ежедневно 1 разговор с техникой «Правильно понимаю, что…?»"
+    minimal_version: "1 перефраз в день"
+    source:
+      name: "Weger et al. 2014"
+      url: "https://greatergood.berkeley.edu/images/uploads/ActiveListening.pdf"
+    template_id: active_listening
+
+  - id: start_conversations
+    sphere: social
+    title: { ru: "Начинать разговоры", uz: "Suhbatni boshlash" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кому трудно заговорить первым"
+    outcome: "В конце — заговорить первым с новым человеком не страшно"
+    metric: { key: conversations_started, kind: counter, unit: "разговоров/нед", rounding: 1 }
+    secondary: ["число продолжившихся >2 мин"]
+    targets: ["30 дней", "60 дней"]
+    pace: "6 недель (эвристика). Варианты цели — 3 / 5 / 7 разговоров в неделю."
+    week_skeleton: "Лестница: продавец → одногруппник → новый человек"
+    minimal_version: "Приветствие + 1 вопрос"
+    source:
+      name: "эвристика"
+    template_id: start_conversations
+
+  - id: networking
+    sphere: social
+    title: { ru: "Нетворкинг", uz: "Tanishuvlar tarmogʻi" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто хочет строить профессиональные связи"
+    outcome: "В конце — регулярные новые контакты и привычка делать follow-up"
+    metric: { key: networking_contacts, kind: counter, unit: "контактов/нед", rounding: 1 }
+    secondary: ["число повторных связей (follow-up)"]
+    targets: ["60 дней", "90 дней"]
+    pace: "8–12 недель (эвристика). Варианты цели — 1 / 2 / 4 новых контакта в неделю."
+    week_skeleton: "1 мероприятие или 2 сообщения + 1 follow-up в неделю"
+    minimal_version: "Написать 1 сообщение"
+    source:
+      name: "эвристика"
+    template_id: networking
+
+  - id: presence_charisma
+    sphere: social
+    title: { ru: "Харизма = присутствие", uz: "Jalb qiluvchanlik = toʻliq diqqat" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет быть по-настоящему включённым в разговор"
+    outcome: "В конце — телефон убран, внимание на собеседнике — само собой"
+    metric: { key: phone_free_conversations, kind: counter, unit: "разговоров/нед", rounding: 1 }
+    secondary: ["имя собеседника названо (да/нет)"]
+    targets: ["30 дней", "60 дней"]
+    pace: "6 недель (эвристика). Варианты цели — 3 / 5 / 7 разговоров в неделю."
+    week_skeleton: "Ежедневная отметка разговоров без телефона в руках"
+    minimal_version: "Убрать телефон в 1 разговоре"
+    source:
+      name: "эвристика"
+    template_id: presence_charisma
+
+  - id: keep_in_touch
+    sphere: social
+    title: { ru: "Поддерживать связи", uz: "Aloqalarni saqlab turish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто теряет связь с близкими людьми из-за занятости"
+    outcome: "В конце — регулярные контакты с важными людьми входят в привычку"
+    metric: { key: close_contact_checkins, kind: counter, unit: "контактов/нед", rounding: 1 }
+    secondary: ["число инициированных тобой"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Постоянная привычка (эвристика). Варианты цели — 2 / 4 / 7 контактов в неделю."
+    week_skeleton: "Список из 5 человек, звонок или встреча по кругу"
+    minimal_version: "1 короткое сообщение"
+    source:
+      name: "эвристика"
+    template_id: keep_in_touch

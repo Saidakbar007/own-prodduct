@@ -1,0 +1,36 @@
+id: self_check_study
+version: 1
+title: "Сезон: учиться через самопроверку"
+title_uz: "Mavsum: oʻz-oʻzini tekshirish orqali oʻqish"
+category: mind
+metric: { name: "Сессии с самопроверкой", unit: "%", direction: up }
+lengths: [30, 60]
+target_default: 60
+baseline_test:
+  prompt: "В какой доле учебных сессий ты сейчас проверяешь себя, не просто перечитывая конспект (%)?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5], minutes: [10, 20] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Самопроверка после учёбы"
+        instructions: "После учебной сессии закрой конспект и попробуй вспомнить материал без подглядывания — своими словами, вслух или на бумаге. Потом проверь себя по конспекту."
+        minimal: "Закрыть конспект и вспомнить 3 главные мысли"
+        expected_progress: 2
+rest_day:
+  title: "Обычный день"
+  instructions: "Самопроверка — не физическая нагрузка, пропусков не планируем; в выходные можно короче"
+measure_every_days: 7
+measure:
+  prompt: "В какой доле учебных сессий на этой неделе ты проверял(а) себя, а не просто перечитывал(а)?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2

@@ -1,0 +1,36 @@
+id: budget
+version: 1
+title: "Сезон: бюджет"
+title_uz: "Mavsum: byudjet"
+category: finance
+metric: { name: "Отклонение факта от плана", unit: "%", direction: down }
+lengths: [30, 60]
+target_default: 10
+baseline_test:
+  prompt: "Насколько обычно факт отличается от твоего плана трат, в %?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 3, 7], minutes: [5, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "План и сверка по категориям"
+        instructions: "Пн — распредели ожидаемые траты месяца по категориям. Ср — сверь, сколько уже потрачено в каждой. Вс — итог: какие категории превышены."
+        minimal: "Отметить «в рамках» или «превысил» по одной категории"
+        expected_progress: 1
+rest_day:
+  title: "День без сверки"
+  instructions: "Бюджет не требует ежедневной сверки — работай по плану дня"
+measure_every_days: 7
+measure:
+  prompt: "На сколько % в среднем факт отличался от плана на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 4

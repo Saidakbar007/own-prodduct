@@ -1,0 +1,36 @@
+id: partner_attention
+version: 1
+title: "Сезон: партнёр — внимание"
+title_uz: "Mavsum: sherikka eʼtibor"
+category: relationships
+metric: { name: "Отклик на знаки внимания партнёра", unit: "%", direction: up }
+lengths: [30, 60]
+target_default: 70
+baseline_test:
+  prompt: "В какой % дней ты замечаешь и откликаешься на знаки внимания партнёра?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Заметь и откликнись"
+        instructions: "В течение дня замечай знаки внимания партнёра (вопрос, шутка, просьба побыть рядом) и откликайся — хотя бы коротко. Раз в неделю — свидание без телефонов."
+        minimal: "1 искренний вопрос или комплимент"
+        expected_progress: 14
+rest_day:
+  title: "Обычный день"
+  instructions: "Внимание партнёру нужно каждый день — выходных в этой цели нет"
+measure_every_days: 7
+measure:
+  prompt: "В какой % дней на этой неделе ты откликался(ась) на знаки внимания партнёра?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

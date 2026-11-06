@@ -1,0 +1,36 @@
+id: family
+version: 1
+title: "Сезон: семья"
+title_uz: "Mavsum: oila"
+category: relationships
+metric: { name: "Качественное время с семьёй", unit: "ч/нед", direction: up }
+lengths: [30, 60]
+target_default: 4
+baseline_test:
+  prompt: "Сколько часов качественного времени в неделю ты проводишь с семьёй без телефона?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [2, 20] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Внимание семье"
+        instructions: "Хотя бы коротко спроси близкого «как прошёл день?» и выслушай ответ без телефона в руках. Раз в неделю — общий ужин, раз в неделю — звонок родным, с которыми не живёшь вместе."
+        minimal: "Спросить «как прошёл день?»"
+        expected_progress: 0.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Внимание близким нужно каждый день — выходных в этой цели нет"
+measure_every_days: 7
+measure:
+  prompt: "Сколько часов качественного времени с семьёй было на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

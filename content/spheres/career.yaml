@@ -1,0 +1,115 @@
+# Каталог целей сферы «Карьера и навыки» (PRD 1.0). Источник:
+# docs/content/NEWLIFE_1_0_CONTENT.md (раздел «3. КАРЬЕРА И НАВЫКИ»,
+# строки ~231-280). Схема и загрузчик — app/newlife/goal_catalog.py.
+# Сценарий сезона (день за днём) каждой цели — app/seasons_library/<id>.yaml.
+sphere: career
+goals:
+  - id: foreign_language
+    sphere: career
+    title: { ru: "Иностранный язык (CEFR)", uz: "Chet tili (CEFR)" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто учит язык без системы и хочет дойти до следующего уровня CEFR"
+    outcome: "В конце — накоплены часы занятий языком, уровень подтверждён тестом или экзаменом"
+    metric: { key: language_hours, kind: timer, unit: "ч", rounding: 0.5 }
+    secondary: ["новые слова, вышедшие в долгое повторение", "минуты разговорной практики"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      От нуля до уровня: A2 ≈180–200 ч, B1 ≈350–400 ч, B2 ≈500–600 ч,
+      C1 ≈700–800 ч. Переход B1→B2, например, занимает около 150–200 ч —
+      это примерно 6–9 месяцев при 5 часах в неделю (Cambridge English).
+    week_skeleton: "5 занятий в неделю по 45–60 минут"
+    minimal_version: "5 слов или 2 минуты аудио"
+    source:
+      name: "Cambridge English, Guided learning hours"
+      url: "https://support.cambridgeenglish.org/hc/en-gb/articles/202838506-Guided-learning-hours"
+    template_id: foreign_language
+
+  - id: vocabulary
+    sphere: career
+    title: { ru: "Словарь языка", uz: "Til lugʻati" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет системно расширять словарный запас языка"
+    outcome: "В конце — заметно больше слов усвоено надолго, а не просто выучено списком"
+    metric: { key: words_mastered, kind: counter, unit: "слов", rounding: 10 }
+    secondary: ["точность, %"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Для свободного чтения нужно порядка 8–9 тыс. семей слов (Nation,
+      2006). Реалистичный темп — 10–20 новых слов в день, усвоенными
+      считаются слова, вспомненные верно при интервале 21+ день.
+    week_skeleton: "Ежедневно, 15 минут"
+    minimal_version: "3 слова"
+    source:
+      name: "Nation, vocabulary coverage"
+      url: "https://scholarspace.manoa.hawaii.edu/server/api/core/bitstreams/58770f7a-58e5-4558-a819-f059f6cb710b/content"
+    template_id: vocabulary
+
+  - id: programming
+    sphere: career
+    title: { ru: "Программирование (Python или веб)", uz: "Dasturlash (Python yoki veb)" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет системно набрать часы практики с кодом"
+    outcome: "В конце — заметно больше часов практики, решённых задач и коммитов на GitHub"
+    metric: { key: coding_hours, kind: timer, unit: "ч", rounding: 0.5 }
+    secondary: ["решённые задачи", "коммиты на GitHub"]
+    targets: ["30 дней", "60 дней", "90 дней"]
+    pace: >-
+      Сертификация freeCodeCamp рассчитана примерно на 300 часов. При
+      6–8 часах в неделю это около 9–12 месяцев — сезон покрывает часть
+      этого пути.
+    week_skeleton: "5 занятий в неделю по 60 минут"
+    minimal_version: "Написать или поправить 1 строку кода"
+    source:
+      name: "freeCodeCamp certifications"
+      url: "https://www.freecodecamp.org/news/freecodecamp-certifications/"
+    template_id: programming
+
+  - id: portfolio
+    sphere: career
+    title: { ru: "Портфолио", uz: "Portfolio" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто начинает и бросает проекты на середине"
+    outcome: "В конце — хотя бы один законченный проект с публичной ссылкой и описанием"
+    metric: { key: completed_projects, kind: counter, unit: "проектов", rounding: 1 }
+    secondary: ["проекты с описанием README"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Небольшой проект занимает 2–4 недели (без отдельного источника — обычная практика)"
+    week_skeleton: "3 сессии в неделю по 60 минут"
+    minimal_version: "1 коммит или 1 строка описания"
+    source:
+      name: "эвристика"
+    template_id: portfolio
+
+  - id: certificate
+    sphere: career
+    title: { ru: "Сертификат (IELTS, CEFR, Google, Coursera, freeCodeCamp)", uz: "Sertifikat (IELTS, CEFR, Google, Coursera, freeCodeCamp)" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто готовится к экзамену или сертификации, но тянет и не назначает дату"
+    outcome: "В конце — назначенный экзамен сдан, финал засчитывается только кнопкой «сдал»"
+    metric: { key: exam_prep_pct, kind: percent, unit: "%", rounding: 1 }
+    secondary: ["результат пробного теста"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Срок подготовки считается от набранных часов по языку или по курсу
+      (без отдельного источника — производная от целей «Язык» и «Курс»).
+    week_skeleton: "4 сессии в неделю по 60 минут"
+    minimal_version: "1 вопрос пробника"
+    source:
+      name: "эвристика"
+    template_id: certificate
+
+  - id: resume_applications
+    sphere: career
+    title: { ru: "Резюме и стажировки", uz: "Rezyume va amaliyotlar" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто годами «обновит резюме на днях», но не отправляет заявки"
+    outcome: "В конце — регулярный поток отправленных заявок и обновлённое резюме/LinkedIn"
+    metric: { key: applications_sent, kind: counter, unit: "заявок/мес", rounding: 1 }
+    secondary: ["ответы и собеседования"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Без отдельного источника — темп задаётся самим пользователем"
+    week_skeleton: "2 сессии в неделю по 30 минут"
+    minimal_version: "Сохранить 1 вакансию"
+    source:
+      name: "эвристика"
+    template_id: resume_applications

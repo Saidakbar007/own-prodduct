@@ -1,0 +1,36 @@
+id: new_connections
+version: 1
+title: "Сезон: новые знакомства"
+title_uz: "Mavsum: yangi tanishlar"
+category: relationships
+metric: { name: "Новые разговоры или мероприятия", unit: "раз/мес", direction: up }
+lengths: [30, 60]
+target_default: 4
+baseline_test:
+  prompt: "Сколько новых разговоров или мероприятий у тебя бывает в месяц?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [6, 7], minutes: [15, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Новый разговор"
+        instructions: "Сходи на клуб, мероприятие или просто заведи разговор с новым человеком — поздоровайся и задай вопрос о нём."
+        minimal: "Поздороваться и задать вопрос"
+        expected_progress: 1
+rest_day:
+  title: "Будние дни"
+  instructions: "Новые знакомства — задача на выходные, в будни отдыхай от этой цели"
+measure_every_days: 7
+measure:
+  prompt: "Сколько новых разговоров или мероприятий было на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 5

@@ -1,0 +1,36 @@
+id: hobby
+version: 1
+title: "Сезон: хобби"
+title_uz: "Mavsum: sevimli mashgʻulot"
+category: lifestyle
+metric: { name: "Часы хобби в неделю", unit: "ч/нед", direction: up }
+lengths: [30, 60]
+target_default: 4
+baseline_test:
+  prompt: "Сколько часов в неделю у тебя уходит на хобби сейчас?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [2, 4, 6], minutes: [15, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Слот на хобби"
+        instructions: "Выдели заранее запланированное время на хобби — без цели «добиться результата», просто практика ради удовольствия."
+        minimal: "2 минуты практики"
+        expected_progress: 0.5
+rest_day:
+  title: "День без хобби"
+  instructions: "В остальные дни недели хобби не обязательно, можно отдохнуть"
+measure_every_days: 7
+measure:
+  prompt: "Сколько часов хобби было на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 4

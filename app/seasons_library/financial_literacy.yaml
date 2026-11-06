@@ -1,0 +1,36 @@
+id: financial_literacy
+version: 1
+title: "Сезон: финансовая грамотность"
+title_uz: "Mavsum: moliyaviy savodxonlik"
+category: finance
+metric: { name: "Пройденные модули финграмотности", unit: "модулей", direction: up }
+lengths: [30, 60, 90]
+target_default: 8
+baseline_test:
+  prompt: "Сколько модулей финансовой грамотности ты уже проходил(а) раньше?"
+  input: number
+  min: 0
+  max: 12
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [2, 15] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "1 карточка финграмотности"
+        instructions: "Прочитай 1 короткую карточку по теме (бюджет, сбережения, долги, подушка). Раз в неделю — целый модуль и короткий тест из 3 вопросов."
+        minimal: "Прочитать 1 факт"
+        expected_progress: 0.2
+rest_day:
+  title: "День без карточки"
+  instructions: "Если день пропущен — продолжи с того же места завтра"
+measure_every_days: 7
+measure:
+  prompt: "Сколько модулей и карточек пройдено на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

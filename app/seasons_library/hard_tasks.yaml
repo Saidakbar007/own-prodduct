@@ -1,0 +1,36 @@
+id: hard_tasks
+version: 1
+title: "Сезон: решать сложные задачи"
+title_uz: "Mavsum: qiyin masalalarni yechish"
+category: mind
+metric: { name: "Решённые сложные задачи", unit: "шт/нед", direction: up }
+lengths: [60, 90]
+target_default: 15
+baseline_test:
+  prompt: "Сколько сложных задач (логика, математика, кейсы) ты сейчас решаешь за неделю?"
+  input: number
+  min: 0
+  max: 50
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 4, 5], minutes: [15, 20] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Сложная задача"
+        instructions: "Реши одну задачу из незнакомой или сложной области — чередуй логику, математику, кейсы. Сначала пробуй сам(а), подсказку смотри только после честной попытки."
+        minimal: "Одна задача"
+        expected_progress: 0.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Это умственная тренировка, а не физическая — в остальные дни отдохни от сложных задач"
+measure_every_days: 7
+measure:
+  prompt: "Сколько сложных задач ты решил(а) на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 3

@@ -1,0 +1,93 @@
+# Каталог целей сферы «Энергия и стресс» (PRD 1.0). Источник:
+# docs/content/NEWLIFE_1_0_CONTENT.md → «3. Сфера ЭНЕРГИЯ И СТРЕСС» → «Цели».
+# Сон длительностью (sleep_consistency) живёт в content/spheres/body.yaml —
+# сознательно оставлен там (docs/decisions/DECISIONS.md → «NewLife 1.0»),
+# здесь — 5 отдельных целей именно энергии/стресса из контент-документа.
+# Чек-ин (энергия/стресс/настроение) и привычки/вредные привычки — отдельная
+# система, не входят в этот каталог (см. app/newlife/goal_catalog.py docstring).
+sphere: energy
+goals:
+  - id: stress_relief_practice
+    sphere: energy
+    title: { ru: "Практика снижения стресса", uz: "Stressni kamaytirish amaliyoti" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет мягко снижать стресс в течение дня"
+    outcome: "В конце — привычная ежедневная практика заземления и умение быстрее отцепиться от навязчивых мыслей"
+    metric: { key: stress_relief_minutes, kind: timer, unit: "мин/день", rounding: 1 }
+    secondary: ["дней подряд без практики"]
+    targets: ["30 дней", "60 дней"]
+    pace: "5 → 10–15 мин/день, +2 мин в неделю"
+    week_skeleton: "Ежедневно, в любое удобное время, лучше в одно и то же"
+    minimal_version: "3 медленных вдоха"
+    source:
+      name: "ВОЗ «Doing What Matters in Times of Stress»"
+      url: "https://www.who.int/publications/i/item/9789240003927"
+    template_id: stress_relief_practice
+
+  - id: breathing_practice
+    sphere: energy
+    title: { ru: "Дыхание", uz: "Nafas olish mashqi" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет быстро снижать напряжение через дыхание"
+    outcome: "В конце — навык медленного дыхания, который снимает напряжение за минуты"
+    metric: { key: breathing_minutes, kind: timer, unit: "мин/день", rounding: 1 }
+    secondary: []
+    targets: ["30 дней", "60 дней"]
+    pace: "5 мин/день медленного дыхания (~6 вдохов в минуту) или «циклический вздох»"
+    week_skeleton: "Ежедневно, можно несколькими короткими заходами"
+    minimal_version: "3 медленных вдоха"
+    source:
+      name: "Balban 2023 / Zaccaro 2018"
+      url: "https://doi.org/10.1016/j.xcrm.2022.100895"
+    template_id: breathing_practice
+
+  - id: nature_time
+    sphere: energy
+    title: { ru: "Время на природе", uz: "Tabiatda vaqt oʻtkazish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто редко бывает на улице при дневном свете"
+    outcome: "В конце — регулярное время на улице входит в привычку, стресс и настроение ощутимо лучше"
+    metric: { key: nature_minutes_week, kind: timer, unit: "мин/нед", rounding: 5 }
+    secondary: []
+    targets: ["30 дней", "60 дней"]
+    pace: "≥120 мин/нед на улице, можно частями"
+    week_skeleton: "В любые дни недели, по 15–30 минут за раз"
+    minimal_version: "Прогулка 5 минут"
+    source:
+      name: "White 2019"
+      url: "https://doi.org/10.1038/s41598-019-44097-3"
+    template_id: nature_time
+
+  - id: screen_off_before_sleep
+    sphere: energy
+    title: { ru: "Экран выключен перед сном", uz: "Uyqudan oldin ekran oʻchirilgan" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто засыпает с телефоном в руках"
+    outcome: "В конце — стабильная пауза без экрана перед сном, легче засыпать"
+    metric: { key: screen_off_minutes, kind: timer, unit: "мин", rounding: 5 }
+    secondary: []
+    targets: ["30 дней", "60 дней"]
+    pace: "15 → 30–60 мин без экрана до сна"
+    week_skeleton: "Ежедневно, в последние минуты перед сном"
+    minimal_version: "15 минут без экрана перед сном"
+    source:
+      name: "CDC, гигиена сна"
+      url: "https://www.cdc.gov/sleep/about/index.html"
+    template_id: screen_off_before_sleep
+
+  - id: stable_wake_time
+    sphere: energy
+    title: { ru: "Стабильный подъём", uz: "Barqaror turish vaqti" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто встаёт в разное время каждый день, включая выходные"
+    outcome: "В конце — время подъёма почти не отличается ото дня ко дню"
+    metric: { key: wake_time_spread_minutes, kind: measure, unit: "мин", rounding: 5 }
+    secondary: []
+    targets: ["30 дней", "60 дней"]
+    pace: "Разброс времени подъёма ≤60 минут за неделю, в том числе в выходные"
+    week_skeleton: "Ежедневно — отметка, во сколько встал(а)"
+    minimal_version: "Встать не позже обычного максимум на 30 минут"
+    source:
+      name: "AASM / SRS"
+      url: "https://aasm.org/aasm-and-srs-publish-new-sleep-duration-consensus-statement/"
+    template_id: stable_wake_time

@@ -1,0 +1,36 @@
+id: emergency_fund
+version: 1
+title: "Сезон: финансовая подушка"
+title_uz: "Mavsum: moliyaviy zahira"
+category: finance
+metric: { name: "Подушка в месяцах расходов", unit: "мес.", direction: up }
+lengths: [30, 60, 90]
+target_default: 3
+baseline_test:
+  prompt: "На сколько месяцев обязательных расходов хватит твоих накоплений сейчас?"
+  input: number
+  min: 0
+  max: 12
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1], minutes: [1, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Автоперевод в подушку"
+        instructions: "В начале недели переведи заранее выбранную сумму на отдельный счёт или конверт для подушки — не трогай её ни для чего другого."
+        minimal: "Отметить «не тронул подушку»"
+        expected_progress: 0.1
+rest_day:
+  title: "Остальные дни недели"
+  instructions: "Перевод делается один раз в неделю — в остальные дни просто не трогай подушку"
+measure_every_days: 7
+measure:
+  prompt: "Сколько сейчас накоплено в подушке? Переведи в месяцы расходов."
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 1

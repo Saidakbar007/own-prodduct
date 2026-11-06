@@ -1,0 +1,36 @@
+id: home_order
+version: 1
+title: "Сезон: порядок дома"
+title_uz: "Mavsum: uyda tartib"
+category: lifestyle
+metric: { name: "Доля дней с «10-минутным сбросом»", unit: "%", direction: up }
+lengths: [30, 60]
+target_default: 80
+baseline_test:
+  prompt: "В какой % дней ты делаешь короткий «10-минутный сброс» порядка дома?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "10-минутный сброс"
+        instructions: "Потрать 10 минут на то, чтобы убрать вещи на свои места в одной комнате. В субботу — разбери 1 ящик или зону подробнее."
+        minimal: "Убрать 1 вещь на место"
+        expected_progress: 14
+rest_day:
+  title: "Обычный день"
+  instructions: "Эта привычка работает каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "В какой % дней на этой неделе был сделан «10-минутный сброс»?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

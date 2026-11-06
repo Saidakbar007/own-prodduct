@@ -1,0 +1,38 @@
+id: online_course
+version: 1
+title: "Сезон: один учебный курс"
+title_uz: "Mavsum: bitta onlayn kurs"
+category: knowledge
+metric: { name: "Пройдено модулей курса", unit: "%", direction: up }
+lengths: [30, 60]
+target_default: 100
+baseline_test:
+  prompt: "Сколько % курса, который тебе интересен, ты уже прошёл?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 3, 5], minutes: [30, 30] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Учебный блок"
+        instructions: >-
+          Пройди очередную часть курса: лекция, задание или тест модуля.
+          Отметь прогресс в процентах от всего курса.
+        minimal: "1 видео 2 минуты"
+        expected_progress: 8
+rest_day:
+  title: "День без курса"
+  instructions: "Пересмотри конспект предыдущего модуля 5 минут"
+measure_every_days: 7
+measure:
+  prompt: "Сколько % курса пройдено на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2

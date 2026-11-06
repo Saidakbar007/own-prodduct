@@ -1,0 +1,114 @@
+# Каталог целей сферы «Характер» (PRD 1.0). Источник: docs/content/NEWLIFE_1_0_CONTENT.md
+# (раздел "1. ХАРАКТЕР (дисциплина, самоконтроль, уверенность, ответственность)",
+# строки ~313-363) — приоритет выше docs/specs/NEWLIFE_V8_SPEC.md §7.
+# Схема и загрузчик — app/newlife/goal_catalog.py.
+# Сценарий сезона (день за днём) каждой цели — app/seasons_library/<id>.yaml.
+sphere: character
+goals:
+  - id: keep_promises
+    sphere: character
+    title: { ru: "Держать слово себе", uz: "Oʻz-oʻzingga bergan soʻzni ushlash" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто часто обещает себе что-то и срывается"
+    outcome: "В конце — привычка выполнять то, что сам себе обещал, без геройства"
+    metric: { key: promises_kept_pct, kind: percent, unit: "%", rounding: 1 }
+    secondary: ["число обязательств за неделю", "серия дней без срыва"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      8–10 недель на автоматизацию (Lally 2010: медиана 66 дней, разброс
+      18–254 — у всех по-разному, один пропуск серию не обнуляет). Варианты
+      цели по неделе — 60 / 75 / 90% выполненных обязательств.
+    week_skeleton: "Пн: выбрать 3 обязательства, ежедневно отмечать «сделал / не сделал», Вс: итог недели"
+    minimal_version: "1 микро-обещание в день"
+    source:
+      name: "Lally et al. 2010"
+      url: "https://www.ucl.ac.uk/news/2009/aug/how-long-does-it-take-form-habit"
+    template_id: keep_promises
+
+  - id: if_then_plan
+    sphere: character
+    title: { ru: "План «если — то»", uz: "«Agar — unda» rejasi" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто знает свои слабые ситуации, но не успевает среагировать"
+    outcome: "В конце — готовые планы «если — то» срабатывают сами, без раздумий"
+    metric: { key: if_then_hits, kind: counter, unit: "раз/нед", rounding: 1 }
+    secondary: ["% срабатываний плана"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      4–6 недель (Gollwitzer & Sheeran 2006: метаанализ 94 исследований,
+      средний эффект d≈0,65). Варианты цели — 3 / 5 / 7 срабатываний в неделю.
+    week_skeleton: "Пн: выбрать 2 плана из шаблонов, ежедневно отмечать, когда сработал"
+    minimal_version: "Прочитать свой план утром"
+    source:
+      name: "Gollwitzer & Sheeran 2006"
+      url: "https://www.thebehavioralscientist.com/glossary/implementation-intentions"
+    template_id: if_then_plan
+
+  - id: deep_work
+    sphere: character
+    title: { ru: "Глубокая работа", uz: "Chuqur fokus bilan ishlash" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто хочет научиться концентрироваться без телефона"
+    outcome: "В конце — уверенные сессии фокуса по 90 минут без отвлечений"
+    metric: { key: focus_minutes, kind: timer, unit: "мин", rounding: 5 }
+    secondary: ["число сессий в неделю"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      6–8 недель, рост от 25 до 90 минут фокуса за сессию без телефона
+      (эвристика — конкретных сроков в источниках нет).
+    week_skeleton: "5 дней с сессиями фокуса, 2 дня отдыха"
+    minimal_version: "2 минуты без телефона за задачей"
+    source:
+      name: "эвристика"
+    template_id: deep_work
+
+  - id: beat_procrastination
+    sphere: character
+    title: { ru: "Убрать прокрастинацию", uz: "Ishni keyinga qoldirmaslik" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто постоянно откладывает старт задач"
+    outcome: "В конце — задачи стартуют в запланированное время, а не «потом»"
+    metric: { key: tasks_started_on_time, kind: counter, unit: "задач/нед", rounding: 1 }
+    secondary: ["задержка старта, мин"]
+    targets: ["30 дней", "60 дней"]
+    pace: "6 недель (эвристика). Варианты цели — 3 / 5 / 10 начатых вовремя задач в неделю."
+    week_skeleton: "Каждое утро выбрать «старт в ЧЧ:ММ» для одной задачи"
+    minimal_version: "Открыть файл задачи"
+    source:
+      name: "эвристика"
+    template_id: beat_procrastination
+
+  - id: confidence_through_action
+    sphere: character
+    title: { ru: "Уверенность через действие", uz: "Harakat orqali ishonch" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто хочет меньше бояться выходить из зоны комфорта"
+    outcome: "В конце — лестница вызовов от лёгкого к трудному пройдена без геройства"
+    metric: { key: comfort_challenges, kind: counter, unit: "вызовов/нед", rounding: 1 }
+    secondary: ["тревога 0–10 до/после — только для графика, не оценка человека"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      6–8 недель (эвристика). Только добровольно: каждый вызов можно
+      пропустить кнопкой «Не сегодня» без штрафа, перескочить ступень лестницы
+      нельзя, вызовов с риском для здоровья/денег/закона/унижения нет (§F).
+    week_skeleton: "3 вызова в неделю: лёгкий, лёгкий, средний"
+    minimal_version: "Задать 1 вопрос незнакомому человеку (продавцу, преподавателю)"
+    source:
+      name: "эвристика"
+    template_id: confidence_through_action
+
+  - id: responsibility_deadlines
+    sphere: character
+    title: { ru: "Ответственность", uz: "Masʼuliyat" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто часто просит перенести дедлайн"
+    outcome: "В конце — дедлайны сдаются вовремя почти всегда"
+    metric: { key: deadlines_on_time_pct, kind: percent, unit: "%", rounding: 1 }
+    secondary: ["число просьб о переносе"]
+    targets: ["90 дней"]
+    pace: "Семестр (эвристика). Варианты цели — 70 / 85 / 100% дедлайнов вовремя."
+    week_skeleton: "Пн: внести дедлайны в план, Чт: проверка прогресса"
+    minimal_version: "Записать 1 дедлайн"
+    source:
+      name: "эвристика"
+    template_id: responsibility_deadlines

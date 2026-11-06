@@ -1,0 +1,109 @@
+# Каталог целей сферы «Образ жизни» (PRD 1.0). Источник: docs/content/NEWLIFE_1_0_CONTENT.md
+# (раздел «3. ОБРАЗ ЖИЗНИ»). Схема и загрузчик — app/newlife/goal_catalog.py.
+# Сценарий сезона каждой цели — app/seasons_library/<id>.yaml.
+sphere: lifestyle
+goals:
+  - id: digital_detox
+    sphere: lifestyle
+    title: { ru: "Цифровой детокс", uz: "Raqamli detoks" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто проводит в соцсетях больше, чем хотел бы"
+    outcome: "В конце — экранное время соцсетей заметно ниже, без отказа от телефона совсем"
+    metric: { key: social_screen_minutes, kind: measure, unit: "мин/день", rounding: 5 }
+    secondary: ["разблокировки телефона в день", "телефон в постели (да/нет)"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Варианты цели: ≤60 / ≤45 / ≤30 минут соцсетей в день. −15 минут в
+      неделю; Hunt 2018: лимит 30 мин/день в течение 3 недель снижал
+      одиночество и депрессию.
+    week_skeleton: "Ежедневный ввод из экранного времени телефона, вс — итог"
+    minimal_version: "Убрать 1 приложение с главного экрана"
+    source:
+      name: "Hunt et al. 2018"
+      url: "https://techcrunch.com/2018/11/09/limiting-social-media-use-reduced-loneliness-and-depression-in-new-experiment"
+    template_id: digital_detox
+
+  - id: home_order
+    sphere: lifestyle
+    title: { ru: "Порядок дома", uz: "Uyda tartib" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кому дома обычно не хватает порядка"
+    outcome: "В конце — короткий ежедневный сброс порядка входит в привычку"
+    metric: { key: tidy_days_rate, kind: percent, unit: "%", rounding: 5 }
+    secondary: ["число «зон порядка»", "разбор 1 ящика в неделю"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Варианты цели: 50 / 80 / 100% дней с выполненным «10-минутным сбросом».
+      4 недели; Saxbe & Repetti 2010 (источник вторичный, связь
+      корреляционная): ощущение захламлённости связано с менее здоровым
+      профилем кортизола.
+    week_skeleton: "Ежедневно 10 минут порядка + 1 зона в субботу"
+    minimal_version: "Убрать 1 вещь на место"
+    source:
+      name: "Saxbe & Repetti 2010 (обзор о беспорядке и стрессе)"
+      url: "https://clutterscience.pages.dev/blog/does-clutter-cause-stress/"
+    template_id: home_order
+
+  - id: hobby
+    sphere: lifestyle
+    title: { ru: "Хобби", uz: "Sevimli mashgʻulot" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто давно отложил увлечение на «потом»"
+    outcome: "В конце — регулярные слоты для хобби в календаре"
+    metric: { key: hobby_hours, kind: measure, unit: "ч/нед", rounding: 0.5 }
+    secondary: ["число занятий хобби в неделю"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Варианты цели: 2 / 4 / 6 часов хобби в неделю. +1 час в 2 недели (продуктовая эвристика)."
+    week_skeleton: "2–3 слота на хобби в календаре в неделю"
+    minimal_version: "2 минуты практики"
+    source:
+      name: "эвристика"
+    template_id: hobby
+
+  - id: new_experiences
+    sphere: lifestyle
+    title: { ru: "Новый опыт", uz: "Yangi tajriba" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, у кого дни похожи один на другой"
+    outcome: "В конце — привычка регулярно пробовать что-то новое"
+    metric: { key: new_experiences_monthly, kind: counter, unit: "раз/мес", rounding: 1 }
+    secondary: ["% «впервые» со сторонней компанией"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Варианты цели: 2 / 4 / 8 «впервые» в месяц (новое место, блюдо, занятие). 1 в неделю (продуктовая эвристика)."
+    week_skeleton: "Вс — выбрать, сб — сделать"
+    minimal_version: "Новый маршрут домой"
+    source:
+      name: "эвристика"
+    template_id: new_experiences
+
+  - id: style_and_care
+    sphere: lifestyle
+    title: { ru: "Стиль и уход", uz: "Uslub va parvarish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет меньше хаоса по утрам и больше уверенности в образе"
+    outcome: "В конце — базовая рутина ухода и выбор одежды не отнимают время по утрам"
+    metric: { key: routine_days_rate, kind: percent, unit: "%", rounding: 10 }
+    secondary: ["число «капсульных» сочетаний одежды"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Варианты цели: 60 / 80 / 100% дней с выполненной рутиной. 2–4 недели (продуктовая эвристика)."
+    week_skeleton: "Вечером готовить одежду на завтра, раз в неделю — ревизия гардероба"
+    minimal_version: "Приготовить одежду на завтра"
+    source:
+      name: "эвристика"
+    template_id: style_and_care
+
+  - id: work_life_balance
+    sphere: lifestyle
+    title: { ru: "Баланс работа/учёба — отдых", uz: "Ish/oʻqish va dam olish balansi" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто работает или учится до ночи и не успевает отдыхать"
+    outcome: "В конце — есть стабильные вечера без работы и учёбы после условленного часа"
+    metric: { key: offline_evenings, kind: counter, unit: "вечеров/нед", rounding: 1 }
+    secondary: ["часы сна (при желании)"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Варианты цели: 3 / 5 / 7 вечеров без работы и учёбы после условленного часа. +1 вечер за 2 недели (продуктовая эвристика)."
+    week_skeleton: "Каждый день — выбранный «час выключения»"
+    minimal_version: "Закрыть ноутбук, сказать «день окончен»"
+    source:
+      name: "эвристика"
+    template_id: work_life_balance

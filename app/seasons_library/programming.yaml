@@ -1,0 +1,39 @@
+id: programming
+version: 1
+title: "Сезон: программирование"
+title_uz: "Mavsum: dasturlash"
+category: career
+metric: { name: "Часы практики с кодом", unit: "ч", direction: up }
+lengths: [30, 60, 90]
+target_default: 50
+baseline_test:
+  prompt: "Сколько часов в неделю ты сейчас реально практикуешься в коде?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5], minutes: [60, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Блок практики"
+        instructions: >-
+          60 минут практики: курс, задачи на алгоритмы или свой проект.
+          Старайся писать код сам, а не только смотреть туториалы —
+          после 10 минут видео сразу 10 минут кода.
+        minimal: "Написать или поправить 1 строку кода"
+        expected_progress: 1
+rest_day:
+  title: "День без кода"
+  instructions: "Прочитай условие одной задачи, без решения"
+measure_every_days: 7
+measure:
+  prompt: "Сколько часов практики с кодом накопилось за эту неделю?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2

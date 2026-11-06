@@ -1,0 +1,36 @@
+id: gratitude_journal
+version: 1
+title: "Сезон: дневник благодарности"
+title_uz: "Mavsum: minnatdorlik kundaligi"
+category: values
+metric: { name: "Записи благодарности", unit: "записей/нед", direction: up }
+lengths: [60, 90]
+target_default: 2
+baseline_test:
+  prompt: "Сколько раз за последнюю неделю ты записывал(а) или проговаривал(а), за что благодарен(на)?"
+  input: number
+  min: 0
+  max: 7
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [3, 7], minutes: [2, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "3–5 пунктов благодарности"
+        instructions: "Выбери категорию (люди, здоровье, учёба или работа, мелочи) и запиши 3–5 конкретных пунктов, за что благодарен(на)."
+        minimal: "1 пункт"
+        expected_progress: 0.3
+rest_day:
+  title: "Обычный день"
+  instructions: "Записи делаются 1–3 раза в неделю, не обязательно каждый день"
+measure_every_days: 7
+measure:
+  prompt: "Сколько записей благодарности было на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

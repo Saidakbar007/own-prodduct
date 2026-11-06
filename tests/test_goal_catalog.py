@@ -9,22 +9,33 @@ from app.newlife.goal_catalog import (
     all_goals,
     available_sphere_ids,
     goal_meta,
-    goals_for_sphere,
     load_all_catalogs,
 )
 from app.seasons_library.loader import load_library
 
 
-def test_body_catalog_loads_and_has_at_least_four_goals():
+ALL_SPHERE_IDS = [
+    "body", "mind", "character", "social", "career", "finance",
+    "relationships", "knowledge", "values", "lifestyle", "energy",
+]
+
+
+def test_all_eleven_spheres_have_a_catalog_with_at_least_four_goals():
     catalogs = load_all_catalogs()
-    assert "body" in catalogs
-    assert len(catalogs["body"].goals) >= 4
+    for sphere_id in ALL_SPHERE_IDS:
+        assert sphere_id in catalogs, f"нет каталога для сферы '{sphere_id}'"
+        assert len(catalogs[sphere_id].goals) >= 4, f"'{sphere_id}': меньше 4 целей"
 
 
-def test_every_body_goal_has_a_matching_season_template():
+def test_no_duplicate_goal_ids_across_spheres():
+    ids = [g.id for g in all_goals()]
+    assert len(ids) == len(set(ids)), "повторяющийся id цели между разными сферами"
+
+
+def test_every_goal_has_a_matching_season_template():
     """PRD 1.0: цель с прогрессией ссылается на реальный шаблон сезона."""
     library = load_library()
-    for goal in goals_for_sphere("body"):
+    for goal in all_goals():
         assert goal.template_id in library, f"{goal.id}: шаблон сезона '{goal.template_id}' не найден"
 
 
@@ -44,8 +55,8 @@ def test_goal_meta_found_and_not_found():
     assert goal_meta("does-not-exist") is None
 
 
-def test_available_sphere_ids_includes_body():
-    assert "body" in available_sphere_ids()
+def test_available_sphere_ids_covers_all_eleven_spheres():
+    assert available_sphere_ids() == set(ALL_SPHERE_IDS)
 
 
 def test_targets_has_one_to_three_options():

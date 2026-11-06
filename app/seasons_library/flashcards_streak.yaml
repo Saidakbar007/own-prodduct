@@ -1,0 +1,41 @@
+id: flashcards_streak
+version: 1
+title: "Сезон: повторение без долгов"
+title_uz: "Mavsum: qarzsiz takrorlash"
+category: knowledge
+metric: { name: "Дни подряд без долга повторений", unit: "дней подряд", direction: up }
+lengths: [60, 90]
+target_default: 66
+baseline_test:
+  prompt: "Сколько дней подряд ты обычно успеваешь закрыть все повторения без пропуска?"
+  input: number
+  min: 0
+  max: 30
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Закрыть долг на сегодня"
+        instructions: >-
+          Открой приложение и повтори все карточки, которые система
+          показывает сегодня, пока список не станет пустым. Не добавляй
+          новых карточек, если не успеваешь закрыть долг.
+        minimal: "1 карточка"
+        expected_progress: 1
+rest_day:
+  title: "Обычный день"
+  instructions: >-
+    Привычка работает каждый день, включая выходные — один пропуск не
+    обрушивает всё, но старайся не копить долг
+measure_every_days: 7
+measure:
+  prompt: "Сколько дней подряд за эту неделю ты закрывал(а) долг повторений?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

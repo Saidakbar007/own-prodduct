@@ -1,0 +1,38 @@
+id: resume_applications
+version: 1
+title: "Сезон: резюме и стажировки"
+title_uz: "Mavsum: rezyume va amaliyotlar"
+category: career
+metric: { name: "Отправленные заявки", unit: "заявок/мес", direction: up }
+lengths: [30, 60]
+target_default: 5
+baseline_test:
+  prompt: "Сколько заявок на вакансии или стажировки ты отправляешь за месяц сейчас?"
+  input: number
+  min: 0
+  max: 30
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [2, 5], minutes: [30, 30] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Поиск и заявка"
+        instructions: >-
+          Найди 1 подходящую вакансию, выпиши её требования и отправь
+          заявку или обнови резюме/LinkedIn под неё.
+        minimal: "Сохранить 1 вакансию"
+        expected_progress: 1
+rest_day:
+  title: "День без заявок"
+  instructions: "Обнови одну строку резюме или LinkedIn"
+measure_every_days: 7
+measure:
+  prompt: "Сколько заявок отправлено на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 5

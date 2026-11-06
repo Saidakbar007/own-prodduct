@@ -1,0 +1,36 @@
+id: income_growth
+version: 1
+title: "Сезон: рост дохода"
+title_uz: "Mavsum: daromadni oshirish"
+category: finance
+metric: { name: "Рост дохода к базе", unit: "%", direction: up }
+lengths: [60, 90]
+target_default: 25
+baseline_test:
+  prompt: "Какой у тебя сейчас обычный доход за месяц (в условных единицах — для сравнения с будущим)?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 3, 5], minutes: [30, 45] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Навык + отклик"
+        instructions: "30–45 минут на развитие навыка, который можно монетизировать (курс, практика, портфолио). Затем — 1 отклик на вакансию или заказ, или 1 предложение клиенту."
+        minimal: "Открыть 1 вакансию или урок курса"
+        expected_progress: 0.5
+rest_day:
+  title: "День без развития навыков"
+  instructions: "Отдохни от поиска — рост дохода не требует усилий каждый день"
+measure_every_days: 7
+measure:
+  prompt: "Сколько часов на навыки и сколько откликов/заказов было на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 4

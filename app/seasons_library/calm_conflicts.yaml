@@ -1,0 +1,37 @@
+id: calm_conflicts
+version: 1
+title: "Сезон: конфликты — спокойствие"
+title_uz: "Mavsum: janjallarda sokinlik"
+category: relationships
+metric: { name: "Пауза перед ответом в конфликте", unit: "%", direction: up }
+lengths: [30, 60]
+target_default: 80
+baseline_test:
+  prompt: "В какой % конфликтов ты берёшь паузу хотя бы 20 минут перед ответом?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings:
+    - "Если в отношениях есть угрозы или насилие — это не замена обращению к специалисту или в экстренные службы"
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "3 вдоха перед ответом"
+        instructions: "Если возник спор — сделай 3 глубоких вдоха перед тем, как ответить. При сильном напряжении возьми паузу 20 минут и вернись к разговору спокойнее."
+        minimal: "3 вдоха перед ответом"
+        expected_progress: 5
+rest_day:
+  title: "День без конфликтов"
+  instructions: "Если сегодня не было споров — ничего отмечать не нужно"
+measure_every_days: 7
+measure:
+  prompt: "В каком % конфликтов на этой неделе ты взял(а) паузу перед ответом?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

@@ -1,0 +1,36 @@
+id: work_life_balance
+version: 1
+title: "Сезон: баланс работа/учёба — отдых"
+title_uz: "Mavsum: ish/oʻqish va dam olish balansi"
+category: lifestyle
+metric: { name: "Вечера без работы и учёбы", unit: "вечеров/нед", direction: up }
+lengths: [30, 60]
+target_default: 5
+baseline_test:
+  prompt: "Сколько вечеров в неделю у тебя свободны от работы и учёбы после условленного часа?"
+  input: number
+  min: 0
+  max: 7
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Час выключения"
+        instructions: "В заранее выбранный час закрой ноутбук и учебники, скажи себе «день окончен». Запланируй дела на завтра заранее, чтобы не тянуло вернуться к работе."
+        minimal: "Закрыть ноутбук, сказать «день окончен»"
+        expected_progress: 1
+rest_day:
+  title: "Обычный день"
+  instructions: "Эта привычка работает каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько вечеров без работы и учёбы было на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

@@ -1,0 +1,36 @@
+id: screen_off_before_sleep
+version: 1
+title: "Сезон: экран выключен перед сном"
+title_uz: "Mavsum: uyqudan oldin ekran oʻchirilgan"
+category: energy
+metric: { name: "Без экрана перед сном", unit: "мин", direction: up }
+lengths: [30, 60]
+target_default: 30
+baseline_test:
+  prompt: "Сколько минут перед сном ты сейчас обычно обходишься без экрана (телефон, планшет, ноутбук)?"
+  input: number
+  min: 0
+  max: 90
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [15, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Экран выключен перед сном"
+        instructions: "За 15–60 минут до сна убери телефон и другие экраны из поля зрения: зарядка вне кровати, вместо экрана — бумажная книга или приглушённый свет."
+        minimal: "15 минут без экрана перед сном"
+        expected_progress: 0.4
+rest_day:
+  title: "Обычный день"
+  instructions: "Привычка работает каждый вечер, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько минут перед сном ты в среднем обходился(лась) без экрана на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

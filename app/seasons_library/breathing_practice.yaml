@@ -1,0 +1,37 @@
+id: breathing_practice
+version: 1
+title: "Сезон: дыхание"
+title_uz: "Mavsum: nafas olish mashqi"
+category: energy
+metric: { name: "Медленное дыхание", unit: "мин/день", direction: up }
+lengths: [30, 60]
+target_default: 5
+baseline_test:
+  prompt: "Сколько минут в день ты сейчас делаешь дыхательные упражнения?"
+  input: number
+  min: 0
+  max: 30
+eligibility:
+  min_age: 18
+  warnings:
+    - "При головокружении во время дыхательных упражнений — остановись и дыши как обычно"
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [5, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Медленное дыхание"
+        instructions: "5 минут медленного дыхания: примерно 6 вдохов в минуту, или «циклический вздох» — два вдоха носом подряд и долгий выдох ртом."
+        minimal: "3 медленных вдоха"
+        expected_progress: 0.2
+rest_day:
+  title: "Обычный день"
+  instructions: "Практика работает каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько минут в день ты в среднем дышал(а) по методике на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

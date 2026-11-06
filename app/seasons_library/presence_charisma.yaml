@@ -1,0 +1,36 @@
+id: presence_charisma
+version: 1
+title: "Сезон: харизма = присутствие"
+title_uz: "Mavsum: jalb qiluvchanlik = toʻliq diqqat"
+category: social
+metric: { name: "Разговоры без телефона в руках", unit: "разговоров/нед", direction: up }
+lengths: [30, 60]
+target_default: 4
+baseline_test:
+  prompt: "Сколько разговоров за день ты обычно проводишь, убрав телефон и спросив о собеседнике?"
+  input: number
+  min: 0
+  max: 10
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [2, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Телефон убран, вопрос о собеседнике"
+        instructions: "В разговоре убери телефон экраном вниз или в карман и задай хотя бы 1 вопрос о собеседнике. Постарайся запомнить и назвать его имя."
+        minimal: "Убрать телефон в 1 разговоре"
+        expected_progress: 0.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Отмечай разговоры, которые случились сами — специально искать их не нужно"
+measure_every_days: 7
+measure:
+  prompt: "В скольких разговорах на этой неделе телефон был убран и ты спросил(а) о собеседнике?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

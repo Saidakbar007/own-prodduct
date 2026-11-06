@@ -1,0 +1,96 @@
+# Каталог целей сферы «Разум» (PRD 1.0). Источник:
+# docs/content/NEWLIFE_1_0_CONTENT.md → «1. РАЗУМ (фокус, память, умение
+# учиться)» → «B) Цели». Цель «Сон для мозга» из того же раздела сюда
+# сознательно не включена — она по метрике дублирует sleep_consistency из
+# content/spheres/body.yaml (тоже среднее часов сна за 7 дней), добавлять
+# вторую почти такую же цель в другой сфере сочли избыточным.
+sphere: mind
+goals:
+  - id: deep_focus
+    sphere: mind
+    title: { ru: "Глубокий фокус", uz: "Chuqur diqqat" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто часто отвлекается на телефон во время учёбы или работы"
+    outcome: "В конце — длинные блоки работы без отвлечений становятся нормой"
+    metric: { key: deep_focus_minutes_week, kind: timer, unit: "мин/нед", rounding: 5 }
+    secondary: ["число фокус-блоков за неделю", "доля блоков без прерываний, %"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      60→150 / 150→300 / 300→500 мин/нед; длину блока увеличивать на 5 минут
+      в неделю. Даже беззвучное уведомление сбивает внимание (Stothart, 2015).
+    week_skeleton: "5×25–50 минут в неделю"
+    minimal_version: "2 минуты на одну задачу, телефон в другой комнате"
+    source:
+      name: "Stothart 2015"
+    template_id: deep_focus
+
+  - id: self_check_study
+    sphere: mind
+    title: { ru: "Учиться через самопроверку", uz: "Oʻz-oʻzini tekshirish orqali oʻqish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто обычно просто перечитывает конспект перед экзаменом"
+    outcome: "В конце — большинство учебных сессий заканчиваются самопроверкой, а не перечитыванием"
+    metric: { key: self_check_share, kind: percent, unit: "%", rounding: 1 }
+    secondary: ["точность самопроверки, %"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      30→60% / 60→90% сессий с самопроверкой; самопроверка и распределённая
+      практика — самые полезные техники из изученных (Dunlosky, 2013), эффект
+      заметен уже через неделю.
+    week_skeleton: "4–5 учебных сессий в неделю"
+    minimal_version: "Закрыть конспект и вспомнить 3 главные мысли"
+    source:
+      name: "Dunlosky 2013"
+    template_id: self_check_study
+
+  - id: memory_retention
+    sphere: mind
+    title: { ru: "Память на изученное", uz: "Oʻrganilganni yodda saqlash" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто забывает материал уже через неделю после изучения"
+    outcome: "В конце — большая часть тем держится в памяти неделю и дольше"
+    metric: { key: delayed_recall_accuracy, kind: percent, unit: "%", rounding: 1 }
+    secondary: ["число проверенных тем"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      50→70% / 70→85% точности при проверке через 7 дней; тест после изучения
+      работает лучше перечитывания (Roediger & Karpicke, 2006). Цикл 4–8 недель.
+    week_skeleton: "3×15 минут в неделю"
+    minimal_version: "1 вопрос по вчерашней теме"
+    source:
+      name: "Roediger & Karpicke 2006"
+    template_id: memory_retention
+
+  - id: hard_tasks
+    sphere: mind
+    title: { ru: "Решать сложные задачи", uz: "Qiyin masalalarni yechish" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто хочет тренировать мышление на нестандартных задачах"
+    outcome: "В конце — в 2–3 раза больше решённых сложных задач в неделю"
+    metric: { key: hard_tasks_week, kind: counter, unit: "шт/нед", rounding: 1 }
+    secondary: ["доля задач, решённых без подсказки, %"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      5→15 / 15→30 шт/нед; чередовать типы задач (логика, математика, кейсы) —
+      «полезная трудность» (Bjork). Цикл 8 недель.
+    week_skeleton: "4×20 минут в неделю"
+    minimal_version: "Одна задача"
+    source:
+      name: "Bjork"
+    template_id: hard_tasks
+
+  - id: reading_minutes
+    sphere: mind
+    title: { ru: "Чтение длинных текстов", uz: "Uzun matnlarni oʻqish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто почти не читает книги или длинные статьи"
+    outcome: "В конце — чтение длинных текстов становится обычной частью недели"
+    metric: { key: reading_minutes_week, kind: timer, unit: "мин/нед", rounding: 5 }
+    secondary: ["прочитанные книги или главы, шт."]
+    targets: ["30 дней", "60 дней"]
+    pace: "60→150 / 150→300 мин/нед; прибавлять около 10 минут в день каждую неделю"
+    week_skeleton: "6×10–40 минут в неделю"
+    minimal_version: "1 страница"
+    source:
+      name: "эвристика"
+    template_id: reading_minutes

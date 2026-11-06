@@ -1,0 +1,39 @@
+id: foreign_language
+version: 1
+title: "Сезон: иностранный язык"
+title_uz: "Mavsum: chet tili"
+category: career
+metric: { name: "Часы занятий языком", unit: "ч", direction: up }
+lengths: [60, 90]
+target_default: 60
+baseline_test:
+  prompt: "Сколько часов в неделю ты сейчас реально занимаешься языком?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5], minutes: [45, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Занятие языком"
+        instructions: >-
+          Урок, учебник или разговорная практика 45–60 минут. Добавь
+          5–10 новых слов и минимум немного разговорной практики (вслух
+          или с собеседником).
+        minimal: "5 новых слов или 2 минуты аудио"
+        expected_progress: 0.75
+rest_day:
+  title: "День без урока"
+  instructions: "Послушай 5 минут аудио или подкаст на языке без разбора"
+measure_every_days: 7
+measure:
+  prompt: "Сколько часов занятий языком накопилось за эту неделю?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2

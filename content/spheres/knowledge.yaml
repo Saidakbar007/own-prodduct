@@ -1,0 +1,107 @@
+# Каталог целей сферы «Знания» (PRD 1.0). Источник: docs/content/NEWLIFE_1_0_CONTENT.md
+# (раздел «2. ЗНАНИЯ (общая эрудиция с интервальными повторениями)», строки ~185-230).
+# Схема и загрузчик — app/newlife/goal_catalog.py.
+# Сценарий сезона (день за днём) каждой цели — app/seasons_library/<id>.yaml.
+#
+# ВАЖНО: цели flashcards_mastered и flashcards_streak в документе описаны как
+# работающие "на встроенных карточках" с алгоритмом интервальных повторений
+# 1→3→7→16→35 дней (лимит 15 новых карточек/день, "не вспомнил" — сброс
+# интервала, PRD F5). Сам движок карточек (расчёт интервалов, долг
+# повторений, лимит новых карточек в день) НЕ реализован этим агентом и не
+# входит в эту задачу — он отдельная фича F5. Здесь заведены только каталог
+# цели (метрика/темп/источник) и простой season-шаблон-обёртка (как у любой
+# другой простой цели), без фактической логики интервалов внутри. Когда
+# появится движок карточек, он должен использовать этот template_id и писать
+# прогресс в ту же метрику (cards_mastered_week / streak_no_debt_days).
+sphere: knowledge
+goals:
+  - id: flashcards_mastered
+    sphere: knowledge
+    title: { ru: "Освоенные факты по теме", uz: "Mavzu boʻyicha oʻzlashtirilgan faktlar" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет регулярно узнавать новое и правда запоминать это надолго"
+    outcome: "В конце — растущий запас карточек, которые ты уверенно вспоминаешь спустя 3+ недели"
+    metric: { key: cards_mastered_week, kind: counter, unit: "карточек/нед", rounding: 1 }
+    secondary: ["точность повторений, %", "долг повторений"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      5–15 новых карточек в день (лимит по умолчанию — часть будущего движка
+      карточек, PRD F5). Карточка считается усвоенной надолго, если ты верно
+      вспомнил её при интервале 21+ день. Лучший перерыв между повторениями —
+      примерно 10–20% от срока, на который нужно запомнить (Cepeda, 2008).
+    week_skeleton: "6 сессий в неделю по 10–15 минут"
+    minimal_version: "5 карточек"
+    source:
+      name: "Cepeda et al. 2008, Spacing effects"
+      url: "https://pubmed.ncbi.nlm.nih.gov/19076480/"
+    template_id: flashcards_mastered
+
+  - id: flashcards_streak
+    sphere: knowledge
+    title: { ru: "Ежедневное повторение без долгов", uz: "Har kuni qarzsiz takrorlash" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто копит долг повторений и хочет сделать это привычкой"
+    outcome: "В конце — повторения на сегодня закрыты каждый день, без накопленного долга"
+    metric: { key: streak_no_debt_days, kind: counter, unit: "дней подряд", rounding: 1 }
+    secondary: ["минуты на повторения"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      На формирование привычки уходит в среднем 66 дней (разброс 18–254);
+      один пропуск не обрушивает привычку целиком (Lally et al. 2010).
+    week_skeleton: "Ежедневно, хотя бы 1 карточка в день"
+    minimal_version: "1 карточка"
+    source:
+      name: "Lally et al. 2010, habit formation (UCL)"
+      url: "https://www.ucl.ac.uk/news/2009/aug/how-long-does-it-take-form-habit"
+    template_id: flashcards_streak
+
+  - id: online_course
+    sphere: knowledge
+    title: { ru: "Один учебный курс по интересу", uz: "Qiziqish boʻyicha bitta onlayn kurs" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет наконец пройти курс (Coursera, edX, лекции), а не бросить на середине"
+    outcome: "В конце — курс пройден от начала до конца, с пройденным тестом по каждому модулю"
+    metric: { key: course_progress_pct, kind: percent, unit: "%", rounding: 1 }
+    secondary: ["тест модуля, %"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Обычный курс занимает 4–8 недель при 2–4 часах в неделю (без отдельного источника — обычная практика)"
+    week_skeleton: "3 сессии по 30 минут в неделю"
+    minimal_version: "1 видео 2 минуты"
+    source:
+      name: "эвристика"
+    template_id: online_course
+
+  - id: trivia_uzbekistan_world
+    sphere: knowledge
+    title: { ru: "Знать Узбекистан и мир", uz: "Oʻzbekiston va dunyoni bilish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет разбираться в истории, географии и устройстве мира вокруг себя"
+    outcome: "В конце — заметно выше результат ежемесячного теста-викторины"
+    metric: { key: quiz_accuracy_pct, kind: percent, unit: "%", rounding: 1 }
+    secondary: ["число тем"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Цикл повторения тем — 4 недели (без отдельного источника — практика продукта)"
+    week_skeleton: "4 сессии по 10 минут в неделю"
+    minimal_version: "3 вопроса"
+    source:
+      name: "эвристика"
+    template_id: trivia_uzbekistan_world
+
+  - id: reading_notes
+    sphere: knowledge
+    title: { ru: "Конспект прочитанного", uz: "Oʻqilganlarni qisqa yozib borish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто читает, но ничего не остаётся в памяти"
+    outcome: "В конце — привычка своими словами записывать главные мысли после чтения"
+    metric: { key: reading_notes_count, kind: counter, unit: "мыслей/мес", rounding: 1 }
+    secondary: ["сколько мыслей превращено в карточки"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Пересказ своими словами работает лучше, чем выделение текста маркером
+      (Dunlosky et al. 2013).
+    week_skeleton: "3 сессии по 10 минут в неделю"
+    minimal_version: "1 мысль"
+    source:
+      name: "Dunlosky et al. 2013, Effective learning techniques (APS)"
+      url: "https://psychologicalscience.org/?p=82014"
+    template_id: reading_notes

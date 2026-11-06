@@ -1,0 +1,38 @@
+id: reading_notes
+version: 1
+title: "Сезон: конспект прочитанного"
+title_uz: "Mavsum: oʻqilganlarni qisqa yozib borish"
+category: knowledge
+metric: { name: "Записанные мысли", unit: "мыслей/мес", direction: up }
+lengths: [30, 60]
+target_default: 12
+baseline_test:
+  prompt: "Сколько мыслей из прочитанного ты обычно записываешь за месяц?"
+  input: number
+  min: 0
+  max: 30
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 3, 5], minutes: [10, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Записать 3 мысли"
+        instructions: >-
+          После чтения своими словами запиши 3 главные мысли текста — без
+          цитат и выделения маркером, как будто объясняешь другу.
+        minimal: "1 мысль"
+        expected_progress: 3
+rest_day:
+  title: "День без чтения"
+  instructions: "Перечитай одну из уже записанных мыслей"
+measure_every_days: 7
+measure:
+  prompt: "Сколько мыслей ты записал(а) на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2

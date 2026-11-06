@@ -1,0 +1,36 @@
+id: weekly_reflection
+version: 1
+title: "Сезон: рефлексия недели"
+title_uz: "Mavsum: hafta tahlili"
+category: values
+metric: { name: "Разборы недели", unit: "разборов", direction: up }
+lengths: [30, 60, 90]
+target_default: 4
+baseline_test:
+  prompt: "Сколько раз в месяц ты обычно останавливаешься, чтобы разобрать свою неделю?"
+  input: number
+  min: 0
+  max: 4
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [7], minutes: [10, 15] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Разбор недели по 5 вопросам"
+        instructions: "В воскресенье выдели 10 минут и ответь на 5 вопросов-кнопок о своей неделе: что получилось, что не получилось, что понял(а), за что благодарен(на), что изменю на следующей."
+        minimal: "Ответить на 1 вопрос"
+        expected_progress: 1
+rest_day:
+  title: "Будний день"
+  instructions: "Разбор проводится только раз в неделю, по воскресеньям"
+measure_every_days: 7
+measure:
+  prompt: "Провёл(а) ли ты разбор недели в это воскресенье?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

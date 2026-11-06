@@ -1,0 +1,36 @@
+id: deep_focus
+version: 1
+title: "Сезон: глубокий фокус"
+title_uz: "Mavsum: chuqur diqqat"
+category: mind
+metric: { name: "Фокус-блоки без отвлечений", unit: "мин/нед", direction: up }
+lengths: [60, 90]
+target_default: 150
+baseline_test:
+  prompt: "Сколько минут в неделю ты сейчас работаешь над задачами в фокус-блоках без отвлечений на телефон?"
+  input: number
+  min: 0
+  max: 600
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5], minutes: [25, 50] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Фокус-блок"
+        instructions: "Поставь таймер на 25–50 минут и работай над одной задачей. Телефон — в другой комнате или в авиарежиме. Если отвлёкся — нажми «отвлёкся», блок обнулится, начни новый."
+        minimal: "2 минуты на одну задачу, телефон в другой комнате"
+        expected_progress: 5
+rest_day:
+  title: "Обычный день"
+  instructions: "Фокус-блоки не планируются — займись обычными делами, короткая прогулка или отдых от экрана"
+measure_every_days: 7
+measure:
+  prompt: "Сколько минут фокус-блоков без отвлечений получилось на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2

@@ -1,0 +1,51 @@
+id: mindfulness
+version: 1
+title: "Сезон: осознанность"
+title_uz: "Mavsum: ongli idrok"
+category: values
+metric: { name: "Практика осознанности", unit: "мин", direction: up }
+lengths: [60, 90]
+target_default: 15
+baseline_test:
+  prompt: "Сколько минут в день ты обычно практикуешь осознанность или дыхательные упражнения?"
+  input: number
+  min: 0
+  max: 60
+eligibility:
+  min_age: 18
+  warnings:
+    - "Если во время практики становится хуже (паника, тяжёлые воспоминания) — остановись и отдохни"
+schedule: { train_days: [1, 2, 3, 4, 5], minutes: [5, 20] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "5 минут дыхания"
+        instructions: "Сядь удобно, закрой глаза, дыши по схеме 4–6 (4 секунды вдох, 6 секунд выдох) 5 минут."
+        minimal: "2 минуты дыхания"
+        expected_progress: 1
+  - phase: 2
+    unlock_if_baseline_gte: 5
+    days:
+      - title: "10 минут практики"
+        instructions: "10 минут дыхания или осознанного наблюдения за ощущениями без оценки."
+        minimal: "5 минут дыхания"
+        expected_progress: 1
+  - phase: 3
+    unlock_if_baseline_gte: 10
+    days:
+      - title: "20 минут практики"
+        instructions: "20 минут практики — дыхание или медитация по любому удобному гайду."
+        minimal: "10 минут практики"
+        expected_progress: 1
+rest_day:
+  title: "День без таймера"
+  instructions: "2 дня в неделю — без формальной практики, просто замечай дыхание в течение дня"
+measure_every_days: 7
+measure:
+  prompt: "Сколько минут практики в день получалось на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2
