@@ -1,6 +1,6 @@
 """
 E2E для экранов Фазы 2 (§7, §16): 375px, тёмная и светлая тема.
-Скриншоты сохраняются в design_review/final/ для визуальной проверки.
+Скриншоты сохраняются в docs/design/design_review/final/ для визуальной проверки.
 """
 
 import uuid
@@ -17,7 +17,7 @@ from sqlmodel import Session
 
 THEMES = ["dark", "light"]
 VIEWPORT = {"width": 375, "height": 812}
-SCREENSHOT_DIR = Path(__file__).parent.parent.parent / "design_review" / "final"
+SCREENSHOT_DIR = Path(__file__).parent.parent.parent / "docs" / "design" / "design_review" / "final"
 SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
 
 

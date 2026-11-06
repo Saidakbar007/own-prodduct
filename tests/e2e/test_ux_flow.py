@@ -1,7 +1,7 @@
 """
 UX-прогон (ветка `ux`): один сценарий нового пользователя (регистрация →
 первый сезон → первое действие дня → все вкладки) плюс демо-аккаунт,
-375 px, светлая и тёмная тема. Скриншоты — в design_review/ux/<UX_SHOTS>/
+375 px, светлая и тёмная тема. Скриншоты — в docs/design/design_review/ux/<UX_SHOTS>/
 (переменная окружения UX_SHOTS=before|after, по умолчанию "after").
 
 Селекторы держим на id полей форм и ролях — они переживают переписывание
@@ -32,7 +32,7 @@ DEMO_PASSWORD = "UxDemo2026!"
 def _shots_dir():
     from pathlib import Path
 
-    d = Path(__file__).parent.parent.parent / "design_review" / "ux" / SHOT_SUBDIR
+    d = Path(__file__).parent.parent.parent / "docs" / "design" / "design_review" / "ux" / SHOT_SUBDIR
     d.mkdir(parents=True, exist_ok=True)
     return d
 
