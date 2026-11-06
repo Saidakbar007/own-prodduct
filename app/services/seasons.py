@@ -67,7 +67,7 @@ def create_season(
     """Создаёт волну-бакет недели (если нужно), сезон и первые дни (скользящее
     окно), плюс стартовый замер (день 0 = baseline). Сезон стартует сразу:
     start_date = reference_date, без ожидания понедельника (§6 ТЗ, изменено
-    UX-правкой — см. SEASONS_SPEC.md → «Изменения»). Волна (Wave.start_date =
+    UX-правкой — см. docs/specs/SEASONS_SPEC.md → «Изменения»). Волна (Wave.start_date =
     понедельник недели reference_date) остаётся только меткой для группировки
     в команду. sphere_id (NewLife v8 §4) — если задан, заодно заводит Goal и
     связывает Season.goal_id с ней."""
@@ -260,7 +260,7 @@ def today_day_number(season: Season, today: date) -> int:
 
 def sync_season_state(db: Session, season: Season, today: date) -> Season:
     """Ленивая синхронизация без фонового планировщика (его пока нет — см.
-    DECISIONS.md): при каждом заходе пользователя просроченные "planned" дни
+    docs/decisions/DECISIONS.md): при каждом заходе пользователя просроченные "planned" дни
     (кроме rest) становятся "missed", а последний день с терминальным
     статусом переводит сезон в "finished"."""
     changed = False

@@ -10,7 +10,7 @@
 Из пяти стартовых шаблонов это только fat_loss_safe (direction=down) — в
 muscle_gain выбрана метрика "рабочий вес в приседе" (не вес тела), чтобы
 ``target_default`` имел единый смысл "изменение от baseline" для всех
-шаблонов разом (см. SEASONS_SPEC.md → «Изменения»); поэтому clamp_weight_target
+шаблонов разом (см. docs/specs/SEASONS_SPEC.md → «Изменения»); поэтому clamp_weight_target
 для muscle_gain намеренно не вызывается — прогрессия силы не ограничена
 лимитом роста массы тела.
 """

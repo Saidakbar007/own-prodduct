@@ -1,5 +1,5 @@
 """NewLife v8 core: profile, sphere, commitment, task, goal, habit, bad_habit,
-checkin, schedule_block, method_event (§4 NEWLIFE_V8_SPEC.md)
+checkin, schedule_block, method_event (§4 docs/specs/NEWLIFE_V8_SPEC.md)
 
 Revision ID: b097c5eb1f02
 Revises: d36a5dbd5c91

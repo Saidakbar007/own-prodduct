@@ -30,7 +30,7 @@ def _shoot(page: Page, name: str, theme: str) -> None:
 
 
 def _register_with_season(page: Page, live_server_url: str, template_id: str = "run_5k") -> str:
-    """Экраны 1-12 онбординга v8 (§5 NEWLIFE_V8_SPEC.md) до регистрации."""
+    """Экраны 1-12 онбординга v8 (§5 docs/specs/NEWLIFE_V8_SPEC.md) до регистрации."""
     unique = uuid.uuid4().hex[:8]
     page.goto(f"{live_server_url}/onboarding")  # экран 1: философия
     page.click('a[href="/onboarding/spheres"]')

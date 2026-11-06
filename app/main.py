@@ -49,7 +49,7 @@ async def _reminder_loop() -> None:
     """Напоминания бота (§12) — без отдельного cron: тот же процесс веб-
     сервиса, фоновый цикл раз в минуту. При нескольких инстансах Render
     напоминания задублируются — пока единственный инстанс, это не проблема
-    (см. DECISIONS.md)."""
+    (см. docs/decisions/DECISIONS.md)."""
     while True:
         try:
             if telegram_is_configured():
@@ -82,7 +82,7 @@ app.add_middleware(
     secret_key=os.getenv("SECRET_KEY", "dev-secret-key-change-me"),
 )
 
-# Дизайн-система (DESIGN.md) и 3D-арт — те же каталоги, что использует /design для показа
+# Дизайн-система (docs/design/DESIGN.md) и 3D-арт — те же каталоги, что использует /design для показа
 app.mount("/design", StaticFiles(directory="design", html=True), name="design")
 app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
