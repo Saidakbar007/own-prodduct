@@ -507,3 +507,19 @@ class MethodEvent(SQLModel, table=True):
     trigger: str
     shown_at: datetime = Field(default_factory=_utcnow)
     accepted: Optional[bool] = None
+
+
+class DayQuestionAnswer(SQLModel, table=True):
+    """Ответ на "вопрос дня" (PRD 1.0 F7, app/newlife/question_bank.yaml) —
+    один в день, в первые 7 дней после регистрации."""
+
+    __tablename__ = "day_question_answer"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    question_id: str = Field(index=True)
+    sphere_id: str
+    option_index: int
+    option_text: str
+    answered_on: date  # дата пользователя (today_for), не UTC-дата сервера
+    answered_at: datetime = Field(default_factory=_utcnow)

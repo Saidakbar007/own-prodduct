@@ -1,0 +1,35 @@
+{% extends "shell_base.html" %}
+{% block title %}Админка — вопрос дня{% endblock %}
+{% block nav %}{% endblock %}
+{% block content %}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">Вопрос дня</h1>
+  <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3);flex-wrap:wrap">
+    <a href="/admin" class="btn--text">Дашборд</a>
+    <a href="/admin/catalog" class="btn--text">Каталог</a>
+    <a href="/admin/spheres" class="btn--text">Сферы</a>
+    <a href="/admin/schedule-sandbox" class="btn--text">Песочница расписания</a>
+  </div>
+</div>
+
+<p style="font-size:var(--text-xs);color:var(--text-faint);margin-bottom:var(--space-5)">
+  Банк вопросов (F7) — первые 7 дней после регистрации, по одному в день из активных сфер. Версионируется в app/newlife/question_bank.yaml.
+</p>
+
+{% for row in rows %}
+<h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">{{ row.sphere.id }} ({{ row.questions|length }})</h3>
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  {% for q in row.questions %}
+  <div style="padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <div style="display:flex;justify-content:space-between;font-size:var(--text-sm)">
+      <span>{{ q.text }}</span>
+      <span class="tabular" style="color:var(--text-faint)">{{ q.id }}</span>
+    </div>
+    <span style="font-size:var(--text-xs);color:var(--text-faint)">{{ q.options|join(' / ') }}</span>
+  </div>
+  {% else %}
+  <span style="font-size:var(--text-xs);color:var(--text-faint)">Нет вопросов</span>
+  {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}

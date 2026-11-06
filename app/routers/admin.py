@@ -15,6 +15,7 @@ from app.auth import require_admin
 from app.database import get_session
 from app.models import CustomTemplateDraft, Measurement, Season, SeasonDay, SphereState, User
 from app.newlife.habit_catalog import load_bad_habit_catalog, load_habit_catalog
+from app.newlife.question_bank import load_question_bank
 from app.newlife.scheduler import format_hhmm
 from app.newlife.spheres import SPHERES
 from app.rendering import render
@@ -229,6 +230,15 @@ def catalog_admin(request: Request, user: User = Depends(require_admin)):
         "admin/catalog.html",
         {"goal_templates": goal_templates, "habits": habits, "bad_habits": bad_habits, "triggers": triggers, "lang": user.language},
     )
+
+
+@router.get("/questions")
+def questions_admin(request: Request, user: User = Depends(require_admin)):
+    """PRD 1.0 F7: банк "вопрос дня" — версионируется в YAML/git, здесь
+    только просмотр (как /admin/catalog для целей/привычек)."""
+    bank = load_question_bank()
+    rows = [{"sphere": sphere, "questions": bank.get(sphere.id, [])} for sphere in SPHERES]
+    return render(request, "admin/questions.html", {"rows": rows, "lang": user.language})
 
 
 @router.get("/schedule-sandbox")

@@ -28,6 +28,7 @@ from app.services.checkin_service import (
     should_offer_recovery_mode,
     start_recovery_mode,
 )
+from app.services.day_questions import record_answer, todays_question
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import has_completed_profile
@@ -137,6 +138,8 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
         now_minutes = now_for(user).hour * 60 + now_for(user).minute
         show_sleep_hygiene = methods_catalog.should_show_sleep_hygiene_reminder(now_minutes, parse_hhmm(profile.sleep_time))
 
+    day_question = todays_question(db, user.id, profile, today)
+
     return render(
         request,
         "today.html",
@@ -148,6 +151,7 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
             "offer_recovery": offer_recovery,
             "schedule_blocks": schedule_blocks,
             "show_sleep_hygiene": show_sleep_hygiene,
+            "day_question": day_question,
             "mascot_phrase": mascot.phrase_for(mascot_event, user.language),
             "mascot_state": mascot.state_for(mascot_event),
             "show_tour": request.query_params.get("tour") == "1",
@@ -170,6 +174,19 @@ def submit_checkin(
     stress = max(1, min(5, stress))
     mood = max(1, min(5, mood))
     log_checkin(db, user.id, today, energy, stress, mood)
+    return RedirectResponse("/today", status_code=303)
+
+
+@router.post("/today/question")
+def submit_day_question(
+    request: Request,
+    question_id: str = Form(...),
+    option_index: int = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    record_answer(db, user.id, question_id, option_index, today_for(user))
+    push_flash(request, "today.question_answered_flash", "success")
     return RedirectResponse("/today", status_code=303)
 
 

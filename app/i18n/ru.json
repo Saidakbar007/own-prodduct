@@ -218,6 +218,9 @@
 
   "today.sleep_hygiene_reminder": "Скоро отбой — попробуй отложить экран пораньше, так проще уснуть.",
 
+  "today.question_kicker": "Вопрос дня",
+  "today.question_answered_flash": "Записал, спасибо",
+
   "today.schedule_title": "Сегодня по времени",
   "today.schedule_minimal": "минимум",
 
@@ -368,6 +371,7 @@
   "wheel.coming_soon": "скоро",
   "wheel.not_started": "Ещё не оценено",
 
+  "profile.day_answers_title": "Твои ответы на вопросы дня",
   "profile.mode_title": "Режим дня",
   "profile.mode_empty": "Режим ещё не настроен.",
   "profile.commitments_title": "Обязательные дела",

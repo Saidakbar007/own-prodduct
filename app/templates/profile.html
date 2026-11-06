@@ -27,6 +27,18 @@
   {% endif %}
 </a>
 
+{% if day_answers %}
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-6)">
+  <h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.day_answers_title') }}</h2>
+  {% for a in day_answers %}
+  <div style="padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <p style="font-size:var(--text-xs);color:var(--text-faint)">{{ a.question_text }}</p>
+    <p style="font-size:var(--text-sm)">{{ a.option_text }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 <div class="card" style="padding:var(--space-5);margin-bottom:var(--space-6)">
   <h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.mode_title') }}</h2>
   {% if profile and profile.wake_time %}

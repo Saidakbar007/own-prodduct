@@ -17,8 +17,10 @@ from app.i18n import translate
 from app.models import Commitment, Profile, Proof, Reveal, Season, SphereLevelHistory, SphereState, User
 from app.newlife.goal_catalog import all_goals
 from app.newlife.methods import METHODS
+from app.newlife.question_bank import question_by_id
 from app.newlife.spheres import SPHERE_BY_ID, SPHERES
 from app.rendering import render
+from app.services.day_questions import recent_answers
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import WEEKDAY_LABELS
 from app.services.usertime import can_change_timezone, is_valid_timezone
@@ -96,6 +98,11 @@ def profile_page(request: Request, user: User = Depends(require_user), db: Sessi
         if s.sphere_id in SPHERE_BY_ID
     ]
     commitments = db.exec(select(Commitment).where(Commitment.uid == user.id, Commitment.active.is_(True))).all()
+    day_answers = [
+        {"question_text": q.text, "option_text": a.option_text, "answered_on": a.answered_on}
+        for a in recent_answers(db, user.id, limit=5)
+        if (q := question_by_id(a.question_id))
+    ]
 
     return render(
         request,
@@ -105,6 +112,7 @@ def profile_page(request: Request, user: User = Depends(require_user), db: Sessi
             "profile": profile,
             "wheel": wheel,
             "commitments_count": len(commitments),
+            "day_answers": day_answers,
             "completed": completed,
             "reveals": reveals,
             "hero_stage": stage,
