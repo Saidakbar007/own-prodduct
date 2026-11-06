@@ -24,11 +24,11 @@ from app.auth import get_current_user, require_user
 from app.database import get_session
 from app.models import Profile, SphereState, User
 from app.newlife import point_a
-from app.newlife.spheres import SPHERES, SPHERE_BY_ID, has_goal_catalog
+from app.newlife.goal_catalog import goal_meta
+from app.newlife.spheres import SPHERES, SPHERE_BY_ID
 from app.rendering import render
 from app.seasons import engine
 from app.seasons_library.loader import get_template, load_library
-from app.services.custom_goal import ai_generation_available, generate_custom_template
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import (
@@ -50,6 +50,7 @@ from app.services.seasons import (
     get_or_create_wave,
     wave_composition_count,
 )
+from app.services.usertime import today_for
 
 router = APIRouter(prefix="/onboarding")
 
@@ -145,28 +146,49 @@ def sphere_level_submit(request: Request, option_index: Optional[int] = Form(Non
 
 @router.get("/goal")
 def goal_picker(request: Request, db: Session = Depends(get_session)):
-    """Экран 4: цель из каталога (пока полноценно — только "Тело", §3)."""
-    tiles = [
-        {"id": t.id, "title": t.title, "category": t.category, "lengths": t.lengths}
-        for t in load_library().values()
-    ]
-    tiles.sort(key=lambda t: t["id"])
+    """Экран 4: карточки целей из каталога выбранных на экране 2 сфер (PRD
+    1.0 F2 — любая из 11, не только "Тело"). Без выбранных сфер в черновике
+    (человек уже зарегистрирован и зашёл сюда за новой целью/сезоном,
+    см. docstring модуля) — показываем каталог всех сфер без фильтра."""
     draft = _draft(request)
+    chosen_spheres = draft.get("spheres") or []
+
+    tiles = []
+    for t in load_library().values():
+        entry = goal_meta(t.id)
+        if entry is None:
+            continue
+        if chosen_spheres and entry.sphere not in chosen_spheres:
+            continue
+        tiles.append(
+            {
+                "id": t.id,
+                "title": entry.title.ru,
+                "sphere": entry.sphere,
+                "lengths": t.lengths,
+            }
+        )
+
+    sphere_order = {s: i for i, s in enumerate(chosen_spheres)}
+    tiles.sort(key=lambda tile: (sphere_order.get(tile["sphere"], 99), tile["id"]))
+
+    spheres_shown = sorted({tile["sphere"] for tile in tiles}, key=lambda s: sphere_order.get(s, 99))
+
     return render(
         request,
         "onboarding/goal.html",
         {
             "tiles": tiles,
-            "ai_available": ai_generation_available(),
-            "can_skip": not draft.get("spheres") or any(not has_goal_catalog(s) for s in draft.get("spheres", [])),
+            "spheres_shown": [SPHERE_BY_ID[s] for s in spheres_shown],
         },
     )
 
 
 @router.post("/goal/skip")
 def goal_skip(request: Request):
-    """Выбранные сферы без каталога целей (пока только "Тело" его имеет) —
-    пропускаем создание сезона, привычку в любую сферу можно завести позже."""
+    """«Пропустить» (PRD 1.0 §5: кнопка-пропуск есть на каждом экране) —
+    без выбора цели сейчас; привычку/цель в любую сферу можно завести позже
+    из «Сезонов»."""
     draft = _draft(request)
     draft.pop("template_id", None)
     _save(request, draft)
@@ -177,17 +199,8 @@ def goal_skip(request: Request):
 def goal_submit(
     request: Request,
     template_id: str = Form(...),
-    custom_text: str = Form(""),
     db: Session = Depends(get_session),
 ):
-    if template_id == "custom":
-        template = generate_custom_template(db, custom_text)
-        if template is None:
-            return render(request, "onboarding/custom_unavailable.html", {"goal_text": custom_text})
-        # Сгенерированный шаблон сохранён как draft и используется так же, как
-        # библиотечный — здесь просто продолжаем с его id.
-        template_id = template.id
-
     draft = _draft(request)
     draft["template_id"] = template_id
     request.session["onboarding"] = draft
@@ -567,14 +580,16 @@ def start_for_existing_user(
         push_flash(request, "onboarding.error_too_many_active", "error")
         return RedirectResponse("/seasons", status_code=303)
 
+    entry = goal_meta(template_id)
     season = create_season(
         db,
         uid=user.id,
         template_id=template_id,
         length_days=draft["length_days"],
         baseline_value=draft["baseline_value"],
-        reference_date=date.today(),
+        reference_date=today_for(user),  # не date.today() — см. auth.py register_submit
         secondary_baseline_value=draft.get("secondary_baseline_value"),
+        sphere_id=entry.sphere if entry else None,
     )
     log_event_safe(db, "season_started", uid=user.id, season_id=season.id)
     request.session.pop("onboarding", None)

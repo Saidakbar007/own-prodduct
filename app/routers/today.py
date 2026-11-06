@@ -39,6 +39,7 @@ from app.services.seasons import (
     get_active_seasons,
     get_current_season,
     get_day,
+    goal_metric_for_season,
     set_current_season,
     sync_season_state,
     today_day_number,
@@ -111,11 +112,13 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
                 "missed": "skip",
             }.get(day.status, "wave_start" if day_number == 1 else "pending")
             other_seasons = [s for s in get_active_seasons(db, user.id) if s.id != season.id]
+            metric = goal_metric_for_season(season)
             season_ctx = {
                 "has_season": True,
                 "season": season,
                 "day": day,
                 "day_number": day_number,
+                "metric_kind": metric.kind if metric else "measure",
                 "ring_circumference": round(RING_CIRCUMFERENCE, 1),
                 "ring_offset": round(RING_CIRCUMFERENCE * (1 - percent), 1),
                 "forecast": round(forecast, 1),

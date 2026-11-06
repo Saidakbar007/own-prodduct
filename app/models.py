@@ -108,6 +108,11 @@ class SeasonDay(SQLModel, table=True):
     done_at: Optional[datetime] = None  # серверное время отметки
     proof_id: Optional[int] = Field(default=None, foreign_key="proof.id")
     reminder_sent: bool = Field(default=False)  # §12: без дублей напоминаний бота
+    # NewLife 1.0 (F4): минуты завершённого блока таймера фокуса/практики —
+    # только для дней, где главное действие отмечено через таймер, а не
+    # обычную кнопку "Сделал" (app/routers/focus.py). Используется, чтобы
+    # предзаполнить недельный замер суммой уже залогированных минут.
+    logged_minutes: Optional[float] = None
 
 
 class Measurement(SQLModel, table=True):

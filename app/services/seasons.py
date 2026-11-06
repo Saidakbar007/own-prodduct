@@ -356,3 +356,33 @@ def season_statuses(db: Session, season_id: int) -> list[str]:
     return db.exec(
         select(SeasonDay.status).where(SeasonDay.season_id == season_id).order_by(SeasonDay.day_number)
     ).all()
+
+
+def goal_metric_for_season(season: Season):
+    """Метрика цели из каталога (app/newlife/goal_catalog.GoalMetric) — None,
+    если у шаблона нет записи в каталоге (например, "своя цель" от ИИ,
+    BACKLOG.md). PRD 1.0 F3: по ней на /measure выбирается виджет ввода
+    (замер/счётчик/таймер/да-нет/процент) и шаг округления."""
+    entry = goal_meta(season.template_id)
+    return entry.metric if entry else None
+
+
+def sum_logged_minutes_since_last_measure(db: Session, season: Season, today_day_number: int) -> float:
+    """Сумма минут, залогированных через таймер фокуса (F4) с последнего
+    замера — предзаполняет /measure для целей с metric.kind == 'timer',
+    чтобы не приходилось вспоминать и вводить число самому."""
+    last_measured_day = db.exec(
+        select(Measurement.day_number)
+        .where(Measurement.season_id == season.id)
+        .order_by(Measurement.day_number.desc())
+    ).first()
+    since_day = last_measured_day if last_measured_day is not None else 0
+    minutes = db.exec(
+        select(SeasonDay.logged_minutes).where(
+            SeasonDay.season_id == season.id,
+            SeasonDay.day_number > since_day,
+            SeasonDay.day_number <= today_day_number,
+            SeasonDay.logged_minutes.is_not(None),
+        )
+    ).all()
+    return sum(minutes)

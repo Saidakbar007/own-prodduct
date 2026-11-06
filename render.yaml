@@ -12,8 +12,6 @@ services:
         generateValue: true
       - key: DATABASE_URL
         sync: false
-      - key: ANTHROPIC_API_KEY
-        sync: false
       - key: ADMIN_LOGINS
         sync: false
       - key: TELEGRAM_BOT_TOKEN

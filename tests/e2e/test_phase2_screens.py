@@ -12,7 +12,7 @@ from playwright.sync_api import Page, expect
 from sqlmodel import select
 
 from app.database import engine
-from app.models import Season, SeasonDay
+from app.models import Season, SeasonDay, User
 from sqlmodel import Session
 
 THEMES = ["dark", "light"]
@@ -29,13 +29,15 @@ def _shoot(page: Page, name: str, theme: str) -> None:
     page.screenshot(path=str(SCREENSHOT_DIR / f"{name}-{theme}.png"), full_page=True)
 
 
-def _register_with_season(page: Page, live_server_url: str, template_id: str = "run_5k") -> str:
+def _register_with_season(
+    page: Page, live_server_url: str, template_id: str = "run_5k", sphere_id: str = "body"
+) -> str:
     """Экраны 1-12 онбординга v8 (§5 docs/specs/NEWLIFE_V8_SPEC.md) до регистрации."""
     unique = uuid.uuid4().hex[:8]
     page.goto(f"{live_server_url}/onboarding")  # экран 1: философия
     page.click('a[href="/onboarding/spheres"]')
 
-    page.check('input[name="sphere_ids"][value="body"]')  # экран 2: сферы
+    page.check(f'input[name="sphere_ids"][value="{sphere_id}"]')  # экран 2: сферы
     page.locator('form[action="/onboarding/spheres"]').first.locator('button[type="submit"]').click()
     page.locator('form[action="/onboarding/sphere-level"] button[type="submit"] >> nth=0').click()  # экран 3
 
@@ -139,6 +141,32 @@ def test_onboarding_goal_screen(page: Page, live_server_url, theme):
     _set_theme(page, theme)
     expect(page.get_by_role("heading", name="Какой у тебя будет сезон?")).to_be_visible()
     _shoot(page, "onboarding-goal", theme)
+
+
+@pytest.mark.parametrize("theme", THEMES)
+def test_focus_timer_screen(page: Page, live_server_url, theme):
+    """Таймер фокуса (PRD 1.0 F3/F4): цель "Глубокий фокус" (сфера "Разум",
+    metric.kind == "timer") — пикер длительности блока на /focus."""
+    unique = _register_with_season(page, live_server_url, template_id="deep_focus", sphere_id="mind")
+
+    with Session(engine) as db:
+        user = db.exec(select(User).where(User.login == f"screens-{unique}")).first()
+        season = db.exec(
+            select(Season).where(Season.uid == user.id, Season.template_id == "deep_focus")
+        ).first()
+        day = db.exec(
+            select(SeasonDay).where(SeasonDay.season_id == season.id, SeasonDay.day_number == 1)
+        ).first()
+        day.kind = "train"
+        day.status = "planned"
+        db.add(day)
+        db.commit()
+
+    page.set_viewport_size(VIEWPORT)
+    page.goto(f"{live_server_url}/focus")
+    _set_theme(page, theme)
+    expect(page.locator(".focus-duration-btn").first).to_be_visible()
+    _shoot(page, "focus-timer", theme)
 
 
 @pytest.mark.parametrize("theme", THEMES)

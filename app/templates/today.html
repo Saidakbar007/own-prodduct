@@ -117,6 +117,22 @@
     <h3 class="action-card__title">{{ day.title }}</h3>
     <p class="action-card__body">{{ day.instructions }}</p>
   </div>
+  {% elif metric_kind == 'timer' %}
+  <div class="action-card" data-tour="action">
+    <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
+    <h3 class="action-card__title">{{ day.title }}</h3>
+    <p class="action-card__body">{{ day.instructions }}</p>
+    <div class="action-card__actions">
+      <a class="btn btn--primary" href="/focus" data-haptic="success"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-check"/></svg>{{ t('today.cta_start_timer') }}</a>
+    </div>
+    <form method="post" action="/today/minimal" id="today-minimal-form">
+      <button class="btn btn--secondary" type="submit" data-haptic="light" style="margin-top:var(--space-3)">{{ t('today.cta_minimal') }}</button>
+    </form>
+    <details style="margin-top:var(--space-4)">
+      <summary class="btn--text" style="cursor:pointer;display:inline">{{ t('today.cta_skip') }}</summary>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('today.skip_explainer', chances=season.second_chances_left) }}</p>
+    </details>
+  </div>
   {% else %}
   <div class="action-card" data-tour="action">
     <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>

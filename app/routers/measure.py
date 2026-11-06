@@ -13,12 +13,19 @@ from sqlmodel import Session, select
 from app.auth import require_user
 from app.database import get_session
 from app.models import Measurement, Proof, SeasonDay, User
+from app.newlife.rounding import round_to_step
 from app.rendering import render
 from app.seasons import engine
 from app.seasons_library.loader import get_template
 from app.services import mascot
 from app.services.events import log_event_safe
-from app.services.seasons import ensure_days_built_for_today, get_current_season, today_day_number
+from app.services.seasons import (
+    ensure_days_built_for_today,
+    get_current_season,
+    goal_metric_for_season,
+    sum_logged_minutes_since_last_measure,
+    today_day_number,
+)
 from app.services.trust import PENALTY_BLURRY_OR_BLANK_PHOTO, apply_trust_penalty, is_measurement_plausible
 from app.services.uploads import analyze_photo, save_photo_bytes
 from app.services.usertime import today_for
@@ -31,11 +38,28 @@ def measure_form(request: Request, user: User = Depends(require_user), db: Sessi
     season = get_current_season(db, user.id, request)
     if not season:
         return RedirectResponse("/onboarding", status_code=303)
+    today = today_for(user)
+    ensure_days_built_for_today(db, season, today)
     template = get_template(season.template_id)
+    metric = goal_metric_for_season(season)
+
+    prefill_value = None
+    if metric and metric.kind == "timer":
+        logged = sum_logged_minutes_since_last_measure(db, season, today_day_number(season, today))
+        if logged > 0:
+            prefill_value = round_to_step(logged, metric.rounding)
+
     return render(
         request,
         "measure.html",
-        {"season": season, "template": template, "result": None, "lang": user.language},
+        {
+            "season": season,
+            "template": template,
+            "metric": metric,
+            "prefill_value": prefill_value,
+            "result": None,
+            "lang": user.language,
+        },
     )
 
 
@@ -56,6 +80,9 @@ async def measure_submit(
     today = today_for(user)
     ensure_days_built_for_today(db, season, today)
     template = get_template(season.template_id)
+    metric = goal_metric_for_season(season)
+    if metric:
+        value = round_to_step(value, metric.rounding)
 
     previous = db.exec(
         select(Measurement.value)
@@ -129,6 +156,7 @@ async def measure_submit(
         {
             "season": season,
             "template": template,
+            "metric": metric,
             "result": {
                 "value": value,
                 "expected": round(expected_value, 1),

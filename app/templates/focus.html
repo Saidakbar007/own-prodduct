@@ -1,0 +1,47 @@
+{% extends "cinematic_base.html" %}
+{% block title %}{{ t('focus.title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+<div class="focus-screen" id="focus-screen" style="min-height:100dvh;max-width:480px;margin:0 auto;padding:var(--space-5);display:flex;flex-direction:column">
+
+  <a href="/today" class="btn--text" style="align-self:flex-start;margin-bottom:var(--space-5)">{{ t('focus.back') }}</a>
+
+  <div id="focus-picker" style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:var(--space-5)">
+    <div style="text-align:center">
+      <h1 style="font-size:var(--text-xl);margin-bottom:var(--space-2)">{{ day.title }}</h1>
+      <p style="color:var(--text-muted);font-size:var(--text-sm)">{{ t('focus.pick_duration') }}</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-3)">
+      {% for m in block_minutes %}
+      <button type="button" class="btn btn--secondary focus-duration-btn" data-minutes="{{ m }}">{{ m }}<span style="font-size:var(--text-xs);display:block">{{ t('focus.minutes_unit') }}</span></button>
+      {% endfor %}
+    </div>
+    <p style="text-align:center;font-size:var(--text-xs);color:var(--text-faint)">{{ t('focus.distraction_hint') }}</p>
+  </div>
+
+  <div id="focus-timer" style="flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-6)">
+    <span id="focus-clock" class="tabular" style="font-size:3.5rem;font-weight:700;letter-spacing:0.02em">00:00</span>
+    <p id="focus-status" style="color:var(--text-muted);font-size:var(--text-sm)">{{ t('focus.running') }}</p>
+
+    <div style="display:flex;flex-direction:column;gap:var(--space-3);width:100%">
+      <button type="button" id="focus-distracted" class="btn btn--secondary btn--block">{{ t('focus.cta_distracted') }}</button>
+      <button type="button" id="focus-stop" class="btn btn--text">{{ t('focus.cta_stop_early') }}</button>
+    </div>
+
+    <form method="post" action="/focus/complete" id="focus-complete-form" style="display:none">
+      <input type="hidden" name="minutes" id="focus-minutes-input" value="0" />
+      <input type="hidden" name="minimal" id="focus-minimal-input" value="false" />
+    </form>
+  </div>
+
+  <div id="focus-done" style="flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-5);text-align:center">
+    <svg class="icon" style="width:48px;height:48px;color:var(--accent-turquoise)"><use href="#i-check"/></svg>
+    <h2 style="font-size:var(--text-lg)">{{ t('focus.done_title') }}</h2>
+    <button type="button" id="focus-save" class="btn btn--primary btn--block">{{ t('focus.cta_save') }}</button>
+  </div>
+</div>
+
+<script>
+  window.__focusUnit = {{ metric_unit | tojson }};
+</script>
+<script src="/static/focus_timer.js"></script>
+{% endblock %}

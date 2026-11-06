@@ -12,12 +12,13 @@ from sqlmodel import Session, select
 from app.auth import hash_password, verify_password
 from app.database import get_session
 from app.models import User
+from app.newlife.goal_catalog import goal_meta
 from app.rendering import render
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import create_profile_from_draft
 from app.services.seasons import create_season
-from app.services.usertime import DEFAULT_TIMEZONE, is_valid_timezone
+from app.services.usertime import DEFAULT_TIMEZONE, is_valid_timezone, today_for
 
 router = APIRouter()
 
@@ -92,14 +93,23 @@ def register_submit(
     create_profile_from_draft(db, user.id, draft)
 
     if draft.get("template_id") and "baseline_value" in draft and "length_days" in draft:
-        sphere_id = "body" if "body" in draft.get("spheres", ["body"]) else None
+        # PRD 1.0 F2: sphere_id цели — не хардкод "body", а то, к какой сфере
+        # на самом деле относится выбранный шаблон в каталоге (любая из 11).
+        entry = goal_meta(draft["template_id"])
+        sphere_id = entry.sphere if entry else None
         season = create_season(
             db,
             uid=user.id,
             template_id=draft["template_id"],
             length_days=draft["length_days"],
             baseline_value=draft["baseline_value"],
-            reference_date=date.today(),
+            # НЕ date.today() (локальное время процесса) — на сервере в
+            # другом часовом поясе от пользователя (или просто другом, чем
+            # UTC) это может дать "сегодня" на день раньше/позже, чем везде
+            # остальном считает today_for() — и тогда day_number для
+            # реальной даты окажется вне диапазона (день 0 не существует,
+            # первый день сезона не находится). Нашлось на этом DEV-окружении.
+            reference_date=today_for(user),
             secondary_baseline_value=draft.get("secondary_baseline_value"),
             sphere_id=sphere_id,
         )
