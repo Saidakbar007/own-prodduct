@@ -1,0 +1,221 @@
+# Каталог целей сферы «Тело» (PRD 1.0). Источник: docs/content/NEWLIFE_1_0_CONTENT.md
+# (раздел «Проверка норм сферы ТЕЛО» + «Новые цели для ТЕЛА») — приоритет
+# выше docs/specs/NEWLIFE_V8_SPEC.md §7. Схема и загрузчик — app/newlife/goal_catalog.py.
+# Сценарий сезона (день за днём) каждой цели — app/seasons_library/<id>.yaml.
+sphere: body
+goals:
+  - id: muscle_gain
+    sphere: body
+    title: { ru: "Набрать массу", uz: "Mushak massasini oshirish" }
+    difficulty: "Для продолжающих"
+    for_whom: "Для тех, кто хочет растить силу и мышцы с нуля в зале"
+    outcome: "В конце — заметно больший рабочий вес и рост массы тела"
+    metric: { key: weight_body, kind: measure, unit: "кг", rounding: 0.1 }
+    secondary:
+      - "обхваты (талия, грудь, плечо, бедро)"
+      - "фото раз в 2 недели"
+      - "рабочие веса — только индикатор тренировки"
+    targets: ["90 дней"]
+    pace: >-
+      +0,25–0,5% веса тела в неделю (темп ограничен кодом, engine.clamp_weight_target).
+      Белок по умолчанию 1,6 г/кг/сут, допустимый диапазон 1,4–2,2 (Morton 2018:
+      эффект выходит на плато около 1,6 г/кг — не 1,4–2,0, как было раньше).
+      Силовые 2–3 раза в неделю.
+    week_skeleton: "3 силовые тренировки в неделю (Пн/Ср/Пт), 1 день отдыха минимум"
+    minimal_version: "1 круг упражнений в половину объёма вместо полной тренировки"
+    source:
+      name: "Iraki 2019 / ISSN (Jäger 2017) / Morton 2018 / ACSM"
+      url: "https://doi.org/10.3390/sports7070154"
+    template_id: muscle_gain
+
+  - id: fat_loss_safe
+    sphere: body
+    title: { ru: "Похудеть", uz: "Vazn yoʻqotish" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто хочет снижать вес безопасно, без жёстких диет"
+    outcome: "В конце — снижение веса в безопасном темпе и новые привычки"
+    metric: { key: weight_body, kind: measure, unit: "кг", rounding: 0.1 }
+    secondary: ["обхват талии", "шаги", "силовые 2×/нед"]
+    targets: ["30 дней", "60 дней", "90 дней"]
+    pace: >-
+      ≤ min(1% массы тела, 1 кг) в неделю (Helms 2014; абсолютный потолок —
+      PRD 1.0, т.к. для лёгких людей 1 кг/нед — это больше 1%). Недоступно при
+      текущем ИЛИ целевом ИМТ < 18,5 (engine.meets_fat_loss_eligibility).
+    week_skeleton: "3 тренировки в неделю (Пн/Ср/Пт) + ежедневные шаги, 2 дня отдыха от силовых"
+    minimal_version: "1 круг упражнений и 4000 шагов вместо полной тренировки"
+    source:
+      name: "CDC / WHO / Helms 2014"
+      url: "https://doi.org/10.1186/1550-2783-11-20"
+    template_id: fat_loss_safe
+
+  - id: run_5k
+    sphere: body
+    title: { ru: "Пробежать 5 км", uz: "5 km yugurish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто пока не пробегает и пяти минут без остановки"
+    outcome: "В конце — 5 км бега без остановки"
+    metric: { key: run_minutes, kind: measure, unit: "мин", rounding: 0.5 }
+    secondary: ["пробежек в неделю"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      9 недель, 3 пробежки в неделю, день отдыха между ними. Если неделя
+      далась тяжело — повторить её, а не переходить дальше (совет самой NHS;
+      в движке это уже делает общий adapt_phase: результат заметно хуже
+      ожидаемого → фаза не продвигается вперёд).
+    week_skeleton: "3 пробежки в неделю (Пн/Ср/Пт), день отдыха между ними"
+    minimal_version: "15–20 минут быстрой ходьбы вместо пробежки"
+    source:
+      name: "NHS Couch to 5K"
+      url: "https://www.nhs.uk/better-health/get-active/get-running-with-couch-to-5k/couch-to-5k-running-plan/"
+    template_id: run_5k
+
+  - id: pullups_10
+    sphere: body
+    title: { ru: "Подтягивания", uz: "Turnikda tortilish" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто пока не может подтянуться ни разу"
+    outcome: "В конце — 10 чистых подтягиваний подряд"
+    metric: { key: max_reps, kind: measure, unit: "повторений", rounding: 1 }
+    secondary: ["недельный объём"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      2–3 тренировки в неделю, между тренировками одной группы мышц ≥48 ч
+      (ACSM). Нагрузку повышать на 2–10%, когда текущая выполняется с запасом
+      1–2 повтора.
+    week_skeleton: "2–3 тренировки в неделю, не подряд"
+    minimal_version: "Половина обычного объёма подходов"
+    source:
+      name: "ACSM Position Stand"
+      url: "https://doi.org/10.1249/MSS.0b013e3181915670"
+    template_id: pullups_10
+
+  - id: pushups_50
+    sphere: body
+    title: { ru: "Отжимания", uz: "Turnikda emas, yerda tortilish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет укрепить верх тела без зала"
+    outcome: "В конце — 50 отжиманий подряд"
+    metric: { key: max_reps, kind: measure, unit: "повторений", rounding: 1 }
+    secondary: ["недельный объём"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      2–3 тренировки в неделю, между тренировками одной группы мышц ≥48 ч
+      (ACSM). Нагрузку повышать на 2–10%, когда текущая выполняется с запасом
+      1–2 повтора.
+    week_skeleton: "2–3 тренировки в неделю, не подряд"
+    minimal_version: "Половина обычного объёма подходов"
+    source:
+      name: "ACSM Position Stand"
+      url: "https://doi.org/10.1249/MSS.0b013e3181915670"
+    template_id: pushups_50
+
+  - id: activity_steps
+    sphere: body
+    title: { ru: "Больше активности", uz: "Faolroq boʻlish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет больше двигаться в течение дня"
+    outcome: "В конце — уверенные 8–10 тыс. шагов в день"
+    metric: { key: steps_avg7d, kind: measure, unit: "шагов", rounding: 500 }
+    secondary: ["минуты активности"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Рост постепенно, +500–1000 шагов в неделю; цель 8–10 тыс. до 60 лет
+      (Paluch 2022). Дополняет ВОЗ: 150–300 мин умеренной ИЛИ 75–150 мин
+      интенсивной активности в неделю, плюс силовые ≥2 дня/нед, плюс меньше
+      сидеть (см. цель «Меньше сидеть»).
+    week_skeleton: "Ежедневная цель по шагам + 150–300 мин умеренной активности в неделю"
+    minimal_version: "Прогулка 10 минут"
+    source:
+      name: "Paluch 2022 / WHO"
+      url: "https://www.eurekalert.org/news-releases/945267"
+    template_id: activity_steps
+
+  - id: sleep_consistency
+    sphere: body
+    title: { ru: "Наладить сон", uz: "Uyquni tartibga solish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет высыпаться и ложиться/вставать стабильно"
+    outcome: "В конце — 7+ часов сна и стабильный режим"
+    metric: { key: sleep_hours_avg7d, kind: measure, unit: "часов", rounding: 0.25 }
+    secondary: ["разброс времени подъёма"]
+    targets: ["30 дней", "60 дней"]
+    pace: "7+ часов (AASM/SRS для 18–60 лет; NSF для 18–25 — 7–9 часов); подъём ± 30 минут изо дня в день"
+    week_skeleton: "Ежедневно — подъём и отбой в одно время, включая выходные"
+    minimal_version: "Лечь не позже обычного хотя бы на 30 минут"
+    source:
+      name: "AASM / SRS"
+      url: "https://aasm.org/aasm-and-srs-publish-new-sleep-duration-consensus-statement/"
+    template_id: sleep_consistency
+
+  - id: flexibility
+    sphere: body
+    title: { ru: "Гибкость и подвижность", uz: "Moslashuvchanlik" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет меньше скованности и больше подвижности"
+    outcome: "В конце — растяжка входит в привычку, подвижность заметно лучше"
+    metric: { key: flexibility_sessions, kind: counter, unit: "сессий/нед", rounding: 1 }
+    secondary: ["тест «наклон сидя», см, раз в 4 недели"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Каждая поза 10–30 сек, в сумме 60 сек на упражнение, до лёгкого
+      натяжения, без боли. Цель — 2–3 сессии в неделю, лучше ежедневно.
+    week_skeleton: "Пн/Ср/Пт по 10 минут после тренировки или пар"
+    minimal_version: "1 поза × 30 секунд"
+    source:
+      name: "ACSM (Garber 2011)"
+      url: "https://doi.org/10.1249/MSS.0b013e318213fefb"
+    template_id: flexibility
+
+  - id: nutrition
+    sphere: body
+    title: { ru: "Основы здорового питания", uz: "Toʻgʻri ovqatlanish asoslari" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет наладить питание без подсчёта калорий"
+    outcome: "В конце — овощи и фрукты в каждом приёме пищи, без диет"
+    metric: { key: veg_fruit_portions, kind: counter, unit: "порций/день", rounding: 1 }
+    secondary: ["сладкие напитки, стаканов/нед", "ощущение «солёной еды»"]
+    targets: ["30 дней", "60 дней"]
+    pace: "+1 порция за неделю; цель ≥5 порций (≈400 г) в день (ВОЗ: свободный сахар <10%, соль <5 г)"
+    week_skeleton: "Ежедневная отметка порций; в воскресенье — «тарелка недели»"
+    minimal_version: "1 фрукт или овощ в день"
+    source:
+      name: "ВОЗ, здоровое питание"
+      url: "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
+    template_id: nutrition
+
+  - id: water
+    sphere: body
+    title: { ru: "Вода", uz: "Suv ichish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто пьёт мало воды в течение дня"
+    outcome: "В конце — привычка пить воду в течение дня, а не залпом вечером"
+    metric: { key: water_liters, kind: counter, unit: "л/день", rounding: 0.25 }
+    secondary: ["цвет мочи (светлый — норма)"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Ориентир EFSA: всего жидкости ж ~2,0 л, м ~2,5 л в день, из них 20–30%
+      приходит с едой — то есть напитков ~1,6 л (ж) / ~2,0 л (м). При жаре и
+      спорте — больше. Цели выше 3 л в день не ставим.
+    week_skeleton: "Ежедневно, кнопка «+250 мл» в течение дня"
+    minimal_version: "1 стакан воды утром"
+    source:
+      name: "EFSA 2010"
+      url: "https://doi.org/10.2903/j.efsa.2010.1459"
+    template_id: water
+
+  - id: sitting_breaks
+    sphere: body
+    title: { ru: "Меньше сидеть", uz: "Kamroq oʻtirish" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто подолгу сидит за учёбой или работой"
+    outcome: "В конце — регулярные перерывы от сидения входят в привычку"
+    metric: { key: sitting_breaks, kind: counter, unit: "перерывов/день", rounding: 1 }
+    secondary: ["минуты упражнений на спину и кор", "самооценка дискомфорта 1–5"]
+    targets: ["30 дней", "60 дней"]
+    pace: "+1 перерыв в неделю, вставать каждые 30–60 минут; кор 2–3 раза в неделю, 10 минут"
+    week_skeleton: "Ежедневные перерывы; Вт/Чт/Сб — 10 минут кора"
+    minimal_version: "1 перерыв за пару/рабочий блок"
+    source:
+      name: "ВОЗ 2020 (физическая активность и сидячий образ жизни)"
+      url: "https://www.who.int/publications/i/item/9789240015128"
+    template_id: sitting_breaks

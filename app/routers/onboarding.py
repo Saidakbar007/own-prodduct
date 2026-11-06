@@ -220,8 +220,13 @@ def health_submit(
     if date.today().year - birth_year < MIN_AGE:
         return render(request, "onboarding/health.html", {"error": "auth.error_age_limit"})
 
-    if template_id == "fat_loss_safe" and not engine.meets_fat_loss_eligibility(weight_kg, height_cm):
-        return render(request, "onboarding/bmi_blocked.html", {})
+    if template_id == "fat_loss_safe":
+        # Ориентировочный целевой вес до клампа темпа (длительность сезона
+        # выбирается позже, на /onboarding/schedule) — PRD 1.0: блокировать
+        # при текущем ИЛИ целевом ИМТ < 18,5, не только текущем.
+        nominal_target = weight_kg - get_template(template_id).target_default
+        if not engine.meets_fat_loss_eligibility(weight_kg, height_cm, nominal_target):
+            return render(request, "onboarding/bmi_blocked.html", {})
 
     draft["height_cm"] = height_cm
     draft["weight_kg"] = weight_kg

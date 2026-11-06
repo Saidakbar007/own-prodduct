@@ -12,7 +12,7 @@ from sqlmodel import Session, select
 from app.models import Goal, Measurement, Season, SeasonDay, Wave
 from app.seasons import engine
 from app.seasons.schema import Phase, SeasonTemplate
-from app.seasons_library.catalog_meta import meta_for
+from app.newlife.goal_catalog import goal_meta
 from app.seasons_library.loader import get_template
 from app.services.events import log_event_safe
 from app.services.squads import assign_squad
@@ -81,13 +81,14 @@ def create_season(
 
     goal_id: Optional[int] = None
     if sphere_id:
-        meta = meta_for(template_id)
+        goal_catalog_entry = goal_meta(template_id)
+        metric_key = goal_catalog_entry.metric.key if goal_catalog_entry else "custom"
         goal = Goal(
             uid=uid,
             sphere_id=sphere_id,
             template_id=template_id,
             title=template.title,
-            metric_key=meta.get("metric_key", "custom"),
+            metric_key=metric_key,
             baseline=baseline_value,
             target=target_value,
             safe_rate=None,

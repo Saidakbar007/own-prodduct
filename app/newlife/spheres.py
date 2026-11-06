@@ -1,8 +1,12 @@
 """
 11 сфер жизни (§3 docs/specs/NEWLIFE_V8_SPEC.md). Названия/описания — в i18n
 (`sphere.<id>.name`, `sphere.<id>.description`), здесь только константы и
-порядок показа. В v8 полностью работает каталог целей только для "body" —
-остальные сферы видны в онбординге и колесе жизни с пометкой "скоро".
+порядок показа. Каталог целей (есть ли у сферы цели, которые можно выбрать
+в онбординге) — не хардкод, а то, что реально загрузилось из
+content/spheres/*.yaml (PRD 1.0 F2, см. app/newlife/goal_catalog.py). Пока
+каталог готов только для "body" — остальные сферы видны в онбординге и
+колесе жизни с пометкой "скоро", и появятся сами по себе, когда для них
+добавят YAML-каталог — без изменений в этом модуле.
 """
 
 from dataclasses import dataclass
@@ -31,15 +35,15 @@ SPHERES: list[Sphere] = [
 SPHERE_IDS: list[str] = [s.id for s in SPHERES]
 SPHERE_BY_ID: dict[str, Sphere] = {s.id: s for s in SPHERES}
 
-# §3: "в v8 полностью работают: сфера Тело... каталоги целей остальных сфер —
-# пометка «скоро»". Привычки/плохие привычки можно заводить в любую сферу уже
-# сейчас — ограничение только на каталог ЦЕЛЕЙ (Goal/сезоны).
-SPHERES_WITH_GOAL_CATALOG: set[str] = {"body"}
-
-
 def is_valid_sphere(sphere_id: str) -> bool:
     return sphere_id in SPHERE_BY_ID
 
 
 def has_goal_catalog(sphere_id: str) -> bool:
-    return sphere_id in SPHERES_WITH_GOAL_CATALOG
+    """Привычки/плохие привычки можно заводить в любую сферу уже сейчас —
+    ограничение только на каталог ЦЕЛЕЙ (Goal/сезоны): пока для сферы нет
+    content/spheres/<id>.yaml, она видна в онбординге/колесе с пометкой
+    "скоро"."""
+    from app.newlife.goal_catalog import available_sphere_ids
+
+    return sphere_id in available_sphere_ids()

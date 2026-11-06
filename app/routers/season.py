@@ -13,8 +13,25 @@ from app.auth import require_user
 from app.database import get_session
 from app.models import Measurement, Reveal, Season, SeasonDay, User
 from app.rendering import render
-from app.seasons_library.catalog_meta import meta_for, poster_hero_for
+from app.newlife.goal_catalog import goal_meta
+from app.seasons_library.catalog_meta import poster_hero_for
 from app.seasons_library.loader import load_library
+
+_DEFAULT_CATALOG_META = {
+    "difficulty": "Свой уровень",
+    "for_whom": "Под твою собственную цель",
+    "outcome": "Результат — по условиям, которые задаёт сама цель",
+}
+
+
+def _display_meta(template_id: str) -> dict:
+    """Текст карточки каталога (§7 PRD «Откуда эти нормы»): из
+    content/spheres/*.yaml, с запасным текстом для шаблонов без каталога
+    (своя цель от ИИ — см. BACKLOG.md)."""
+    entry = goal_meta(template_id)
+    if entry is None:
+        return _DEFAULT_CATALOG_META
+    return {"difficulty": entry.difficulty, "for_whom": entry.for_whom, "outcome": entry.outcome}
 from app.services.seasons import (
     MAX_ACTIVE_SEASONS,
     compute_forecast,
@@ -57,7 +74,7 @@ def seasons_hub(request: Request, user: User = Depends(require_user), db: Sessio
     catalog = [
         {
             "template": t,
-            "meta": meta_for(t.id),
+            "meta": _display_meta(t.id),
             "poster_hero": poster_hero_for(t.id),
         }
         for t in sorted(load_library().values(), key=lambda t: t.id)

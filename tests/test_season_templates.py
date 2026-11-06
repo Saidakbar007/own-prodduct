@@ -1,5 +1,7 @@
-"""Библиотека шаблонов сезонов (§5 Сезоны, §7 NewLife v8) — все 7 загружаются
-и валидны (5 исходных + activity_steps/sleep_consistency из v8)."""
+"""Библиотека шаблонов сезонов (§5 Сезоны, §7 NewLife v8) — все 11 загружаются
+и валидны (5 исходных + activity_steps/sleep_consistency из v8 + 4 новые цели
+"Тело" 1.0: flexibility/nutrition/water/sitting_breaks, см.
+docs/content/NEWLIFE_1_0_CONTENT.md)."""
 
 import pytest
 
@@ -8,11 +10,12 @@ from app.seasons_library.loader import get_template, load_library
 
 EXPECTED_IDS = {
     "run_5k", "pullups_10", "pushups_50", "fat_loss_safe", "muscle_gain",
-    "activity_steps", "sleep_consistency",
+    "activity_steps", "sleep_consistency", "flexibility", "nutrition",
+    "water", "sitting_breaks",
 }
 
 
-def test_library_has_exactly_seven_templates():
+def test_library_has_exactly_eleven_templates():
     assert set(load_library().keys()) == EXPECTED_IDS
 
 

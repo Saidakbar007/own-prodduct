@@ -15,10 +15,10 @@ from app.auth import require_user
 from app.database import get_session
 from app.i18n import translate
 from app.models import Commitment, Profile, Proof, Reveal, Season, SphereLevelHistory, SphereState, User
+from app.newlife.goal_catalog import all_goals
 from app.newlife.methods import METHODS
 from app.newlife.spheres import SPHERE_BY_ID, SPHERES
 from app.rendering import render
-from app.seasons_library.catalog_meta import CATALOG_META
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import WEEKDAY_LABELS
 from app.services.usertime import can_change_timezone, is_valid_timezone
@@ -175,10 +175,11 @@ def methods_page(request: Request, user: User = Depends(require_user)):
 def sources_page(request: Request, user: User = Depends(require_user)):
     seen = set()
     sources = []
-    for meta in CATALOG_META.values():
-        if meta.get("source") and meta["source"] not in seen:
-            seen.add(meta["source"])
-            sources.append(meta)
+    for goal in all_goals():
+        if goal.source.is_heuristic or goal.source.name in seen:
+            continue
+        seen.add(goal.source.name)
+        sources.append({"source": goal.source.name, "source_url": goal.source.url, "safe_rate": goal.pace})
     return render(request, "sources.html", {"sources": sources, "lang": user.language})
 
 
