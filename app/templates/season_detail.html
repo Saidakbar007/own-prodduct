@@ -91,6 +91,20 @@
 </details>
 {% endif %}
 
+{% if resources %}
+<details class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <summary class="btn btn--secondary btn--block" style="cursor:pointer;text-align:center">{{ t('season.resources_cta') }}</summary>
+  <div style="margin-top:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3)">
+    {% for r in resources %}
+    <a href="{{ r.url }}" target="_blank" rel="noopener" class="card" style="padding:var(--space-4);display:block">
+      <strong style="font-size:var(--text-xs)">{{ r.title }}</strong>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ r.description }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</details>
+{% endif %}
+
 {% if guide %}
 <details class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
   <summary class="btn btn--secondary btn--block" style="cursor:pointer;text-align:center">{{ t('season.guide_cta') }}</summary>

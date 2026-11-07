@@ -17,6 +17,7 @@ from app.models import Measurement, Reveal, Season, SeasonDay, User
 from app.rendering import render
 from app.newlife.conversation_starters_bank import conversation_starters_for_display
 from app.newlife.goal_catalog import goal_meta, guide_for_display, ladder_for_display
+from app.newlife.resources_bank import resources_for_goal
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.seasons_library.catalog_meta import poster_hero_for
@@ -192,6 +193,7 @@ def season_detail(
                 if season.template_id == "start_conversations"
                 else None
             ),
+            "resources": resources_for_goal(season.template_id, user.language),
             "lang": user.language,
         },
     )
