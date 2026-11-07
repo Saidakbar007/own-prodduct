@@ -551,3 +551,20 @@ class WeeklyReflectionAnswer(SQLModel, table=True):
     option_text: str
     week_start: date = Field(index=True)  # понедельник недели пользователя (today_for)
     answered_at: datetime = Field(default_factory=_utcnow)
+
+
+class ExpenseEntry(SQLModel, table=True):
+    """Трата (доп. задача, см. DECISIONS.md → guide/wger): цель
+    expense_tracking — категории кнопками + сумма степпером, итог месяца по
+    категориям. Категория — строка из фиксированного списка
+    app.services.expenses.CATEGORIES, не отдельная таблица (5 категорий,
+    заводить справочник ради этого избыточно)."""
+
+    __tablename__ = "expense_entry"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    category: str = Field(index=True)
+    amount: float
+    logged_on: date = Field(index=True)  # дата пользователя (today_for)
+    created_at: datetime = Field(default_factory=_utcnow)

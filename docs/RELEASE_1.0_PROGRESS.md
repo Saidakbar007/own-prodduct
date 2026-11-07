@@ -115,8 +115,9 @@
       content-driven), `Season.ladder_rung` (миграция `d7f21c5a8e4b`),
       `/season/{id}/ladder/advance|skip`, секция на `season_detail.html`
 - [ ] Банк 30 вопросов для начала разговора
-- [ ] Финансы: категории трат кнопками + сумма степпером + итог месяца по
-      категориям
+- [x] Финансы: категории трат кнопками + сумма степпером + итог месяца по
+      категориям — `/expenses`, `ExpenseEntry` (миграция `f4c9d1e6a2b8`),
+      5 категорий из guide цели expense_tracking
 - [x] Недельная рефлексия — 5 вопросов кнопками, одна попытка на вопрос в
       неделе (понедельник-воскресенье), карточка на «Сегодня» —
       `app/newlife/weekly_reflection.yaml` + `app/services/weekly_reflection.py`,
