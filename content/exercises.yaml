@@ -4,6 +4,7 @@
 # лицензией, см. assets/photos/CREDITS.json); без картинки — SVG-иконка.
 exercises:
   - id: squat
+    image: "squat.webp"
     name: { ru: "Присед", uz: "Squat (oʻtirib-turish)" }
     muscles: ["квадрицепсы", "ягодицы", "кор"]
     equipment: [gym, home]
@@ -34,6 +35,7 @@ exercises:
       uz: "Koʻkrakda gantel bilan (goblet) yoki tayanch yordamida bir oyoqda squat."
 
   - id: romanian_deadlift
+    image: "romanian_deadlift.webp"
     name: { ru: "Румынская тяга", uz: "Rumin tortishi (RDL)" }
     muscles: ["задняя поверхность бедра", "ягодицы", "низ спины"]
     equipment: [gym, home]
@@ -63,6 +65,7 @@ exercises:
       uz: "Muvozanat va koʻproq yuklama uchun bir oyoqda rumin tortishi."
 
   - id: bench_press
+    image: "bench_press.webp"
     name: { ru: "Жим лёжа", uz: "Yotib jim (bench press)" }
     muscles: ["грудь", "трицепс", "передняя часть плеча"]
     equipment: [gym]
@@ -92,6 +95,7 @@ exercises:
       uz: "Qiya skameykada jim yoki koʻkrakda 1–2 soniya pauza bilan."
 
   - id: seated_dumbbell_press
+    image: "seated_dumbbell_press.webp"
     name: { ru: "Жим гантелей сидя", uz: "Oʻtirib gantel jim (yelka)" }
     muscles: ["плечи", "трицепс"]
     equipment: [gym, home]
@@ -118,6 +122,7 @@ exercises:
       uz: "Kor mushaklarini ishga solish uchun tik turib (orqa tayanchsiz) jim."
 
   - id: bent_over_row
+    image: "bent_over_row.webp"
     name: { ru: "Тяга гантели в наклоне", uz: "Engashib gantel tortish" }
     muscles: ["спина", "задняя часть плеча", "бицепс"]
     equipment: [gym, home]
@@ -144,6 +149,7 @@ exercises:
       uz: "Tayanchsiz, ikki gantel bilan bir vaqtda engashib tortish."
 
   - id: pull_up_lat_pulldown
+    image: "pull_up_lat_pulldown.webp"
     name: { ru: "Подтягивания / тяга верхнего блока", uz: "Turnikda tortilish / Yuqori blokni tortish" }
     muscles: ["спина", "бицепс"]
     equipment: [gym]
@@ -196,6 +202,7 @@ exercises:
       uz: "Oyoqlarni koʻtarilgan joyga qoʻyib yoki chapak bilan pusup."
 
   - id: lunge
+    image: "lunge.webp"
     name: { ru: "Выпады", uz: "Oldinga qadam bilan choʻkish (vыпад)" }
     muscles: ["квадрицепсы", "ягодицы"]
     equipment: [home, gym]
@@ -223,6 +230,7 @@ exercises:
       uz: "Qoʻlda gantel bilan yoki koʻtarilgan joyda orqaga vыпад."
 
   - id: glute_bridge
+    image: "glute_bridge.webp"
     name: { ru: "Ягодичный мост", uz: "Dumba koʻprigi" }
     muscles: ["ягодицы", "задняя поверхность бедра"]
     equipment: [home, gym]
@@ -249,6 +257,7 @@ exercises:
       uz: "Bir oyoqda yoki sonda vazn bilan koʻprik."
 
   - id: plank
+    image: "plank.webp"
     name: { ru: "Планка", uz: "Plank" }
     muscles: ["кор", "плечи"]
     equipment: [home, gym]
@@ -274,6 +283,7 @@ exercises:
       uz: "Qoʻl/oyoqni almashlab koʻtarib plank."
 
   - id: bird_dog
+    image: "bird_dog.webp"
     name: { ru: "Птица-собака", uz: "Qush-it mashqi" }
     muscles: ["кор", "низ спины"]
     equipment: [home, gym]
@@ -299,6 +309,7 @@ exercises:
       uz: "Yozilgan holatda 3–5 soniya ushlab turish bilan."
 
   - id: crunch
+    image: "crunch.webp"
     name: { ru: "Скручивания", uz: "Qorin burish (crunch)" }
     muscles: ["прямая мышца живота"]
     equipment: [home, gym]
@@ -350,6 +361,7 @@ exercises:
       uz: "Qoʻlda gantel bilan, katta amplitudada."
 
   - id: conventional_deadlift
+    image: "conventional_deadlift.webp"
     name: { ru: "Классическая тяга", uz: "Klassik tortish (deadlift)" }
     muscles: ["задняя поверхность бедра", "ягодицы", "спина"]
     equipment: [gym]
@@ -377,6 +389,7 @@ exercises:
       uz: "Katta vazn bilan toʻgʻri oyoqda (rumin) tortish davomi sifatida."
 
   - id: overhead_press
+    image: "overhead_press.webp"
     name: { ru: "Жим над головой стоя", uz: "Tik turib bosh ustidan jim" }
     muscles: ["плечи", "трицепс", "кор"]
     equipment: [gym, home]
@@ -427,6 +440,7 @@ exercises:
       uz: "Yuqori oyoq yoki qoʻlni koʻtarib."
 
   - id: leg_raise
+    image: "leg_raise.webp"
     name: { ru: "Подъём ног лёжа", uz: "Yotib oyoq koʻtarish" }
     muscles: ["нижняя часть пресса", "кор"]
     equipment: [home, gym]
@@ -452,6 +466,7 @@ exercises:
       uz: "Tepada 1–2 soniya pauza bilan toʻgʻri oyoqlar."
 
   - id: back_extension
+    image: "back_extension.webp"
     name: { ru: "Супермен (гиперэкстензия без снаряда)", uz: "Super-odam mashqi" }
     muscles: ["низ спины", "ягодицы"]
     equipment: [home, gym]
@@ -477,6 +492,7 @@ exercises:
       uz: "Yuqori nuqtada 3–5 soniya ushlab turish bilan."
 
   - id: triceps_dip
+    image: "triceps_dip.webp"
     name: { ru: "Отжимания на трицепс от скамьи", uz: "Skameykadan triseps uchun tushish" }
     muscles: ["трицепс", "плечи"]
     equipment: [home, gym]
@@ -502,6 +518,7 @@ exercises:
       uz: "Oyoqlar koʻtarilgan joyda toʻgʻri, kattaroq amplituda."
 
   - id: calf_raise
+    image: "calf_raise.webp"
     name: { ru: "Подъём на носки", uz: "Oyoq uchida koʻtarilish" }
     muscles: ["икры"]
     equipment: [home, gym]

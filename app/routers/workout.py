@@ -76,6 +76,7 @@ def workout_page(request: Request, user: User = Depends(require_user), db: Sessi
             {
                 "id": exercise_id,
                 "name": entry.name.text(user.language),
+                "image_url": f"/assets/photos/exercises/{entry.image}" if entry.image else None,
                 "muscles": entry.muscles,
                 "technique": entry.technique.text(user.language),
                 "easy_version": entry.easy_version.text(user.language),

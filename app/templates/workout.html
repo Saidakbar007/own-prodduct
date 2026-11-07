@@ -25,9 +25,13 @@
   {% for ex in exercises %}
   <div class="card" style="padding:var(--space-5)">
     <div style="display:flex;align-items:center;gap:var(--space-3)">
+      {% if ex.image_url %}
+      <img src="{{ ex.image_url }}" alt="{{ ex.name }}" style="flex:none;width:48px;height:48px;border-radius:var(--radius-md);object-fit:cover" />
+      {% else %}
       <span style="flex:none;width:40px;height:40px;border-radius:var(--radius-md);background:var(--surface-raised);display:flex;align-items:center;justify-content:center;color:var(--text-faint)">
         <svg class="icon" style="width:1.4em;height:1.4em"><use href="#i-dumbbell"/></svg>
       </span>
+      {% endif %}
       <strong style="font-size:var(--text-sm)">{{ ex.name }}</strong>
     </div>
     <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ ex.muscles|join(', ') }}</p>
