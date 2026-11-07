@@ -535,3 +535,19 @@ class DayQuestionAnswer(SQLModel, table=True):
     option_text: str
     answered_on: date  # дата пользователя (today_for), не UTC-дата сервера
     answered_at: datetime = Field(default_factory=_utcnow)
+
+
+class WeeklyReflectionAnswer(SQLModel, table=True):
+    """Ответ на вопрос недельной рефлексии (доп. задача, см. DECISIONS.md →
+    guide/wger) — до 5 в неделю, по одному на каждый question_id,
+    привязаны к понедельнику той недели пользователя (week_start)."""
+
+    __tablename__ = "weekly_reflection_answer"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    question_id: str = Field(index=True)
+    option_index: int
+    option_text: str
+    week_start: date = Field(index=True)  # понедельник недели пользователя (today_for)
+    answered_at: datetime = Field(default_factory=_utcnow)

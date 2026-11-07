@@ -220,6 +220,8 @@
 
   "today.question_kicker": "Вопрос дня",
   "today.question_answered_flash": "Записал, спасибо",
+  "today.reflection_kicker": "Недельная рефлексия",
+  "today.reflection_answered_flash": "Записал, спасибо",
 
   "today.schedule_title": "Сегодня по времени",
   "today.schedule_minimal": "минимум",

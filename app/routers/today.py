@@ -31,6 +31,8 @@ from app.services.checkin_service import (
     start_recovery_mode,
 )
 from app.services.day_questions import record_answer, todays_question
+from app.services.weekly_reflection import next_question as next_reflection_question
+from app.services.weekly_reflection import record_answer as record_reflection_answer
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import has_completed_profile
@@ -143,6 +145,7 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
         show_sleep_hygiene = methods_catalog.should_show_sleep_hygiene_reminder(now_minutes, parse_hhmm(profile.sleep_time))
 
     day_question = todays_question(db, user.id, profile, today)
+    reflection_question = next_reflection_question(db, user.id, today)
 
     return render(
         request,
@@ -156,6 +159,7 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
             "schedule_blocks": schedule_blocks,
             "show_sleep_hygiene": show_sleep_hygiene,
             "day_question": day_question,
+            "reflection_question": reflection_question,
             "mascot_phrase": mascot.phrase_for(mascot_event, user.language),
             "mascot_state": mascot.state_for(mascot_event),
             "show_tour": request.query_params.get("tour") == "1",
@@ -191,6 +195,19 @@ def submit_day_question(
 ):
     record_answer(db, user.id, question_id, option_index, today_for(user))
     push_flash(request, "today.question_answered_flash", "success")
+    return RedirectResponse("/today", status_code=303)
+
+
+@router.post("/today/reflection")
+def submit_reflection(
+    request: Request,
+    question_id: str = Form(...),
+    option_index: int = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    record_reflection_answer(db, user.id, question_id, option_index, today_for(user))
+    push_flash(request, "today.reflection_answered_flash", "success")
     return RedirectResponse("/today", status_code=303)
 
 

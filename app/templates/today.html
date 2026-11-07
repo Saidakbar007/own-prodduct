@@ -212,6 +212,22 @@
 </div>
 {% endif %}
 
+{% if reflection_question %}
+<div class="card" style="padding:var(--space-5);margin-top:var(--space-5)" data-tour="weekly-reflection">
+  <span style="font-size:var(--text-xs);color:var(--text-faint);text-transform:uppercase;letter-spacing:var(--tracking-wide)">{{ t('today.reflection_kicker') }}</span>
+  <p style="font-size:var(--text-sm);margin:var(--space-2) 0 var(--space-4)">{{ reflection_question.text.text(lang) }}</p>
+  <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+    {% for option in reflection_question.options %}
+    <form method="post" action="/today/reflection">
+      <input type="hidden" name="question_id" value="{{ reflection_question.id }}" />
+      <input type="hidden" name="option_index" value="{{ loop.index0 }}" />
+      <button class="btn btn--secondary btn--block" type="submit">{{ option.text(lang) }}</button>
+    </form>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
 {% if show_sleep_hygiene %}
 <div class="card" style="padding:var(--space-4);margin-top:var(--space-5)">
   <p style="font-size:var(--text-xs);color:var(--text-muted)">{{ t('today.sleep_hygiene_reminder') }}</p>
