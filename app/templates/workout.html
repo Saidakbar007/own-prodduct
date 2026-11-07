@@ -38,25 +38,25 @@
       <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)"><strong>{{ t('workout.hard_label') }}</strong> {{ ex.hard_version }}</p>
     </details>
 
-    <form method="post" action="/workout/log" style="margin-top:var(--space-4);display:flex;gap:var(--space-3)">
+    <form method="post" action="/workout/log" style="margin-top:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3)">
       <input type="hidden" name="exercise_id" value="{{ ex.id }}" />
-      <div style="flex:1">
+      <div>
         <label style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('workout.weight_label') }}</label>
-        <div style="display:flex;align-items:center;gap:var(--space-2)">
-          <button type="button" class="btn btn--secondary btn--sm" onclick="var el=document.getElementById('w-{{ ex.id }}');el.value=Math.max(0,(parseFloat(el.value)||0)-2.5)">−</button>
-          <input type="number" step="0.5" min="0" id="w-{{ ex.id }}" name="weight_kg" value="{{ ex.weight_kg if ex.weight_kg is not none else '' }}" style="width:4.5em;text-align:center;min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text)" />
-          <button type="button" class="btn btn--secondary btn--sm" onclick="var el=document.getElementById('w-{{ ex.id }}');el.value=(parseFloat(el.value)||0)+2.5">+</button>
+        <div style="display:flex;align-items:center;gap:var(--space-2);margin-top:var(--space-1)">
+          <button type="button" class="btn btn--secondary btn--sm" style="flex:none" onclick="var el=document.getElementById('w-{{ ex.id }}');el.value=Math.max(0,(parseFloat(el.value)||0)-2.5)">−</button>
+          <input type="number" step="0.5" min="0" id="w-{{ ex.id }}" name="weight_kg" value="{{ ex.weight_kg if ex.weight_kg is not none else '' }}" style="flex:1;min-width:0;text-align:center;min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text)" />
+          <button type="button" class="btn btn--secondary btn--sm" style="flex:none" onclick="var el=document.getElementById('w-{{ ex.id }}');el.value=(parseFloat(el.value)||0)+2.5">+</button>
         </div>
       </div>
-      <div style="flex:1">
+      <div>
         <label style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('workout.reps_label') }}</label>
-        <div style="display:flex;align-items:center;gap:var(--space-2)">
-          <button type="button" class="btn btn--secondary btn--sm" onclick="var el=document.getElementById('r-{{ ex.id }}');el.value=Math.max(0,(parseInt(el.value)||0)-1)">−</button>
-          <input type="number" step="1" min="0" id="r-{{ ex.id }}" name="reps" value="{{ ex.reps if ex.reps is not none else '' }}" style="width:3.5em;text-align:center;min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text)" />
-          <button type="button" class="btn btn--secondary btn--sm" onclick="var el=document.getElementById('r-{{ ex.id }}');el.value=(parseInt(el.value)||0)+1">+</button>
+        <div style="display:flex;align-items:center;gap:var(--space-2);margin-top:var(--space-1)">
+          <button type="button" class="btn btn--secondary btn--sm" style="flex:none" onclick="var el=document.getElementById('r-{{ ex.id }}');el.value=Math.max(0,(parseInt(el.value)||0)-1)">−</button>
+          <input type="number" step="1" min="0" id="r-{{ ex.id }}" name="reps" value="{{ ex.reps if ex.reps is not none else '' }}" style="flex:1;min-width:0;text-align:center;min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text)" />
+          <button type="button" class="btn btn--secondary btn--sm" style="flex:none" onclick="var el=document.getElementById('r-{{ ex.id }}');el.value=(parseInt(el.value)||0)+1">+</button>
         </div>
       </div>
-      <button type="submit" class="btn btn--primary btn--sm" style="flex:none;align-self:flex-end">{{ t('workout.log_cta') }}</button>
+      <button type="submit" class="btn btn--primary btn--block">{{ t('workout.log_cta') }}</button>
     </form>
   </div>
   {% endfor %}
