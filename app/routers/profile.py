@@ -4,14 +4,16 @@
 настройки, «Методы NewLife», «Откуда эти нормы», «О NewLife», выход.
 """
 
+import json
 import os
 from datetime import datetime, timezone as dt_timezone
+from typing import Optional
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from sqlmodel import Session, select
 
-from app.auth import get_current_user, require_user
+from app.auth import get_current_user, require_user, verify_password
 from app.database import get_session
 from app.i18n import translate
 from app.models import Commitment, Profile, Proof, Reveal, Season, SphereLevelHistory, SphereState, User
@@ -20,6 +22,7 @@ from app.newlife.methods import METHODS
 from app.newlife.question_bank import question_by_id
 from app.newlife.spheres import SPHERE_BY_ID, SPHERES
 from app.rendering import render
+from app.services.data_privacy import delete_user_account, export_user_data
 from app.services.day_questions import recent_answers
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import WEEKDAY_LABELS
@@ -250,3 +253,48 @@ def delete_all_photos(request: Request, user: User = Depends(require_user), db: 
     db.commit()
     push_flash(request, "profile.photos_deleted", "success")
     return RedirectResponse("/profile", status_code=303)
+
+
+@router.get("/profile/export")
+def export_data(user: User = Depends(require_user), db: Session = Depends(get_session)):
+    """Экспорт всех своих данных в JSON (PRD 1.0 «Безопасность и данные») —
+    app/services/data_privacy.py, дженерик по всем таблицам с uid."""
+    data = export_user_data(db, user.id)
+    payload = json.dumps(data, ensure_ascii=False, indent=2)
+    return Response(
+        content=payload,
+        media_type="application/json",
+        headers={"Content-Disposition": f'attachment; filename="newlife-export-{user.id}.json"'},
+    )
+
+
+@router.get("/profile/delete-account")
+def delete_account_form(request: Request, user: User = Depends(require_user)):
+    return render(request, "profile_delete_account.html", {"error": None, "lang": user.language})
+
+
+@router.post("/profile/delete-account")
+def delete_account_submit(
+    request: Request,
+    password: str = Form(...),
+    confirm: str = Form(""),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    """Удаление аккаунта (PRD 1.0 «Безопасность и данные») — требует пароль
+    и явное подтверждение чекбоксом, необратимо, удаляет ВСЕ данные
+    (app/services/data_privacy.py::delete_user_account)."""
+    if not verify_password(password, user.password_hash) or confirm != "1":
+        return render(
+            request,
+            "profile_delete_account.html",
+            {"error": "profile.delete_account_error", "lang": user.language},
+        )
+    delete_user_account(db, user.id)
+    request.session.clear()
+    return RedirectResponse("/", status_code=303)
+
+
+@router.get("/privacy")
+def privacy_page(request: Request, user: Optional[User] = Depends(get_current_user)):
+    return render(request, "privacy.html", {"lang": user.language if user else "ru"})

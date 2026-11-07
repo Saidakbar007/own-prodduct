@@ -1,0 +1,25 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('profile.delete_account_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'me' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('profile.delete_account_title') }}</h1>
+  <p style="font-size:var(--text-sm);color:var(--text-faint);margin-top:var(--space-2)">{{ t('profile.delete_account_body') }}</p>
+</div>
+
+{% if error %}<p class="form-error">{{ t(error) }}</p>{% endif %}
+
+<form method="post" action="/profile/delete-account" class="card" style="padding:var(--space-6)">
+  <div class="field">
+    <label for="password">{{ t('auth.password_label') }}</label>
+    <input id="password" name="password" type="password" required />
+  </div>
+  <label style="display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--text-muted);margin:var(--space-3) 0 var(--space-4)">
+    <input type="checkbox" name="confirm" value="1" required />
+    {{ t('profile.delete_account_confirm_label') }}
+  </label>
+  <button class="btn btn--primary btn--block" type="submit" style="background:var(--status-missed, #c94a4a)">{{ t('profile.delete_account_cta') }}</button>
+  <a href="/profile" class="btn btn--text" style="display:block;text-align:center;margin-top:var(--space-3)">{{ t('profile.delete_account_cancel') }}</a>
+</form>
+{% endblock %}
