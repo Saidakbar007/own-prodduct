@@ -194,5 +194,84 @@
       "downloaded": true,
       "local_path": "assets/photos/exercises/calf_raise.webp"
     }
+  },
+  "spheres": {
+    "body": {
+      "photographer": "Michael Pointner",
+      "unsplash_url": "https://unsplash.com/photos/a-person-running-in-a-park-l95oMx3CHPo",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/body.webp",
+      "downloaded": true
+    },
+    "mind": {
+      "photographer": "Yen Vu",
+      "unsplash_url": "https://unsplash.com/photos/desk-with-open-book-laptop-and-study-materials-HNjWq8WPyoY",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/mind.webp",
+      "downloaded": true
+    },
+    "character": {
+      "photographer": "Nubelson Fernandes",
+      "unsplash_url": "https://unsplash.com/photos/a-person-writing-on-a-notebook-with-a-pen-5VplEcYvMrE",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/character.webp",
+      "downloaded": true
+    },
+    "social": {
+      "photographer": "Vitaly Gariev",
+      "unsplash_url": "https://unsplash.com/photos/four-friends-walking-together-in-a-park-0w8_lBRYWuA",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/social.webp",
+      "downloaded": true
+    },
+    "career": {
+      "photographer": "Vitaly Gariev",
+      "unsplash_url": "https://unsplash.com/photos/man-working-on-laptop-in-modern-office-space-IKgE2DyCIoE",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/career.webp",
+      "downloaded": true
+    },
+    "finance": {
+      "photographer": "Jakub Żerdzicki",
+      "unsplash_url": "https://unsplash.com/photos/hand-writing-in-notebook-with-calculator-and-cash-leLj_06wjJQ",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/finance.webp",
+      "downloaded": true
+    },
+    "relationships": {
+      "photographer": "Vitalii Khodzinskyi",
+      "unsplash_url": "https://unsplash.com/photos/father-and-daughter-laughing-together-in-bed-k77C6w1HSoA",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/relationships.webp",
+      "downloaded": true
+    },
+    "knowledge": {
+      "photographer": "CHUTTERSNAP",
+      "unsplash_url": "https://unsplash.com/photos/984e1Fk4E04",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/knowledge.webp",
+      "downloaded": true
+    },
+    "values": {
+      "photographer": "Pouya Hajiebrahimi",
+      "unsplash_url": "https://unsplash.com/photos/person-sitting-in-a-misty-field-at-sunrise-Qqq5Aw-CYJE",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/values.webp",
+      "downloaded": true
+    },
+    "lifestyle": {
+      "photographer": "Zahraa Hassan",
+      "unsplash_url": "https://unsplash.com/photos/sunlight-streams-into-a-cozy-room-with-plants-vFYK8li2V_s",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/lifestyle.webp",
+      "downloaded": true
+    },
+    "energy": {
+      "photographer": "Anton Sobotyak",
+      "unsplash_url": "https://unsplash.com/photos/the-sun-is-shining-through-the-curtains-on-a-bed-VPFi-s-xyXU",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/energy.webp",
+      "downloaded": true
+    }
   }
 }

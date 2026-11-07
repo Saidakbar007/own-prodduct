@@ -2,7 +2,14 @@
 {% block title %}{{ t('sphere.' + sphere.id + '.name') }} — {{ t('common.app_name') }}{% endblock %}
 {% block content %}
 <div class="onboarding-progress"><span class="onboarding-progress__fill" style="width:{{ (16 + (step / total) * 8)|round|int }}%"></span></div>
-<div class="home-hero" style="padding-top:var(--space-8)">
+
+<div class="template-poster template-poster--md" style="margin-top:var(--space-6)">
+  <img class="template-poster__art" src="/assets/photos/spheres/{{ sphere.id }}.webp" alt="" />
+  <div class="template-poster__scrim"></div>
+  <span class="template-poster__title">{{ t('sphere.' + sphere.id + '.name') }}</span>
+</div>
+
+<div class="home-hero" style="padding-top:var(--space-5)">
   <span style="font-size:var(--text-xs);color:var(--text-faint);text-transform:uppercase;letter-spacing:var(--tracking-wide)">{{ t('onboarding.sphere_level_step', n=step, total=total) }} · {{ t('sphere.' + sphere.id + '.name') }}</span>
   <h1 style="margin-top:var(--space-3)">{{ question.prompt }}</h1>
 </div>
