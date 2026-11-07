@@ -203,6 +203,20 @@ goals:
       first_week_example:
         ru: "Пн — лёгкий вызов (спросить дорогу у незнакомца), Ср — лёгкий (задать вопрос продавцу), Пт — средний (задать вопрос преподавателю на паре)."
         uz: "Dush — yengil sinov (notanish odamdan yo'l so'rash), Chor — yengil (sotuvchidan savol so'rash), Juma — o'rta (darsda o'qituvchidan savol so'rash)."
+    ladder:
+      rungs:
+        - ru: "Спросить дорогу или время у незнакомого человека на улице"
+          uz: "Ko'chada notanish odamdan yo'l yoki vaqtni so'rash"
+        - ru: "Задать уточняющий вопрос продавцу, официанту или преподавателю"
+          uz: "Sotuvchi, ofitsiant yoki o'qituvchidan aniqlashtiruvchi savol so'rash"
+        - ru: "Высказать своё мнение в группе, даже если оно отличается от большинства"
+          uz: "Guruhda, fikring ko'pchilikdan farq qilsa ham, o'z fikringni bildirish"
+        - ru: "Познакомиться с новым человеком и обменяться контактами"
+          uz: "Yangi odam bilan tanishib, aloqa ma'lumotlarini almashish"
+        - ru: "Предложить свою идею или инициативу на учёбе или на работе"
+          uz: "O'qishda yoki ishda o'z g'oyangni yoki tashabbusingni taklif qilish"
+        - ru: "Попросить обратную связь или помощь у человека, перед которым немного стесняешься"
+          uz: "Biroz uyalib turgan odamdan fikr-mulohaza yoki yordam so'rash"
     source:
       name: "эвристика"
     template_id: confidence_through_action

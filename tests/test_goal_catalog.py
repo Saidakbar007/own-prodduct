@@ -87,6 +87,22 @@ def test_every_goal_has_a_complete_bilingual_guide():
         assert guide.first_week_example.uz.strip(), f"{goal.id}: пустой first_week_example (uz)"
 
 
+def test_ladder_present_only_for_confidence_and_public_speaking_goals():
+    """Доп. задача (DECISIONS.md → guide/wger): лестницы 5-7 ступеней только
+    у этих двух целей, остальные 65 — без ladder."""
+    from app.newlife.goal_catalog import ladder_for_display
+
+    ladder_goal_ids = {"confidence_through_action", "public_speaking_confidence"}
+    for goal in all_goals():
+        rungs = ladder_for_display(goal.id, "ru")
+        if goal.id in ladder_goal_ids:
+            assert rungs is not None
+            assert 5 <= len(rungs) <= 7
+            assert all(r.strip() for r in rungs)
+        else:
+            assert rungs is None, f"{goal.id}: неожиданно есть ladder"
+
+
 def test_catalog_rejects_goal_sphere_mismatch():
     with pytest.raises(ValidationError):
         SphereCatalog.model_validate(

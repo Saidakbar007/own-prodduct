@@ -118,6 +118,21 @@ def test_focus_picker_shown_for_timer_goal_on_a_train_day(client, unique, db_ses
     resp = client.get("/focus")
     assert resp.status_code == 200
     assert "мин" in resp.text
+    assert "breathing-technique-btn" not in resp.text
+
+
+def test_focus_shows_breathing_technique_picker_for_breathing_goal(client, unique, db_session):
+    """Доп. задача (DECISIONS.md → guide/wger): дыхательный таймер с
+    анимацией (4-6 / циклический вздох) — только для breathing_practice,
+    остальные timer-цели не получают эту разметку (is_breathing=False)."""
+    _onboard_and_register(client, unique, "breathing_practice", 5, length_days=30)
+    season = db_session.exec(select(Season).order_by(Season.id.desc())).first()
+    _force_today_as_train_day(db_session, season)
+
+    resp = client.get("/focus")
+    assert resp.status_code == 200
+    assert "breathing-technique-btn" in resp.text
+    assert "breathing_animation.js" in resp.text
 
 
 def test_focus_complete_marks_day_done_and_logs_minutes(client, unique, db_session):

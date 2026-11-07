@@ -71,6 +71,7 @@ def focus_picker(request: Request, user: User = Depends(require_user), db: Sessi
             "day": day,
             "block_minutes": BLOCK_MINUTES,
             "metric_unit": metric.unit,
+            "is_breathing": season.template_id == "breathing_practice",
             "lang": user.language,
         },
     )

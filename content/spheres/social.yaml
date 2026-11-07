@@ -43,6 +43,18 @@ goals:
       first_week_example:
         ru: "Пн — запись 30-секундного видео, тревога до/после; Чт — показать видео 1 другу, тревога до/после; Сб — репетиция перед зеркалом."
         uz: "Dush — 30 soniyalik video yozish, oldin/keyin tashvish darajasi; Pay — videoni 1 do'stga ko'rsatish, oldin/keyin tashvish; Shan — oyna oldida mashq."
+    ladder:
+      rungs:
+        - ru: "Записать 30-секундное видео себя и посмотреть его самому/самой"
+          uz: "O'zingizning 30 soniyalik videongizni yozib, o'zingiz tomosha qiling"
+        - ru: "Показать это видео или выступить перед 1 близким другом или родственником"
+          uz: "Shu videoni 1 yaqin do'st yoki qarindoshga ko'rsatish yoki uning oldida chiqish"
+        - ru: "Выступить перед 3–5 близкими людьми"
+          uz: "3–5 yaqin odam oldida chiqish"
+        - ru: "Выступить перед группой или парой (однокурсники, коллеги)"
+          uz: "Guruh yoki juftlik oldida (kursdoshlar, hamkasblar) chiqish"
+        - ru: "Выступить перед большой аудиторией (лекция, мероприятие)"
+          uz: "Katta auditoriya oldida (ma'ruza, tadbir) chiqish"
     source:
       name: "Метаанализ VR/in-vivo экспозиции (2023)"
       url: "https://www.frontiersin.org/journals/virtual-reality/articles/10.3389/frvir.2023.1240778/pdf"

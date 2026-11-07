@@ -68,6 +68,17 @@ class GoalGuide(BaseModel):
     first_week_example: GoalTitle
 
 
+class LadderSpec(BaseModel):
+    """Лестница ступеней (доп. задача, см. docs/decisions/DECISIONS.md →
+    «Этап "Доделай" + guide + wger»): 5-7 конкретных вызовов от лёгкого к
+    трудному, переход только по порядку — сейчас у confidence_through_action
+    и public_speaking_confidence. Необязательное поле — остальные 65 целей
+    его не имеют; движок один, контент-driven (любая будущая цель получает
+    лестницу просто добавлением этого блока в YAML, без нового кода)."""
+
+    rungs: list[GoalTitle] = Field(min_length=5, max_length=7)
+
+
 class GoalCatalogEntry(BaseModel):
     id: str
     sphere: str
@@ -84,6 +95,7 @@ class GoalCatalogEntry(BaseModel):
     week_skeleton: str
     minimal_version: str
     guide: GoalGuide
+    ladder: Optional[LadderSpec] = None
     source: GoalSource
     # Шаблон сезона (день за днём) из app/seasons_library/, если у цели есть
     # сценарий прогрессии; без него цель можно показать в каталоге, но пока
@@ -170,6 +182,15 @@ def first_guide_step(goal_id: str, lang: str) -> Optional[str]:
     if entry is None or not entry.guide.steps:
         return None
     return entry.guide.steps[0].text(lang)
+
+
+def ladder_for_display(goal_id: str, lang: str) -> Optional[list[str]]:
+    """Тексты ступеней лестницы на языке пользователя; None — если у цели
+    нет лестницы (большинство целей)."""
+    entry = goal_meta(goal_id)
+    if entry is None or entry.ladder is None:
+        return None
+    return [rung.text(lang) for rung in entry.ladder.rungs]
 
 
 def guide_for_display(goal_id: str, lang: str) -> Optional[dict]:

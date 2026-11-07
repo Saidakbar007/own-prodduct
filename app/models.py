@@ -81,6 +81,11 @@ class Season(SQLModel, table=True):
     result_tier: Optional[str] = None  # clean | passed | completed
     second_chances_left: int
     current_phase: int = Field(default=1)
+    # NewLife 1.0 (доп. задача, см. DECISIONS.md → guide/wger): текущая
+    # ступень лестницы вызовов (1-индексация, как current_phase) — только
+    # для целей с GoalCatalogEntry.ladder (confidence_through_action,
+    # public_speaking_confidence); у остальных целей просто остаётся 1.
+    ladder_rung: int = Field(default=1)
     # Вторая метрика (пока только muscle_gain: вес тела рядом с рабочим весом,
     # §7 задачи Фазы 2) — nullable, большинство сезонов её не используют.
     secondary_metric_name: Optional[str] = None

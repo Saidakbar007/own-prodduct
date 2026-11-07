@@ -5,6 +5,8 @@
 «Замер», §7.3/§7.4 ТЗ, переименовано UX-правкой).
 """
 
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
@@ -13,7 +15,9 @@ from app.auth import require_user
 from app.database import get_session
 from app.models import Measurement, Reveal, Season, SeasonDay, User
 from app.rendering import render
-from app.newlife.goal_catalog import goal_meta, guide_for_display
+from app.newlife.goal_catalog import goal_meta, guide_for_display, ladder_for_display
+from app.services.events import log_event_safe
+from app.services.flash import push_flash
 from app.seasons_library.catalog_meta import poster_hero_for
 from app.seasons_library.loader import load_library
 
@@ -110,6 +114,35 @@ def _own_season(db: Session, season_id: int, user: User) -> Season:
     return season
 
 
+@router.post("/season/{season_id}/ladder/advance")
+def ladder_advance(
+    season_id: int, request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)
+):
+    """Отметить текущую ступень лестницы сделанной — переход только по
+    порядку (§F: нельзя перескочить), следующий визит показывает следующий
+    вызов. Без штрафа и без привязки к дню сезона — ступени добровольны."""
+    season = _own_season(db, season_id, user)
+    rungs = ladder_for_display(season.template_id, user.language)
+    if rungs and season.ladder_rung < len(rungs):
+        season.ladder_rung += 1
+        db.add(season)
+        db.commit()
+        log_event_safe(db, "ladder_rung_done", uid=user.id, season_id=season.id)
+    return RedirectResponse(f"/season/{season_id}", status_code=303)
+
+
+@router.post("/season/{season_id}/ladder/skip")
+def ladder_skip(
+    season_id: int, request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)
+):
+    """«Не сегодня» — без штрафа, ступень остаётся текущей (guide целей
+    явно обещает: пропуск не наказывается)."""
+    season = _own_season(db, season_id, user)
+    log_event_safe(db, "ladder_rung_skipped", uid=user.id, season_id=season.id)
+    push_flash(request, "season.ladder_skip_flash", "info")
+    return RedirectResponse(f"/season/{season_id}", status_code=303)
+
+
 @router.get("/season/{season_id}")
 def season_detail(
     season_id: int, request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)
@@ -152,9 +185,24 @@ def season_detail(
             "present_statuses": present_statuses,
             "poster_hero": poster_hero_for(season.template_id),
             "guide": guide_for_display(season.template_id, user.language),
+            "ladder": _ladder_context(season, user.language),
             "lang": user.language,
         },
     )
+
+
+def _ladder_context(season: Season, lang: str) -> Optional[dict]:
+    rungs = ladder_for_display(season.template_id, lang)
+    if not rungs:
+        return None
+    current = min(max(season.ladder_rung, 1), len(rungs))
+    return {
+        "rungs": rungs,
+        "current_index": current - 1,
+        "current_number": current,
+        "total": len(rungs),
+        "is_last": current >= len(rungs),
+    }
 
 
 def _build_sparkline(measurements, width: int = 280, height: int = 48) -> dict:
