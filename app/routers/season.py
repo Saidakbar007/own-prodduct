@@ -15,6 +15,7 @@ from app.auth import require_user
 from app.database import get_session
 from app.models import Measurement, Reveal, Season, SeasonDay, User
 from app.rendering import render
+from app.newlife.conversation_starters_bank import conversation_starters_for_display
 from app.newlife.goal_catalog import goal_meta, guide_for_display, ladder_for_display
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
@@ -186,6 +187,11 @@ def season_detail(
             "poster_hero": poster_hero_for(season.template_id),
             "guide": guide_for_display(season.template_id, user.language),
             "ladder": _ladder_context(season, user.language),
+            "conversation_starters": (
+                conversation_starters_for_display(user.language)
+                if season.template_id == "start_conversations"
+                else None
+            ),
             "lang": user.language,
         },
     )
