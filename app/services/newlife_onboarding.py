@@ -70,6 +70,9 @@ def create_profile_from_draft(db: Session, uid: int, draft: dict) -> Profile:
         daily_minutes=draft.get("daily_minutes"),
         constraints_json=json.dumps(draft.get("constraints", [])),
         main_obstacle=draft.get("main_obstacle"),
+        has_medical_diagnosis=draft.get("has_medical_diagnosis"),
+        is_pregnant=draft.get("is_pregnant"),
+        disordered_eating_signal=draft.get("disordered_eating_signal"),
         onboarding_done_at=datetime.now(timezone.utc),
     )
     db.add(profile)

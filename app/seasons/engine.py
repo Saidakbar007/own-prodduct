@@ -352,3 +352,25 @@ def meets_fat_loss_eligibility(
     if target_weight_kg is not None and bmi(target_weight_kg, height_cm) < MIN_BMI:
         return False
     return True
+
+
+def has_eating_disorder_signal(
+    weight_kg: float,
+    height_cm: float,
+    target_weight_kg: Optional[float],
+    self_reported: bool,
+) -> bool:
+    """NEWLIFE_1_0_CONTENT.md §6 «Предупреждения и красные флаги»: сигнал
+    РПП = ИМТ<18,5 текущий ИЛИ целевой, ИЛИ самоотчёт (вопрос на
+    /onboarding/health объединяет "пропускаю еду"/"вызываю рвоту"/"боюсь
+    набрать вес" в один да/нет — кнопки, не текст). Желаемый темп >1%/нед
+    отдельно не проверяется здесь: он уже ограничен инженерно
+    (clamp_weight_target, SAFE_WEEKLY_LOSS_PCT) до того, как могла бы
+    возникнуть такая цифра."""
+    if self_reported:
+        return True
+    if bmi(weight_kg, height_cm) < MIN_BMI:
+        return True
+    if target_weight_kg is not None and bmi(target_weight_kg, height_cm) < MIN_BMI:
+        return True
+    return False

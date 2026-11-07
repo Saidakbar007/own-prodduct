@@ -160,6 +160,7 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
             "show_sleep_hygiene": show_sleep_hygiene,
             "day_question": day_question,
             "reflection_question": reflection_question,
+            "minimal_only": bool(profile and profile.has_medical_diagnosis),
             "mascot_phrase": mascot.phrase_for(mascot_event, user.language),
             "mascot_state": mascot.state_for(mascot_event),
             "show_tour": request.query_params.get("tour") == "1",

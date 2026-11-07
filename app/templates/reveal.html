@@ -9,6 +9,7 @@
   <h1 class="reveal-screen__title">{{ season.title }}</h1>
   <p class="reveal-screen__subtitle">{{ season.length_days }} дней позади</p>
 
+  {% if not hide_before_after %}
   <div class="reveal-compare">
     <div class="reveal-compare__stat">
       <span class="reveal-compare__value tabular">{{ reveal.before_value }}</span>
@@ -20,6 +21,7 @@
       <span class="reveal-compare__tag">{{ season.metric_unit }} · день {{ season.length_days }}</span>
     </div>
   </div>
+  {% endif %}
 
   <div class="reveal-screen__quote">
     <div class="mascot mascot--glad" style="width:48px;height:48px"><span class="mascot__face" style="gap:8px"><span class="mascot__eye" style="width:4px;height:6px"></span><span class="mascot__eye" style="width:4px;height:6px"></span></span></div>

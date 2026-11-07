@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
-from app.auth import require_user
+from app.auth import get_current_user, require_user
 from app.database import get_session
 from app.i18n import translate
 from app.models import Commitment, Profile, Proof, Reveal, Season, SphereLevelHistory, SphereState, User
@@ -197,15 +197,18 @@ def about_page(request: Request, user: User = Depends(require_user)):
 
 
 @router.get("/help")
-def help_page(request: Request, user: User = Depends(require_user)):
+def help_page(request: Request, user: User = Depends(get_current_user)):
     """Экран помощи (PRD 1.0 «Безопасность»): 103/112 — общеизвестные номера
     скорой и экстренных служб Узбекистана, встроены всегда. Линия
     психологической помощи — из HELPLINE_UZ (.env); без неё строка просто
-    не показывается, чтобы не вывести на экран непроверенный номер."""
+    не показывается, чтобы не вывести на экран непроверенный номер.
+    БЕЗ обязательного входа (get_current_user, не require_user) — номера
+    должны быть доступны сразу, в т.ч. во время онбординга до регистрации
+    и при мыслях о самоповреждении (NEWLIFE_1_0_CONTENT.md §6 п.7)."""
     return render(
         request,
         "help.html",
-        {"helpline_uz": os.getenv("HELPLINE_UZ") or None, "lang": user.language},
+        {"helpline_uz": os.getenv("HELPLINE_UZ") or None, "lang": user.language if user else "ru"},
     )
 
 

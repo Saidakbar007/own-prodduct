@@ -328,6 +328,14 @@ class Profile(SQLModel, table=True):
     main_obstacle: Optional[str] = None  # tired|no_time|forget|phone|quit_after_week
     onboarding_done_at: Optional[datetime] = None
     created_at: datetime = Field(default_factory=_utcnow)
+    # Безопасность (NEWLIFE_1_0_CONTENT.md §6 «Предупреждения и красные
+    # флаги»), собираются на /onboarding/health при выборе fat_loss_safe/
+    # muscle_gain — см. app/seasons/engine.py и DECISIONS.md:
+    has_medical_diagnosis: Optional[bool] = None  # "да" → только минимальные версии
+    is_pregnant: Optional[bool] = None  # "да" → похудение и набор массы недоступны
+    disordered_eating_signal: Optional[bool] = None  # самоотчёт (пропуск еды/рвота/
+    # страх набрать вес) ИЛИ ИМТ<18,5 текущий/целевой — скрывает цели на
+    # снижение веса и подсчёт порций, прячет сравнение "до/после"
 
 
 class SphereState(SQLModel, table=True):

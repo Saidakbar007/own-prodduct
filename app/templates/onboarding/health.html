@@ -20,6 +20,34 @@
     <label for="birth_year">{{ t('auth.birth_year_label') }}</label>
     <input id="birth_year" name="birth_year" type="number" min="1900" max="2026" required />
   </div>
+
+  <div class="field">
+    <label>{{ t('onboarding.diagnosis_question') }}</label>
+    <input type="hidden" id="has_medical_diagnosis" name="has_medical_diagnosis" value="0" />
+    <div style="display:flex;gap:var(--space-3)">
+      <button type="button" class="btn btn--secondary" style="flex:1" id="diagnosis-no" onclick="document.getElementById('has_medical_diagnosis').value='0';document.getElementById('diagnosis-no').classList.add('btn--primary');document.getElementById('diagnosis-yes').classList.remove('btn--primary')">{{ t('measure.answer_no') }}</button>
+      <button type="button" class="btn btn--secondary" style="flex:1" id="diagnosis-yes" onclick="document.getElementById('has_medical_diagnosis').value='1';document.getElementById('diagnosis-yes').classList.add('btn--primary');document.getElementById('diagnosis-no').classList.remove('btn--primary')">{{ t('measure.answer_yes') }}</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>{{ t('onboarding.pregnancy_question') }}</label>
+    <input type="hidden" id="is_pregnant" name="is_pregnant" value="0" />
+    <div style="display:flex;gap:var(--space-3)">
+      <button type="button" class="btn btn--secondary" style="flex:1" id="pregnant-no" onclick="document.getElementById('is_pregnant').value='0';document.getElementById('pregnant-no').classList.add('btn--primary');document.getElementById('pregnant-yes').classList.remove('btn--primary')">{{ t('measure.answer_no') }}</button>
+      <button type="button" class="btn btn--secondary" style="flex:1" id="pregnant-yes" onclick="document.getElementById('is_pregnant').value='1';document.getElementById('pregnant-yes').classList.add('btn--primary');document.getElementById('pregnant-no').classList.remove('btn--primary')">{{ t('measure.answer_yes') }}</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>{{ t('onboarding.eating_signal_question') }}</label>
+    <input type="hidden" id="disordered_eating_signal" name="disordered_eating_signal" value="0" />
+    <div style="display:flex;gap:var(--space-3)">
+      <button type="button" class="btn btn--secondary" style="flex:1" id="eating-no" onclick="document.getElementById('disordered_eating_signal').value='0';document.getElementById('eating-no').classList.add('btn--primary');document.getElementById('eating-yes').classList.remove('btn--primary')">{{ t('measure.answer_no') }}</button>
+      <button type="button" class="btn btn--secondary" style="flex:1" id="eating-yes" onclick="document.getElementById('disordered_eating_signal').value='1';document.getElementById('eating-yes').classList.add('btn--primary');document.getElementById('eating-no').classList.remove('btn--primary')">{{ t('measure.answer_yes') }}</button>
+    </div>
+  </div>
+
   <button class="btn btn--primary btn--block" type="submit">{{ t('onboarding.continue') }}</button>
 </form>
 {% endblock %}

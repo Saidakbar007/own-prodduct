@@ -145,7 +145,9 @@ def sphere_level_submit(request: Request, option_index: Optional[int] = Form(Non
 
 
 @router.get("/goal")
-def goal_picker(request: Request, db: Session = Depends(get_session)):
+def goal_picker(
+    request: Request, db: Session = Depends(get_session), user: Optional[User] = Depends(get_current_user)
+):
     """Экран 4: карточки целей из каталога выбранных на экране 2 сфер (PRD
     1.0 F2 — любая из 11, не только "Тело"). Без выбранных сфер в черновике
     (человек уже зарегистрирован и зашёл сюда за новой целью/сезоном,
@@ -153,10 +155,23 @@ def goal_picker(request: Request, db: Session = Depends(get_session)):
     draft = _draft(request)
     chosen_spheres = draft.get("spheres") or []
 
+    hidden_ids: set[str] = set()
+    if user:
+        profile = db.exec(select(Profile).where(Profile.uid == user.id)).first()
+        if profile:
+            # §6: уже известный профиль прячет цели, которые ему недоступны,
+            # не дожидаясь повторного прохода через /onboarding/health.
+            if profile.is_pregnant:
+                hidden_ids |= {"fat_loss_safe", "muscle_gain"}
+            if profile.disordered_eating_signal:
+                hidden_ids |= {"fat_loss_safe", "nutrition"}
+
     tiles = []
     for t in load_library().values():
         entry = goal_meta(t.id)
         if entry is None:
+            continue
+        if entry.id in hidden_ids:
             continue
         if chosen_spheres and entry.sphere not in chosen_spheres:
             continue
@@ -224,6 +239,9 @@ def health_submit(
     height_cm: int = Form(...),
     weight_kg: float = Form(...),
     birth_year: int = Form(...),
+    has_medical_diagnosis: str = Form("0"),
+    is_pregnant: str = Form("0"),
+    disordered_eating_signal: str = Form("0"),
 ):
     draft = _draft(request)
     template_id = draft.get("template_id")
@@ -233,6 +251,15 @@ def health_submit(
     if date.today().year - birth_year < MIN_AGE:
         return render(request, "onboarding/health.html", {"error": "auth.error_age_limit"})
 
+    pregnant_flag = is_pregnant == "1"
+    diagnosis_flag = has_medical_diagnosis == "1"
+    eating_signal_flag = disordered_eating_signal == "1"
+
+    if pregnant_flag:
+        # NEWLIFE_1_0_CONTENT.md §6 п.4: беременность — похудение и набор
+        # массы недоступны оба, оба шаблона здесь попадают под этот гейт.
+        return render(request, "onboarding/pregnancy_blocked.html", {})
+
     if template_id == "fat_loss_safe":
         # Ориентировочный целевой вес до клампа темпа (длительность сезона
         # выбирается позже, на /onboarding/schedule) — PRD 1.0: блокировать
@@ -240,10 +267,17 @@ def health_submit(
         nominal_target = weight_kg - get_template(template_id).target_default
         if not engine.meets_fat_loss_eligibility(weight_kg, height_cm, nominal_target):
             return render(request, "onboarding/bmi_blocked.html", {})
+        if engine.has_eating_disorder_signal(weight_kg, height_cm, nominal_target, eating_signal_flag):
+            # §6 п.5: сигнал РПП (самоотчёт — ИМТ уже проверен строкой выше)
+            # — нейтральная карточка вместо продолжения на цель похудения.
+            return render(request, "onboarding/eating_signal_blocked.html", {})
 
     draft["height_cm"] = height_cm
     draft["weight_kg"] = weight_kg
     draft["birth_year"] = birth_year
+    draft["has_medical_diagnosis"] = diagnosis_flag
+    draft["is_pregnant"] = pregnant_flag
+    draft["disordered_eating_signal"] = eating_signal_flag
     request.session["onboarding"] = draft
 
     if template_id == "fat_loss_safe":
@@ -579,6 +613,19 @@ def start_for_existing_user(
     if len(get_active_seasons(db, user.id)) >= MAX_ACTIVE_SEASONS:
         push_flash(request, "onboarding.error_too_many_active", "error")
         return RedirectResponse("/seasons", status_code=303)
+
+    if any(k in draft for k in ("has_medical_diagnosis", "is_pregnant", "disordered_eating_signal")):
+        # Безопасность (§6): ответы могли обновиться с прошлого раза —
+        # обновляем уже существующий профиль, не только при регистрации.
+        profile = db.exec(select(Profile).where(Profile.uid == user.id)).first()
+        if profile:
+            profile.has_medical_diagnosis = draft.get("has_medical_diagnosis", profile.has_medical_diagnosis)
+            profile.is_pregnant = draft.get("is_pregnant", profile.is_pregnant)
+            profile.disordered_eating_signal = draft.get(
+                "disordered_eating_signal", profile.disordered_eating_signal
+            )
+            db.add(profile)
+            db.commit()
 
     entry = goal_meta(template_id)
     season = create_season(
