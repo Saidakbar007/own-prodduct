@@ -13,7 +13,7 @@ from app.auth import require_user
 from app.database import get_session
 from app.models import Measurement, Reveal, Season, SeasonDay, User
 from app.rendering import render
-from app.newlife.goal_catalog import goal_meta
+from app.newlife.goal_catalog import goal_meta, guide_for_display
 from app.seasons_library.catalog_meta import poster_hero_for
 from app.seasons_library.loader import load_library
 
@@ -151,6 +151,7 @@ def season_detail(
             "forecast": round(forecast, 1),
             "present_statuses": present_statuses,
             "poster_hero": poster_hero_for(season.template_id),
+            "guide": guide_for_display(season.template_id, user.language),
             "lang": user.language,
         },
     )

@@ -18,6 +18,28 @@ goals:
       одиночество и депрессию.
     week_skeleton: "Ежедневный ввод из экранного времени телефона, вс — итог"
     minimal_version: "Убрать 1 приложение с главного экрана"
+    guide:
+      steps:
+        - ru: "Посмотри в настройках телефона реальное экранное время соцсетей за сегодня или вчера — это твоя стартовая точка, без неё цель не поставить честно."
+          uz: "Telefon sozlamalaridan bugun yoki kecha ijtimoiy tarmoqlarga sarflangan real ekran vaqtini ko'ring — bu sizning boshlang'ich nuqtangiz, usiz maqsadni halol qo'yib bo'lmaydi."
+        - ru: "Выбери реалистичный лимит на день (60, 45 или 30 минут) и снижай его на 15 минут в неделю, а не сразу до минимума."
+          uz: "Kunlik uchun real chegara tanlang (60, 45 yoki 30 daqiqa) va darhol minimumga emas, haftasiga 15 daqiqaga kamaytirib boring."
+        - ru: "Каждый вечер вводи в приложение фактическое время из Screen Time — так цель строится на реальных цифрах, а не на ощущениях."
+          uz: "Har kuni kechqurun Screen Time dan haqiqiy vaqtni ilovaga kiriting — shunda maqsad tuyg'ularga emas, haqiqiy raqamlarga asoslanadi."
+        - ru: "Убери с главного экрана самое «залипательное» приложение — одно лишнее касание перед открытием снижает число случайных заходов."
+          uz: "Bosh ekrandan eng 'yopishqoq' ilovani olib tashlang — ochishdan oldin bir qo'shimcha teginish tasodifiy kirishlarni kamaytiradi."
+        - ru: "В воскресенье смотри на итог за неделю: если лимит выдержан — держи его ещё неделю, если постоянно превышал — не снижай дальше."
+          uz: "Yakshanba kuni haftalik yakunga qarang: agar chegaraga rioya qilgan bo'lsangiz — yana bir hafta shu darajada qoling, doim oshirib yuborgan bo'lsangiz — bundan buyon kamaytirmang."
+      mistakes:
+        - ru: "Сразу ставить лимит в 30 минут при реальных 3+ часах в день — резкий скачок обычно заканчивается срывом в первую же неделю."
+          uz: "Haqiqatda kuniga 3+ soat sarflansa, darhol 30 daqiqalik chegara qo'yish — keskin sakrash odatda birinchi haftada buzilish bilan tugaydi."
+        - ru: "Считать детокс полным отказом от телефона — учёба и связь с семьёй не входят в счёт соцсетей и не нужно их урезать."
+          uz: "Detoksni telefondan butunlay voz kechish deb hisoblash — o'qish va oila bilan aloqa ijtimoiy tarmoq hisobiga kirmaydi, ularni qisqartirish shart emas."
+        - ru: "Вводить время «на глаз» вместо реальных цифр из настроек — так легко обманывать себя и не замечать реального прогресса."
+          uz: "Sozlamalardagi haqiqiy raqamlar o'rniga vaqtni 'ko'z bilan' kiritish — shunday qilib o'zini aldash va haqiqiy natijani sezmaslik oson."
+      first_week_example:
+        ru: "Каждый вечер — вводишь экранное время соцсетей из настроек телефона; в воскресенье смотришь на средний результат недели и решаешь, снижать ли лимит дальше."
+        uz: "Har kuni kechqurun — telefon sozlamalaridan ijtimoiy tarmoq ekran vaqtini kiritasiz; yakshanba kuni haftaning o'rtacha natijasiga qarab, chegarani yanada kamaytirish kerakmi-yo'qligini hal qilasiz."
     source:
       name: "Hunt et al. 2018"
       url: "https://techcrunch.com/2018/11/09/limiting-social-media-use-reduced-loneliness-and-depression-in-new-experiment"
@@ -39,6 +61,28 @@ goals:
       профилем кортизола.
     week_skeleton: "Ежедневно 10 минут порядка + 1 зона в субботу"
     minimal_version: "Убрать 1 вещь на место"
+    guide:
+      steps:
+        - ru: "Каждый день выделяй ровно 10 минут на «сброс порядка»: разложить вещи по местам, убрать посуду, разобрать стол — без генеральной уборки."
+          uz: "Har kuni aynan 10 daqiqa 'tartibni tiklash'ga ajrating: narsalarni joyiga qo'ying, idish-tovoqni yig'ing, stolni tartibga soling — katta tozalashsiz."
+        - ru: "Отметь кнопкой выполненный сброс каждый день — цель именно в проценте дней, а не в идеальной чистоте раз в месяц."
+          uz: "Har kuni bajarilgan tartibni tugma bilan belgilang — maqsad aynan kunlar foizida, oyiga bir marta mukammal tozalikda emas."
+        - ru: "Раз в неделю (например в субботу) добирайся до одной «трудной» зоны или ящика, до которого ежедневный сброс не доходит."
+          uz: "Haftada bir marta (masalan, shanba) kundalik tartib yetib bormagan bitta 'qiyin' zona yoki tortmaga yetib boring."
+        - ru: "Заведи 2–3 постоянных «зоны порядка» (стол, кровать, пол у двери) — проще держать в порядке несколько конкретных мест, чем всю комнату сразу."
+          uz: "2–3 doimiy 'tartib zonasi' (stol, karovat, eshik oldidagi pol) tashkil qiling — butun xonani birdan emas, bir necha aniq joyni tartibda tutish osonroq."
+        - ru: "Если какая-то вещь регулярно оказывается не на месте — найди для неё постоянное место, а не убирай её каждый раз заново."
+          uz: "Agar biror narsa doimo noto'g'ri joyda bo'lsa — uni har safar qayta yig'ish o'rniga doimiy joy toping."
+      mistakes:
+        - ru: "Откладывать 10-минутный сброс на выходные и пытаться разобраться со всем сразу — такая уборка быстро утомляет и не становится привычкой."
+          uz: "10 daqiqalik tartibni dam olish kuniga qoldirib, hammasini birdan hal qilishga urinish — bunday tozalash tez charchatadi va odat bo'lib qolmaydi."
+        - ru: "Считать успехом только идеальную чистоту — цель именно в регулярности коротких сбросов, а не в безупречном результате каждый день."
+          uz: "Faqat mukammal tozalikni muvaffaqiyat deb hisoblash — maqsad aynan qisqa tartiblarning muntazamligida, har kuni benuqson natijada emas."
+        - ru: "Разбирать все ящики и зоны захламления за один присест — лучше распределить их по неделям, по одной зоне в раз."
+          uz: "Barcha tortma va to'planib qolgan zonalarni bir o'tirishda tartibga solish — ularni haftalarga bo'lib, har safar bitta zona qilgan ma'qul."
+      first_week_example:
+        ru: "Каждый день — 10 минут сброса порядка перед сном; в субботу — дополнительно разбираешь один ящик или полку, до которой обычно руки не доходят."
+        uz: "Har kuni — uyquga ketishdan oldin 10 daqiqalik tartib; shanba kuni — qo'shimcha ravishda odatda qo'l yetmaydigan bitta tortma yoki javonni tartiblaysiz."
     source:
       name: "Saxbe & Repetti 2010 (обзор о беспорядке и стрессе)"
       url: "https://clutterscience.pages.dev/blog/does-clutter-cause-stress/"
@@ -56,6 +100,28 @@ goals:
     pace: "Варианты цели: 2 / 4 / 6 часов хобби в неделю. +1 час в 2 недели (продуктовая эвристика)."
     week_skeleton: "2–3 слота на хобби в календаре в неделю"
     minimal_version: "2 минуты практики"
+    guide:
+      steps:
+        - ru: "Выбери одно конкретное хобби, которое давно отложил, и реши, сколько часов в неделю на него реально выделить: 2, 4 или 6."
+          uz: "Uzoqdan kechiktirib kelgan bitta aniq mashg'ulotni tanlang va haftasiga unga nechta soat — 2, 4 yoki 6 — ajratishni real belgilang."
+        - ru: "Поставь в календаре 2–3 конкретных слота на неделю (день и время) — хобби «когда будет время» обычно не случается."
+          uz: "Kalendarga haftaga 2–3 ta aniq vaqt oynasini (kun va soat) belgilang — 'vaqt bo'lganda' qiladigan mashg'ulot odatda bo'lmaydi."
+        - ru: "В дни без слота делай хотя бы минимальную версию — 2 минуты практики, чтобы не терять связь с занятием."
+          uz: "Vaqt oynasi bo'lmagan kunlarda hech bo'lmasa minimal versiyani — 2 daqiqalik mashqni bajaring, shunda mashg'ulot bilan aloqa uzilmaydi."
+        - ru: "Каждые 2 недели пробуй добавить ещё 1 час к недельному объёму — рост постепенный, а не скачком."
+          uz: "Har 2 haftada haftalik hajmga yana 1 soat qo'shishga harakat qiling — o'sish sekin-asta, sakrab emas."
+        - ru: "Отмечай в приложении не только часы, но и само занятие — так видно, растёт ли регулярность, а не только общее время."
+          uz: "Ilovada faqat soatlarni emas, mashg'ulotning o'zini ham belgilang — shunda faqat umumiy vaqt emas, muntazamlik o'sayotgani ko'rinadi."
+      mistakes:
+        - ru: "Ставить слишком амбициозную цель с первой недели (например 6 часов) — она не помещается в реальный график и быстро бросается."
+          uz: "Birinchi haftadan juda yuqori maqsad qo'yish (masalan, 6 soat) — bu real jadvalga sig'maydi va tez tashlab qo'yiladi."
+        - ru: "Считать хобби делом «на потом», после всех остальных задач — тогда на него почти никогда не остаётся времени."
+          uz: "Mashg'ulotni barcha boshqa ishlardan keyingi 'keyingi safar' ishi deb hisoblash — unga deyarli hech qachon vaqt qolmaydi."
+        - ru: "Пропускать минимальную версию в занятые дни, думая «всё равно не считается» — именно она держит привычку живой между большими сессиями."
+          uz: "Band kunlarda 'baribir hisobga kirmaydi' deb minimal versiyani o'tkazib yuborish — aynan u katta mashg'ulotlar orasida odatni tirik ushlab turadi."
+      first_week_example:
+        ru: "Вт/Чт — слот по 1 часу хобби в календаре, в остальные дни — минимум 2 минуты практики, если большого слота нет."
+        uz: "Sesh/Pay — kalendarda 1 soatlik mashg'ulot oynasi, qolgan kunlarda — katta oyna bo'lmasa, kamida 2 daqiqalik mashq."
     source:
       name: "эвристика"
     template_id: hobby
@@ -72,6 +138,28 @@ goals:
     pace: "Варианты цели: 2 / 4 / 8 «впервые» в месяц (новое место, блюдо, занятие). 1 в неделю (продуктовая эвристика)."
     week_skeleton: "Вс — выбрать, сб — сделать"
     minimal_version: "Новый маршрут домой"
+    guide:
+      steps:
+        - ru: "В воскресенье заранее выбери одно конкретное «впервые» на следующую неделю — новое место, блюдо или занятие — так проще не забыть и не отложить."
+          uz: "Yakshanba kuni keyingi haftaga bitta aniq 'birinchi marta'ni oldindan tanlang — yangi joy, taom yoki mashg'ulot — shunda unutmaslik va kechiktirmaslik osonroq."
+        - ru: "Сделай выбранное «впервые» в субботу или другой свободный день — не обязательно дорогое или далёкое, важна новизна, а не масштаб."
+          uz: "Tanlangan 'birinchi marta'ni shanba yoki boshqa bo'sh kunda amalga oshiring — qimmat yoki uzoq bo'lishi shart emas, muhimi yangilik, miqyos emas."
+        - ru: "Старайся хотя бы часть «впервые» делать не в одиночку, а со сторонней компанией — так опыт запоминается лучше и приносит больше удовольствия."
+          uz: "'Birinchi marta'larning hech bo'lmasa qismini yolg'iz emas, boshqa odamlar bilan qilishga harakat qiling — shunda tajriba yaxshiroq yodda qoladi va ko'proq zavq beradi."
+        - ru: "Если неделя плотная — не пропускай совсем, а бери маленькое «впервые»: новый маршрут, новое блюдо в столовой, новая музыка."
+          uz: "Hafta band bo'lsa — umuman o'tkazib yubormang, kichik 'birinchi marta'ni oling: yangi yo'l, oshxonada yangi taom, yangi musiqa."
+        - ru: "Отмечай каждое «впервые» в приложении сразу после того, как сделал — так легко увидеть, набралось ли нужное число за месяц."
+          uz: "Har bir 'birinchi marta'ni qilgandan so'ng darhol ilovaga belgilang — shunda oy davomida kerakli son to'planganini ko'rish oson."
+      mistakes:
+        - ru: "Ждать «идеального» большого нового опыта (путешествие, дорогое событие) и из-за этого не делать маленькие — маленькие и частые важнее редких и больших."
+          uz: "'Ideal' katta yangi tajribani (sayohat, qimmat tadbir) kutib, shu sababli kichiklarini qilmaslik — kichik va tez-tez bo'lgani kam va katta bo'lganidan muhimroq."
+        - ru: "Выбирать «впервые» в последний момент в субботу без подготовки — часто заканчивается тем, что ничего не делается вообще."
+          uz: "Shanba kuni tayyorgarliksiz, oxirgi daqiqada 'birinchi marta'ni tanlash — ko'pincha hech narsa qilinmasligi bilan tugaydi."
+        - ru: "Повторять один и тот же тип «впервые» (только новые кафе) — цель в разнообразии опыта, а не в одной узкой категории."
+          uz: "Bir xil turdagi 'birinchi marta'ni takrorlash (faqat yangi kafelar) — maqsad tajriba xilma-xilligida, bitta tor toifada emas."
+      first_week_example:
+        ru: "Вс — выбрал «попробовать новое блюдо в незнакомом месте»; Сб — сделал это, по возможности с другом; отметил в приложении."
+        uz: "Yak — 'notanish joyda yangi taom tatib ko'rish'ni tanladi; Shan — buni, imkon qadar do'st bilan, amalga oshirdi; ilovaga belgiladi."
     source:
       name: "эвристика"
     template_id: new_experiences
@@ -88,6 +176,28 @@ goals:
     pace: "Варианты цели: 60 / 80 / 100% дней с выполненной рутиной. 2–4 недели (продуктовая эвристика)."
     week_skeleton: "Вечером готовить одежду на завтра, раз в неделю — ревизия гардероба"
     minimal_version: "Приготовить одежду на завтра"
+    guide:
+      steps:
+        - ru: "Каждый вечер готовь одежду на завтра: выбери и выложи вещи заранее, а не утром в спешке."
+          uz: "Har kuni kechqurun ertangi kiyimni tayyorlang: kiyimlarni oldindan tanlab, chiqarib qo'ying, ertalab shoshilib emas."
+        - ru: "Собери базовую рутину ухода (умыться, почистить зубы, увлажнить кожу) в один короткий привычный порядок, который не требует раздумий."
+          uz: "Asosiy parvarish rutinasini (yuz yuvish, tish tozalash, teriga krem surish) o'ylanishni talab qilmaydigan qisqa, odatiy tartibga jamlang."
+        - ru: "Собери 2–3 «капсульных» сочетания одежды (верх+низ), которые точно тебе нравятся — в сложные утра выбираешь из них, не думая."
+          uz: "O'zingizga aniq yoqadigan 2–3 ta kiyim 'kapsulasi' (yuqori+pastki) yig'ing — qiyin ertalablarda o'ylamay ulardan birini tanlaysiz."
+        - ru: "Раз в неделю делай короткую ревизию гардероба — убирай то, что давно не носишь, и держи капсулы в порядке."
+          uz: "Haftada bir marta kiyim-kechakni qisqa ko'rib chiqing — uzoqdan kiyilmagan narsalarni olib tashlang, kapsulalarni tartibda tuting."
+        - ru: "Отмечай рутину выполненной, если успел сделать базовый уход и одежда была готова с вечера — не нужно идеального образа каждый день."
+          uz: "Asosiy parvarish bajarilgan va kiyim kechqurundan tayyor bo'lsa, rutinani bajarilgan deb belgilang — har kuni mukammal ko'rinish shart emas."
+      mistakes:
+        - ru: "Выбирать одежду каждое утро заново, каждый раз перебирая весь шкаф — это отнимает время и силы ещё до начала дня."
+          uz: "Har ertalab kiyimni qaytadan, har safar butun shkafni titkilab tanlash — bu kun boshlanmasidan oldin vaqt va kuchni oladi."
+        - ru: "Делать рутину ухода слишком сложной и долгой с самого начала — такая рутина не держится дольше недели."
+          uz: "Parvarish rutinasini boshidanoq juda murakkab va uzun qilish — bunday rutina bir haftadan ko'p davom etmaydi."
+        - ru: "Считать стиль вопросом «красоты» или сравнения с другими — цель именно в удобной рутине и уверенности, а не в оценке внешности."
+          uz: "Uslubni 'go'zallik' yoki boshqalar bilan taqqoslash masalasi deb hisoblash — maqsad aynan qulay rutina va ishonchda, tashqi ko'rinishni baholashda emas."
+      first_week_example:
+        ru: "Каждый вечер — выложить одежду на завтра + базовый уход за 5 минут; в выходной — короткая ревизия гардероба и капсульных сочетаний."
+        uz: "Har kuni kechqurun — ertangi kiyimni chiqarib qo'yish + 5 daqiqalik asosiy parvarish; dam olish kunida — kiyim-kechak va kapsulalarni qisqa ko'rib chiqish."
     source:
       name: "эвристика"
     template_id: style_and_care
@@ -104,6 +214,28 @@ goals:
     pace: "Варианты цели: 3 / 5 / 7 вечеров без работы и учёбы после условленного часа. +1 вечер за 2 недели (продуктовая эвристика)."
     week_skeleton: "Каждый день — выбранный «час выключения»"
     minimal_version: "Закрыть ноутбук, сказать «день окончен»"
+    guide:
+      steps:
+        - ru: "Выбери конкретный «час выключения» (например 20:00), после которого не открываешь учебные и рабочие задачи — выбери реалистичный час, а не идеальный."
+          uz: "Aniq 'o'chirish vaqti'ni tanlang (masalan, 20:00), undan keyin o'quv va ish vazifalarini ochmaysiz — ideal emas, real vaqtni tanlang."
+        - ru: "Перед «часом выключения» выпиши короткий список дел на завтра — это снимает тревогу «а вдруг что-то забуду» и даёт разрешение остановиться."
+          uz: "'O'chirish vaqti'dan oldin ertangi ishlar ro'yxatini qisqacha yozib qo'ying — bu 'birdan nimadir unutib qo'yaman' tashvishini olib tashlaydi va to'xtashga ruxsat beradi."
+        - ru: "Сделай простой ритуал закрытия дня: закрыть ноутбук, убрать учебники со стола, проговорить «день окончен» — это сигнал мозгу переключиться."
+          uz: "Kunni yopishning oddiy marosimini yarating: noutbukni yopish, darsliklarni stoldan olib qo'yish, 'kun tugadi' deyish — bu miyaga o'tish signali."
+        - ru: "Считай вечер «выключенным», даже если просто закрыл ноутбук и сказал себе «день окончен» — минимальная версия тоже засчитывается в счётчик."
+          uz: "Shunchaki noutbukni yopib, o'zingizga 'kun tugadi' deganingizda ham kechqurunni 'o'chirilgan' deb hisoblang — minimal versiya ham hisoblagichga kiradi."
+        - ru: "Увеличивай число таких вечеров постепенно: +1 вечер за 2 недели, а не сразу все 7 дней подряд."
+          uz: "Bunday kechqurunlar sonini asta-sekin oshiring: 2 haftada +1 kechqurun, darhol barcha 7 kunni emas."
+      mistakes:
+        - ru: "Ставить «час выключения» нереально рано (например в 18:00 при плотном графике пар) — такой час постоянно нарушается и демотивирует."
+          uz: "'O'chirish vaqti'ni real bo'lmagan darajada erta qo'yish (masalan, band dars jadvalida soat 18:00) — bunday vaqt doim buziladi va rag'batni yo'qotadi."
+        - ru: "Считать проверку учебных или рабочих сообщений «на минутку» не нарушением — одно короткое сообщение легко превращается в час работы."
+          uz: "O'quv yoki ish xabarlarini 'bir daqiqaga' tekshirishni buzilish deb hisoblamaslik — bitta qisqa xabar oson ravishda bir soatlik ishga aylanadi."
+        - ru: "Пытаться сразу ввести 7 «выключенных» вечеров в неделю при плотном графике — реалистичнее начать с 3 и постепенно добавлять."
+          uz: "Band jadvalda darhol haftada 7 'o'chirilgan' kechqurunni joriy qilishga urinish — 3 tadan boshlab, asta-sekin qo'shish realroq."
+      first_week_example:
+        ru: "Пн/Ср/Пт/Вс — в 20:00 список дел на завтра, закрыть ноутбук, сказать «день окончен»; остальные дни — по возможности то же самое."
+        uz: "Dush/Chor/Juma/Yak — soat 20:00 da ertangi ishlar ro'yxati, noutbukni yopish, 'kun tugadi' deyish; qolgan kunlarda — imkon qadar xuddi shunday."
     source:
       name: "эвристика"
     template_id: work_life_balance

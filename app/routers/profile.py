@@ -196,6 +196,19 @@ def about_page(request: Request, user: User = Depends(require_user)):
     return render(request, "about.html", {"lang": user.language})
 
 
+@router.get("/help")
+def help_page(request: Request, user: User = Depends(require_user)):
+    """Экран помощи (PRD 1.0 «Безопасность»): 103/112 — общеизвестные номера
+    скорой и экстренных служб Узбекистана, встроены всегда. Линия
+    психологической помощи — из HELPLINE_UZ (.env); без неё строка просто
+    не показывается, чтобы не вывести на экран непроверенный номер."""
+    return render(
+        request,
+        "help.html",
+        {"helpline_uz": os.getenv("HELPLINE_UZ") or None, "lang": user.language},
+    )
+
+
 @router.post("/profile/settings")
 def set_settings(
     request: Request,

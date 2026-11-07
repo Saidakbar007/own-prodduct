@@ -37,6 +37,10 @@ class GoalTitle(BaseModel):
     ru: str
     uz: str
 
+    def text(self, lang: str) -> str:
+        """Текст на языке интерфейса пользователя (ru/uz), с запасом на ru."""
+        return self.uz if lang == "uz" else self.ru
+
 
 class GoalMetric(BaseModel):
     key: str  # семантический id метрики: weight_body | run_minutes | max_reps | ...
@@ -54,6 +58,16 @@ class GoalSource(BaseModel):
         return self.url is None
 
 
+class GoalGuide(BaseModel):
+    """«Как это делать» (кнопка на карточке цели, первый шаг — на «Сегодня»):
+    3–5 шагов своими словами, 2–3 частые ошибки, 1 пример первой недели.
+    Обязателен для каждой цели — иначе есть метрика, но нет ответа «как»."""
+
+    steps: list[GoalTitle] = Field(min_length=3, max_length=5)
+    mistakes: list[GoalTitle] = Field(min_length=2, max_length=3)
+    first_week_example: GoalTitle
+
+
 class GoalCatalogEntry(BaseModel):
     id: str
     sphere: str
@@ -69,6 +83,7 @@ class GoalCatalogEntry(BaseModel):
     pace: str
     week_skeleton: str
     minimal_version: str
+    guide: GoalGuide
     source: GoalSource
     # Шаблон сезона (день за днём) из app/seasons_library/, если у цели есть
     # сценарий прогрессии; без него цель можно показать в каталоге, но пока
@@ -145,3 +160,27 @@ def goal_meta(goal_id: str) -> Optional[GoalCatalogEntry]:
         if goal.id == goal_id:
             return goal
     return None
+
+
+def first_guide_step(goal_id: str, lang: str) -> Optional[str]:
+    """Первый шаг guide цели на языке пользователя — для карточки действия
+    дня на "Сегодня". None, если цель не найдена в каталоге (например, у неё
+    нет записи content/spheres/*.yaml)."""
+    entry = goal_meta(goal_id)
+    if entry is None or not entry.guide.steps:
+        return None
+    return entry.guide.steps[0].text(lang)
+
+
+def guide_for_display(goal_id: str, lang: str) -> Optional[dict]:
+    """Блок "Как это делать" целиком, тексты уже на языке пользователя —
+    для карточки цели (кнопка "Как это делать")."""
+    entry = goal_meta(goal_id)
+    if entry is None:
+        return None
+    guide = entry.guide
+    return {
+        "steps": [s.text(lang) for s in guide.steps],
+        "mistakes": [m.text(lang) for m in guide.mistakes],
+        "first_week_example": guide.first_week_example.text(lang),
+    }

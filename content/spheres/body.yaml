@@ -23,6 +23,28 @@ goals:
       Силовые 2–3 раза в неделю.
     week_skeleton: "3 силовые тренировки в неделю (Пн/Ср/Пт), 1 день отдыха минимум"
     minimal_version: "1 круг упражнений в половину объёма вместо полной тренировки"
+    guide:
+      steps:
+        - ru: "Выбери 5–6 базовых упражнений на всё тело (присед, тяга, жим, подтягивания/тяга блока, жим гантелей) — это основа каждой тренировки."
+          uz: "Butun tanaga 5–6 ta asosiy mashq tanla (squat, tortish, jim, turnikda tortilish, gantel bilan jim) — har bir mashg'ulotning asosi shu."
+        - ru: "Тренируйся 3 раза в неделю с хотя бы одним днём отдыха между тренировками."
+          uz: "Haftada 3 marta mashq qil, mashg'ulotlar orasida kamida 1 kun dam ol."
+        - ru: "На каждой тренировке старайся сделать 1 повтор больше или взять чуть больший вес, чем в прошлый раз — это и есть прогрессия."
+          uz: "Har safar oldingidan 1 marta ko'proq takrorlashga yoki ozgina ko'proq vazn ko'tarishga harakat qil — bu progressiya."
+        - ru: "Ешь по 1,6 г белка на кг веса тела в день, раздели на 3–4 приёма пищи."
+          uz: "Kuniga tana vazningning har kg'iga 1,6 g oqsil ye, buni 3–4 ovqatlanishga bo'lib ol."
+        - ru: "Спи 7+ часов — мышцы растут не на тренировке, а во время восстановления."
+          uz: "7+ soat uxla — mushaklar mashqda emas, dam olishda o'sadi."
+      mistakes:
+        - ru: "Тренироваться каждый день без отдыха — тело не восстанавливается, и прогресс останавливается."
+          uz: "Dam olmasdan har kuni mashq qilish — tana tiklanmaydi, natija to'xtab qoladi."
+        - ru: "Гнаться за весом на штанге в ущерб технике — травма отбросит на месяцы назад."
+          uz: "Texnikani buzib, vaznni oshirishga shoshilish — shikastlanish bir necha oyga orqaga tashlaydi."
+        - ru: "Есть мало белка или не следить за ним вообще — без строительного материала мышцы не растут."
+          uz: "Oz oqsil yeyish yoki umuman nazorat qilmaslik — qurilish materialisiz mushak o'smaydi."
+      first_week_example:
+        ru: "Пн — силовая (присед, жим, тяга), Вт — отдых, Ср — силовая, Чт — отдых, Пт — силовая, Сб–Вс — отдых; белок на каждом приёме пищи."
+        uz: "Dush — kuch mashqi (squat, jim, tortish), Sesh — dam, Chor — kuch mashqi, Pay — dam, Juma — kuch mashqi, Shan–Yak — dam; har ovqatda oqsil."
     source:
       name: "Iraki 2019 / ISSN (Jäger 2017) / Morton 2018 / ACSM"
       url: "https://doi.org/10.3390/sports7070154"
@@ -43,6 +65,28 @@ goals:
       текущем ИЛИ целевом ИМТ < 18,5 (engine.meets_fat_loss_eligibility).
     week_skeleton: "3 тренировки в неделю (Пн/Ср/Пт) + ежедневные шаги, 2 дня отдыха от силовых"
     minimal_version: "1 круг упражнений и 4000 шагов вместо полной тренировки"
+    guide:
+      steps:
+        - ru: "Сосчитай свою норму калорий и вычти 10–20% — этого достаточно для безопасного темпа похудения."
+          uz: "O'zingning kaloriya me'yoringni hisobla va undan 10–20% ayir — bu xavfsiz tezlikda ozish uchun yetarli."
+        - ru: "3 раза в неделю делай силовую тренировку — она сохраняет мышцы, пока уходит жир."
+          uz: "Haftada 3 marta kuch mashqi qil — bu yog' yo'qotilayotganda mushaklarni saqlab qoladi."
+        - ru: "Ходи каждый день и считай шаги — это самый простой способ увеличить расход калорий."
+          uz: "Har kuni yur va qadamlarni sana — bu kaloriya sarfini oshirishning eng oson yo'li."
+        - ru: "Взвешивайся в одно время (утром, натощак) и смотри на среднее за неделю, а не на один день."
+          uz: "Bir xil vaqtda (ertalab, ochqorin) o'lchan va bir kunga emas, haftalik o'rtachaga qarang."
+        - ru: "Если вес не двигается 2 недели подряд — слегка уменьши порции, а не сократи сон или тренировки."
+          uz: "Agar vazn 2 hafta davomida o'zgarmasa — porsiyani ozroq kamayt, uyqu yoki mashqni emas."
+      mistakes:
+        - ru: "Резко урезать питание — тело замедляет обмен веществ и срывы становятся почти неизбежны."
+          uz: "Ovqatni keskin kamaytirish — tana metabolizmni sekinlashtiradi va buzilishlar deyarli muqarrar bo'ladi."
+        - ru: "Полностью отказаться от силовых — вместе с жиром уходят и мышцы, результат выглядит хуже."
+          uz: "Kuch mashqlaridan butunlay voz kechish — yog' bilan birga mushak ham ketadi, natija yomonroq ko'rinadi."
+        - ru: "Пытаться худеть при ИМТ ниже 18,5 — это уже недоступно в приложении, сначала нужно набрать здоровый вес."
+          uz: "Tana vazni indeksi 18,5 dan past bo'lsa ozishga urinish — ilovada bu yopiq, avval sog'lom vaznga yetish kerak."
+      first_week_example:
+        ru: "Пн/Ср/Пт — силовая тренировка, ежедневно — шаги и отметка веса утром; порции чуть меньше обычного."
+        uz: "Dush/Chor/Juma — kuch mashqi, har kuni — qadamlar va ertalabki vazn; porsiyalar odatdagidan ozroq."
     source:
       name: "CDC / WHO / Helms 2014"
       url: "https://doi.org/10.1186/1550-2783-11-20"
@@ -64,6 +108,28 @@ goals:
       ожидаемого → фаза не продвигается вперёд).
     week_skeleton: "3 пробежки в неделю (Пн/Ср/Пт), день отдыха между ними"
     minimal_version: "15–20 минут быстрой ходьбы вместо пробежки"
+    guide:
+      steps:
+        - ru: "Начни с чередования бега и ходьбы (например 1 минута бега / 2 минуты ходьбы) — не с попытки сразу пробежать всю дистанцию."
+          uz: "Yugurish va yurishni almashtirishdan boshla (masalan, 1 daqiqa yugurish / 2 daqiqa yurish) — darhol butun masofani yugurishga urinmang."
+        - ru: "Бегай 3 раза в неделю с днём отдыха между пробежками — связкам и суставам нужно время на адаптацию."
+          uz: "Haftada 3 marta yugur, yugurishlar orasida dam kuni bo'lsin — bo'g'im va payларга moslashish uchun vaqt kerak."
+        - ru: "Увеличивай время бега постепенно, неделя за неделей, не больше чем на 10% за раз."
+          uz: "Yugurish vaqtini asta-sekin, haftadan-haftaga, bir yo'la 10%dan ko'p oshirmay oshir."
+        - ru: "Если неделя дала с трудом — повтори её ещё раз, а не переходи на следующую через силу."
+          uz: "Agar hafta qiyin kechsa — uni qaytaring, keyingisiga zo'rlab o'tmang."
+        - ru: "Бегай в темпе, при котором можешь говорить короткими фразами — это и есть правильная лёгкая скорость."
+          uz: "Qisqa gaplar bilan gaplasha oladigan tezlikda yugur — bu to'g'ri yengil tezlik."
+      mistakes:
+        - ru: "Пытаться пробежать 5 км с первой тренировки — высокий риск травмы и разочарования."
+          uz: "Birinchi mashg'ulotdan 5 km yugurishga urinish — shikastlanish va hafsalasi pir bo'lish xavfi yuqori."
+        - ru: "Бегать каждый день подряд без отдыха — риск травм колена и голени резко растёт."
+          uz: "Dam olmasdan har kuni yugurish — tizza va boldir shikastlanish xavfi keskin oshadi."
+        - ru: "Игнорировать боль в суставах и бежать через неё — лучше сделать минимальную версию (ходьбу)."
+          uz: "Bo'g'imdagi og'riqni e'tiborsiz qoldirib yugurishda davom etish — buning o'rniga minimal versiyani (yurishni) bajaring."
+      first_week_example:
+        ru: "Пн/Ср/Пт — 1 мин бег / 2 мин ходьба, повторить 8 раз (≈25 минут); Вт/Чт/Сб/Вс — отдых или лёгкая прогулка."
+        uz: "Dush/Chor/Juma — 1 daqiqa yugurish / 2 daqiqa yurish, 8 marta takrorlash (≈25 daqiqa); Sesh/Pay/Shan/Yak — dam yoki yengil sayr."
     source:
       name: "NHS Couch to 5K"
       url: "https://www.nhs.uk/better-health/get-active/get-running-with-couch-to-5k/couch-to-5k-running-plan/"
@@ -84,6 +150,28 @@ goals:
       1–2 повтора.
     week_skeleton: "2–3 тренировки в неделю, не подряд"
     minimal_version: "Половина обычного объёма подходов"
+    guide:
+      steps:
+        - ru: "Если пока ни одного подтягивания — начни с негативных повторений (медленно опускаться из верхней точки) или тяги верхнего блока."
+          uz: "Agar hali birorta ham tortila olmasang — tepa nuqtadan sekin tushish (negativ takror) yoki yuqori blokni tortishdan boshla."
+        - ru: "Тренируйся 2–3 раза в неделю, не подряд — спине и плечам нужно время восстановиться."
+          uz: "Haftada 2–3 marta, ketma-ket emas mashq qil — orqa va yelkaga tiklanish uchun vaqt kerak."
+        - ru: "Делай 3–4 подхода до почти полного отказа, оставляя запас 1–2 повтора."
+          uz: "1–2 takror zahira qoldirib, deyarli to'liq charchaguncha 3–4 ta yondashuv bajar."
+        - ru: "Когда подход стал легче (запас больше 2 повторов) — добавь 1 повторение или подход."
+          uz: "Yondashuv osonlashganda (2 takrorsdan ko'proq zahira bo'lsa) — 1 takror yoki yondashuv qo'sh."
+        - ru: "Раз в 2–3 недели проверяй максимум подтягиваний подряд — это и есть замер цели."
+          uz: "Har 2–3 haftada ketma-ket tortilishlar maksimumini tekshir — bu maqsadning o'lchovi."
+      mistakes:
+        - ru: "Тренироваться каждый день — мышцы и связки не успевают восстановиться, прогресс застывает."
+          uz: "Har kuni mashq qilish — mushak va paylar tiklanishga ulgurmaydi, natija to'xtab qoladi."
+        - ru: "Рваться вверх всем телом (раскачка) вместо чистой техники — это травмоопасно и не считается."
+          uz: "Toza texnika o'rniga butun tana bilan silkinib tortilish — bu shikastlanish xavfli va hisobga olinmaydi."
+        - ru: "Бросать при первой неудаче — рост силы в этом упражнении медленный, результат виден через недели, не дни."
+          uz: "Birinchi muvaffaqiyatsizlikda tashlab qo'yish — bu mashqda kuch o'sishi sekin, natija kunlarda emas, haftalarda ko'rinadi."
+      first_week_example:
+        ru: "Вт/Чт/Сб — 3–4 подхода тяги верхнего блока или негативных повторений до лёгкого отказа; остальные дни — отдых."
+        uz: "Sesh/Pay/Shan — yuqori blokni tortish yoki negativ takrorlarning 3–4 ta yondashuvi; qolgan kunlar — dam."
     source:
       name: "ACSM Position Stand"
       url: "https://doi.org/10.1249/MSS.0b013e3181915670"
@@ -104,6 +192,28 @@ goals:
       1–2 повтора.
     week_skeleton: "2–3 тренировки в неделю, не подряд"
     minimal_version: "Половина обычного объёма подходов"
+    guide:
+      steps:
+        - ru: "Если обычные отжимания пока тяжелы — начни с отжиманий от колен или от скамьи/стола."
+          uz: "Agar odatdagi push-up hali qiyin bo'lsa — tizzadan yoki skameyka/stoldan turib boshla."
+        - ru: "Тренируйся 2–3 раза в неделю, не подряд — грудным и плечевым мышцам нужно восстановление."
+          uz: "Haftada 2–3 marta, ketma-ket emas mashq qil — ko'krak va yelka mushaklariga tiklanish kerak."
+        - ru: "Делай 3–4 подхода почти до отказа, оставляя запас 1–2 повтора, следи за прямой линией тела."
+          uz: "1–2 takror zahira qoldirib, tana to'g'ri chiziqda bo'lishiga e'tibor berib, 3–4 ta yondashuv bajar."
+        - ru: "Когда подход стал легче — добавь 1–2 повторения или ещё один подход."
+          uz: "Yondashuv osonlashganda — 1–2 takror yoki yana bir yondashuv qo'sh."
+        - ru: "Раз в 2–3 недели проверяй максимум отжиманий подряд без паузы — это замер цели."
+          uz: "Har 2–3 haftada pauzasiz ketma-ket push-up maksimumini tekshir — bu maqsadning o'lchovi."
+      mistakes:
+        - ru: "Прогибать поясницу или поднимать таз — техника важнее количества."
+          uz: "Bel qismini botirish yoki dumbani ko'tarish — texnika sondan muhimroq."
+        - ru: "Тренироваться каждый день без отдыха — плечи и грудь не восстанавливаются, риск травмы растёт."
+          uz: "Dam olmasdan har kuni mashq qilish — yelka va ko'krak tiklanmaydi, shikastlanish xavfi oshadi."
+        - ru: "Делать неполную амплитуду (не опускаться низко), чтобы увеличить счёт — результат становится нечестным и бесполезным."
+          uz: "Sonni oshirish uchun to'liq pastga tushmaslik — natija halol va foydali bo'lmay qoladi."
+      first_week_example:
+        ru: "Пн/Ср/Пт — 3–4 подхода отжиманий (от колен, если нужно) почти до отказа; остальные дни — отдых."
+        uz: "Dush/Chor/Juma — deyarli charchaguncha 3–4 ta yondashuv push-up (kerak bo'lsa, tizzadan); qolgan kunlar — dam."
     source:
       name: "ACSM Position Stand"
       url: "https://doi.org/10.1249/MSS.0b013e3181915670"
@@ -125,6 +235,26 @@ goals:
       сидеть (см. цель «Меньше сидеть»).
     week_skeleton: "Ежедневная цель по шагам + 150–300 мин умеренной активности в неделю"
     minimal_version: "Прогулка 10 минут"
+    guide:
+      steps:
+        - ru: "Поставь телефон или часы считать шаги и посмотри, сколько выходит в обычный день — это твоя точка старта."
+          uz: "Telefon yoki soatingizga qadamlarni sanashni qo'ying va odatdagi kunda nechta chiqishini ko'ring — bu boshlang'ich nuqtangiz."
+        - ru: "Добавляй 500–1000 шагов в неделю, а не пытайся сразу дойти до 10 тысяч."
+          uz: "Darhol 10 mingga yetishga urinmang, haftasiga 500–1000 qadam qo'shib boring."
+        - ru: "Используй короткие промежутки: выйди на одну остановку раньше, поднимись по лестнице вместо лифта."
+          uz: "Qisqa imkoniyatlardan foydalaning: bir bekat oldin tushing, liftning o'rniga zinadan ko'taring."
+        - ru: "Раз в день сделай отдельную прогулку 10–20 минут — это проще, чем набирать шаги урывками весь день."
+          uz: "Kuniga bir marta alohida 10–20 daqiqalik sayr qiling — bu kun davomida qadamlarni bo'lib-bo'lib yig'ishdan osonroq."
+      mistakes:
+        - ru: "Пытаться сразу выйти на 10 тысяч шагов — быстро надоедает и бросается через неделю."
+          uz: "Darhol 10 ming qadamga chiqishga urinish — tezda zerikadi va bir haftada tashlab qo'yiladi."
+        - ru: "Считать активностью только спорт, забывая про обычную ходьбу в течение дня."
+          uz: "Faollik deb faqat sportni hisoblash, kun davomidagi oddiy yurishni unutish."
+        - ru: "Сидеть весь день, а потом «отрабатывать» одной долгой прогулкой вечером — лучше распределять движение равномерно."
+          uz: "Kun bo'yi o'tirib, keyin kechqurun bitta uzoq sayr bilan 'to'ldirish' — harakatni kun bo'yi teng taqsimlash yaxshiroq."
+      first_week_example:
+        ru: "Ежедневно — текущая норма шагов +500; дополнительно одна прогулка 15 минут после пар или работы."
+        uz: "Har kuni — joriy qadam me'yori +500; qo'shimcha, dars yoki ishdan keyin 15 daqiqalik bir sayr."
     source:
       name: "Paluch 2022 / WHO"
       url: "https://www.eurekalert.org/news-releases/945267"
@@ -142,6 +272,26 @@ goals:
     pace: "7+ часов (AASM/SRS для 18–60 лет; NSF для 18–25 — 7–9 часов); подъём ± 30 минут изо дня в день"
     week_skeleton: "Ежедневно — подъём и отбой в одно время, включая выходные"
     minimal_version: "Лечь не позже обычного хотя бы на 30 минут"
+    guide:
+      steps:
+        - ru: "Выбери время подъёма, которое реально подходит под учёбу/работу, и держись его каждый день, включая выходные."
+          uz: "O'qish/ishga mos keladigan turish vaqtini tanlang va har kuni, dam olish kunlari ham, shu vaqtda turing."
+        - ru: "От времени подъёма отсчитай назад 7–9 часов — это и будет время, когда пора лечь."
+          uz: "Turish vaqtidan 7–9 soat orqaga sanang — bu yotish vaqti bo'ladi."
+        - ru: "За 30–60 минут до сна убери телефон и приглуши свет — это сигнал телу, что пора готовиться ко сну."
+          uz: "Uyquga 30–60 daqiqa qolganda telefonni yig'ib qo'ying va yorug'likni pasaytiring — bu tanaga uyquga tayyorlanish signali."
+        - ru: "Не отсыпайся в выходные больше чем на 1 час — это сбивает режим на всю следующую неделю."
+          uz: "Dam olish kunlari 1 soatdan ko'p uxlab qolmang — bu keyingi butun haftaning rejimini buzadi."
+      mistakes:
+        - ru: "Ложиться в разное время в будни и выходные — организм не может подстроиться, сон становится хуже."
+          uz: "Ish va dam olish kunlari turli vaqtda yotish — organizm moslasha olmaydi, uyqu sifati pasayadi."
+        - ru: "Пытаться «доспать» днём на 2–3 часа вместо того, чтобы раньше лечь — вечером будет труднее уснуть."
+          uz: "Ertaroq yotish o'rniga kunduzi 2–3 soat 'qo'shib uxlash' — kechqurun uxlash qiyinlashadi."
+        - ru: "Сидеть в телефоне в кровати прямо перед сном — яркий свет экрана мешает заснуть."
+          uz: "Uyquga yaqin paytda yotoqda telefonga tikilish — ekranning yorqin nuri uxlashga xalaqit beradi."
+      first_week_example:
+        ru: "Каждый день — подъём в одно время ± 30 минут; за час до сна — без телефона, свет приглушен."
+        uz: "Har kuni — bir xil vaqtda ± 30 daqiqa turish; uyquga bir soat qolganda — telefonsiz, yorug'lik past."
     source:
       name: "AASM / SRS"
       url: "https://aasm.org/aasm-and-srs-publish-new-sleep-duration-consensus-statement/"
@@ -161,6 +311,28 @@ goals:
       натяжения, без боли. Цель — 2–3 сессии в неделю, лучше ежедневно.
     week_skeleton: "Пн/Ср/Пт по 10 минут после тренировки или пар"
     minimal_version: "1 поза × 30 секунд"
+    guide:
+      steps:
+        - ru: "Выбери 4–6 поз на основные зоны: спина, бёдра, плечи, грудь — растягивай каждую после разминки мышц."
+          uz: "Asosiy zonalar uchun 4–6 poza tanla: orqa, son, yelka, ko'krak — har birini mushaklar isingandan keyin tort."
+        - ru: "Держи каждую позу 10–30 секунд до лёгкого натяжения, без боли и без рывков."
+          uz: "Har bir pozani 10–30 soniya, og'riqsiz va silkinishsiz, yengil tortishish sezilguncha ushlab tur."
+        - ru: "Тянись 2–3 раза в неделю, лучше сразу после тренировки или пар, когда мышцы уже тёплые."
+          uz: "Haftada 2–3 marta, ayniqsa mashqdan yoki darsdan keyin, mushaklar hali issiq paytda tortiling."
+        - ru: "Дыши спокойно и ровно во время растяжки — задержка дыхания усиливает напряжение в теле."
+          uz: "Tortishish paytida xotirjam va tekis nafas ol — nafasni ushlab turish tanadagi zo'riqishni kuchaytiradi."
+        - ru: "Раз в 4 недели делай тест «наклон сидя» и записывай результат в сантиметрах."
+          uz: "Har 4 haftada 'o'tirib egilish' testini bajaring va natijani santimetrda yozib qo'ying."
+      mistakes:
+        - ru: "Делать резкие рывковые растяжки — это травмирует связки, а не делает тело гибче."
+          uz: "Keskin silkinib tortishish — bu paylarga shikast yetkazadi, tanani egiluvchan qilmaydi."
+        - ru: "Тянуться через острую боль — норма — лёгкое натяжение, боль — сигнал остановиться."
+          uz: "Kuchli og'riq orqali tortilish — me'yor yengil tortishish, og'riq esa to'xtash signali."
+        - ru: "Растягивать холодные мышцы без разминки — риск травмы выше, а эффект меньше."
+          uz: "Isinmagan sovuq mushaklarni tortish — shikastlanish xavfi yuqori, foyda esa kam."
+      first_week_example:
+        ru: "Пн/Ср/Пт по 10 минут после тренировки или пар: по 30 секунд на 4 основные позы (спина, бёдра, плечи, грудь)."
+        uz: "Dush/Chor/Juma, dars/mashqdan keyin 10 daqiqa: 4 asosiy pozaga (orqa, son, yelka, ko'krak) 30 soniyadan."
     source:
       name: "ACSM (Garber 2011)"
       url: "https://doi.org/10.1249/MSS.0b013e318213fefb"
@@ -178,6 +350,26 @@ goals:
     pace: "+1 порция за неделю; цель ≥5 порций (≈400 г) в день (ВОЗ: свободный сахар <10%, соль <5 г)"
     week_skeleton: "Ежедневная отметка порций; в воскресенье — «тарелка недели»"
     minimal_version: "1 фрукт или овощ в день"
+    guide:
+      steps:
+        - ru: "Добавляй овощ или фрукт к каждому приёму пищи — проще увеличивать количество, чем менять весь рацион сразу."
+          uz: "Har ovqatga sabzavot yoki meva qo'shing — butun ratsionni birdan o'zgartirishdan ko'ra, miqdorini oshirish osonroq."
+        - ru: "Половину тарелки в обед и ужин старайся занимать овощами — простое правило без подсчёта калорий."
+          uz: "Tushlik va kechki ovqatda tarelkaning yarmini sabzavot bilan to'ldirishga harakat qiling — kaloriya sanamaydigan oddiy qoida."
+        - ru: "Замени сладкие напитки на воду или несладкий чай хотя бы в половине случаев."
+          uz: "Shirin ichimliklarni hech bo'lmasa yarmida suv yoki shirinliksiz choyga almashtiring."
+        - ru: "Готовь порцию на день заранее или держи под рукой нарезанные овощи/фрукты — тогда выбор проще."
+          uz: "Kunlik porsiyani oldindan tayyorlab qo'ying yoki qirqilgan sabzavot/meva tayyor tursin — tanlov osonlashadi."
+      mistakes:
+        - ru: "Пытаться сразу исключить всю «вредную» еду — такие резкие запреты обычно заканчиваются срывом."
+          uz: "Darhol barcha 'zararli' ovqatni butunlay taqiqlashga urinish — bunday keskin taqiqlar odatda buzilish bilan tugaydi."
+        - ru: "Считать соком или смузи полноценную замену овощам и фруктам — в них меньше клетчатки и больше сахара."
+          uz: "Sharbat yoki smuzini sabzavot-mevaning to'liq o'rnini bosuvchi deb hisoblash — ularda tolasi kam, shakar ko'p."
+        - ru: "Ориентироваться только на вес и игнорировать состав тарелки — качество еды важно само по себе."
+          uz: "Faqat vaznga qarab, tarelka tarkibini e'tiborsiz qoldirish — ovqat sifati o'zi ham muhim."
+      first_week_example:
+        ru: "Каждый день — овощ или фрукт к каждому приёму пищи; в воскресенье — «тарелка недели», смотришь на баланс по итогам 7 дней."
+        uz: "Har kuni — har ovqatga sabzavot yoki meva; yakshanba — 'hafta tarelkasi', 7 kunlik natijaga qarab balansni ko'ring."
     source:
       name: "ВОЗ, здоровое питание"
       url: "https://www.who.int/news-room/fact-sheets/detail/healthy-diet"
@@ -198,6 +390,26 @@ goals:
       спорте — больше. Цели выше 3 л в день не ставим.
     week_skeleton: "Ежедневно, кнопка «+250 мл» в течение дня"
     minimal_version: "1 стакан воды утром"
+    guide:
+      steps:
+        - ru: "Выпивай стакан воды сразу после пробуждения — это простой и легко запоминаемый старт дня."
+          uz: "Uyg'ongandan so'ng darhol bir stakan suv iching — bu kunni boshlashning oddiy va yodda qoladigan usuli."
+        - ru: "Держи бутылку воды на виду (на столе, в сумке) — то, что видно, пьётся чаще."
+          uz: "Suv shishasini ko'z oldida tuting (stolda, sumkada) — ko'rinib turgan narsa ko'proq ichiladi."
+        - ru: "Нажимай «+250 мл» в приложении после каждого стакана — так проще не потерять счёт за день."
+          uz: "Har stakandan keyin ilovada '+250 ml' tugmasini bosing — shunda kun davomida hisobni yo'qotmaslik osonroq."
+        - ru: "Пей небольшими порциями в течение дня, а не весь объём залпом вечером."
+          uz: "Kun davomida oz-ozdan iching, kechqurun bir yo'la hammasini emas."
+      mistakes:
+        - ru: "Пить всю норму воды вечером — ночью это мешает спать из-за частых пробуждений."
+          uz: "Kunlik suv me'yorini kechqurun ichish — tunda tez-tez uyg'onish tufayli uxlashga xalaqit beradi."
+        - ru: "Считать кофе и сладкие напитки полноценной заменой воды — они не дают того же эффекта увлажнения."
+          uz: "Qahva va shirin ichimliklarni suvning to'liq o'rnini bosuvchi deb hisoblash — ular xuddi shunday namlik bermaydi."
+        - ru: "Ставить цель больше 3 литров в день «на всякий случай» — это не нужно и может быть небезопасно."
+          uz: "'Ehtiyot uchun' kuniga 3 litrdan ko'p maqsad qo'yish — bu kerak emas va xavfsiz bo'lmasligi mumkin."
+      first_week_example:
+        ru: "Каждый день — стакан воды утром, бутылка на столе, отметка «+250 мл» 5–6 раз в течение дня."
+        uz: "Har kuni — ertalab bir stakan suv, stolda shisha, kun davomida 5–6 marta '+250 ml' belgisi."
     source:
       name: "EFSA 2010"
       url: "https://doi.org/10.2903/j.efsa.2010.1459"
@@ -215,6 +427,26 @@ goals:
     pace: "+1 перерыв в неделю, вставать каждые 30–60 минут; кор 2–3 раза в неделю, 10 минут"
     week_skeleton: "Ежедневные перерывы; Вт/Чт/Сб — 10 минут кора"
     minimal_version: "1 перерыв за пару/рабочий блок"
+    guide:
+      steps:
+        - ru: "Поставь таймер или напоминание каждые 30–60 минут — легко забыть встать, если не напоминать себе."
+          uz: "Har 30–60 daqiqada taymer yoki eslatma qo'ying — eslatib turmasangiz, turishni oson unutib qo'yasiz."
+        - ru: "Встав, пройдись 1–2 минуты или сделай несколько растяжек — не обязательно уходить далеко от стола."
+          uz: "Turganingizda 1–2 daqiqa yuring yoki bir necha tortishish bajaring — stoldan uzoqqa ketish shart emas."
+        - ru: "2–3 раза в неделю выделяй 10 минут на упражнения для спины и кора — это компенсирует часы сидения."
+          uz: "Haftada 2–3 marta orqa va kor mushaklari uchun 10 daqiqa ajratang — bu o'tirib o'tkazilgan soatlarni qoplaydi."
+        - ru: "Отмечай каждый перерыв в приложении — так видно, растёт ли их число за неделю."
+          uz: "Har bir tanaffusni ilovada belgilang — shunda haftada soni oshayotganini ko'rish mumkin."
+      mistakes:
+        - ru: "Считать один долгий перерыв в обед заменой регулярных мини-перерывов — организму нужны частые, а не редкие паузы."
+          uz: "Tushlikdagi bitta uzoq tanaffusni muntazam mini-tanaffuslarning o'rni deb hisoblash — organizmga tez-tez, kam emas, pauza kerak."
+        - ru: "Встать и тут же снова сесть у телефона — перерыв должен включать хотя бы немного движения."
+          uz: "Turib, darhol telefon oldida yana o'tirib qolish — tanaffusda hech bo'lmasa ozgina harakat bo'lishi kerak."
+        - ru: "Игнорировать дискомфорт в пояснице, считая его нормой учёбы или работы — это сигнал добавить перерывы и упражнения на кор."
+          uz: "Bel qismidagi noqulaylikni o'qish yoki ishning normasi deb e'tiborsiz qoldirish — bu tanaffus va kor mashqlarini qo'shish signali."
+      first_week_example:
+        ru: "Каждый час пары/работы — встать на 1–2 минуты; Вт/Чт/Сб — 10 минут упражнений на спину и кор."
+        uz: "Har soat dars/ish — 1–2 daqiqa turish; Sesh/Pay/Shan — orqa va kor uchun 10 daqiqa mashq."
     source:
       name: "ВОЗ 2020 (физическая активность и сидячий образ жизни)"
       url: "https://www.who.int/publications/i/item/9789240015128"

@@ -20,6 +20,28 @@ goals:
       в неделю. Даже беззвучное уведомление сбивает внимание (Stothart, 2015).
     week_skeleton: "5×25–50 минут в неделю"
     minimal_version: "2 минуты на одну задачу, телефон в другой комнате"
+    guide:
+      steps:
+        - ru: "Выбери одну задачу и поставь таймер на 25 минут (или сколько осилишь сейчас) — никакой многозадачности."
+          uz: "Bitta vazifani tanla va 25 daqiqaga taymer qo'y (yoki hozircha chidaganingcha) — multitasking yo'q."
+        - ru: "Убери телефон в другую комнату или на беззвучный режим вне поля зрения — даже бесшумное уведомление сбивает внимание."
+          uz: "Telefonni boshqa xonaga olib qo'y yoki ko'zga ko'rinmaydigan joyga ovozsiz rejimda qo'y — hatto ovozsiz bildirishnoma ham diqqatni buzadi."
+        - ru: "Если отвлёкся — нажми кнопку «отвлёкся», блок обнулится; начни заново без самокритики."
+          uz: "Chalg'ib qolsang — 'chalg'idim' tugmasini bos, blok noldan boshlanadi; o'zingni ayblamay qaytadan boshla."
+        - ru: "Каждую неделю прибавляй к длине блока около 5 минут."
+          uz: "Har hafta blok uzunligiga taxminan 5 daqiqa qo'shib bor."
+        - ru: "Делай 5 фокус-блоков в неделю, по возможности в одно и то же время дня."
+          uz: "Haftada 5 ta diqqat blokini, imkon qadar kunning bir xil vaqtida bajar."
+      mistakes:
+        - ru: "Пытаться сразу сидеть час без перерыва — лучше несколько честных коротких блоков, чем один длинный с отвлечениями."
+          uz: "Darhol bir soat tanaffussiz o'tirishga urinish — chalg'ishlar bilan uzun bitta blokdan ko'ra, bir necha halol qisqa blok yaxshiroq."
+        - ru: "Держать телефон «на всякий случай» на столе рядом — даже выключенный экран всё равно притягивает внимание."
+          uz: "Telefonni 'har ehtimolga qarshi' stol ustida yonda qoldirish — o'chirilgan ekran ham diqqatni tortadi."
+        - ru: "Засчитывать блок с прерыванием как выполненный — это искажает статистику и мешает видеть настоящий прогресс."
+          uz: "Chalg'igan blokni bajarilgan deb hisoblash — bu statistikani buzadi va haqiqiy natijani ko'rishga xalaqit beradi."
+      first_week_example:
+        ru: "5 раз в неделю — 25 минут одна задача, телефон в другой комнате; при отвлечении — кнопка «отвлёкся» и блок заново."
+        uz: "Haftada 5 marta — 25 daqiqa bitta vazifa, telefon boshqa xonada; chalg'isang — 'chalg'idim' tugmasi va blok qaytadan."
     source:
       name: "Stothart 2015"
     template_id: deep_focus
@@ -39,6 +61,24 @@ goals:
       заметен уже через неделю.
     week_skeleton: "4–5 учебных сессий в неделю"
     minimal_version: "Закрыть конспект и вспомнить 3 главные мысли"
+    guide:
+      steps:
+        - ru: "После учебной сессии закрой конспект и вспомни главное своими словами, не подглядывая в текст."
+          uz: "Dars sessiyasidan keyin konspektni yopib, asosiylarini matnga qaramasdan o'z so'zlaring bilan eslab ko'r."
+        - ru: "После каждой сессии отмечай кнопкой — прошла она с самопроверкой или просто перечитыванием."
+          uz: "Har bir sessiyadan keyin tugma bilan belgila — u o'z-o'zini tekshirish bilan o'tdimi yoki shunchaki qayta o'qish bilan."
+        - ru: "Начни с 1–2 сессий в неделю с самопроверкой и постепенно доводи долю до большинства сессий."
+          uz: "Haftada 1–2 ta o'z-o'zini tekshiruvchi sessiyadan boshla va ulushini asta-sekin ko'pchilik sessiyalargacha oshir."
+        - ru: "Если не можешь вспомнить какой-то момент — найди его в конспекте и повтори именно его, а не весь материал заново."
+          uz: "Biror joyni eslay olmasang — uni konspektda top va butun materialni emas, aynan o'shani qayta ko'r."
+      mistakes:
+        - ru: "Перечитывать конспект несколько раз подряд, принимая знакомый текст за настоящее знание — это создаёт ложное чувство уверенности."
+          uz: "Konspektni ketma-ket bir necha marta qayta o'qish, tanish matnni haqiqiy bilim deb hisoblash — bu yolg'on ishonch hissini yaratadi."
+        - ru: "Проверять себя сразу после прочтения, без паузы — так работает кратковременная память, а не реальное усвоение."
+          uz: "O'qib bo'lishi bilanoq, tanaffussiz o'zini tekshirish — bu qisqa muddatli xotira ishlaydi, haqiqiy o'zlashtirish emas."
+      first_week_example:
+        ru: "4–5 учебных сессий за неделю: после каждой — закрыть конспект, вспомнить 3 главные мысли, затем проверить себя по тексту."
+        uz: "Haftada 4–5 ta dars sessiyasi: har birida — konspektni yopish, 3 asosiy fikrni eslash, keyin matn bo'yicha o'zini tekshirish."
     source:
       name: "Dunlosky 2013"
     template_id: self_check_study
@@ -57,6 +97,24 @@ goals:
       работает лучше перечитывания (Roediger & Karpicke, 2006). Цикл 4–8 недель.
     week_skeleton: "3×15 минут в неделю"
     minimal_version: "1 вопрос по вчерашней теме"
+    guide:
+      steps:
+        - ru: "После изучения новой темы запланируй проверку через 7 дней, а не сразу в тот же день."
+          uz: "Yangi mavzuni o'rganib bo'lgach, tekshirishni bir xil kunga emas, 7 kundan keyinga rejalashtir."
+        - ru: "В день проверки закрой все материалы и попробуй ответить на вопросы по памяти, без подсказок."
+          uz: "Tekshirish kunida barcha materiallarni yop va savollarga yordamsiz, xotiradan javob berishga harakat qil."
+        - ru: "Отмечай, сколько вспомнил правильно — это и есть точность отложенной проверки."
+          uz: "Nechta to'g'ri eslab qolganingni belgila — bu kechiktirilgan tekshiruv aniqligi."
+        - ru: "Темы, которые забылись, повтори и поставь на повторную проверку через ещё 7 дней."
+          uz: "Unutilgan mavzularni qayta ko'r va yana 7 kundan keyin tekshirishga qo'y."
+      mistakes:
+        - ru: "Проверять себя сразу после изучения — так результат выглядит лучше, чем реальное долгосрочное запоминание."
+          uz: "O'rganib bo'lishi bilanoq o'zini tekshirish — natija haqiqiy uzoq muddatli esda qolishdan yaxshiroq ko'rinadi."
+        - ru: "Смотреть ответ при первой же трудности, а не пытаться вспомнить до конца."
+          uz: "Birinchi qiyinchilikda javobga qarash, oxirigacha eslashga harakat qilmaslik."
+      first_week_example:
+        ru: "3 раза в неделю по 15 минут — проверка тем, изученных неделю назад, без конспекта."
+        uz: "Haftada 3 marta 15 daqiqa — bir hafta oldin o'rganilgan mavzularni konspektsiz tekshirish."
     source:
       name: "Roediger & Karpicke 2006"
     template_id: memory_retention
@@ -75,6 +133,26 @@ goals:
       «полезная трудность» (Bjork). Цикл 8 недель.
     week_skeleton: "4×20 минут в неделю"
     minimal_version: "Одна задача"
+    guide:
+      steps:
+        - ru: "Выбери 2–3 разных типа задач (логика, математика, кейсы) — чередование сложнее, но эффективнее одной темы подряд."
+          uz: "2–3 xil turdagi masala tanla (mantiq, matematika, keyslar) — turlarni almashtirish bir xil mavzudan ko'ra qiyinroq, ammo samaraliroq."
+        - ru: "Садись решать без немедленной подсказки — дай себе хотя бы 10–15 минут честной попытки."
+          uz: "Darhol yordamga qaramay yecha boshla — o'zingga kamida 10–15 daqiqa halol urinish vaqtini ber."
+        - ru: "Если застрял — попробуй другой подход, а не сразу открывай готовое решение."
+          uz: "Tiqilib qolsang — darhol tayyor yechimni ochmay, boshqa yondashuvni sinab ko'r."
+        - ru: "Отмечай каждую решённую задачу и помечай, использовал ли подсказку."
+          uz: "Har bir yechilgan masalani belgila va yordam ishlatilganini qayd et."
+        - ru: "Увеличивай число задач в неделю постепенно, не пытайся сразу закрыть весь план."
+          uz: "Haftalik masalalar sonini asta-sekin oshir, darhol butun rejani bajarishga urinmay."
+      mistakes:
+        - ru: "Решать только один тип задач — мозг привыкает к шаблону и перестаёт по-настоящему тренироваться."
+          uz: "Faqat bir xil turdagi masala yechish — miya shablonga o'rganib qoladi va haqiqiy mashq qilmay qo'yadi."
+        - ru: "Сразу смотреть решение при первой трудности — без борьбы с задачей тренировки мышления не происходит."
+          uz: "Birinchi qiyinchilikda darhol yechimga qarash — masala bilan kurashmasdan fikrlash mashqi bo'lmaydi."
+      first_week_example:
+        ru: "4 раза в неделю по 20 минут, чередуя логику/математику/кейсы; подсказку использовать только после честной попытки."
+        uz: "Haftada 4 marta 20 daqiqa, mantiq/matematika/keyslarni almashtirib; yordamdan faqat halol urinishdan keyin foydalan."
     source:
       name: "Bjork"
     template_id: hard_tasks
@@ -91,6 +169,24 @@ goals:
     pace: "60→150 / 150→300 мин/нед; прибавлять около 10 минут в день каждую неделю"
     week_skeleton: "6×10–40 минут в неделю"
     minimal_version: "1 страница"
+    guide:
+      steps:
+        - ru: "Выбери одну книгу или длинную статью заранее — так не тратишь время сессии на выбор, что читать."
+          uz: "Kitob yoki uzun maqolani oldindan tanla — shunda sessiya vaqtini nima o'qishni tanlashga sarflamaysan."
+        - ru: "Читай в одном и том же месте и времени каждый день — так быстрее формируется привычка."
+          uz: "Har kuni bir xil joy va vaqtda o'qi — shunda odat tezroq shakllanadi."
+        - ru: "Начни с реального для тебя объёма (даже 10 минут) и прибавляй примерно по 10 минут в день каждую неделю."
+          uz: "O'zing uchun real hajmdan (hatto 10 daqiqadan) boshla va har hafta kuniga taxminan 10 daqiqa qo'shib bor."
+        - ru: "Откладывай телефон на время чтения — лента в соцсетях не считается чтением длинных текстов."
+          uz: "O'qish vaqtida telefonni chetga qo'y — ijtimoiy tarmoq lentasi uzun matn o'qish hisoblanmaydi."
+      mistakes:
+        - ru: "Пытаться сразу читать по часу в день — быстро надоедает и бросается уже через несколько дней."
+          uz: "Darhol kuniga bir soat o'qishga urinish — tezda zerikadi va bir necha kunda tashlab qo'yiladi."
+        - ru: "Засчитывать короткие посты и ленту соцсетей как «чтение» — цель именно про длинные связные тексты."
+          uz: "Qisqa postlar va ijtimoiy tarmoq lentasini 'o'qish' deb hisoblash — maqsad aynan uzun, bog'langan matnlar haqida."
+      first_week_example:
+        ru: "6 дней в неделю по 10–15 минут одной книги или статьи, без телефона рядом; к концу недели — немного больше времени."
+        uz: "Haftada 6 kun, 10–15 daqiqa bitta kitob yoki maqola, yonida telefonsiz; hafta oxiriga biroz ko'proq vaqt."
     source:
       name: "эвристика"
     template_id: reading_minutes

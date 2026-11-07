@@ -43,5 +43,22 @@
   "nav.today": "Bugun",
   "nav.seasons": "Mavsumlar",
   "nav.team": "Jamoa",
-  "nav.profile": "Profil"
+  "nav.profile": "Profil",
+
+  "today.guide_first_step_label": "Birinchi qadam:",
+  "season.guide_cta": "Buni qanday qilish kerak",
+  "season.guide_steps_title": "Qadamlar",
+  "season.guide_mistakes_title": "Tez-tez uchraydigan xatolar",
+  "season.guide_first_week_title": "Birinchi hafta namunasi",
+
+  "profile.help_link": "Yordam ekrani",
+  "help.page_title": "Yordam",
+  "help.page_subtitle": "Agar hozir senga yomon va xavfli bo'lsa — qo'ng'iroq qil, bu ilovadagi har qanday maqsaddan muhimroq.",
+  "help.ambulance_title": "Tez yordam",
+  "help.ambulance_body": "Jarohat, hushdan ketish, hayot va sog'likka har qanday tahdid",
+  "help.emergency_title": "Favqulodda xizmatlarning yagona raqami",
+  "help.emergency_body": "Yong'in, militsiya, har qanday boshqa favqulodda holat",
+  "help.psych_title": "Psixologik yordam liniyasi",
+  "help.psych_body": "Agar ruhan qiyin, tashvishli bo'lsa yoki kuch qolmagandek tuyulsa",
+  "help.disclaimer": "NewLife tibbiy yoki psixologik yordamning o'rnini bosmaydi — bu odatlar va maqsadlar uchun ilova, inqiroz holatlari uchun emas."
 }

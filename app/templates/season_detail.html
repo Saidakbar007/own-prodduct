@@ -47,6 +47,24 @@
   {% endif %}
 </div>
 
+{% if guide %}
+<details class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <summary class="btn btn--secondary btn--block" style="cursor:pointer;text-align:center">{{ t('season.guide_cta') }}</summary>
+  <div style="margin-top:var(--space-4)">
+    <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-2)">{{ t('season.guide_steps_title') }}</h3>
+    <ol style="padding-left:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-xs);color:var(--text-muted)">
+      {% for step in guide.steps %}<li>{{ step }}</li>{% endfor %}
+    </ol>
+    <h3 style="font-size:var(--text-sm);margin:var(--space-4) 0 var(--space-2)">{{ t('season.guide_mistakes_title') }}</h3>
+    <ul style="padding-left:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-xs);color:var(--text-muted)">
+      {% for mistake in guide.mistakes %}<li>{{ mistake }}</li>{% endfor %}
+    </ul>
+    <h3 style="font-size:var(--text-sm);margin:var(--space-4) 0 var(--space-2)">{{ t('season.guide_first_week_title') }}</h3>
+    <p style="font-size:var(--text-xs);color:var(--text-faint)">{{ guide.first_week_example }}</p>
+  </div>
+</details>
+{% endif %}
+
 {% if sparkline.has_data %}
 <div class="card measure-tile" style="margin-bottom:var(--space-5)">
   <div class="measure-tile__top">

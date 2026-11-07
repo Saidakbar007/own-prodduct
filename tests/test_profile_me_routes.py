@@ -94,6 +94,23 @@ def test_about_page_renders(client, unique):
     assert "NewLife" in resp.text
 
 
+def test_help_page_always_shows_103_and_112(client, unique, monkeypatch):
+    monkeypatch.delenv("HELPLINE_UZ", raising=False)
+    _register(client, unique)
+    resp = client.get("/help")
+    assert resp.status_code == 200
+    assert "103" in resp.text
+    assert "112" in resp.text
+
+
+def test_help_page_shows_configured_psych_helpline(client, unique, monkeypatch):
+    monkeypatch.setenv("HELPLINE_UZ", "+998712000000")
+    _register(client, unique)
+    resp = client.get("/help")
+    assert resp.status_code == 200
+    assert "+998712000000" in resp.text
+
+
 def test_profile_commitments_page_add_and_remove(client, unique, db_session):
     _register(client, unique)
     client.post(

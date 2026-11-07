@@ -19,6 +19,12 @@ ALL_SPHERE_IDS = [
     "relationships", "knowledge", "values", "lifestyle", "energy",
 ]
 
+_MINIMAL_GUIDE = {
+    "steps": [{"ru": "ш1", "uz": "q1"}, {"ru": "ш2", "uz": "q2"}, {"ru": "ш3", "uz": "q3"}],
+    "mistakes": [{"ru": "о1", "uz": "x1"}, {"ru": "о2", "uz": "x2"}],
+    "first_week_example": {"ru": "пример", "uz": "misol"},
+}
+
 
 def test_all_eleven_spheres_have_a_catalog_with_at_least_four_goals():
     catalogs = load_all_catalogs()
@@ -64,6 +70,23 @@ def test_targets_has_one_to_three_options():
         assert 1 <= len(goal.targets) <= 3, f"{goal.id}: targets должен быть 1-3 варианта"
 
 
+def test_every_goal_has_a_complete_bilingual_guide():
+    """Исправление «есть метрика, но нет ответа как именно это делать»:
+    3-5 шагов, 2-3 частые ошибки, 1 пример первой недели, ru и uz заполнены."""
+    for goal in all_goals():
+        guide = goal.guide
+        assert 3 <= len(guide.steps) <= 5, f"{goal.id}: guide.steps должен быть 3-5 шагов"
+        assert 2 <= len(guide.mistakes) <= 3, f"{goal.id}: guide.mistakes должен быть 2-3 ошибки"
+        for step in guide.steps:
+            assert step.ru.strip(), f"{goal.id}: пустой шаг guide (ru)"
+            assert step.uz.strip(), f"{goal.id}: пустой шаг guide (uz)"
+        for mistake in guide.mistakes:
+            assert mistake.ru.strip(), f"{goal.id}: пустая ошибка guide (ru)"
+            assert mistake.uz.strip(), f"{goal.id}: пустая ошибка guide (uz)"
+        assert guide.first_week_example.ru.strip(), f"{goal.id}: пустой first_week_example (ru)"
+        assert guide.first_week_example.uz.strip(), f"{goal.id}: пустой first_week_example (uz)"
+
+
 def test_catalog_rejects_goal_sphere_mismatch():
     with pytest.raises(ValidationError):
         SphereCatalog.model_validate(
@@ -82,6 +105,7 @@ def test_catalog_rejects_goal_sphere_mismatch():
                         "pace": "p",
                         "week_skeleton": "w",
                         "minimal_version": "m",
+                        "guide": _MINIMAL_GUIDE,
                         "source": {"name": "s"},
                     }
                 ],
@@ -102,6 +126,7 @@ def test_catalog_rejects_duplicate_goal_ids():
         "pace": "p",
         "week_skeleton": "w",
         "minimal_version": "m",
+        "guide": _MINIMAL_GUIDE,
         "source": {"name": "s"},
     }
     with pytest.raises(ValidationError):

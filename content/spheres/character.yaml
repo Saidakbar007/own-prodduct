@@ -20,6 +20,28 @@ goals:
       цели по неделе — 60 / 75 / 90% выполненных обязательств.
     week_skeleton: "Пн: выбрать 3 обязательства, ежедневно отмечать «сделал / не сделал», Вс: итог недели"
     minimal_version: "1 микро-обещание в день"
+    guide:
+      steps:
+        - ru: "В понедельник выбери не больше 3 обещаний себе на неделю — маленьких и конкретных, а не абстрактных «стать лучше»."
+          uz: "Dushanba kuni haftaga o'zingizga 3 tadan ko'p bo'lmagan, kichik va aniq va'da tanlang — mavhum 'yaxshiroq bo'lish' emas."
+        - ru: "Каждый вечер отмечай по каждому обещанию «сделал / не сделал» — честная отметка важнее красивой статистики."
+          uz: "Har kecha har bir va'da bo'yicha 'qildim / qilmadim' deb belgilang — chiroyli statistikadan ko'ra halol belgi muhimroq."
+        - ru: "Если какой-то день пропущен — просто отметь «не сделал» и продолжай дальше, не пытаясь «отработать» все дни сразу."
+          uz: "Qaysi kun o'tkazib yuborilsa — shunchaki 'qilmadim' deb belgilang va davom eting, barcha kunlarni birdan 'qoplashga' urinmang."
+        - ru: "В воскресенье подведи итог недели: сколько % обещаний выполнено — и выбери следующие 3 на новую неделю, учитывая, что получилось."
+          uz: "Yakshanba kuni hafta natijasini chiqaring: va'dalarning necha foizi bajarildi — va nima bo'lganini hisobga olib, keyingi haftaga yangi 3 ta tanlang."
+        - ru: "Если неделя за неделей процент низкий — обещай себе меньше или проще, а не брось отметки совсем."
+          uz: "Hafta-haftadan foiz past bo'lsa — kamroq yoki osonroq va'da bering, lekin belgilarni butunlay tashlab qo'ymang."
+      mistakes:
+        - ru: "Обещать себе сразу много всего — чем больше обязательств, тем выше шанс сорваться и разочароваться во всей идее."
+          uz: "O'ziga birdan juda ko'p narsa va'da qilish — majburiyat qancha ko'p bo'lsa, buzilish va butun g'oyadan hafsala pir bo'lish ehtimoli shuncha yuqori."
+        - ru: "Считать один пропуск провалом всей недели — один пропуск не обнуляет серию, важно вернуться на следующий день."
+          uz: "Bir marta o'tkazib yuborishni butun haftaning muvaffaqiyatsizligi deb hisoblash — bir marta o'tkazib yuborish ketma-ketlikni bekor qilmaydi, keyingi kuni davom etish muhim."
+        - ru: "Давать себе геройские обещания («каждый день по 2 часа») вместо реалистичных — такие обещания почти всегда срываются."
+          uz: "O'ziga qahramonona va'da berish ('har kuni 2 soat') real bo'lganidan ko'ra — bunday va'dalar deyarli har doim buziladi."
+      first_week_example:
+        ru: "Пн — выбрать 3 обещания (например «10 минут чтения», «застелить кровать», «без телефона за завтраком»); каждый вечер — отметка, Вс — итог недели."
+        uz: "Dush — 3 ta va'da tanlash (masalan, '10 daqiqa kitob o'qish', 'to'shakni yig'ish', 'nonushtada telefonsiz'); har kecha — belgi, Yak — hafta natijasi."
     source:
       name: "Lally et al. 2010"
       url: "https://www.ucl.ac.uk/news/2009/aug/how-long-does-it-take-form-habit"
@@ -39,6 +61,28 @@ goals:
       средний эффект d≈0,65). Варианты цели — 3 / 5 / 7 срабатываний в неделю.
     week_skeleton: "Пн: выбрать 2 плана из шаблонов, ежедневно отмечать, когда сработал"
     minimal_version: "Прочитать свой план утром"
+    guide:
+      steps:
+        - ru: "Выбери 1–2 конкретные ситуации, где обычно срываешься (например «когда скучно — беру телефон»), и сформулируй план строго по формуле «Если [ситуация], то я [действие]»."
+          uz: "Odatda buzilib qolgan 1–2 ta aniq vaziyatni tanlang (masalan, 'zerikkanimda — telefonni olaman') va rejani qat'iy 'Agar [vaziyat], unda men [harakat]' formulasi bo'yicha tuzing."
+        - ru: "Сделай план максимально конкретным: не «буду меньше сидеть в телефоне», а «если сел за учёбу, то кладу телефон в другую комнату»."
+          uz: "Rejani imkon qadar aniq qiling: 'telefonda kamroq o'tiraman' emas, balki 'agar darsga o'tirsam, telefonni boshqa xonaga qo'yaman'."
+        - ru: "Прочитывай свой план каждое утро — короткое напоминание повышает шанс, что в нужный момент он сработает сам, без раздумий."
+          uz: "Rejangizni har kuni ertalab o'qing — qisqa eslatma kerakli paytda rejaning o'ylanmasdan avtomatik ishlashi ehtimolini oshiradi."
+        - ru: "Отмечай в приложении каждый раз, когда план сработал — именно эта цифра (срабатываний в неделю) и есть твой прогресс."
+          uz: "Ilovada reja ishlagan har safar belgilang — aynan shu raqam (haftadagi ishlash soni) sizning rivojlanishingiz."
+        - ru: "Если план за 1–2 недели почти не срабатывает — упрости его или замени на более реалистичную ситуацию/действие."
+          uz: "Agar reja 1–2 haftada deyarli ishlamasa — uni soddalashtiring yoki yanada real vaziyat/harakat bilan almashtiring."
+      mistakes:
+        - ru: "Делать план слишком общим («если трудно — буду стараться») — без конкретной ситуации и действия план не срабатывает автоматически."
+          uz: "Rejani juda umumiy qilish ('qiyin bo'lsa — harakat qilaman') — aniq vaziyat va harakatsiz reja avtomatik ishlamaydi."
+        - ru: "Брать сразу много планов «если — то» — 1–2 плана усваиваются, пять одновременно почти никогда не запоминаются."
+          uz: "Birdan ko'p 'agar — unda' rejalarini olish — 1–2 reja o'zlashtiriladi, besh tasi bir vaqtda deyarli hech qachon yodda qolmaydi."
+        - ru: "Забывать прочитать план и вспоминать о нём только после срыва — план работает, если его повторяешь заранее, а не вспоминаешь постфактум."
+          uz: "Rejani o'qishni unutib, faqat buzilgandan keyin eslash — reja oldindan takrorlansa ishlaydi, voqeadan keyin eslansa emas."
+      first_week_example:
+        ru: "Пн — выбрать 2 плана (например «если открыл ленту соцсетей вместо учёбы, то закрываю и ставлю таймер на 10 минут учёбы»); каждое утро — прочитать планы, вечером — отметить срабатывания."
+        uz: "Dush — 2 ta reja tanlash (masalan, 'agar dars o'rniga ijtimoiy tarmoq ochsam, uni yopib, 10 daqiqalik dars taymerini qo'yaman'); har ertalab — rejalarni o'qish, kechqurun — ishlaganini belgilash."
     source:
       name: "Gollwitzer & Sheeran 2006"
       url: "https://www.thebehavioralscientist.com/glossary/implementation-intentions"
@@ -58,6 +102,28 @@ goals:
       (эвристика — конкретных сроков в источниках нет).
     week_skeleton: "5 дней с сессиями фокуса, 2 дня отдыха"
     minimal_version: "2 минуты без телефона за задачей"
+    guide:
+      steps:
+        - ru: "Перед сессией убери телефон из поля зрения (другая комната или ящик) и выбери одну конкретную задачу — многозадачность разрушает фокус."
+          uz: "Seansdan oldin telefonni ko'z oldidan olib qo'ying (boshqa xona yoki tortma) va bitta aniq vazifa tanlang — ko'p vazifalilik fokusni buzadi."
+        - ru: "Начни с коротких сессий (например 25 минут) и включай встроенный таймер — фиксированное время снижает желание отвлечься «на минутку»."
+          uz: "Qisqa seanslardan (masalan, 25 daqiqa) boshlang va ichki taymerni yoqing — belgilangan vaqt 'bir daqiqaga' chalg'ishni kamaytiradi."
+        - ru: "Увеличивай длительность сессии постепенно, неделя за неделей, когда текущая длительность уже даётся легко."
+          uz: "Joriy davomiylik oson bo'lib qolganda, seans uzunligini asta-sekin, haftadan-haftaga oshiring."
+        - ru: "Работай 5 дней в неделю с сессиями фокуса и обязательно оставляй 2 дня отдыха — концентрация, как и мышцы, устаёт и требует восстановления."
+          uz: "Haftada 5 kun fokus seanslari bilan ishlang va albatta 2 kun dam qoldiring — diqqat ham mushak kabi charchab, tiklanishni talab qiladi."
+        - ru: "После каждой сессии коротко отметь, сколько минут удалось продержаться без отвлечений — это и есть твоя метрика прогресса."
+          uz: "Har seansdan keyin chalg'imasdan necha daqiqa ishlay olganingizni qisqa belgilang — bu sizning rivojlanish ko'rsatkichingiz."
+      mistakes:
+        - ru: "Сразу пытаться сидеть 90 минут без привычки — быстрая усталость и отказ от метода почти гарантированы."
+          uz: "Odat bo'lmagan holda darhol 90 daqiqa o'tirishga urinish — tezkor charchash va usuldan voz kechish deyarli kafolatlangan."
+        - ru: "Держать телефон «на всякий случай» рядом с выключенным звуком — само присутствие телефона в поле зрения снижает концентрацию, даже без уведомлений."
+          uz: "Telefonni 'ehtiyot uchun' ovozsiz yonda ushlab turish — telefonning ko'z oldida bo'lishi bildirishnomalarsiz ham diqqatni pasaytiradi."
+        - ru: "Заниматься фокус-сессиями каждый день без отдыха — без дней восстановления концентрация со временем падает, а не растёт."
+          uz: "Dam olmasdan har kuni fokus seanslari bilan shug'ullanish — tiklanish kunlarisiz diqqat vaqt o'tishi bilan o'smay, pasayadi."
+      first_week_example:
+        ru: "Пн/Вт/Ср/Чт/Пт — одна сессия фокуса по 25 минут без телефона на конкретную задачу; Сб/Вс — отдых от сессий."
+        uz: "Dush/Sesh/Chor/Pay/Juma — bitta aniq vazifaga 25 daqiqalik telefonsiz fokus seansi; Shan/Yak — seanslardan dam."
     source:
       name: "эвристика"
     template_id: deep_work
@@ -74,6 +140,28 @@ goals:
     pace: "6 недель (эвристика). Варианты цели — 3 / 5 / 10 начатых вовремя задач в неделю."
     week_skeleton: "Каждое утро выбрать «старт в ЧЧ:ММ» для одной задачи"
     minimal_version: "Открыть файл задачи"
+    guide:
+      steps:
+        - ru: "Каждое утро выбирай одну задачу, которую откладываешь чаще всего, и назначай ей точное время старта (ЧЧ:ММ), а не «как-нибудь днём»."
+          uz: "Har ertalab eng ko'p kechiktiradigan vazifani tanlang va unga aniq boshlash vaqtini (SS:DD) belgilang, 'kunduzi qaysidir vaqt' emas."
+        - ru: "В назначенное время делай только первый маленький шаг — открыть файл, написать первую строку — не весь объём задачи сразу."
+          uz: "Belgilangan vaqtda faqat birinchi kichik qadamni qiling — faylni ochish, birinchi qatorni yozish — darhol butun vazifani emas."
+        - ru: "Отмечай в приложении фактическое время старта — разница между планом и фактом покажет, где ты теряешь время на раздумья."
+          uz: "Ilovada haqiqiy boshlash vaqtini belgilang — reja va haqiqat orasidagi farq o'ylanish uchun qayerda vaqt yo'qotayotganingizni ko'rsatadi."
+        - ru: "Если задержка старта регулярно большая — разбей задачу на более мелкие кусочки, чтобы первый шаг занимал буквально 2 минуты."
+          uz: "Boshlanish kechikishi muntazam katta bo'lsa — vazifani kichikroq bo'laklarga bo'ling, birinchi qadam atigi 2 daqiqa olsin."
+        - ru: "Считай неделю успешной, если число задач, начатых точно в назначенное время, растёт — не требуй идеала с первой недели."
+          uz: "Aynan belgilangan vaqtda boshlangan vazifalar soni oshsa — haftani muvaffaqiyatli deb hisoblang, birinchi haftadan mukammallik talab qilmang."
+      mistakes:
+        - ru: "Назначать старт «на утро» без конкретного часа — размытое время почти всегда сдвигается на «потом»."
+          uz: "Boshlanishni aniq soatsiz 'ertalabga' belgilash — noaniq vaqt deyarli har doim 'keyinroq'ga suriladi."
+        - ru: "Ждать «подходящего настроения» для начала — настроение приходит после первого маленького шага, а не до него."
+          uz: "Boshlash uchun 'mos kayfiyat'ni kutish — kayfiyat birinchi kichik qadamdan keyin, undan oldin emas, keladi."
+        - ru: "Ставить задачу старта сразу огромной («написать всю главу») — чем крупнее первый шаг, тем легче его отложить."
+          uz: "Boshlanish vazifasini darhol ulkan qilib qo'yish ('butun bobni yozish') — birinchi qadam qanchalik katta bo'lsa, uni kechiktirish shuncha oson."
+      first_week_example:
+        ru: "Каждое утро — выбрать 1 задачу и время старта (например 9:00); в 9:00 — сделать только первый шаг на 2 минуты, остальное — по желанию."
+        uz: "Har ertalab — 1 vazifa va boshlash vaqtini tanlash (masalan, 9:00); soat 9:00da — faqat 2 daqiqalik birinchi qadamni qilish, qolgani — xohishga ko'ra."
     source:
       name: "эвристика"
     template_id: beat_procrastination
@@ -93,6 +181,28 @@ goals:
       нельзя, вызовов с риском для здоровья/денег/закона/унижения нет (§F).
     week_skeleton: "3 вызова в неделю: лёгкий, лёгкий, средний"
     minimal_version: "Задать 1 вопрос незнакомому человеку (продавцу, преподавателю)"
+    guide:
+      steps:
+        - ru: "Выбирай вызовы из лестницы строго по порядку — от лёгкого к трудному, не перескакивая ступени, даже если кажется, что готов к большему."
+          uz: "Zinapoyadagi sinovlarni qat'iy tartibda tanlang — yengildan qiyinga, hatto ko'proqqa tayyor bo'lib tuyulsa ham, zinalarni o'tkazib yubormang."
+        - ru: "Делай по 3 вызова в неделю: два лёгких и один средний — равномерный темп работает лучше, чем редкие «подвиги»."
+          uz: "Haftada 3 ta sinov qiling: ikkitasi yengil, bittasi o'rta — bir tekis sur'at kamdan-kam 'qahramonlik'lardan yaxshiroq ishlaydi."
+        - ru: "Перед вызовом и после него отмечай уровень тревоги от 0 до 10 — это только для твоего графика, не оценка тебя как человека."
+          uz: "Sinovdan oldin va keyin tashvish darajasini 0 dan 10 gacha belgilang — bu faqat sizning grafigingiz uchun, shaxsingizga baho emas."
+        - ru: "Если вызов кажется слишком сложным — пропусти его кнопкой «Не сегодня» без штрафа и вернись к нему позже."
+          uz: "Agar sinov juda qiyin ko'rinsa — jarimasiz 'Bugun emas' tugmasi bilan o'tkazib yuboring va keyinroq qayting."
+        - ru: "Замечай, что тревога после похожих вызовов со временем снижается — это главный признак, что лестница работает."
+          uz: "O'xshash sinovlardan keyin tashvish vaqt o'tishi bilan kamayayotganini kuzating — bu zinapoya ishlayotganining asosiy belgisi."
+      mistakes:
+        - ru: "Перескакивать сразу на трудный вызов, минуя лёгкие — высокий риск сильного стресса и отказа от всей цели после одной неудачи."
+          uz: "Yengillarni o'tkazib, darhol qiyin sinovga o'tish — kuchli stress va bitta muvaffaqiyatsizlikdan keyin butun maqsaddan voz kechish xavfi yuqori."
+        - ru: "Заставлять себя делать вызов через силу, игнорируя кнопку «Не сегодня» — цель строится только на добровольных действиях."
+          uz: "'Bugun emas' tugmasini e'tiborsiz qoldirib, o'zini zo'rlab sinovga majburlash — maqsad faqat ixtiyoriy harakatlarga asoslanadi."
+        - ru: "Браться за вызовы с риском для здоровья, денег, закона или унижения — такие вызовы в лестницу не входят в принципе."
+          uz: "Sog'liq, pul, qonun yoki xo'rlanish xavfi bo'lgan sinovlarga qo'l urish — bunday sinovlar zinapoyaga umuman kirmaydi."
+      first_week_example:
+        ru: "Пн — лёгкий вызов (спросить дорогу у незнакомца), Ср — лёгкий (задать вопрос продавцу), Пт — средний (задать вопрос преподавателю на паре)."
+        uz: "Dush — yengil sinov (notanish odamdan yo'l so'rash), Chor — yengil (sotuvchidan savol so'rash), Juma — o'rta (darsda o'qituvchidan savol so'rash)."
     source:
       name: "эвристика"
     template_id: confidence_through_action
@@ -109,6 +219,28 @@ goals:
     pace: "Семестр (эвристика). Варианты цели — 70 / 85 / 100% дедлайнов вовремя."
     week_skeleton: "Пн: внести дедлайны в план, Чт: проверка прогресса"
     minimal_version: "Записать 1 дедлайн"
+    guide:
+      steps:
+        - ru: "В понедельник выпиши все дедлайны на неделю и дальше в одно место — распределённая по памяти информация о сроках легко теряется."
+          uz: "Dushanba kuni haftaga va keyingisiga bo'lgan barcha muddatlarni bitta joyga yozib qo'ying — xotirada tarqalgan muddat haqidagi ma'lumot oson yo'qoladi."
+        - ru: "Для каждого дедлайна поставь себе промежуточную точку проверки за несколько дней до срока, а не только финальную дату."
+          uz: "Har bir muddat uchun faqat yakuniy sanani emas, muddatdan bir necha kun oldin oraliq tekshiruv nuqtasini belgilang."
+        - ru: "В четверг проверяй прогресс по каждому активному дедлайну — если отстаёшь, корректируй план сразу, а не в последний день."
+          uz: "Payshanba kuni har bir faol muddat bo'yicha rivojlanishni tekshiring — orqada qolsangiz, rejani oxirgi kunda emas, darhol tuzating."
+        - ru: "Если чувствуешь, что не успеешь — проси перенос заранее, за несколько дней, а не в последний момент — это тоже часть ответственности."
+          uz: "Ulgurmaysiz deb his qilsangiz — ko'chirishni oxirgi daqiqada emas, bir necha kun oldin so'rang — bu ham mas'uliyatning bir qismi."
+        - ru: "Считай неделю хорошей, если процент дедлайнов, сданных вовремя, растёт, а не падает — это главная метрика цели."
+          uz: "O'z vaqtida topshirilgan muddatlar foizi oshsa — bu yaxshi hafta, pasaysa emas — bu maqsadning asosiy ko'rsatkichi."
+      mistakes:
+        - ru: "Держать дедлайны «в голове» вместо того, чтобы записать их — часть сроков неизбежно забывается или всплывает слишком поздно."
+          uz: "Muddatlarni yozib qo'yish o'rniga 'xotirada' saqlash — muddatlarning bir qismi muqarrar unutiladi yoki juda kech esga tushadi."
+        - ru: "Начинать работу над задачей только за день до срока — без запаса времени любая неожиданность приводит к просрочке."
+          uz: "Vazifa ustida muddatdan bir kun oldin ishlay boshlash — vaqt zahirasisiz har qanday kutilmagan holat muddatni o'tkazib yuborishga olib keladi."
+        - ru: "Просить перенос срока в последний момент — чем позже просьба, тем меньше шанс, что её примут без последствий."
+          uz: "Muddatni oxirgi daqiqada ko'chirishni so'rash — so'rov qanchalik kech bo'lsa, oqibatsiz qabul qilinish ehtimoli shuncha kam."
+      first_week_example:
+        ru: "Пн — внести все дедлайны недели и следующих двух недель в план; Чт — проверить прогресс по каждому и скорректировать, если нужно."
+        uz: "Dush — hafta va keyingi ikki haftaning barcha muddatlarini rejaga kiritish; Pay — har biri bo'yicha rivojlanishni tekshirish va kerak bo'lsa tuzatish."
     source:
       name: "эвристика"
     template_id: responsibility_deadlines

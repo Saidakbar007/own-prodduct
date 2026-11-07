@@ -223,6 +223,7 @@
 
   "today.schedule_title": "Сегодня по времени",
   "today.schedule_minimal": "минимум",
+  "today.guide_first_step_label": "Первый шаг:",
 
   "season.day_of": "День {n} из {total}",
   "season.forecast_plain": "К финалу, по твоему темпу, — примерно {value} {unit}",
@@ -236,6 +237,10 @@
   "season.legend_future": "будущее",
   "season.cta_measure": "Пройти проверку результата",
   "season.cta_challenge": "Вызвать друга «Спорим?»",
+  "season.guide_cta": "Как это делать",
+  "season.guide_steps_title": "Шаги",
+  "season.guide_mistakes_title": "Частые ошибки",
+  "season.guide_first_week_title": "Пример первой недели",
 
   "seasons.hub_title": "Сезоны",
   "seasons.start_new": "Начать новый сезон",
@@ -382,6 +387,17 @@
   "profile.methods_link": "Методы NewLife",
   "profile.sources_link": "Откуда эти нормы",
   "profile.about_link": "О NewLife",
+  "profile.help_link": "Экран помощи",
+
+  "help.page_title": "Помощь",
+  "help.page_subtitle": "Если тебе прямо сейчас плохо и небезопасно — позвони, это важнее любой цели в приложении.",
+  "help.ambulance_title": "Скорая помощь",
+  "help.ambulance_body": "Травма, потеря сознания, любая угроза жизни и здоровью",
+  "help.emergency_title": "Единый номер экстренных служб",
+  "help.emergency_body": "Пожар, полиция, любая другая экстренная ситуация",
+  "help.psych_title": "Линия психологической помощи",
+  "help.psych_body": "Если тяжело морально, тревожно или кажется, что сил больше нет",
+  "help.disclaimer": "NewLife не заменяет медицинскую или психологическую помощь — это приложение для привычек и целей, а не для кризисных ситуаций.",
 
   "methods.page_title": "Методы NewLife",
   "methods.page_subtitle": "Проверенные методы саморазвития, которые работают в приложении автоматически.",

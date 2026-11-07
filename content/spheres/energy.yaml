@@ -19,6 +19,28 @@ goals:
     pace: "5 → 10–15 мин/день, +2 мин в неделю"
     week_skeleton: "Ежедневно, в любое удобное время, лучше в одно и то же"
     minimal_version: "3 медленных вдоха"
+    guide:
+      steps:
+        - ru: "Выбери одну простую технику заземления (например, назвать 5 вещей вокруг, которые видишь, слышишь, чувствуешь) и начни с 5 минут в день."
+          uz: "Bitta oddiy 'tuproqqa bog'lanish' texnikasini tanla (masalan, atrofdagi 5 narsani ko'rib, eshitib, his qilib aytib berish) va kuniga 5 daqiqadan boshla."
+        - ru: "Практикуй в одно и то же время каждый день (например, после пробуждения или перед сном) — так привычка закрепится быстрее."
+          uz: "Har kuni bir xil vaqtda mashq qil (masalan, uyg'ongandan keyin yoki uyquga ketishdan oldin) — shunda odat tezroq shakllanadi."
+        - ru: "Добавляй по 2 минуты в неделю, пока не дойдёшь до 10–15 минут в день."
+          uz: "10–15 daqiqaga yetguningcha haftasiga 2 daqiqadan qo'shib bor."
+        - ru: "Когда тревожная мысль захватывает, остановись и назови то, что видишь/слышишь/чувствуешь прямо сейчас — это и есть «отцепиться» от мысли."
+          uz: "Xavotirli fikr qamrab olganda, to'xta va hozir ko'rayotgan/eshitayotgan/his qilayotgan narsangni aytib ber — bu fikrdan 'ajralish' demakdir."
+        - ru: "Считай дни подряд с практикой, но не вини себя за один пропущенный день — продолжай со следующего."
+          uz: "Mashq qilingan ketma-ket kunlarni sana, lekin bir kun o'tkazib yuborsang o'zingni ayblama — keyingi kundan davom et."
+      mistakes:
+        - ru: "Ждать «подходящего момента», чтобы начать, вместо короткой минимальной версии прямо сейчас (3 медленных вдоха)."
+          uz: "Boshlash uchun 'mos payt'ni kutish, hozir minimal versiyani (3 sekin nafas) qilish o'rniga."
+        - ru: "Сразу пытаться практиковать по 15 минут — это быстро надоедает и бросается после первого тяжёлого дня."
+          uz: "Darhol 15 daqiqa mashq qilishga urinish — bu tezda zeriktiradi va birinchi og'ir kundan keyin tashlab qo'yiladi."
+        - ru: "Использовать практику только в момент острого стресса, а не ежедневно как профилактику."
+          uz: "Mashqni faqat kuchli stress paytida, kundalik profilaktika sifatida emas, ishlatish."
+      first_week_example:
+        ru: "Каждый день по 5 минут в удобное время (например, после обеда) — техника «5 чувств» или сканирование тела."
+        uz: "Har kuni 5 daqiqa qulay vaqtda (masalan, tushlikdan keyin) — '5 sezgi' texnikasi yoki tanani skanerlash."
     source:
       name: "ВОЗ «Doing What Matters in Times of Stress»"
       url: "https://www.who.int/publications/i/item/9789240003927"
@@ -36,6 +58,26 @@ goals:
     pace: "5 мин/день медленного дыхания (~6 вдохов в минуту) или «циклический вздох»"
     week_skeleton: "Ежедневно, можно несколькими короткими заходами"
     minimal_version: "3 медленных вдоха"
+    guide:
+      steps:
+        - ru: "Выучи одну простую технику: медленное дыхание ~6 вдохов в минуту (4 сек вдох, 6 сек выдох) или «циклический вздох» (два вдоха носом подряд, один долгий выдох ртом)."
+          uz: "Bitta oddiy texnikani o'rgan: daqiqasiga ~6 nafas tezligida sekin nafas (4 soniya nafas olish, 6 soniya chiqarish) yoki 'tsiklik xo'rsinish' (burundan ketma-ket ikki marta nafas olish, og'izdan bir uzun nafas chiqarish)."
+        - ru: "Начни с 5 минут в день, можно разбить на 2–3 коротких заходов по 1–2 минуты."
+          uz: "Kuniga 5 daqiqadan boshla, 1–2 daqiqalik 2–3 qisqa bosqichga bo'lish mumkin."
+        - ru: "Используй технику именно в стрессовые моменты — перед экзаменом, трудным разговором, не только в спокойное время."
+          uz: "Texnikadan aynan stressli vaziyatlarda foydalan — imtihondan oldin, qiyin suhbatdan oldin, faqat tinch vaqtda emas."
+        - ru: "Дыши через нос, когда возможно, и делай выдох длиннее вдоха — это успокаивает нервную систему."
+          uz: "Imkon bo'lsa burun orqali nafas ol va nafas chiqarishni nafas olishdan uzunroq qil — bu asab tizimini tinchlantiradi."
+        - ru: "Считай минуты в таймере приложения, чтобы видеть, как растёт привычка за неделю."
+          uz: "Odat haftada qanday o'sayotganini ko'rish uchun ilova taymerida daqiqalarni sana."
+      mistakes:
+        - ru: "Дышать слишком быстро и поверхностно, «торопясь» закончить практику — это убивает весь эффект."
+          uz: "Mashqni tezroq tugatish uchun juda tez va sayoz nafas olish — bu butun samarani yo'qqa chiqaradi."
+        - ru: "Практиковать только в момент сильного стресса, а не делать это регулярной ежедневной привычкой."
+          uz: "Faqat kuchli stress paytida mashq qilish, buni muntazam kundalik odatga aylantirmaslik."
+      first_week_example:
+        ru: "Каждый день по 5 минут: 2 минуты утром + 3 минуты вечером, медленное дыхание 4 сек вдох / 6 сек выдох."
+        uz: "Har kuni 5 daqiqa: ertalab 2 daqiqa + kechqurun 3 daqiqa, sekin nafas 4 soniya olish / 6 soniya chiqarish."
     source:
       name: "Balban 2023 / Zaccaro 2018"
       url: "https://doi.org/10.1016/j.xcrm.2022.100895"
@@ -53,6 +95,26 @@ goals:
     pace: "≥120 мин/нед на улице, можно частями"
     week_skeleton: "В любые дни недели, по 15–30 минут за раз"
     minimal_version: "Прогулка 5 минут"
+    guide:
+      steps:
+        - ru: "Планируй прогулку 15–30 минут на улице при дневном свете несколько раз в неделю — не обязательно в парке, достаточно любой улицы."
+          uz: "Haftada bir necha marta kunduzgi yorug'likda ko'chada 15–30 daqiqalik sayrni rejalashtir — park bo'lishi shart emas, oddiy ko'cha ham yetadi."
+        - ru: "Используй уже имеющиеся маршруты: часть пути до учёбы или работы пройди пешком вместо транспорта."
+          uz: "Mavjud yo'nalishlardan foydalan: o'qish yoki ishga ketayotganda yo'lning bir qismini transport o'rniga yurib o't."
+        - ru: "Набирай в сумме ≥120 минут в неделю так, как удобно: по 40 минут 3 раза или по 20 минут каждый день."
+          uz: "Qulay bo'lgan tartibda jami ≥120 daqiqaga yetkaz: 3 marta 40 daqiqadan yoki har kuni 20 daqiqadan."
+        - ru: "Оставь телефон в кармане во время прогулки — смотри вокруг, замечай природу, так эффект на настроение сильнее."
+          uz: "Sayr paytida telefonni cho'ntagingda qoldir — atrofga qarab, tabiatni his qil, shunda kayfiyatga ta'siri kuchliroq bo'ladi."
+        - ru: "В конце недели проверяй сумму минут на улице — это и есть замер цели."
+          uz: "Hafta oxirida ko'chada o'tkazilgan daqiqalar yig'indisini tekshir — bu maqsadning o'lchovi."
+      mistakes:
+        - ru: "Планировать одну длинную прогулку раз в неделю «чтобы наверстать» — лучше распределять время равномерно."
+          uz: "Haftada bir marta 'to'ldirish uchun' uzoq sayr rejalashtirish — vaqtni teng taqsimlash yaxshiroq."
+        - ru: "Засчитывать время внутри помещений (ТЦ, зал) как «время на природе» — нужно именно на улице, при дневном свете."
+          uz: "Yopiq joylarda (savdo markazi, sport zali) o'tkazilgan vaqtni 'tabiatdagi vaqt' deb hisoblash — aynan ko'chada, kunduzgi yorug'likda bo'lishi kerak."
+      first_week_example:
+        ru: "Пн/Ср/Пт/Вс — 30 минут прогулки на улице после пар или работы, всего 120 минут за неделю."
+        uz: "Dush/Chor/Juma/Yak — dars yoki ishdan keyin 30 daqiqa ko'chada sayr, haftada jami 120 daqiqa."
     source:
       name: "White 2019"
       url: "https://doi.org/10.1038/s41598-019-44097-3"
@@ -70,6 +132,26 @@ goals:
     pace: "15 → 30–60 мин без экрана до сна"
     week_skeleton: "Ежедневно, в последние минуты перед сном"
     minimal_version: "15 минут без экрана перед сном"
+    guide:
+      steps:
+        - ru: "Определи фиксированное время, когда убираешь телефон перед сном — начни с 15 минут до планируемого отбоя."
+          uz: "Uyquga yotishdan oldin telefonni yig'ishtirib qo'yadigan aniq vaqtni belgila — rejalashtirilgan yotishdan 15 daqiqa oldin boshla."
+        - ru: "Ставь телефон заряжаться в другой комнате или хотя бы на расстоянии вытянутой руки — не рядом с подушкой."
+          uz: "Telefonni boshqa xonada yoki hech bo'lmasa qo'l yetmaydigan joyda quvvatlashga qo'y — yostiq yonida emas."
+        - ru: "Замени экранное время чем-то спокойным: бумажная книга, запись в дневник, растяжка, разговор с близкими."
+          uz: "Ekran vaqtini tinch narsaga almashtir: qog'oz kitob, kundalikka yozish, tortishish mashqlari, yaqinlar bilan suhbat."
+        - ru: "Постепенно, по несколько минут в неделю, сдвигай это время раньше — пока не дойдёшь до 30–60 минут без экрана."
+          uz: "Asta-sekin, haftasiga bir necha daqiqaga, bu vaqtni ertaroqga ko'chir — ekransiz 30–60 daqiqaga yetguningcha."
+        - ru: "Если проснулся ночью — не тянись за телефоном, оставь комнату тёмной."
+          uz: "Agar tunda uyg'onsang — telefonga qo'l uzatma, xonani qorong'u qoldir."
+      mistakes:
+        - ru: "Отключать только звук уведомлений, но продолжать держать и листать телефон «просто проверить» — это всё равно экранное время."
+          uz: "Faqat bildirishnoma ovozini o'chirib, 'tekshirib ko'ray' deb telefonni tutib, varaqlab o'tirish — bu baribir ekran vaqti."
+        - ru: "Менять телефон на ноутбук или телевизор перед сном — тот же яркий свет, та же проблема."
+          uz: "Uyquga yaqin telefon o'rniga noutbuk yoki televizorga o'tish — xuddi shunday yorqin nur, xuddi shunday muammo."
+      first_week_example:
+        ru: "Каждый день — телефон уходит заряжаться в другую комнату за 15 минут до сна, вместо него — пара страниц бумажной книги."
+        uz: "Har kuni — telefon uyquga 15 daqiqa qolganda boshqa xonaga quvvatlashga ketadi, o'rniga — qog'oz kitobdan bir necha sahifa."
     source:
       name: "CDC, гигиена сна"
       url: "https://www.cdc.gov/sleep/about/index.html"
@@ -87,6 +169,26 @@ goals:
     pace: "Разброс времени подъёма ≤60 минут за неделю, в том числе в выходные"
     week_skeleton: "Ежедневно — отметка, во сколько встал(а)"
     minimal_version: "Встать не позже обычного максимум на 30 минут"
+    guide:
+      steps:
+        - ru: "Выбери одно время подъёма, подходящее под учёбу/работу, и держи его как цель на каждый день."
+          uz: "O'qish/ishga mos keladigan bitta turish vaqtini tanla va buni har kungi maqsad sifatida tut."
+        - ru: "Каждое утро отмечай в приложении, во сколько встал — так видно, насколько далеко от цели."
+          uz: "Har kuni ertalab ilovada necha soatda turganingni belgila — shunda maqsaddan qanchalik uzoqligi ko'rinadi."
+        - ru: "В выходные не позволяй себе спать больше чем на 1 час дольше цели — это главная причина сбитого режима."
+          uz: "Dam olish kunlari maqsaddan 1 soatdan ko'p uxlab qolishga yo'l qo'yma — bu rejim buzilishining asosiy sababi."
+        - ru: "Если лёг поздно и не выспался — лучше встать по времени и, если нужно, коротко поспать днём, а не сдвигать подъём."
+          uz: "Kechroq yotib charchagan bo'lsang — turish vaqtini siljitish o'rniga, vaqtida turib, kerak bo'lsa kunduzi qisqa uxlab olish yaxshiroq."
+        - ru: "Каждую неделю проверяй разброс (разница между самым ранним и самым поздним подъёмом) — цель довести его до 60 минут."
+          uz: "Har hafta tarqoqlikni (eng erta va eng kech turish orasidagi farq) tekshir — maqsad uni 60 daqiqagacha tushirish."
+      mistakes:
+        - ru: "Разрешать себе большой разброс в выходные, думая, что будни это не затронет — на деле сдвигается весь ритм недели."
+          uz: "Dam olish kunlari katta tarqoqlikka yo'l qo'yish, bu ish kunlariga ta'sir qilmaydi deb o'ylash — aslida butun hafta ritmi siljiydi."
+        - ru: "Гнаться за точностью до минуты вместо допустимого диапазона — отклонение ±30 минут от цели — это нормально."
+          uz: "Minutigacha aniqlikka intilish o'rniga — maqsaddan ±30 daqiqa chetlanish — bu normal holat."
+      first_week_example:
+        ru: "Каждый день — подъём в выбранное время ±30 минут, включая субботу и воскресенье; отметка времени каждое утро."
+        uz: "Har kuni — tanlangan vaqtda ±30 daqiqa turish, shanba va yakshanbani ham qo'shib; har ertalab vaqtni belgilash."
     source:
       name: "AASM / SRS"
       url: "https://aasm.org/aasm-and-srs-publish-new-sleep-duration-consensus-statement/"

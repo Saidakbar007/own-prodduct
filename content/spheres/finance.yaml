@@ -26,6 +26,28 @@ goals:
       занимает от 18 до 254 дней, в среднем около 66).
     week_skeleton: "Ежедневная запись трат; в воскресенье — итог по категориям"
     minimal_version: "Записать 1 трату кнопкой-категорией"
+    guide:
+      steps:
+        - ru: "Заведи несколько простых категорий (еда, транспорт, развлечения, обязательные расходы, другое) — на старте не нужно больше."
+          uz: "Bir nechta oddiy toifa yarat (oziq-ovqat, transport, ko'ngilochar, majburiy xarajatlar, boshqa) — boshida ko'p bo'lishi shart emas."
+        - ru: "Записывай каждую трату в тот же день, сразу после оплаты, одним нажатием кнопки-категории."
+          uz: "Har bir xarajatni o'sha kuni, to'lagandan so'ng darhol, bitta toifa tugmasini bosib yoz."
+        - ru: "Если забыл в течение дня — добавь вечером по памяти или чекам, до того как лёг спать."
+          uz: "Kun davomida unutib qo'ysang — kechqurun, uxlashdan oldin, xotira yoki cheklar asosida qo'shib qo'y."
+        - ru: "По воскресеньям смотри итог недели по категориям — это и есть «тарелка» трат, пока без глубокого анализа."
+          uz: "Yakshanba kunlari haftalik natijani toifalar bo'yicha ko'r — bu xarajatlarning haftalik rasmi, hali chuqur tahlilsiz."
+        - ru: "Двигайся постепенно: сначала 50% дней с записью, затем 80%, затем 100%."
+          uz: "Asta-sekin harakatlan: avval yozilgan kunlarning 50%i, keyin 80%, keyin 100%."
+      mistakes:
+        - ru: "Пытаться записывать до копейки сразу — слишком детальный учёт быстро надоедает и бросается."
+          uz: "Darhol har bir tiyingacha yozishga urinish — juda batafsil hisob tezda zeriktiradi va tashlab qo'yiladi."
+        - ru: "Пропустить один день и бросить всё — пропуск одного дня почти не влияет на привычку, просто продолжи на следующий."
+          uz: "Bir kunni o'tkazib yuborib, hammasini tashlab qo'yish — bir kun o'tkazib yuborish odatga deyarli ta'sir qilmaydi, keyingi kundan davom et."
+        - ru: "Складывать всё подряд в категорию «другое» — это убивает весь смысл учёта, ты так и не увидишь, куда уходят деньги."
+          uz: "Hammasini 'boshqa' toifasiga tashlash — bu hisobning butun ma'nosini yo'qotadi, pul qayerga ketayotganini ko'rmay qolasan."
+      first_week_example:
+        ru: "Каждый вечер — 1–2 минуты, запись каждой траты кнопкой-категорией; в воскресенье — просмотр итога недели по категориям."
+        uz: "Har kuni kechqurun — 1–2 daqiqa, har bir xarajatni toifa tugmasi bilan yozish; yakshanba — haftalik natijani toifalar bo'yicha ko'rish."
     source:
       name: "Lally 2010 (UCL)"
       url: "https://www.ucl.ac.uk/news/2009/aug/how-long-does-it-take-form-habit"
@@ -45,6 +67,28 @@ goals:
       2–3 месяца на калибровку бюджета (продуктовая эвристика, источника нет).
     week_skeleton: "Пн — план на неделю, ср — сверка, вс — итог по категориям"
     minimal_version: "Отметить «в рамках / превысил»"
+    guide:
+      steps:
+        - ru: "На основе прошлых трат (из цели «Учёт расходов») поставь лимит на неделю для каждой категории."
+          uz: "O'tgan xarajatlar asosida (Xarajatlarni hisobga olish maqsadidan) har bir toifa uchun haftalik limit qo'y."
+        - ru: "В понедельник запиши или подтверди план лимитов на неделю по категориям."
+          uz: "Dushanba kuni haftalik toifa limitlari rejasini yoz yoki tasdiqla."
+        - ru: "В среду сделай быструю проверку: сколько от лимита каждой категории уже потрачено."
+          uz: "Chorshanba kuni tezkor tekshiruv qil: har bir toifa limitidan qancha sarflangan."
+        - ru: "Если категория близка к лимиту в середине недели — осознанно сократи траты в ней до конца недели."
+          uz: "Agar toifa hafta o'rtasida limitiga yaqinlashsa — hafta oxirigacha unda xarajatlarni ongli ravishda kamayt."
+        - ru: "В воскресенье сравни план и факт, отметь, какие категории превышены — это информация для плана следующей недели, а не повод винить себя."
+          uz: "Yakshanba kuni reja va haqiqiy holatni solishtir, qaysi toifalar oshib ketganini belgila — bu o'zingni ayblash uchun emas, keyingi hafta rejasi uchun ma'lumot."
+      mistakes:
+        - ru: "Сразу ставить слишком жёсткий план (резко урезать категории) — это приводит к срыву и отказу от бюджета вовсе."
+          uz: "Darhol juda qattiq reja qo'yish (toifalarni keskin qisqartirish) — bu buzilish va byudjetdan butunlay voz kechishga olib keladi."
+        - ru: "Считать одну неудачную неделю провалом всего метода — калибровка бюджета занимает 2–3 месяца."
+          uz: "Bitta muvaffaqiyatsiz haftani butun usulning muvaffaqiyatsizligi deb hisoblash — byudjetni kalibrlash 2–3 oy davom etadi."
+        - ru: "Игнорировать отмеченные превышения и не менять план следующей недели — тогда учёт теряет смысл."
+          uz: "Belgilangan oshib ketishlarni e'tiborsiz qoldirib, keyingi hafta rejasini o'zgartirmaslik — shunda hisobning ma'nosi yo'qoladi."
+      first_week_example:
+        ru: "Понедельник — поставить лимиты по категориям на неделю; среда — проверка остатка; воскресенье — сравнить план и факт, отметить «в рамках / превысил»."
+        uz: "Dushanba — haftalik toifa limitlarini qo'yish; chorshanba — qolgan limitni tekshirish; yakshanba — reja va faktni solishtirish, 'me'yorda / oshib ketdi' deb belgilash."
     source:
       name: "эвристика"
     template_id: budget
@@ -63,6 +107,28 @@ goals:
       квартал; CFPB советует начинать с малого («Start Small, Save Up»).
     week_skeleton: "В день дохода сразу отложить часть суммы"
     minimal_version: "Отложить 5 000 сум"
+    guide:
+      steps:
+        - ru: "Выбери процент, с которого начнёшь (например, 5%) — лучше небольшая реалистичная сумма, чем амбициозная, которую быстро бросишь."
+          uz: "Boshlang'ich foizni tanla (masalan, 5%) — tezda tashlab qo'yadigan katta maqsaddan ko'ra kichik, real miqdor yaxshiroq."
+        - ru: "В день получения денег (стипендия, зарплата, карманные) сразу отложи этот процент, прежде чем начнёшь что-то тратить — правило «сначала заплати себе»."
+          uz: "Pul olgan kuningda (stipendiya, maosh, cho'ntak puli) biror narsa sarflashdan oldin shu foizni darhol ajrat — 'avval o'zingga to'la' qoidasi."
+        - ru: "Держи отложенные деньги отдельно от повседневных (другой счёт, конверт, кошелёк) — так их не потратишь случайно."
+          uz: "Ajratilgan pulni kundalik puldan alohida tut (boshqa hisob, konvert, hamyon) — shunda u tasodifan sarflanmaydi."
+        - ru: "Не трогай отложенное на обычные покупки — иначе весь смысл откладывания теряется."
+          uz: "Ajratilganini oddiy xaridlar uchun ishlatma — aks holda jamg'armaning ma'nosi yo'qoladi."
+        - ru: "Раз в квартал, если получается легко, повышай процент на 2–5 п.п."
+          uz: "Har chorakda, agar oson bo'lsa, foizni 2–5 foiz punktga oshir."
+      mistakes:
+        - ru: "Планировать откладывать «то, что останется» в конце месяца — обычно не остаётся ничего, лучше откладывать первым делом."
+          uz: "Oy oxirida 'qolganini' jamg'arishni rejalashtirish — odatda hech narsa qolmaydi, avval ajratish yaxshiroq."
+        - ru: "Ставить слишком высокий процент с самого начала и бросать после первого неудачного месяца."
+          uz: "Boshidanoq juda yuqori foiz qo'yish va birinchi muvaffaqiyatsiz oydan keyin tashlab qo'yish."
+        - ru: "Держать сбережения там же, где и деньги на расходы — слишком легко «одолжить» у них и не вернуть."
+          uz: "Jamg'armani xarajat puli bilan bir joyda saqlash — undan 'qarz olish' va qaytarmaslik juda oson bo'lib qoladi."
+      first_week_example:
+        ru: "В день дохода — сразу отложить 5% (или минимум 5 000 сум) в отдельное место до любых других трат."
+        uz: "Pul tushgan kuni — boshqa har qanday xarajatdan oldin 5% (yoki kamida 5 000 so'm) ni alohida joyga ajrat."
     source:
       name: "CFPB: Start Small, Save Up"
       url: "https://www.consumerfinance.gov/archive/newsroom/cfpb-announces-start-small-save-initiative/"
@@ -84,6 +150,28 @@ goals:
       за 3 месяца.
     week_skeleton: "Автоперевод в подушку раз в неделю"
     minimal_version: "Отметить «не тронул подушку»"
+    guide:
+      steps:
+        - ru: "Посчитай свои средние обязательные расходы за последние 3 месяца (жильё, еда, транспорт, связь) — это и есть твоя единица измерения подушки."
+          uz: "So'nggi 3 oydagi o'rtacha majburiy xarajatlaringni hisobla (uy-joy, oziq-ovqat, transport, aloqa) — bu zahiraning o'lchov birligi."
+        - ru: "Настрой еженедельный перевод (даже небольшой) на отдельный счёт сразу после получения дохода."
+          uz: "Daromad olingandan so'ng darhol alohida hisobga haftalik o'tkazmani (hatto kichik bo'lsa ham) sozla."
+        - ru: "Храни подушку в легко доступном, но отдельном месте — не вкладывай её и не смешивай с повседневными деньгами."
+          uz: "Zahirani oson yetiladigan, lekin alohida joyda saqla — uni qayerga joylashtirmaslik va kundalik pul bilan aralashtirmaslik."
+        - ru: "Первая цель — 1 месяц обязательных расходов; только после неё переходи к 3, затем к 6 месяцам."
+          uz: "Birinchi maqsad — 1 oylik majburiy xarajat; shundan keyingina 3, so'ngra 6 oyga o't."
+        - ru: "Если пришлось использовать подушку на реальный форс-мажор — отметь это и сразу начни восстанавливать её, не бросай цель."
+          uz: "Zahirani haqiqiy kutilmagan holatda ishlatishga to'g'ri kelsa — buni belgila va darhol uni qayta to'ldirishni boshla, maqsaddan voz kechma."
+      mistakes:
+        - ru: "Смешивать подушку с обычными сбережениями или деньгами на желания — так её слишком легко случайно потратить."
+          uz: "Zahirani oddiy jamg'arma yoki istaklar puli bilan aralashtirish — shunda uni tasodifan sarflash juda oson bo'ladi."
+        - ru: "Пытаться сразу накопить на 6 месяцев вместо реалистичного первого шага в 1 месяц."
+          uz: "1 oylik real birinchi qadam o'rniga darhol 6 oyga yetishga urinish."
+        - ru: "Вкладывать подушку куда-то «для дохода» — для настоящего форс-мажора деньги должны оставаться доступными сразу."
+          uz: "Zahirani 'daromad olish uchun' biror joyga joylashtirish — haqiqiy kutilmagan holat uchun pul darhol yetiladigan bo'lishi kerak."
+      first_week_example:
+        ru: "Сразу после получения дохода — перевод на отдельный счёт подушки; в конце недели — отметка «не тронул подушку»."
+        uz: "Daromad olingandan so'ng darhol — zahira uchun alohida hisobga o'tkazma; hafta oxirida — 'zahirani tegmadim' belgisi."
     source:
       name: "CFPB / FCBT: гид по подушке безопасности"
       url: "https://www.firstcbt.bank/blog/post/fcbt-and-cfpb-present-an-essential-guide-to-building-an-emergency-fund"
@@ -104,6 +192,28 @@ goals:
       эвристика, не финансовый совет).
     week_skeleton: "2 часа на навыки + 1 отклик или заказ в неделю"
     minimal_version: "Открыть 1 вакансию или урок курса"
+    guide:
+      steps:
+        - ru: "Запиши свой текущий («базовый») доход за месяц — это точка отсчёта, от которой будешь считать рост в процентах."
+          uz: "Joriy ('baza') oylik daromadingni yoz — bu foizdagi o'sishni hisoblash uchun boshlanish nuqtasi."
+        - ru: "Выделяй 2 часа в неделю на навык, который реально может повысить доход (курс, практика, портфолио)."
+          uz: "Haqiqatan daromadni oshirishi mumkin bo'lgan ko'nikma uchun haftasiga 2 soat ajrat (kurs, amaliyot, portfolio)."
+        - ru: "Каждую неделю делай хотя бы одно конкретное действие к доходу: отправь отклик, предложи услугу клиенту, попроси подработку или прибавку."
+          uz: "Har hafta daromad uchun kamida bitta aniq harakat qil: ariza yubor, mijozga xizmat taklif qil, qo'shimcha ish yoki qo'shimcha haq so'ra."
+        - ru: "Считай часы на навык и число откликов/заказов — это то, что ты контролируешь, рост дохода приходит с задержкой."
+          uz: "Ko'nikmaga sarflangan soatlar va ariza/buyurtmalar sonini sana — bu sen nazorat qila oladigan narsa, daromad o'sishi kechikib keladi."
+        - ru: "Проверяй % роста к базовому доходу раз в месяц, а не каждый день — доход не меняется день в день."
+          uz: "Baza daromadga nisbatan o'sish foizini har kuni emas, oyiga bir marta tekshir — daromad kun sayin o'zgarmaydi."
+      mistakes:
+        - ru: "Ждать, пока «полностью выучишь» навык, прежде чем предпринимать действия к доходу — применять навык стоит уже по ходу обучения."
+          uz: "Daromad uchun harakat qilishdan oldin ko'nikmani 'to'liq o'rganib olishni' kutish — ko'nikmani o'rganish jarayonida qo'llash kerak."
+        - ru: "Оценивать успех только по деньгам и расстраиваться, если первые недели доход не изменился — рост здесь отстаёт от усилий на недели-месяцы."
+          uz: "Muvaffaqiyatni faqat pulga qarab baholash va birinchi haftalarda daromad o'zgarmasa xafa bo'lish — bu yerda o'sish harakatdan hafta-oylarga ortda qoladi."
+        - ru: "Обещать себе конкретную сумму или срок вместо отслеживания усилий — доход зависит от многих факторов вне полного контроля."
+          uz: "Harakatni kuzatish o'rniga o'zingga aniq summa yoki muddat va'da qilish — daromad to'liq nazorat qilib bo'lmaydigan ko'p omillarga bog'liq."
+      first_week_example:
+        ru: "На этой неделе — 2 занятия по 1 часу над навыком (курс/практика) + 1 реальный отклик или предложение услуги."
+        uz: "Shu hafta — ko'nikma ustida 1 soatdan 2 mashg'ulot (kurs/amaliyot) + 1 haqiqiy ariza yoki xizmat taklifi."
     source:
       name: "эвристика"
     template_id: income_growth
@@ -120,6 +230,28 @@ goals:
     pace: "Варианты цели: 4 / 8 / 12 модулей. 1 модуль в неделю (ЦБ РУз, finlit.uz)."
     week_skeleton: "1 урок + тест из 3 вопросов в неделю"
     minimal_version: "Прочитать 1 карточку"
+    guide:
+      steps:
+        - ru: "Выбери базовый курс финансовой грамотности (например, finlit.uz от ЦБ РУз) и проходи его по модулям, а не всё сразу."
+          uz: "Asosiy moliyaviy savodxonlik kursini tanla (masalan, O'zbekiston MB ning finlit.uz) va uni bir yo'la emas, modul-modul o't."
+        - ru: "Выделяй время раз в неделю на один модуль/урок и короткий тест после него."
+          uz: "Haftasiga bir marta bitta modul/dars va undan keyingi qisqa test uchun vaqt ajrat."
+        - ru: "После каждого модуля отвечай на тест из 3 вопросов честно, не заглядывая в урок — это проверяет, что реально запомнилось."
+          uz: "Har modul dan keyin 3 savolli testga darsga qaramasdan, halol javob ber — bu haqiqatan esda qolganini tekshiradi."
+        - ru: "Если тема непонятна — перечитай именно этот модуль, не переходи к следующему."
+          uz: "Mavzu tushunarsiz bo'lsa — aynan shu modulni qayta o'qi, keyingisiga o'tma."
+        - ru: "Считай пройденные модули — это и есть прогресс цели, а не только результат теста."
+          uz: "O'tilgan modullarni sana — bu maqsadning taraqqiyoti, faqat test natijasi emas."
+      mistakes:
+        - ru: "Читать много модулей за один раз и забывать большинство к следующей неделе — лучше 1 модуль, растянутый по времени."
+          uz: "Bir vaqtning o'zida ko'p modul o'qib, keyingi haftaga ko'pini unutish — 1 modulni vaqt bo'yicha taqsimlagan holda o'tish yaxshiroq."
+        - ru: "Пропускать тест, думая «я и так понял» — именно тест показывает, что действительно усвоилось."
+          uz: "'Baribir tushundim' deb testni o'tkazib yuborish — aynan test haqiqatan o'zlashtirilganini ko'rsatadi."
+        - ru: "Относиться к этому как к абстрактной теории без связи со своими деньгами — пробуй применять идею каждого модуля на своих цифрах."
+          uz: "Bunga o'z pullariga aloqasi yo'q mavhum nazariya sifatida qarash — har bir modul g'oyasini o'z raqamlaringda qo'llashga harakat qil."
+      first_week_example:
+        ru: "Один вечер на этой неделе — 1 модуль курса finlit.uz + тест из 3 вопросов сразу после."
+        uz: "Shu haftaning bir kechasi — finlit.uz kursining 1 moduli + darhol undan keyin 3 savolli test."
     source:
       name: "ЦБ РУз: финансовая грамотность / finlit.uz"
       url: "https://podrobno.uz/cat/economic/tsentralnyy-bank-zapustil-informatsionno-obrazovatelnyy-sayt-po-finansovoy-gramotnosti/"

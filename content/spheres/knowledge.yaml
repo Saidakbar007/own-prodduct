@@ -31,6 +31,28 @@ goals:
       примерно 10–20% от срока, на который нужно запомнить (Cepeda, 2008).
     week_skeleton: "6 сессий в неделю по 10–15 минут"
     minimal_version: "5 карточек"
+    guide:
+      steps:
+        - ru: "Выбери одну тему (история, география, наука, экономика) и заводи по ней 5–15 новых карточек в день — вопрос с одной стороны, короткий ответ с другой."
+          uz: "Bitta mavzu tanla (tarix, geografiya, fan, iqtisod) va shu mavzu bo'yicha kuniga 5–15 ta yangi kartochka tuzing — bir tomonida savol, ikkinchi tomonida qisqa javob."
+        - ru: "Каждый день проходи все карточки, которые приложение показывает «на повторение сегодня» — это важнее, чем добавлять новые."
+          uz: "Har kuni ilova 'bugun takrorlash' deb ko'rsatgan barcha kartochkalarni ko'rib chiqing — bu yangi qo'shishdan muhimroq."
+        - ru: "Если честно вспомнил ответ — отмечай «вспомнил», если нет — «не вспомнил»; не обманывай себя, иначе карточка не закрепится."
+          uz: "Javobni rostdan eslab qolgan bo'lsang — 'esladim' deb belgilang, bo'lmasa — 'eslamadim'; o'zingizni aldamang, aks holda kartochka yodda qolmaydi."
+        - ru: "Делай 6 коротких сессий в неделю по 10–15 минут — лучше часто и понемногу, чем редко и подолгу."
+          uz: "Haftada 6 marta 10–15 daqiqalik qisqa mashg'ulot qiling — kam-kam va tez-tez qilish kamdan-kam va uzoq qilishdan yaxshiroq."
+        - ru: "Карточка считается усвоенной надолго, когда ты правильно вспомнил её при интервале 21+ день — именно такие карточки идут в счёт цели за неделю."
+          uz: "Kartochka 21+ kunlik interval bilan to'g'ri eslab qolinganda chinakam o'zlashtirilgan hisoblanadi — maqsadga haftalik hisobda aynan shu kartochkalar kiradi."
+      mistakes:
+        - ru: "Добавлять слишком много новых карточек за один день — долг повторений быстро накапливается и отбивает желание продолжать."
+          uz: "Bir kunda juda ko'p yangi kartochka qo'shish — takrorlash qarzi tez to'planadi va davom ettirish xohishini yo'qotadi."
+        - ru: "Копить долг повторений несколько дней подряд — лучше пройти хотя бы старые карточки и отложить добавление новых."
+          uz: "Bir necha kun ketma-ket takrorlash qarzini to'plash — yangi qo'shishni kechiktirib, hech bo'lmasa eski kartochkalarni ko'rib chiqgan ma'qul."
+        - ru: "Отмечать «вспомнил», когда на самом деле подглядел или угадал — это обманывает алгоритм интервалов и мешает реальному запоминанию."
+          uz: "Aslida ko'rib yoki taxmin qilib 'esladim' deb belgilash — bu intervallar algoritmini chalg'itadi va haqiqiy yodlashga xalaqit beradi."
+      first_week_example:
+        ru: "Каждый день — 10–15 минут: 5–10 новых карточек по выбранной теме утром в транспорте + все карточки «на повторение сегодня» вечером."
+        uz: "Har kuni 10–15 daqiqa: ertalab transportda tanlangan mavzu bo'yicha 5–10 yangi kartochka + kechqurun 'bugun takrorlash' kartochkalari."
     source:
       name: "Cepeda et al. 2008, Spacing effects"
       url: "https://pubmed.ncbi.nlm.nih.gov/19076480/"
@@ -50,6 +72,28 @@ goals:
       один пропуск не обрушивает привычку целиком (Lally et al. 2010).
     week_skeleton: "Ежедневно, хотя бы 1 карточка в день"
     minimal_version: "1 карточка"
+    guide:
+      steps:
+        - ru: "Каждый вечер (или в удобное фиксированное время) открывай карточки и проходи все, что приложение показывает «на сегодня», не оставляя их на завтра."
+          uz: "Har kuni kechqurun (yoki qulay doimiy vaqtda) kartochkalarni ochib, ilova 'bugun' deb ko'rsatgan barchasini ertaga qoldirmay ko'rib chiqing."
+        - ru: "Если совсем нет времени — пройди хотя бы 1 карточку, но не пропускай день полностью: цель именно в днях подряд без долга."
+          uz: "Vaqt umuman bo'lmasa ham — hech bo'lmasa 1 ta kartochkani ko'rib chiqing, kunni butunlay o'tkazib yubormang: maqsad aynan qarzsiz ketma-ket kunlar."
+        - ru: "Привяжи повторение к уже существующей привычке (сразу после завтрака, в транспорте) — так проще не забыть."
+          uz: "Takrorlashni allaqachon bor odatga bog'lang (nonushtadan keyin, transportda) — shunda unutmaslik osonroq."
+        - ru: "Если пропустил день и долг всё же накопился — в первую очередь закрывай именно долг, а не новые карточки."
+          uz: "Agar bir kunni o'tkazib yuborib qarz to'plangan bo'lsa — birinchi navbatda aynan qarzni, yangi kartochkalarni emas, yoping."
+        - ru: "Не ругай себя за один пропущенный день — по исследованиям, одна осечка не разрушает привычку целиком, продолжай со следующего дня."
+          uz: "Bir kunni o'tkazib yuborgani uchun o'zingizni ayblamang — tadqiqotlarga ko'ra, bir xatolik odatni butunlay buzmaydi, keyingi kundan davom eting."
+      mistakes:
+        - ru: "Откладывать повторение «на потом в этот же день» — к вечеру дел накапливается, и карточки легко забываются совсем."
+          uz: "Takrorlashni 'bugun keyinroq' deb qo'yish — kechqurungacha ishlar to'planib, kartochkalar butunlay esdan chiqadi."
+        - ru: "Пытаться сразу «отработать» долг за несколько пропущенных дней одним огромным повторением — это утомляет и отбивает желание продолжать серию."
+          uz: "Bir necha o'tkazib yuborilgan kunning qarzini bir yo'la katta takrorlash bilan 'yopishga' urinish — bu charchatadi va seriyani davom ettirish xohishini yo'qotadi."
+        - ru: "Бросать серию полностью после одного пропуска, думая «всё равно сбилось»  — лучше просто продолжить с сегодняшнего дня."
+          uz: "Bir marta o'tkazib yuborgandan keyin 'baribir buzildi' deb seriyani butunlay tashlab qo'yish — bugungi kundan davom etish yaxshiroq."
+      first_week_example:
+        ru: "Каждый день, в одно и то же время (например вечером после ужина) — проходишь все карточки «на сегодня», минимум 1, если времени совсем нет."
+        uz: "Har kuni bir xil vaqtda (masalan, kechki ovqatdan keyin) — 'bugun' kartochkalarining barchasini, vaqt umuman bo'lmasa kamida 1 tasini ko'rib chiqasiz."
     source:
       name: "Lally et al. 2010, habit formation (UCL)"
       url: "https://www.ucl.ac.uk/news/2009/aug/how-long-does-it-take-form-habit"
@@ -67,6 +111,28 @@ goals:
     pace: "Обычный курс занимает 4–8 недель при 2–4 часах в неделю (без отдельного источника — обычная практика)"
     week_skeleton: "3 сессии по 30 минут в неделю"
     minimal_version: "1 видео 2 минуты"
+    guide:
+      steps:
+        - ru: "Выбери один конкретный курс, который давно откладывал, и сразу отметь, сколько в нём модулей — это твоя шкала прогресса."
+          uz: "Uzoqdan kechiktirib kelgan bitta aniq kursni tanla va darhol unda nechta modul borligini belgilang — bu sizning taraqqiyot shkalangiz."
+        - ru: "Поставь в календаре 3 слота по 30 минут в неделю — курс, на который «найду время как-нибудь», обычно так и не проходится."
+          uz: "Haftasiga 3 marta 30 daqiqalik vaqt oynasini kalendarga belgilang — 'qachondir vaqt topaman' deb qoldirilgan kurs odatda tugatilmaydi."
+        - ru: "После каждого видео или главы проходи тест модуля, если он есть — это проверяет, что материал действительно усвоен, а не просто просмотрен."
+          uz: "Har bir video yoki bob dan keyin, agar bo'lsa, modul testini topshiring — bu material haqiqatan o'zlashtirilganini, shunchaki ko'rilganini emas, tekshiradi."
+        - ru: "Отмечай прогресс в процентах после каждой сессии — видеть «осталось 20%» мотивирует больше, чем «где-то в середине»."
+          uz: "Har mashg'ulotdan keyin foizdagi taraqqiyotni belgilang — 'yana 20% qoldi' deb ko'rish 'qayerdadir o'rtada' deyishdan ko'ra ko'proq rag'batlantiradi."
+        - ru: "Если тема оказалась слишком сложной или неинтересной на старте — лучше осознанно сменить курс один раз, чем годами не заканчивать прежний."
+          uz: "Agar mavzu boshida juda qiyin yoki qiziqarsiz bo'lib chiqsa — avvalgisini yillab tugatmasdan yurishdan ko'ra, bir marta ongli ravishda kursni almashtirish yaxshiroq."
+      mistakes:
+        - ru: "Записываться на несколько курсов одновременно — внимание распыляется, и в итоге ни один не заканчивается."
+          uz: "Bir vaqtda bir necha kursga yozilish — e'tibor tarqalib ketadi va natijada hech biri tugallanmaydi."
+        - ru: "Смотреть видео «для галочки» без теста модуля — без проверки легко переоценить, что реально запомнилось."
+          uz: "Modul testisiz 'shunchaki ko'rish uchun' video ko'rish — tekshirmasdan nima haqiqatan yodda qolganini oshirib baholash oson."
+        - ru: "Бросать курс на середине из-за одной сложной темы — проще пропустить сложный модуль и вернуться к нему позже, чем останавливаться совсем."
+          uz: "Bitta qiyin mavzu tufayli kursni o'rtada tashlab qo'yish — butunlay to'xtashdan ko'ra qiyin modulni o'tkazib yuborib, keyinroq qaytish osonroq."
+      first_week_example:
+        ru: "Пн/Ср/Пт по 30 минут: смотришь модуль курса и проходишь его тест, отмечаешь новый % прогресса после каждой сессии."
+        uz: "Dush/Chor/Juma, 30 daqiqadan: kurs modulini ko'rib, testini topshirasiz, har mashg'ulotdan keyin yangi % taraqqiyotni belgilaysiz."
     source:
       name: "эвристика"
     template_id: online_course
@@ -83,6 +149,28 @@ goals:
     pace: "Цикл повторения тем — 4 недели (без отдельного источника — практика продукта)"
     week_skeleton: "4 сессии по 10 минут в неделю"
     minimal_version: "3 вопроса"
+    guide:
+      steps:
+        - ru: "Выбирай темы по кругу — история, география, устройство мира — и за 4 недели проходи каждую хотя бы раз, а не зацикливайся на одной."
+          uz: "Mavzularni aylanma tartibda tanlang — tarix, geografiya, dunyo tuzilishi — va 4 hafta davomida har birini kamida bir marta ko'rib chiqing, bittasida qolib ketmang."
+        - ru: "4 раза в неделю по 10 минут читай короткие факты или смотри короткое видео по выбранной теме."
+          uz: "Haftada 4 marta, 10 daqiqadan, tanlangan mavzu bo'yicha qisqa faktlarni o'qing yoki qisqa video ko'ring."
+        - ru: "После каждой сессии задай себе 1–2 вопроса по тому, что узнал, не глядя в текст — это проверяет, запомнил ли ты, а не просто прочитал."
+          uz: "Har mashg'ulotdan keyin matnга qaramay, o'qiganlaringiz bo'yicha o'zingizga 1–2 savol bering — bu shunchaki o'qiganini emas, eslab qolganini tekshiradi."
+        - ru: "Раз в месяц проходи тест-викторину и смотри на точность в процентах — это и есть замер цели."
+          uz: "Oyiga bir marta test-viktorinani topshiring va foizdagi aniqlikka qarang — bu maqsadning o'lchovi."
+        - ru: "Темы, где точность в викторине ниже, повторяй в следующем цикле чаще — так слабые места подтягиваются."
+          uz: "Viktorinada aniqlik pastroq bo'lgan mavzularni keyingi siklda ko'proq takrorlang — shunda zaif joylar yaxshilanadi."
+      mistakes:
+        - ru: "Читать много фактов подряд без попытки вспомнить их позже — без повторения большая часть забывается за пару дней."
+          uz: "Ko'plab faktlarni keyinroq eslashga urinmasdan ketma-ket o'qish — takrorlash bo'lmasa, ularning ko'pi bir necha kunda esdan chiqadi."
+        - ru: "Проходить викторину сразу после прочтения темы — интереснее и честнее проверить себя спустя несколько дней."
+          uz: "Mavzuni o'qib bo'lgach darhol viktorinani topshirish — bir necha kundan keyin o'zingizni tekshirish qiziqarli va halolroq."
+        - ru: "Выбирать только одну любимую тему и игнорировать остальные — цель именно в широкой эрудиции, а не глубине одной области."
+          uz: "Faqat bitta sevimli mavzuni tanlab, qolganlarini e'tiborsiz qoldirish — maqsad aynan keng bilimdonlik, bitta sohaning chuqurligi emas."
+      first_week_example:
+        ru: "4 раза по 10 минут: по разным темам (история Узбекистана, география мира) читаешь факты и задаёшь себе 1–2 вопроса после каждой сессии."
+        uz: "4 marta 10 daqiqadan: turli mavzular (O'zbekiston tarixi, dunyo geografiyasi) bo'yicha faktlarni o'qiysiz va har mashg'ulotdan keyin o'zingizga 1–2 savol berasiz."
     source:
       name: "эвристика"
     template_id: trivia_uzbekistan_world
@@ -101,6 +189,28 @@ goals:
       (Dunlosky et al. 2013).
     week_skeleton: "3 сессии по 10 минут в неделю"
     minimal_version: "1 мысль"
+    guide:
+      steps:
+        - ru: "Сразу после чтения (не на следующий день) запиши своими словами 1–3 главные мысли — не цитату, а то, как ты это понял."
+          uz: "O'qib bo'lgach darhol (ertasiga emas) 1–3 asosiy fikrni o'z so'zlaringiz bilan yozing — iqtibos emas, o'zingiz qanday tushunganingizni."
+        - ru: "Делай это 3 раза в неделю по 10 минут — после любой книги, статьи или длинного видео, которое показалось важным."
+          uz: "Buni haftada 3 marta, 10 daqiqadan bajaring — muhim ko'ringan har qanday kitob, maqola yoki uzun videodan keyin."
+        - ru: "Задай себе вопрос «что из этого я расскажу другу через неделю?» — так проще выделить действительно главное, а не всё подряд."
+          uz: "O'zingizga 'buni hafta o'tgach do'stimga qanday aytib beraman?' deb savol bering — shunda hamma narsani emas, chindan muhimini ajratish osonroq."
+        - ru: "Самые полезные из записанных мыслей переноси в карточки для повторения — так они не просто записаны, а закрепляются надолго."
+          uz: "Yozilgan fikrlarning eng foydalilarini takrorlash uchun kartochkalarga ko'chiring — shunda ular shunchaki yozilmay, uzoq muddat yodda qoladi."
+        - ru: "Считай мысли, а не страницы — цель в том, чтобы в голове осталось что-то полезное, а не в объёме прочитанного."
+          uz: "Sahifalarni emas, fikrlarni sanang — maqsad o'qilgan hajmda emas, boshda foydali narsa qolishida."
+      mistakes:
+        - ru: "Просто выделять текст маркером вместо пересказа своими словами — это создаёт ложное чувство, что материал усвоен."
+          uz: "O'z so'zlari bilan qayta aytish o'rniga matnni shunchaki belgilab qo'yish — bu material o'zlashtirilgan degan yolg'on tuyg'u yaratadi."
+        - ru: "Откладывать запись мысли «на после» — через час-два детали забываются, и записывать становится нечего."
+          uz: "Fikrni yozishni 'keyinroq'ga qoldirish — bir-ikki soatdan keyin tafsilotlar esdan chiqib, yozadigan narsa qolmaydi."
+        - ru: "Писать подробный пересказ всего текста вместо 1–3 главных мыслей — длинный конспект реже дочитывается и реже повторяется."
+          uz: "1–3 asosiy fikr o'rniga butun matnning batafsil qayta bayonini yozish — uzun konspekt kamroq o'qib chiqiladi va kamroq takrorlanadi."
+      first_week_example:
+        ru: "После 3 сессий чтения за неделю — сразу по 1–3 мысли своими словами; самую полезную мысль из них переносишь в карточку."
+        uz: "Haftadagi 3 o'qish mashg'ulotidan keyin — darhol 1–3 ta fikrni o'z so'zlaringiz bilan; ulardan eng foydalisini kartochkaga ko'chirasiz."
     source:
       name: "Dunlosky et al. 2013, Effective learning techniques (APS)"
       url: "https://psychologicalscience.org/?p=82014"
