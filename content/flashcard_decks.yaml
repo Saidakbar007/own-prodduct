@@ -1,0 +1,1787 @@
+# Наборы карточек для движка интервального повторения (PRD 1.0, F5).
+# english_b1 — частые слова уровня CEFR B1 (Cambridge/Oxford B1 vocabulary
+# list) с переводом и примером; knowledge_trivia — общие проверяемые факты
+# (география, история, наука, культура, немного про Узбекистан). Схема и
+# движок повторения — отдельный код, здесь только статический контент.
+english_b1:
+  title: { ru: "Английские слова B1", uz: "B1 darajali ingliz so'zlari" }
+  cards:
+    - id: en_b1_001
+      front: "achieve (v.)"
+      back:
+        ru: "достигать, добиваться — пример: She achieved her goal."
+        uz: "erishmoq — misol: She achieved her goal."
+    - id: en_b1_002
+      front: "achievement (n.)"
+      back:
+        ru: "достижение — пример: Winning the award was a great achievement."
+        uz: "yutuq — misol: Winning the award was a great achievement."
+    - id: en_b1_003
+      front: "advice (n.)"
+      back:
+        ru: "совет — пример: He gave me good advice."
+        uz: "maslahat — misol: He gave me good advice."
+    - id: en_b1_004
+      front: "afford (v.)"
+      back:
+        ru: "позволить себе (по деньгам/времени) — пример: I can't afford a new phone."
+        uz: "qurbi yetmoq — misol: I can't afford a new phone."
+    - id: en_b1_005
+      front: "agree (v.)"
+      back:
+        ru: "соглашаться — пример: We agreed on the plan."
+        uz: "rozi bo'lmoq — misol: We agreed on the plan."
+    - id: en_b1_006
+      front: "aim (n.)"
+      back:
+        ru: "цель — пример: Her aim is to study abroad."
+        uz: "maqsad — misol: Her aim is to study abroad."
+    - id: en_b1_007
+      front: "allow (v.)"
+      back:
+        ru: "разрешать — пример: They allowed us to leave early."
+        uz: "ruxsat bermoq — misol: They allowed us to leave early."
+    - id: en_b1_008
+      front: "alone (adj.)"
+      back:
+        ru: "один, в одиночестве — пример: She lives alone."
+        uz: "yolg'iz — misol: She lives alone."
+    - id: en_b1_009
+      front: "amazing (adj.)"
+      back:
+        ru: "удивительный, потрясающий — пример: The view was amazing."
+        uz: "ajoyib — misol: The view was amazing."
+    - id: en_b1_010
+      front: "among (prep.)"
+      back:
+        ru: "среди — пример: She was among the best students."
+        uz: "orasida — misol: She was among the best students."
+    - id: en_b1_011
+      front: "amount (n.)"
+      back:
+        ru: "количество, сумма — пример: A large amount of money was spent."
+        uz: "miqdor — misol: A large amount of money was spent."
+    - id: en_b1_012
+      front: "ancient (adj.)"
+      back:
+        ru: "древний — пример: They visited an ancient city."
+        uz: "qadimiy — misol: They visited an ancient city."
+    - id: en_b1_013
+      front: "announce (v.)"
+      back:
+        ru: "объявлять — пример: The teacher announced the results."
+        uz: "e'lon qilmoq — misol: The teacher announced the results."
+    - id: en_b1_014
+      front: "annoy (v.)"
+      back:
+        ru: "раздражать — пример: The noise annoys me."
+        uz: "jahlini keltirmoq — misol: The noise annoys me."
+    - id: en_b1_015
+      front: "appear (v.)"
+      back:
+        ru: "появляться, казаться — пример: She suddenly appeared at the door."
+        uz: "paydo bo'lmoq — misol: She suddenly appeared at the door."
+    - id: en_b1_016
+      front: "apply (v.)"
+      back:
+        ru: "подавать заявление, применять — пример: He applied for a new job."
+        uz: "ariza bermoq — misol: He applied for a new job."
+    - id: en_b1_017
+      front: "appointment (n.)"
+      back:
+        ru: "назначенная встреча (к врачу и т.п.) — пример: I have a dentist appointment tomorrow."
+        uz: "uchrashuv (qabul) — misol: I have a dentist appointment tomorrow."
+    - id: en_b1_018
+      front: "appreciate (v.)"
+      back:
+        ru: "ценить, быть благодарным — пример: I really appreciate your help."
+        uz: "qadrlamoq — misol: I really appreciate your help."
+    - id: en_b1_019
+      front: "approach (n.)"
+      back:
+        ru: "подход — пример: We need a new approach to the problem."
+        uz: "yondashuv — misol: We need a new approach to the problem."
+    - id: en_b1_020
+      front: "argue (v.)"
+      back:
+        ru: "спорить — пример: They argued about the price."
+        uz: "bahslashmoq — misol: They argued about the price."
+    - id: en_b1_021
+      front: "arrange (v.)"
+      back:
+        ru: "организовывать, договариваться — пример: Let's arrange a meeting for Monday."
+        uz: "tashkil qilmoq (kelishmoq) — misol: Let's arrange a meeting for Monday."
+    - id: en_b1_022
+      front: "arrival (n.)"
+      back:
+        ru: "прибытие — пример: We waited for her arrival."
+        uz: "kelish (yetib kelish) — misol: We waited for her arrival."
+    - id: en_b1_023
+      front: "attempt (v.)"
+      back:
+        ru: "пытаться — пример: He attempted to fix the car."
+        uz: "urinmoq — misol: He attempted to fix the car."
+    - id: en_b1_024
+      front: "attend (v.)"
+      back:
+        ru: "посещать — пример: She attends every lecture."
+        uz: "qatnashmoq — misol: She attends every lecture."
+    - id: en_b1_025
+      front: "attitude (n.)"
+      back:
+        ru: "отношение, настрой — пример: He has a positive attitude to life."
+        uz: "munosabat — misol: He has a positive attitude to life."
+    - id: en_b1_026
+      front: "attract (v.)"
+      back:
+        ru: "привлекать — пример: The museum attracts many tourists."
+        uz: "jalb qilmoq — misol: The museum attracts many tourists."
+    - id: en_b1_027
+      front: "available (adj.)"
+      back:
+        ru: "доступный — пример: The tickets are no longer available."
+        uz: "mavjud (bo'sh) — misol: The tickets are no longer available."
+    - id: en_b1_028
+      front: "avoid (v.)"
+      back:
+        ru: "избегать — пример: Try to avoid junk food."
+        uz: "qochmoq (saqlanmoq) — misol: Try to avoid junk food."
+    - id: en_b1_029
+      front: "aware (adj.)"
+      back:
+        ru: "осведомлённый, в курсе — пример: I wasn't aware of the problem."
+        uz: "xabardor — misol: I wasn't aware of the problem."
+    - id: en_b1_030
+      front: "background (n.)"
+      back:
+        ru: "происхождение, фон — пример: She has a strong academic background."
+        uz: "kelib chiqish (fon) — misol: She has a strong academic background."
+    - id: en_b1_031
+      front: "balance (n.)"
+      back:
+        ru: "баланс, равновесие — пример: It's important to find a balance between work and rest."
+        uz: "muvozanat — misol: It's important to find a balance between work and rest."
+    - id: en_b1_032
+      front: "behave (v.)"
+      back:
+        ru: "вести себя — пример: The children behaved well at school."
+        uz: "o'zini tutmoq — misol: The children behaved well at school."
+    - id: en_b1_033
+      front: "behaviour (n.)"
+      back:
+        ru: "поведение — пример: His behaviour surprised everyone."
+        uz: "xulq-atvor — misol: His behaviour surprised everyone."
+    - id: en_b1_034
+      front: "belong (v.)"
+      back:
+        ru: "принадлежать — пример: This book belongs to me."
+        uz: "tegishli bo'lmoq — misol: This book belongs to me."
+    - id: en_b1_035
+      front: "benefit (n.)"
+      back:
+        ru: "польза, выгода — пример: Exercise has many benefits for health."
+        uz: "foyda — misol: Exercise has many benefits for health."
+    - id: en_b1_036
+      front: "border (n.)"
+      back:
+        ru: "граница — пример: The river forms the border between the two countries."
+        uz: "chegara — misol: The river forms the border between the two countries."
+    - id: en_b1_037
+      front: "borrow (v.)"
+      back:
+        ru: "брать взаймы, одалживать — пример: Can I borrow your pen?"
+        uz: "qarz olmoq — misol: Can I borrow your pen?"
+    - id: en_b1_038
+      front: "brilliant (adj.)"
+      back:
+        ru: "блестящий, отличный — пример: That was a brilliant idea."
+        uz: "ajoyib (zo'r) — misol: That was a brilliant idea."
+    - id: en_b1_039
+      front: "calm (adj.)"
+      back:
+        ru: "спокойный — пример: She stayed calm during the exam."
+        uz: "xotirjam — misol: She stayed calm during the exam."
+    - id: en_b1_040
+      front: "career (n.)"
+      back:
+        ru: "карьера — пример: He started his career as a teacher."
+        uz: "karyera — misol: He started his career as a teacher."
+    - id: en_b1_041
+      front: "cause (v.)"
+      back:
+        ru: "вызывать, быть причиной — пример: Heavy rain caused floods."
+        uz: "sabab bo'lmoq — misol: Heavy rain caused floods."
+    - id: en_b1_042
+      front: "challenge (n.)"
+      back:
+        ru: "вызов, сложная задача — пример: Learning a new language is a big challenge."
+        uz: "qiyinchilik (sinov) — misol: Learning a new language is a big challenge."
+    - id: en_b1_043
+      front: "chance (n.)"
+      back:
+        ru: "шанс, возможность — пример: This is a great chance to improve your English."
+        uz: "imkoniyat — misol: This is a great chance to improve your English."
+    - id: en_b1_044
+      front: "character (n.)"
+      back:
+        ru: "характер, персонаж — пример: She has a strong character."
+        uz: "xarakter — misol: She has a strong character."
+    - id: en_b1_045
+      front: "charge (v.)"
+      back:
+        ru: "заряжать; брать плату — пример: Please charge my phone."
+        uz: "zaryad qilmoq — misol: Please charge my phone."
+    - id: en_b1_046
+      front: "chemical (adj.)"
+      back:
+        ru: "химический — пример: The factory produces chemical products."
+        uz: "kimyoviy — misol: The factory produces chemical products."
+    - id: en_b1_047
+      front: "choice (n.)"
+      back:
+        ru: "выбор — пример: You made the right choice."
+        uz: "tanlov — misol: You made the right choice."
+    - id: en_b1_048
+      front: "climate (n.)"
+      back:
+        ru: "климат — пример: The climate here is very dry."
+        uz: "iqlim — misol: The climate here is very dry."
+    - id: en_b1_049
+      front: "collect (v.)"
+      back:
+        ru: "собирать — пример: He collects old coins."
+        uz: "to'plamoq (yig'moq) — misol: He collects old coins."
+    - id: en_b1_050
+      front: "comfortable (adj.)"
+      back:
+        ru: "удобный, комфортный — пример: This chair is very comfortable."
+        uz: "qulay — misol: This chair is very comfortable."
+    - id: en_b1_051
+      front: "community (n.)"
+      back:
+        ru: "сообщество, община — пример: She is active in the local community."
+        uz: "jamiyat (jamoa) — misol: She is active in the local community."
+    - id: en_b1_052
+      front: "compare (v.)"
+      back:
+        ru: "сравнивать — пример: Compare the two photos."
+        uz: "taqqoslamoq — misol: Compare the two photos."
+    - id: en_b1_053
+      front: "complain (v.)"
+      back:
+        ru: "жаловаться — пример: He complained about the noise."
+        uz: "shikoyat qilmoq — misol: He complained about the noise."
+    - id: en_b1_054
+      front: "complete (v.)"
+      back:
+        ru: "завершать — пример: She completed the project on time."
+        uz: "tugatmoq (yakunlamoq) — misol: She completed the project on time."
+    - id: en_b1_055
+      front: "concentrate (v.)"
+      back:
+        ru: "концентрироваться — пример: I need to concentrate on my studies."
+        uz: "diqqatni jamlamoq — misol: I need to concentrate on my studies."
+    - id: en_b1_056
+      front: "concern (n.)"
+      back:
+        ru: "беспокойство, проблема — пример: Pollution is a major concern."
+        uz: "tashvish (muammo) — misol: Pollution is a major concern."
+    - id: en_b1_057
+      front: "confident (adj.)"
+      back:
+        ru: "уверенный (в себе) — пример: She felt confident before the exam."
+        uz: "ishonchli — misol: She felt confident before the exam."
+    - id: en_b1_058
+      front: "confuse (v.)"
+      back:
+        ru: "путать, смущать — пример: The instructions confused me."
+        uz: "chalkashtirmoq — misol: The instructions confused me."
+    - id: en_b1_059
+      front: "connect (v.)"
+      back:
+        ru: "соединять, связывать — пример: This road connects two cities."
+        uz: "bog'lamoq (ulamoq) — misol: This road connects two cities."
+    - id: en_b1_060
+      front: "consider (v.)"
+      back:
+        ru: "рассматривать, считать — пример: We should consider all options."
+        uz: "hisobga olmoq — misol: We should consider all options."
+    - id: en_b1_061
+      front: "contain (v.)"
+      back:
+        ru: "содержать — пример: This drink contains a lot of sugar."
+        uz: "tarkibida bo'lmoq — misol: This drink contains a lot of sugar."
+    - id: en_b1_062
+      front: "continue (v.)"
+      back:
+        ru: "продолжать — пример: Please continue your story."
+        uz: "davom ettirmoq — misol: Please continue your story."
+    - id: en_b1_063
+      front: "convenient (adj.)"
+      back:
+        ru: "удобный (по времени/месту) — пример: Is this time convenient for you?"
+        uz: "qulay — misol: Is this time convenient for you?"
+    - id: en_b1_064
+      front: "convince (v.)"
+      back:
+        ru: "убеждать — пример: He convinced me to join the team."
+        uz: "ishontirmoq — misol: He convinced me to join the team."
+    - id: en_b1_065
+      front: "cost (v.)"
+      back:
+        ru: "стоить — пример: The ticket costs ten dollars."
+        uz: "narxi bo'lmoq — misol: The ticket costs ten dollars."
+    - id: en_b1_066
+      front: "count (v.)"
+      back:
+        ru: "считать — пример: The child can count to a hundred."
+        uz: "sanamoq — misol: The child can count to a hundred."
+    - id: en_b1_067
+      front: "courage (n.)"
+      back:
+        ru: "смелость, мужество — пример: It took courage to speak in public."
+        uz: "jasorat — misol: It took courage to speak in public."
+    - id: en_b1_068
+      front: "crowd (n.)"
+      back:
+        ru: "толпа — пример: A large crowd gathered in the square."
+        uz: "olomon — misol: A large crowd gathered in the square."
+    - id: en_b1_069
+      front: "culture (n.)"
+      back:
+        ru: "культура — пример: Uzbek culture is rich in traditions."
+        uz: "madaniyat — misol: Uzbek culture is rich in traditions."
+    - id: en_b1_070
+      front: "curious (adj.)"
+      back:
+        ru: "любопытный — пример: Children are curious about the world."
+        uz: "qiziquvchan — misol: Children are curious about the world."
+    - id: en_b1_071
+      front: "damage (v.)"
+      back:
+        ru: "повреждать — пример: The storm damaged many houses."
+        uz: "zarar yetkazmoq — misol: The storm damaged many houses."
+    - id: en_b1_072
+      front: "decision (n.)"
+      back:
+        ru: "решение — пример: She made an important decision."
+        uz: "qaror — misol: She made an important decision."
+    - id: en_b1_073
+      front: "decrease (v.)"
+      back:
+        ru: "уменьшаться, снижать — пример: Prices decreased last month."
+        uz: "kamaymoq — misol: Prices decreased last month."
+    - id: en_b1_074
+      front: "delay (v.)"
+      back:
+        ru: "задерживать, откладывать — пример: The flight was delayed for two hours."
+        uz: "kechiktirmoq — misol: The flight was delayed for two hours."
+    - id: en_b1_075
+      front: "deliver (v.)"
+      back:
+        ru: "доставлять — пример: They deliver food to your door."
+        uz: "yetkazib bermoq — misol: They deliver food to your door."
+    - id: en_b1_076
+      front: "demand (n.)"
+      back:
+        ru: "требование, спрос — пример: There is a high demand for skilled workers."
+        uz: "talab — misol: There is a high demand for skilled workers."
+    - id: en_b1_077
+      front: "depend (v.)"
+      back:
+        ru: "зависеть — пример: It depends on the weather."
+        uz: "bog'liq bo'lmoq — misol: It depends on the weather."
+    - id: en_b1_078
+      front: "describe (v.)"
+      back:
+        ru: "описывать — пример: Can you describe the man you saw?"
+        uz: "tasvirlamoq — misol: Can you describe the man you saw?"
+    - id: en_b1_079
+      front: "deserve (v.)"
+      back:
+        ru: "заслуживать — пример: She deserves a reward for her hard work."
+        uz: "munosib bo'lmoq — misol: She deserves a reward for her hard work."
+    - id: en_b1_080
+      front: "destroy (v.)"
+      back:
+        ru: "разрушать — пример: The fire destroyed the old building."
+        uz: "vayron qilmoq — misol: The fire destroyed the old building."
+    - id: en_b1_081
+      front: "detail (n.)"
+      back:
+        ru: "деталь, подробность — пример: Tell me the details of your plan."
+        uz: "tafsilot — misol: Tell me the details of your plan."
+    - id: en_b1_082
+      front: "determine (v.)"
+      back:
+        ru: "определять — пример: The test will determine your level."
+        uz: "aniqlamoq — misol: The test will determine your level."
+    - id: en_b1_083
+      front: "develop (v.)"
+      back:
+        ru: "развивать(ся) — пример: The city is developing quickly."
+        uz: "rivojlanmoq — misol: The city is developing quickly."
+    - id: en_b1_084
+      front: "device (n.)"
+      back:
+        ru: "устройство — пример: This is a useful device for cooking."
+        uz: "qurilma — misol: This is a useful device for cooking."
+    - id: en_b1_085
+      front: "differ (v.)"
+      back:
+        ru: "отличаться — пример: Their opinions differ a lot."
+        uz: "farq qilmoq — misol: Their opinions differ a lot."
+    - id: en_b1_086
+      front: "disappear (v.)"
+      back:
+        ru: "исчезать — пример: The cat disappeared behind the house."
+        uz: "g'oyib bo'lmoq — misol: The cat disappeared behind the house."
+    - id: en_b1_087
+      front: "disappoint (v.)"
+      back:
+        ru: "разочаровывать — пример: The movie disappointed me."
+        uz: "umidini puchga chiqarmoq — misol: The movie disappointed me."
+    - id: en_b1_088
+      front: "discover (v.)"
+      back:
+        ru: "открывать, обнаруживать — пример: Scientists discovered a new species."
+        uz: "kashf qilmoq — misol: Scientists discovered a new species."
+    - id: en_b1_089
+      front: "discuss (v.)"
+      back:
+        ru: "обсуждать — пример: Let's discuss the schedule."
+        uz: "muhokama qilmoq — misol: Let's discuss the schedule."
+    - id: en_b1_090
+      front: "disease (n.)"
+      back:
+        ru: "болезнь — пример: The disease spread quickly."
+        uz: "kasallik — misol: The disease spread quickly."
+    - id: en_b1_091
+      front: "distance (n.)"
+      back:
+        ru: "расстояние — пример: The distance between the cities is 200 km."
+        uz: "masofa — misol: The distance between the cities is 200 km."
+    - id: en_b1_092
+      front: "disturb (v.)"
+      back:
+        ru: "тревожить, мешать — пример: Sorry to disturb you."
+        uz: "xalaqit bermoq — misol: Sorry to disturb you."
+    - id: en_b1_093
+      front: "doubt (n.)"
+      back:
+        ru: "сомнение — пример: I have some doubts about this plan."
+        uz: "shubha — misol: I have some doubts about this plan."
+    - id: en_b1_094
+      front: "download (v.)"
+      back:
+        ru: "скачивать — пример: You can download the app for free."
+        uz: "yuklab olmoq — misol: You can download the app for free."
+    - id: en_b1_095
+      front: "dream (v.)"
+      back:
+        ru: "мечтать — пример: She dreams of becoming a doctor."
+        uz: "orzu qilmoq — misol: She dreams of becoming a doctor."
+    - id: en_b1_096
+      front: "earn (v.)"
+      back:
+        ru: "зарабатывать — пример: He earns good money as an engineer."
+        uz: "ishlab topmoq — misol: He earns good money as an engineer."
+    - id: en_b1_097
+      front: "effect (n.)"
+      back:
+        ru: "эффект, следствие — пример: The medicine had a strong effect."
+        uz: "ta'sir — misol: The medicine had a strong effect."
+    - id: en_b1_098
+      front: "effort (n.)"
+      back:
+        ru: "усилие — пример: She put a lot of effort into her studies."
+        uz: "harakat (kuch) — misol: She put a lot of effort into her studies."
+    - id: en_b1_099
+      front: "elect (v.)"
+      back:
+        ru: "избирать — пример: They elected a new president."
+        uz: "saylamoq — misol: They elected a new president."
+    - id: en_b1_100
+      front: "embarrass (v.)"
+      back:
+        ru: "смущать, ставить в неловкое положение — пример: His joke embarrassed her."
+        uz: "xijolat qilmoq — misol: His joke embarrassed her."
+    - id: en_b1_101
+      front: "emotion (n.)"
+      back:
+        ru: "эмоция, чувство — пример: She couldn't hide her emotions."
+        uz: "his-tuyg'u — misol: She couldn't hide her emotions."
+    - id: en_b1_102
+      front: "employ (v.)"
+      back:
+        ru: "нанимать на работу — пример: The company employs 500 people."
+        uz: "ishga olmoq — misol: The company employs 500 people."
+    - id: en_b1_103
+      front: "encourage (v.)"
+      back:
+        ru: "поддерживать, вдохновлять — пример: Her parents encouraged her to study abroad."
+        uz: "rag'batlantirmoq — misol: Her parents encouraged her to study abroad."
+    - id: en_b1_104
+      front: "energy (n.)"
+      back:
+        ru: "энергия — пример: Solar panels produce clean energy."
+        uz: "energiya — misol: Solar panels produce clean energy."
+    - id: en_b1_105
+      front: "enormous (adj.)"
+      back:
+        ru: "огромный — пример: They live in an enormous house."
+        uz: "ulkan — misol: They live in an enormous house."
+    - id: en_b1_106
+      front: "entertainment (n.)"
+      back:
+        ru: "развлечение — пример: The city offers a lot of entertainment."
+        uz: "ko'ngilochar tadbirlar — misol: The city offers a lot of entertainment."
+    - id: en_b1_107
+      front: "environment (n.)"
+      back:
+        ru: "окружающая среда — пример: We must protect the environment."
+        uz: "atrof-muhit — misol: We must protect the environment."
+    - id: en_b1_108
+      front: "equipment (n.)"
+      back:
+        ru: "оборудование — пример: The gym has modern equipment."
+        uz: "jihoz — misol: The gym has modern equipment."
+    - id: en_b1_109
+      front: "escape (v.)"
+      back:
+        ru: "убегать — пример: The prisoner tried to escape."
+        uz: "qochib ketmoq — misol: The prisoner tried to escape."
+    - id: en_b1_110
+      front: "especially (adv.)"
+      back:
+        ru: "особенно — пример: I love fruit, especially apples."
+        uz: "ayniqsa — misol: I love fruit, especially apples."
+    - id: en_b1_111
+      front: "establish (v.)"
+      back:
+        ru: "учреждать, устанавливать — пример: The company was established in 1990."
+        uz: "tashkil etmoq — misol: The company was established in 1990."
+    - id: en_b1_112
+      front: "estimate (v.)"
+      back:
+        ru: "оценивать (приблизительно) — пример: They estimated the cost of the trip."
+        uz: "taxmin qilmoq — misol: They estimated the cost of the trip."
+    - id: en_b1_113
+      front: "evidence (n.)"
+      back:
+        ru: "доказательство — пример: There is no evidence for this theory."
+        uz: "dalil — misol: There is no evidence for this theory."
+    - id: en_b1_114
+      front: "examine (v.)"
+      back:
+        ru: "осматривать, проверять — пример: The doctor examined the patient."
+        uz: "tekshirmoq — misol: The doctor examined the patient."
+    - id: en_b1_115
+      front: "exchange (v.)"
+      back:
+        ru: "обменивать — пример: We exchanged phone numbers."
+        uz: "almashmoq — misol: We exchanged phone numbers."
+    - id: en_b1_116
+      front: "exist (v.)"
+      back:
+        ru: "существовать — пример: Does life exist on other planets?"
+        uz: "mavjud bo'lmoq — misol: Does life exist on other planets?"
+    - id: en_b1_117
+      front: "expand (v.)"
+      back:
+        ru: "расширяться — пример: The company plans to expand abroad."
+        uz: "kengaymoq — misol: The company plans to expand abroad."
+    - id: en_b1_118
+      front: "expect (v.)"
+      back:
+        ru: "ожидать — пример: I expect good news soon."
+        uz: "kutmoq — misol: I expect good news soon."
+    - id: en_b1_119
+      front: "experience (n.)"
+      back:
+        ru: "опыт — пример: She has a lot of work experience."
+        uz: "tajriba — misol: She has a lot of work experience."
+    - id: en_b1_120
+      front: "experiment (n.)"
+      back:
+        ru: "эксперимент — пример: They did an experiment in chemistry class."
+        uz: "tajriba (eksperiment) — misol: They did an experiment in chemistry class."
+    - id: en_b1_121
+      front: "explain (v.)"
+      back:
+        ru: "объяснять — пример: Can you explain this rule to me?"
+        uz: "tushuntirmoq — misol: Can you explain this rule to me?"
+    - id: en_b1_122
+      front: "explore (v.)"
+      back:
+        ru: "исследовать, изучать — пример: They explored the old castle."
+        uz: "o'rganmoq — misol: They explored the old castle."
+    - id: en_b1_123
+      front: "export (v.)"
+      back:
+        ru: "экспортировать — пример: Uzbekistan exports cotton and fruit."
+        uz: "eksport qilmoq — misol: Uzbekistan exports cotton and fruit."
+    - id: en_b1_124
+      front: "extra (adj.)"
+      back:
+        ru: "дополнительный, лишний — пример: I need some extra time to finish."
+        uz: "qo'shimcha — misol: I need some extra time to finish."
+    - id: en_b1_125
+      front: "fail (v.)"
+      back:
+        ru: "проваливаться, не удаваться — пример: He failed his driving test."
+        uz: "muvaffaqiyatsizlikka uchramoq — misol: He failed his driving test."
+    - id: en_b1_126
+      front: "fair (adj.)"
+      back:
+        ru: "справедливый — пример: The teacher was fair to all students."
+        uz: "adolatli — misol: The teacher was fair to all students."
+    - id: en_b1_127
+      front: "familiar (adj.)"
+      back:
+        ru: "знакомый — пример: This song sounds familiar."
+        uz: "tanish — misol: This song sounds familiar."
+    - id: en_b1_128
+      front: "fascinating (adj.)"
+      back:
+        ru: "увлекательный, завораживающий — пример: History can be a fascinating subject."
+        uz: "juda qiziqarli — misol: History can be a fascinating subject."
+    - id: en_b1_129
+      front: "fasten (v.)"
+      back:
+        ru: "застёгивать, закреплять — пример: Please fasten your seatbelt."
+        uz: "bog'lamoq (mahkamlamoq) — misol: Please fasten your seatbelt."
+    - id: en_b1_130
+      front: "feature (n.)"
+      back:
+        ru: "особенность, черта — пример: The phone has many useful features."
+        uz: "xususiyat — misol: The phone has many useful features."
+    - id: en_b1_131
+      front: "figure (n.)"
+      back:
+        ru: "цифра, фигура — пример: The sales figures were good this year."
+        uz: "raqam (figura) — misol: The sales figures were good this year."
+    - id: en_b1_132
+      front: "fit (v.)"
+      back:
+        ru: "подходить по размеру — пример: These shoes don't fit me."
+        uz: "mos kelmoq — misol: These shoes don't fit me."
+    - id: en_b1_133
+      front: "flexible (adj.)"
+      back:
+        ru: "гибкий — пример: My work schedule is quite flexible."
+        uz: "moslashuvchan — misol: My work schedule is quite flexible."
+    - id: en_b1_134
+      front: "focus (v.)"
+      back:
+        ru: "сосредотачиваться — пример: Try to focus on your homework."
+        uz: "e'tiborni qaratmoq — misol: Try to focus on your homework."
+    - id: en_b1_135
+      front: "forbid (v.)"
+      back:
+        ru: "запрещать — пример: Smoking is forbidden here."
+        uz: "taqiqlamoq — misol: Smoking is forbidden here."
+    - id: en_b1_136
+      front: "force (v.)"
+      back:
+        ru: "заставлять, вынуждать — пример: Nobody forced her to come."
+        uz: "majburlamoq — misol: Nobody forced her to come."
+    - id: en_b1_137
+      front: "forecast (n.)"
+      back:
+        ru: "прогноз — пример: The weather forecast says it will rain."
+        uz: "bashorat (prognoz) — misol: The weather forecast says it will rain."
+    - id: en_b1_138
+      front: "foreign (adj.)"
+      back:
+        ru: "иностранный — пример: She speaks three foreign languages."
+        uz: "chet (tili) — misol: She speaks three foreign languages."
+    - id: en_b1_139
+      front: "frighten (v.)"
+      back:
+        ru: "пугать — пример: The loud noise frightened the dog."
+        uz: "qo'rqitmoq — misol: The loud noise frightened the dog."
+    - id: en_b1_140
+      front: "furniture (n.)"
+      back:
+        ru: "мебель — пример: We bought new furniture for the flat."
+        uz: "mebel — misol: We bought new furniture for the flat."
+    - id: en_b1_141
+      front: "gain (v.)"
+      back:
+        ru: "получать, набирать — пример: He gained a lot of experience at this job."
+        uz: "orttirmoq — misol: He gained a lot of experience at this job."
+    - id: en_b1_142
+      front: "generous (adj.)"
+      back:
+        ru: "щедрый — пример: She is very generous with her time."
+        uz: "saxiy — misol: She is very generous with her time."
+    - id: en_b1_143
+      front: "genuine (adj.)"
+      back:
+        ru: "настоящий, подлинный — пример: He showed genuine interest in the topic."
+        uz: "haqiqiy — misol: He showed genuine interest in the topic."
+    - id: en_b1_144
+      front: "global (adj.)"
+      back:
+        ru: "глобальный, всемирный — пример: Climate change is a global problem."
+        uz: "global — misol: Climate change is a global problem."
+    - id: en_b1_145
+      front: "goal (n.)"
+      back:
+        ru: "цель — пример: Her main goal is to pass the exam."
+        uz: "maqsad — misol: Her main goal is to pass the exam."
+    - id: en_b1_146
+      front: "govern (v.)"
+      back:
+        ru: "управлять (страной) — пример: The country is governed by a president."
+        uz: "boshqarmoq — misol: The country is governed by a president."
+    - id: en_b1_147
+      front: "graduate (v.)"
+      back:
+        ru: "заканчивать учёбу, выпускаться — пример: She graduated from university last year."
+        uz: "bitirmoq — misol: She graduated from university last year."
+    - id: en_b1_148
+      front: "grant (v.)"
+      back:
+        ru: "предоставлять, давать разрешение — пример: The university granted him a scholarship."
+        uz: "bermoq (ajratmoq) — misol: The university granted him a scholarship."
+    - id: en_b1_149
+      front: "guarantee (v.)"
+      back:
+        ru: "гарантировать — пример: The shop guarantees the quality of its products."
+        uz: "kafolat bermoq — misol: The shop guarantees the quality of its products."
+    - id: en_b1_150
+      front: "guess (v.)"
+      back:
+        ru: "угадывать, предполагать — пример: Can you guess how old she is?"
+        uz: "taxmin qilmoq — misol: Can you guess how old she is?"
+    - id: en_b1_151
+      front: "habit (n.)"
+      back:
+        ru: "привычка — пример: Reading before bed is a good habit."
+        uz: "odat — misol: Reading before bed is a good habit."
+    - id: en_b1_152
+      front: "handle (v.)"
+      back:
+        ru: "справляться, обращаться с — пример: She handled the problem very calmly."
+        uz: "hal qilmoq — misol: She handled the problem very calmly."
+    - id: en_b1_153
+      front: "harm (v.)"
+      back:
+        ru: "вредить — пример: Smoking can harm your health."
+        uz: "zarar keltirmoq — misol: Smoking can harm your health."
+    - id: en_b1_154
+      front: "hesitate (v.)"
+      back:
+        ru: "колебаться, не решаться — пример: Don't hesitate to ask for help."
+        uz: "ikkilanmoq — misol: Don't hesitate to ask for help."
+    - id: en_b1_155
+      front: "hire (v.)"
+      back:
+        ru: "нанимать — пример: The company hired three new workers."
+        uz: "yollamoq — misol: The company hired three new workers."
+    - id: en_b1_156
+      front: "hope (v.)"
+      back:
+        ru: "надеяться — пример: I hope you feel better soon."
+        uz: "umid qilmoq — misol: I hope you feel better soon."
+    - id: en_b1_157
+      front: "host (n.)"
+      back:
+        ru: "хозяин (принимающий гостей) — пример: The host welcomed all the guests."
+        uz: "mezbon — misol: The host welcomed all the guests."
+    - id: en_b1_158
+      front: "huge (adj.)"
+      back:
+        ru: "огромный — пример: They have a huge garden."
+        uz: "ulkan — misol: They have a huge garden."
+    - id: en_b1_159
+      front: "identify (v.)"
+      back:
+        ru: "определять, выявлять — пример: Can you identify the man in the photo?"
+        uz: "aniqlamoq — misol: Can you identify the man in the photo?"
+    - id: en_b1_160
+      front: "ignore (v.)"
+      back:
+        ru: "игнорировать — пример: She ignored his advice."
+        uz: "e'tiborsiz qoldirmoq — misol: She ignored his advice."
+    - id: en_b1_161
+      front: "imagine (v.)"
+      back:
+        ru: "воображать, представлять — пример: Imagine living on the moon."
+        uz: "tasavvur qilmoq — misol: Imagine living on the moon."
+    - id: en_b1_162
+      front: "immediately (adv.)"
+      back:
+        ru: "немедленно — пример: Call me immediately if anything happens."
+        uz: "zudlik bilan — misol: Call me immediately if anything happens."
+    - id: en_b1_163
+      front: "import (v.)"
+      back:
+        ru: "импортировать — пример: The country imports most of its oil."
+        uz: "import qilmoq — misol: The country imports most of its oil."
+    - id: en_b1_164
+      front: "improve (v.)"
+      back:
+        ru: "улучшать(ся) — пример: Her English has improved a lot."
+        uz: "yaxshilanmoq — misol: Her English has improved a lot."
+    - id: en_b1_165
+      front: "include (v.)"
+      back:
+        ru: "включать — пример: The price includes breakfast."
+        uz: "o'z ichiga olmoq — misol: The price includes breakfast."
+    - id: en_b1_166
+      front: "increase (v.)"
+      back:
+        ru: "увеличивать(ся) — пример: The population increased rapidly."
+        uz: "ko'paymoq — misol: The population increased rapidly."
+    - id: en_b1_167
+      front: "independent (adj.)"
+      back:
+        ru: "независимый — пример: She is financially independent."
+        uz: "mustaqil — misol: She is financially independent."
+    - id: en_b1_168
+      front: "individual (adj.)"
+      back:
+        ru: "индивидуальный, отдельный — пример: Each student has an individual plan."
+        uz: "alohida — misol: Each student has an individual plan."
+    - id: en_b1_169
+      front: "industry (n.)"
+      back:
+        ru: "промышленность, отрасль — пример: The tourism industry is growing fast."
+        uz: "sanoat — misol: The tourism industry is growing fast."
+    - id: en_b1_170
+      front: "influence (n.)"
+      back:
+        ru: "влияние — пример: Parents have a big influence on their children."
+        uz: "ta'sir — misol: Parents have a big influence on their children."
+    - id: en_b1_171
+      front: "inform (v.)"
+      back:
+        ru: "информировать — пример: Please inform us of any changes."
+        uz: "xabar bermoq — misol: Please inform us of any changes."
+    - id: en_b1_172
+      front: "ingredient (n.)"
+      back:
+        ru: "ингредиент — пример: Flour is the main ingredient of bread."
+        uz: "tarkibiy qism — misol: Flour is the main ingredient of bread."
+    - id: en_b1_173
+      front: "injure (v.)"
+      back:
+        ru: "травмировать, ранить — пример: He injured his leg while playing football."
+        uz: "jarohatlamoq — misol: He injured his leg while playing football."
+    - id: en_b1_174
+      front: "instead (adv.)"
+      back:
+        ru: "вместо (этого) — пример: Let's take the bus instead of a taxi."
+        uz: "o'rniga — misol: Let's take the bus instead of a taxi."
+    - id: en_b1_175
+      front: "instruction (n.)"
+      back:
+        ru: "инструкция — пример: Read the instructions before using the device."
+        uz: "ko'rsatma — misol: Read the instructions before using the device."
+    - id: en_b1_176
+      front: "intend (v.)"
+      back:
+        ru: "намереваться — пример: She intends to study medicine."
+        uz: "niyat qilmoq — misol: She intends to study medicine."
+    - id: en_b1_177
+      front: "invent (v.)"
+      back:
+        ru: "изобретать — пример: Who invented the telephone?"
+        uz: "ixtiro qilmoq — misol: Who invented the telephone?"
+    - id: en_b1_178
+      front: "invest (v.)"
+      back:
+        ru: "инвестировать — пример: They invested money in a new business."
+        uz: "sarmoya kiritmoq — misol: They invested money in a new business."
+    - id: en_b1_179
+      front: "involve (v.)"
+      back:
+        ru: "вовлекать, включать в себя — пример: The project involves many volunteers."
+        uz: "jalb qilmoq — misol: The project involves many volunteers."
+    - id: en_b1_180
+      front: "issue (n.)"
+      back:
+        ru: "вопрос, проблема — пример: Pollution is a serious issue in big cities."
+        uz: "muammo (masala) — misol: Pollution is a serious issue in big cities."
+    - id: en_b1_181
+      front: "judge (v.)"
+      back:
+        ru: "судить, оценивать — пример: Don't judge people by their appearance."
+        uz: "baholamoq — misol: Don't judge people by their appearance."
+    - id: en_b1_182
+      front: "justify (v.)"
+      back:
+        ru: "обосновывать, оправдывать — пример: He couldn't justify his decision."
+        uz: "oqlamoq — misol: He couldn't justify his decision."
+    - id: en_b1_183
+      front: "knowledge (n.)"
+      back:
+        ru: "знание — пример: She has deep knowledge of history."
+        uz: "bilim — misol: She has deep knowledge of history."
+    - id: en_b1_184
+      front: "lack (n.)"
+      back:
+        ru: "нехватка, недостаток — пример: The team lost because of a lack of practice."
+        uz: "yetishmovchilik — misol: The team lost because of a lack of practice."
+    - id: en_b1_185
+      front: "launch (v.)"
+      back:
+        ru: "запускать (проект, продукт) — пример: The company launched a new product."
+        uz: "ishga tushirmoq — misol: The company launched a new product."
+    - id: en_b1_186
+      front: "lend (v.)"
+      back:
+        ru: "давать взаймы — пример: Can you lend me some money?"
+        uz: "qarz bermoq — misol: Can you lend me some money?"
+    - id: en_b1_187
+      front: "limit (n.)"
+      back:
+        ru: "предел, ограничение — пример: There is a speed limit on this road."
+        uz: "chegara (limit) — misol: There is a speed limit on this road."
+    - id: en_b1_188
+      front: "local (adj.)"
+      back:
+        ru: "местный — пример: We bought vegetables at the local market."
+        uz: "mahalliy — misol: We bought vegetables at the local market."
+    - id: en_b1_189
+      front: "locate (v.)"
+      back:
+        ru: "находить, располагать — пример: The hotel is located near the airport."
+        uz: "joylashmoq — misol: The hotel is located near the airport."
+    - id: en_b1_190
+      front: "maintain (v.)"
+      back:
+        ru: "поддерживать, сохранять — пример: It's important to maintain a healthy diet."
+        uz: "saqlab turmoq — misol: It's important to maintain a healthy diet."
+    - id: en_b1_191
+      front: "major (adj.)"
+      back:
+        ru: "главный, значительный — пример: Traffic is a major problem in this city."
+        uz: "asosiy — misol: Traffic is a major problem in this city."
+    - id: en_b1_192
+      front: "manage (v.)"
+      back:
+        ru: "управлять, справляться — пример: She manages a team of ten people."
+        uz: "boshqarmoq — misol: She manages a team of ten people."
+    - id: en_b1_193
+      front: "manner (n.)"
+      back:
+        ru: "манера, способ — пример: He spoke in a polite manner."
+        uz: "tarz (odob) — misol: He spoke in a polite manner."
+    - id: en_b1_194
+      front: "material (n.)"
+      back:
+        ru: "материал — пример: This bag is made of recycled material."
+        uz: "material — misol: This bag is made of recycled material."
+    - id: en_b1_195
+      front: "matter (v.)"
+      back:
+        ru: "иметь значение — пример: It doesn't matter what others think."
+        uz: "ahamiyatga ega bo'lmoq — misol: It doesn't matter what others think."
+    - id: en_b1_196
+      front: "measure (v.)"
+      back:
+        ru: "измерять — пример: Please measure the length of the table."
+        uz: "o'lchamoq — misol: Please measure the length of the table."
+    - id: en_b1_197
+      front: "memory (n.)"
+      back:
+        ru: "память, воспоминание — пример: She has a good memory for names."
+        uz: "xotira — misol: She has a good memory for names."
+    - id: en_b1_198
+      front: "mention (v.)"
+      back:
+        ru: "упоминать — пример: She mentioned your name in the meeting."
+        uz: "tilga olmoq — misol: She mentioned your name in the meeting."
+    - id: en_b1_199
+      front: "method (n.)"
+      back:
+        ru: "метод — пример: This is a new method of teaching."
+        uz: "metod (usul) — misol: This is a new method of teaching."
+    - id: en_b1_200
+      front: "mix (v.)"
+      back:
+        ru: "смешивать — пример: Mix the eggs and sugar together."
+        uz: "aralashtirmoq — misol: Mix the eggs and sugar together."
+    - id: en_b1_201
+      front: "modern (adj.)"
+      back:
+        ru: "современный — пример: They live in a modern apartment."
+        uz: "zamonaviy — misol: They live in a modern apartment."
+    - id: en_b1_202
+      front: "movement (n.)"
+      back:
+        ru: "движение — пример: The dancer's movements were graceful."
+        uz: "harakat — misol: The dancer's movements were graceful."
+    - id: en_b1_203
+      front: "multiply (v.)"
+      back:
+        ru: "умножать — пример: Multiply six by seven."
+        uz: "ko'paytirmoq — misol: Multiply six by seven."
+    - id: en_b1_204
+      front: "mysterious (adj.)"
+      back:
+        ru: "таинственный — пример: There was a mysterious light in the sky."
+        uz: "sirli — misol: There was a mysterious light in the sky."
+    - id: en_b1_205
+      front: "narrow (adj.)"
+      back:
+        ru: "узкий — пример: The street is too narrow for cars."
+        uz: "tor — misol: The street is too narrow for cars."
+    - id: en_b1_206
+      front: "necessary (adj.)"
+      back:
+        ru: "необходимый — пример: It is necessary to book tickets in advance."
+        uz: "zarur — misol: It is necessary to book tickets in advance."
+    - id: en_b1_207
+      front: "negative (adj.)"
+      back:
+        ru: "отрицательный, негативный — пример: Try not to think in a negative way."
+        uz: "salbiy — misol: Try not to think in a negative way."
+    - id: en_b1_208
+      front: "notice (v.)"
+      back:
+        ru: "замечать — пример: I noticed a change in her behaviour."
+        uz: "payqamoq — misol: I noticed a change in her behaviour."
+    - id: en_b1_209
+      front: "obey (v.)"
+      back:
+        ru: "подчиняться — пример: Soldiers must obey orders."
+        uz: "itoat qilmoq — misol: Soldiers must obey orders."
+    - id: en_b1_210
+      front: "obtain (v.)"
+      back:
+        ru: "получать, добывать — пример: She obtained a visa for the trip."
+        uz: "olmoq (erishmoq) — misol: She obtained a visa for the trip."
+    - id: en_b1_211
+      front: "occur (v.)"
+      back:
+        ru: "происходить, случаться — пример: The accident occurred late at night."
+        uz: "yuz bermoq — misol: The accident occurred late at night."
+    - id: en_b1_212
+      front: "offer (v.)"
+      back:
+        ru: "предлагать — пример: They offered me a job."
+        uz: "taklif qilmoq — misol: They offered me a job."
+    - id: en_b1_213
+      front: "opinion (n.)"
+      back:
+        ru: "мнение — пример: In my opinion, the film was great."
+        uz: "fikr — misol: In my opinion, the film was great."
+    - id: en_b1_214
+      front: "opportunity (n.)"
+      back:
+        ru: "возможность — пример: Studying abroad is a great opportunity."
+        uz: "imkoniyat — misol: Studying abroad is a great opportunity."
+    - id: en_b1_215
+      front: "opposite (adj.)"
+      back:
+        ru: "противоположный — пример: She lives on the opposite side of the street."
+        uz: "qarama-qarshi — misol: She lives on the opposite side of the street."
+    - id: en_b1_216
+      front: "organize (v.)"
+      back:
+        ru: "организовывать — пример: We organized a surprise party."
+        uz: "tashkil qilmoq — misol: We organized a surprise party."
+    - id: en_b1_217
+      front: "origin (n.)"
+      back:
+        ru: "происхождение — пример: The word has a Latin origin."
+        uz: "kelib chiqish — misol: The word has a Latin origin."
+    - id: en_b1_218
+      front: "outdoor (adj.)"
+      back:
+        ru: "проводимый на улице, уличный — пример: They enjoy outdoor activities like hiking."
+        uz: "ochiq havodagi — misol: They enjoy outdoor activities like hiking."
+    - id: en_b1_219
+      front: "owe (v.)"
+      back:
+        ru: "быть должным — пример: I owe him some money."
+        uz: "qarzdor bo'lmoq — misol: I owe him some money."
+    - id: en_b1_220
+      front: "own (v.)"
+      back:
+        ru: "владеть — пример: They own a small shop in the city centre."
+        uz: "egalik qilmoq — misol: They own a small shop in the city centre."
+    - id: en_b1_221
+      front: "particular (adj.)"
+      back:
+        ru: "особый, конкретный — пример: Is there a particular reason for this?"
+        uz: "alohida (ma'lum bir) — misol: Is there a particular reason for this?"
+    - id: en_b1_222
+      front: "passenger (n.)"
+      back:
+        ru: "пассажир — пример: The bus was full of passengers."
+        uz: "yo'lovchi — misol: The bus was full of passengers."
+    - id: en_b1_223
+      front: "patient (adj.)"
+      back:
+        ru: "терпеливый — пример: You need to be patient with young children."
+        uz: "sabrli — misol: You need to be patient with young children."
+    - id: en_b1_224
+      front: "pause (v.)"
+      back:
+        ru: "приостанавливать(ся), делать паузу — пример: She paused for a moment before answering."
+        uz: "to'xtab turmoq — misol: She paused for a moment before answering."
+    - id: en_b1_225
+      front: "percentage (n.)"
+      back:
+        ru: "процент — пример: A high percentage of students passed the exam."
+        uz: "foiz — misol: A high percentage of students passed the exam."
+    - id: en_b1_226
+      front: "permanent (adj.)"
+      back:
+        ru: "постоянный — пример: He finally got a permanent job."
+        uz: "doimiy — misol: He finally got a permanent job."
+    - id: en_b1_227
+      front: "permission (n.)"
+      back:
+        ru: "разрешение — пример: You need permission to enter this area."
+        uz: "ruxsat — misol: You need permission to enter this area."
+    - id: en_b1_228
+      front: "persuade (v.)"
+      back:
+        ru: "убеждать — пример: She persuaded her parents to let her travel."
+        uz: "ko'ndirmoq — misol: She persuaded her parents to let her travel."
+    - id: en_b1_229
+      front: "pollution (n.)"
+      back:
+        ru: "загрязнение — пример: Air pollution is a serious problem in big cities."
+        uz: "ifloslanish — misol: Air pollution is a serious problem in big cities."
+    - id: en_b1_230
+      front: "population (n.)"
+      back:
+        ru: "население — пример: The population of the city is growing fast."
+        uz: "aholi — misol: The population of the city is growing fast."
+    - id: en_b1_231
+      front: "positive (adj.)"
+      back:
+        ru: "положительный — пример: Try to stay positive during hard times."
+        uz: "ijobiy — misol: Try to stay positive during hard times."
+    - id: en_b1_232
+      front: "possess (v.)"
+      back:
+        ru: "обладать, владеть — пример: He possesses great knowledge of history."
+        uz: "egalik qilmoq — misol: He possesses great knowledge of history."
+    - id: en_b1_233
+      front: "precious (adj.)"
+      back:
+        ru: "ценный, драгоценный — пример: Time is more precious than money."
+        uz: "qadrli — misol: Time is more precious than money."
+    - id: en_b1_234
+      front: "predict (v.)"
+      back:
+        ru: "предсказывать — пример: Nobody can predict the future exactly."
+        uz: "oldindan aytmoq — misol: Nobody can predict the future exactly."
+    - id: en_b1_235
+      front: "prefer (v.)"
+      back:
+        ru: "предпочитать — пример: I prefer tea to coffee."
+        uz: "afzal ko'rmoq — misol: I prefer tea to coffee."
+    - id: en_b1_236
+      front: "pressure (n.)"
+      back:
+        ru: "давление, напряжение — пример: She works well under pressure."
+        uz: "bosim — misol: She works well under pressure."
+    - id: en_b1_237
+      front: "prevent (v.)"
+      back:
+        ru: "предотвращать — пример: Regular exercise can prevent many diseases."
+        uz: "oldini olmoq — misol: Regular exercise can prevent many diseases."
+    - id: en_b1_238
+      front: "previous (adj.)"
+      back:
+        ru: "предыдущий — пример: In the previous lesson, we studied verbs."
+        uz: "oldingi — misol: In the previous lesson, we studied verbs."
+    - id: en_b1_239
+      front: "priority (n.)"
+      back:
+        ru: "приоритет — пример: Health should always be a priority."
+        uz: "ustuvorlik — misol: Health should always be a priority."
+    - id: en_b1_240
+      front: "produce (v.)"
+      back:
+        ru: "производить — пример: This factory produces furniture."
+        uz: "ishlab chiqarmoq — misol: This factory produces furniture."
+    - id: en_b1_241
+      front: "progress (n.)"
+      back:
+        ru: "прогресс, продвижение — пример: She is making good progress in English."
+        uz: "taraqqiyot (rivojlanish) — misol: She is making good progress in English."
+    - id: en_b1_242
+      front: "promise (v.)"
+      back:
+        ru: "обещать — пример: He promised to call her later."
+        uz: "va'da qilmoq — misol: He promised to call her later."
+    - id: en_b1_243
+      front: "protect (v.)"
+      back:
+        ru: "защищать — пример: We should protect the environment."
+        uz: "himoya qilmoq — misol: We should protect the environment."
+    - id: en_b1_244
+      front: "proud (adj.)"
+      back:
+        ru: "гордый — пример: Her parents are proud of her success."
+        uz: "faxrlanuvchi — misol: Her parents are proud of her success."
+    - id: en_b1_245
+      front: "provide (v.)"
+      back:
+        ru: "предоставлять, обеспечивать — пример: The school provides free lunches."
+        uz: "ta'minlamoq — misol: The school provides free lunches."
+    - id: en_b1_246
+      front: "public (adj.)"
+      back:
+        ru: "общественный, публичный — пример: She works in the public sector."
+        uz: "ommaviy (jamoat) — misol: She works in the public sector."
+    - id: en_b1_247
+      front: "purpose (n.)"
+      back:
+        ru: "цель, назначение — пример: What is the purpose of your visit?"
+        uz: "maqsad — misol: What is the purpose of your visit?"
+    - id: en_b1_248
+      front: "qualify (v.)"
+      back:
+        ru: "получать квалификацию, подходить — пример: She qualified as a doctor last year."
+        uz: "malaka olmoq — misol: She qualified as a doctor last year."
+    - id: en_b1_249
+      front: "quality (n.)"
+      back:
+        ru: "качество — пример: This shop sells high-quality clothes."
+        uz: "sifat — misol: This shop sells high-quality clothes."
+    - id: en_b1_250
+      front: "quantity (n.)"
+      back:
+        ru: "количество — пример: They bought a large quantity of rice."
+        uz: "miqdor — misol: They bought a large quantity of rice."
+    - id: en_b1_251
+      front: "quit (v.)"
+      back:
+        ru: "бросать, увольняться — пример: He quit his job to start a business."
+        uz: "tashlab ketmoq — misol: He quit his job to start a business."
+    - id: en_b1_252
+      front: "realize (v.)"
+      back:
+        ru: "осознавать, понимать — пример: I didn't realize it was so late."
+        uz: "tushunib yetmoq — misol: I didn't realize it was so late."
+    - id: en_b1_253
+      front: "recognize (v.)"
+      back:
+        ru: "узнавать, признавать — пример: I didn't recognize him with his new haircut."
+        uz: "tanimoq — misol: I didn't recognize him with his new haircut."
+    - id: en_b1_254
+      front: "recommend (v.)"
+      back:
+        ru: "рекомендовать — пример: Can you recommend a good restaurant?"
+        uz: "tavsiya qilmoq — misol: Can you recommend a good restaurant?"
+    - id: en_b1_255
+      front: "reduce (v.)"
+      back:
+        ru: "уменьшать, сокращать — пример: We should reduce the amount of plastic we use."
+        uz: "kamaytirmoq — misol: We should reduce the amount of plastic we use."
+    - id: en_b1_256
+      front: "refuse (v.)"
+      back:
+        ru: "отказываться — пример: She refused to answer the question."
+        uz: "rad etmoq — misol: She refused to answer the question."
+    - id: en_b1_257
+      front: "regard (v.)"
+      back:
+        ru: "считать, относиться к — пример: I regard her as a close friend."
+        uz: "hisoblamoq — misol: I regard her as a close friend."
+    - id: en_b1_258
+      front: "region (n.)"
+      back:
+        ru: "регион, область — пример: This region is famous for its fruit."
+        uz: "hudud (viloyat) — misol: This region is famous for its fruit."
+    - id: en_b1_259
+      front: "regret (v.)"
+      back:
+        ru: "жалеть, раскаиваться — пример: He regrets not studying harder at school."
+        uz: "afsuslanmoq — misol: He regrets not studying harder at school."
+    - id: en_b1_260
+      front: "relationship (n.)"
+      back:
+        ru: "отношения — пример: They have a close relationship with their neighbours."
+        uz: "munosabat — misol: They have a close relationship with their neighbours."
+    - id: en_b1_261
+      front: "relax (v.)"
+      back:
+        ru: "расслабляться, отдыхать — пример: I like to relax by reading books."
+        uz: "dam olmoq — misol: I like to relax by reading books."
+    - id: en_b1_262
+      front: "release (v.)"
+      back:
+        ru: "выпускать, освобождать — пример: The band released a new song."
+        uz: "chiqarmoq — misol: The band released a new song."
+    - id: en_b1_263
+      front: "rely (v.)"
+      back:
+        ru: "полагаться, доверять — пример: You can always rely on your family."
+        uz: "ishonmoq (tayanmoq) — misol: You can always rely on your family."
+    - id: en_b1_264
+      front: "remain (v.)"
+      back:
+        ru: "оставаться — пример: The shop remained open all night."
+        uz: "qolmoq — misol: The shop remained open all night."
+    - id: en_b1_265
+      front: "remind (v.)"
+      back:
+        ru: "напоминать — пример: Please remind me to call her tomorrow."
+        uz: "eslatmoq — misol: Please remind me to call her tomorrow."
+    - id: en_b1_266
+      front: "remove (v.)"
+      back:
+        ru: "удалять, убирать — пример: Please remove your shoes before entering."
+        uz: "olib tashlamoq — misol: Please remove your shoes before entering."
+    - id: en_b1_267
+      front: "repair (v.)"
+      back:
+        ru: "ремонтировать — пример: He repaired the broken window."
+        uz: "ta'mirlamoq — misol: He repaired the broken window."
+    - id: en_b1_268
+      front: "replace (v.)"
+      back:
+        ru: "заменять — пример: We need to replace the old computer."
+        uz: "almashtirmoq — misol: We need to replace the old computer."
+    - id: en_b1_269
+      front: "represent (v.)"
+      back:
+        ru: "представлять, олицетворять — пример: This flag represents our country."
+        uz: "vakillik qilmoq — misol: This flag represents our country."
+    - id: en_b1_270
+      front: "require (v.)"
+      back:
+        ru: "требовать, нуждаться — пример: This job requires good communication skills."
+        uz: "talab qilmoq — misol: This job requires good communication skills."
+    - id: en_b1_271
+      front: "research (n.)"
+      back:
+        ru: "исследование — пример: She is doing research on climate change."
+        uz: "tadqiqot — misol: She is doing research on climate change."
+    - id: en_b1_272
+      front: "resource (n.)"
+      back:
+        ru: "ресурс — пример: Water is a valuable natural resource."
+        uz: "resurs — misol: Water is a valuable natural resource."
+    - id: en_b1_273
+      front: "respect (v.)"
+      back:
+        ru: "уважать — пример: You should respect other people's opinions."
+        uz: "hurmat qilmoq — misol: You should respect other people's opinions."
+    - id: en_b1_274
+      front: "responsible (adj.)"
+      back:
+        ru: "ответственный — пример: He is responsible for the whole project."
+        uz: "javobgar — misol: He is responsible for the whole project."
+    - id: en_b1_275
+      front: "reveal (v.)"
+      back:
+        ru: "раскрывать, показывать — пример: The survey revealed some surprising results."
+        uz: "ochib bermoq — misol: The survey revealed some surprising results."
+    - id: en_b1_276
+      front: "reward (n.)"
+      back:
+        ru: "награда — пример: She received a reward for her honesty."
+        uz: "mukofot — misol: She received a reward for her honesty."
+    - id: en_b1_277
+      front: "risk (n.)"
+      back:
+        ru: "риск — пример: There is always a risk when you start a business."
+        uz: "xavf (tavakkal) — misol: There is always a risk when you start a business."
+    - id: en_b1_278
+      front: "role (n.)"
+      back:
+        ru: "роль — пример: Teachers play an important role in society."
+        uz: "rol — misol: Teachers play an important role in society."
+    - id: en_b1_279
+      front: "route (n.)"
+      back:
+        ru: "маршрут — пример: We took the shortest route to the airport."
+        uz: "yo'nalish (marshrut) — misol: We took the shortest route to the airport."
+    - id: en_b1_280
+      front: "rude (adj.)"
+      back:
+        ru: "грубый — пример: It's rude to interrupt people."
+        uz: "beodob — misol: It's rude to interrupt people."
+
+knowledge_trivia:
+  title: { ru: "Набор «Знания»", uz: "«Bilim» to'plami" }
+  cards:
+    - id: trivia_001
+      front: { ru: "Самая длинная река в мире?", uz: "Dunyodagi eng uzun daryo?" }
+      back:
+        ru: "Нил (по одной из методик измерения — Амазонка) — около 6650 км."
+        uz: "Nil (ba'zi o'lchash usullariga ko'ra — Amazonka) — taxminan 6650 km."
+    - id: trivia_002
+      front: { ru: "Самый большой океан на Земле?", uz: "Yer sharidagi eng katta okean?" }
+      back:
+        ru: "Тихий океан."
+        uz: "Tinch okeani."
+    - id: trivia_003
+      front: { ru: "Самая высокая гора в мире?", uz: "Dunyodagi eng baland tog'?" }
+      back:
+        ru: "Эверест (Джомолунгма), около 8849 метров."
+        uz: "Everest (Jomolungma), taxminan 8849 metr."
+    - id: trivia_004
+      front: { ru: "Столица Франции?", uz: "Fransiyaning poytaxti?" }
+      back:
+        ru: "Париж."
+        uz: "Parij."
+    - id: trivia_005
+      front: { ru: "Сколько планет в Солнечной системе?", uz: "Quyosh sistemasida nechta sayyora bor?" }
+      back:
+        ru: "Восемь."
+        uz: "Sakkizta."
+    - id: trivia_006
+      front: { ru: "Самая большая планета Солнечной системы?", uz: "Quyosh sistemasidagi eng katta sayyora?" }
+      back:
+        ru: "Юпитер."
+        uz: "Yupiter."
+    - id: trivia_007
+      front: { ru: "Какой газ растения выделяют в процессе фотосинтеза?", uz: "O'simliklar fotosintez jarayonida qaysi gazni ajratadi?" }
+      back:
+        ru: "Кислород."
+        uz: "Kislorod."
+    - id: trivia_008
+      front: { ru: "Какой химический элемент обозначается символом «O»?", uz: "«O» belgisi qaysi kimyoviy elementni bildiradi?" }
+      back:
+        ru: "Кислород."
+        uz: "Kislorod."
+    - id: trivia_009
+      front: { ru: "Сколько костей в скелете взрослого человека примерно?", uz: "Kattalar odam skeletida taxminan nechta suyak bor?" }
+      back:
+        ru: "Около 206."
+        uz: "Taxminan 206 ta."
+    - id: trivia_010
+      front: { ru: "Какое животное самое крупное на Земле?", uz: "Yerdagi eng katta hayvon qaysi?" }
+      back:
+        ru: "Синий кит."
+        uz: "Ko'k kit."
+    - id: trivia_011
+      front: { ru: "Самая большая по площади страна в мире?", uz: "Hududi bo'yicha dunyodagi eng katta davlat?" }
+      back:
+        ru: "Россия."
+        uz: "Rossiya."
+    - id: trivia_012
+      front: { ru: "Самая маленькая по площади страна в мире?", uz: "Hududi bo'yicha dunyodagi eng kichik davlat?" }
+      back:
+        ru: "Ватикан."
+        uz: "Vatikan."
+    - id: trivia_013
+      front: { ru: "Какая самая глубокая точка в океане?", uz: "Okeandagi eng chuqur nuqta qaysi?" }
+      back:
+        ru: "Марианская впадина в Тихом океане."
+        uz: "Tinch okeanidagi Mariana cho'kmasi."
+    - id: trivia_014
+      front: { ru: "Кто написал пьесу «Гамлет»?", uz: "«Gamlet» pyesasini kim yozgan?" }
+      back:
+        ru: "Уильям Шекспир."
+        uz: "Uilyam Shekspir."
+    - id: trivia_015
+      front: { ru: "В каком году началась Вторая мировая война?", uz: "Ikkinchi jahon urushi qaysi yilda boshlangan?" }
+      back:
+        ru: "В 1939 году."
+        uz: "1939-yilda."
+    - id: trivia_016
+      front: { ru: "В каком году человек впервые полетел в космос?", uz: "Inson birinchi marta qaysi yilda kosmosga uchgan?" }
+      back:
+        ru: "В 1961 году (Юрий Гагарин)."
+        uz: "1961-yilda (Yuriy Gagarin)."
+    - id: trivia_017
+      front: { ru: "Кто первым из людей высадился на Луну?", uz: "Oyga birinchi bo'lib tushgan odam kim?" }
+      back:
+        ru: "Нил Армстронг, в 1969 году."
+        uz: "Neil Armstrong, 1969-yilda."
+    - id: trivia_018
+      front: { ru: "Какая самая большая жаркая пустыня в мире?", uz: "Dunyodagi eng katta issiq cho'l qaysi?" }
+      back:
+        ru: "Сахара, в Африке."
+        uz: "Sahroi Kabir (Sahara), Afrikada."
+    - id: trivia_019
+      front: { ru: "Столица Узбекистана?", uz: "O'zbekistonning poytaxti?" }
+      back:
+        ru: "Ташкент."
+        uz: "Toshkent."
+    - id: trivia_020
+      front: { ru: "Какой древний город Узбекистана знаменит архитектурным комплексом Регистан?", uz: "O'zbekistonning qaysi qadimiy shahri Registon majmuasi bilan mashhur?" }
+      back:
+        ru: "Самарканд."
+        uz: "Samarqand."
+    - id: trivia_021
+      front: { ru: "Чем исторически славится Узбекистан на Великом шёлковом пути?", uz: "O'zbekiston Buyuk ipak yo'lida tarixan nimasi bilan mashhur?" }
+      back:
+        ru: "Узбекистан — крупный исторический центр торговли и караванных путей (Самарканд, Бухара) на Великом шёлковом пути."
+        uz: "O'zbekiston — Buyuk ipak yo'lidagi savdo va karvon yo'llarining yirik tarixiy markazi (Samarqand, Buxoro)."
+    - id: trivia_022
+      front: { ru: "Один из крупнейших сельскохозяйственных экспортных продуктов Узбекистана?", uz: "O'zbekistonning asosiy qishloq xo'jaligi eksport mahsulotlaridan biri?" }
+      back:
+        ru: "Хлопок (также фрукты и овощи)."
+        uz: "Paxta (shuningdek meva va sabzavotlar)."
+    - id: trivia_023
+      front: { ru: "Какое крупное озеро/море сильно уменьшилось в Центральной Азии за последние десятилетия?", uz: "Markaziy Osiyoda so'nggi o'n yilliklarda qaysi yirik ko'l/dengiz juda kichraydi?" }
+      back:
+        ru: "Аральское море."
+        uz: "Orol dengizi."
+    - id: trivia_024
+      front: { ru: "Какая географическая особенность делает Узбекистан редким случаем в мире?", uz: "Qaysi geografik xususiyat O'zbekistonni dunyoda noyob holatga aylantiradi?" }
+      back:
+        ru: "Узбекистан — одна из немногих стран мира, не имеющих выхода даже к морю, которое само имеет выход к океану («дважды континентальная» страна)."
+        uz: "O'zbekiston — okeanga chiqishi bo'lgan dengizga ham chiqish imkoni bo'lmagan juda kam sonli davlatlardan biri («ikki marta quruqlikdagi» davlat)."
+    - id: trivia_025
+      front: { ru: "Самое большое по площади озеро в мире?", uz: "Dunyodagi maydoni bo'yicha eng katta ko'l?" }
+      back:
+        ru: "Каспийское море (по сути, самое большое озеро Земли)."
+        uz: "Kaspiy dengizi (aslida Yerdagi eng katta ko'l)."
+    - id: trivia_026
+      front: { ru: "Самая маленькая планета Солнечной системы?", uz: "Quyosh sistemasidagi eng kichik sayyora?" }
+      back:
+        ru: "Меркурий."
+        uz: "Merkuriy."
+    - id: trivia_027
+      front: { ru: "Какая звезда ближе всего к Земле?", uz: "Yerga eng yaqin yulduz qaysi?" }
+      back:
+        ru: "Солнце."
+        uz: "Quyosh."
+    - id: trivia_028
+      front: { ru: "Сколько дней в обычном (невисокосном) году?", uz: "Oddiy (kabisa bo'lmagan) yilda nechta kun bor?" }
+      back:
+        ru: "365 дней."
+        uz: "365 kun."
+    - id: trivia_029
+      front: { ru: "Какой природный материал считается самым твёрдым?", uz: "Qaysi tabiiy material eng qattiq hisoblanadi?" }
+      back:
+        ru: "Алмаз."
+        uz: "Olmos."
+    - id: trivia_030
+      front: { ru: "Химический символ золота?", uz: "Oltinning kimyoviy belgisi?" }
+      back:
+        ru: "Au."
+        uz: "Au."
+    - id: trivia_031
+      front: { ru: "Химический символ железа?", uz: "Temirning kimyoviy belgisi?" }
+      back:
+        ru: "Fe."
+        uz: "Fe."
+    - id: trivia_032
+      front: { ru: "Сколько сторон у шестиугольника?", uz: "Olti burchakning necha tomoni bor?" }
+      back:
+        ru: "Шесть."
+        uz: "Oltita."
+    - id: trivia_033
+      front: { ru: "Сколько цветов традиционно выделяют в радуге?", uz: "Kamalakda odatda nechta rang ajratiladi?" }
+      back:
+        ru: "Семь."
+        uz: "Yettita."
+    - id: trivia_034
+      front: { ru: "Кто автор теории относительности?", uz: "Nisbiylik nazariyasining muallifi kim?" }
+      back:
+        ru: "Альберт Эйнштейн."
+        uz: "Albert Eynshteyn."
+    - id: trivia_035
+      front: { ru: "Кто сформулировал закон всемирного притяжения?", uz: "Butunjahon tortishish qonunini kim kashf etgan?" }
+      back:
+        ru: "Исаак Ньютон."
+        uz: "Isaak Nyuton."
+    - id: trivia_036
+      front: { ru: "Какая страна сейчас самая населённая в мире?", uz: "Hozirda aholi soni bo'yicha dunyodagi eng katta davlat?" }
+      back:
+        ru: "Индия (обогнала Китай по численности населения в 2023 году)."
+        uz: "Hindiston (2023-yilda aholi soni bo'yicha Xitoyni ortda qoldirdi)."
+    - id: trivia_037
+      front: { ru: "Какой город называют «Вечным городом»?", uz: "Qaysi shahar «Abadiy shahar» deb ataladi?" }
+      back:
+        ru: "Рим."
+        uz: "Rim."
+    - id: trivia_038
+      front: { ru: "В какой стране находится Великая Китайская стена?", uz: "Buyuk Xitoy devori qaysi davlatda joylashgan?" }
+      back:
+        ru: "В Китае."
+        uz: "Xitoyda."
+    - id: trivia_039
+      front: { ru: "Сколько букв в английском алфавите?", uz: "Ingliz alifbosida nechta harf bor?" }
+      back:
+        ru: "26."
+        uz: "26 ta."
+    - id: trivia_040
+      front: { ru: "Кто написал роман «Война и мир»?", uz: "«Urush va tinchlik» romanini kim yozgan?" }
+      back:
+        ru: "Лев Толстой."
+        uz: "Lev Tolstoy."
+    - id: trivia_041
+      front: { ru: "Столица Японии?", uz: "Yaponiyaning poytaxti?" }
+      back:
+        ru: "Токио."
+        uz: "Tokio."
+    - id: trivia_042
+      front: { ru: "Столица Великобритании?", uz: "Buyuk Britaniyaning poytaxti?" }
+      back:
+        ru: "Лондон."
+        uz: "London."
+    - id: trivia_043
+      front: { ru: "Столица США?", uz: "AQSHning poytaxti?" }
+      back:
+        ru: "Вашингтон."
+        uz: "Vashington."
+    - id: trivia_044
+      front: { ru: "Самый маленький континент по площади?", uz: "Maydoni bo'yicha eng kichik qit'a?" }
+      back:
+        ru: "Австралия."
+        uz: "Avstraliya."
+    - id: trivia_045
+      front: { ru: "Какое сумчатое животное — символ Австралии?", uz: "Qaysi xaltali hayvon Avstraliya ramzi hisoblanadi?" }
+      back:
+        ru: "Кенгуру."
+        uz: "Kenguru."
+    - id: trivia_046
+      front: { ru: "Сколько зубов обычно у взрослого человека?", uz: "Kattalar odamda odatda nechta tish bo'ladi?" }
+      back:
+        ru: "32."
+        uz: "32 ta."
+    - id: trivia_047
+      front: { ru: "Какой орган отвечает за «насос» крови в теле?", uz: "Tanada qonni haydab turuvchi «насос» vazifasini qaysi a'zo bajaradi?" }
+      back:
+        ru: "Сердце."
+        uz: "Yurak."
+    - id: trivia_048
+      front: { ru: "Сколько камер (отделов) в человеческом сердце?", uz: "Inson yuragida nechta bo'lim (kamera) bor?" }
+      back:
+        ru: "Четыре."
+        uz: "To'rtta."
+    - id: trivia_049
+      front: { ru: "Какой газ необходим человеку для дыхания?", uz: "Inson nafas olishi uchun qaysi gaz zarur?" }
+      back:
+        ru: "Кислород."
+        uz: "Kislorod."
+    - id: trivia_050
+      front: { ru: "Сколько метров в одном километре?", uz: "Bir kilometrda necha metr bor?" }
+      back:
+        ru: "1000 метров."
+        uz: "1000 metr."
+    - id: trivia_051
+      front: { ru: "Сколько секунд в одной минуте?", uz: "Bir daqiqada necha soniya bor?" }
+      back:
+        ru: "60 секунд."
+        uz: "60 soniya."
+    - id: trivia_052
+      front: { ru: "Какое наземное животное считается самым быстрым?", uz: "Qaysi quruqlik hayvoni eng tezkor hisoblanadi?" }
+      back:
+        ru: "Гепард."
+        uz: "Gepard."
+    - id: trivia_053
+      front: { ru: "Какое самое крупное сухопутное животное?", uz: "Eng katta quruqlik hayvoni qaysi?" }
+      back:
+        ru: "Африканский слон."
+        uz: "Afrika foli."
+    - id: trivia_054
+      front: { ru: "Какой язык самый распространённый в мире по числу носителей как родного?", uz: "Ona tili sifatida eng ko'p tarqalgan til qaysi?" }
+      back:
+        ru: "Китайский (мандаринский диалект)."
+        uz: "Xitoy tili (mandarin shevasi)."
+    - id: trivia_055
+      front: { ru: "На каком континенте расположен Египет?", uz: "Misr qaysi qit'ada joylashgan?" }
+      back:
+        ru: "В Африке."
+        uz: "Afrikada."
+    - id: trivia_056
+      front: { ru: "Какая древняя цивилизация построила пирамиды в Гизе?", uz: "Giza piramidalarini qaysi qadimiy sivilizatsiya qurgan?" }
+      back:
+        ru: "Древний Египет."
+        uz: "Qadimgi Misr."
+    - id: trivia_057
+      front: { ru: "Кто написал роман «Дон Кихот»?", uz: "«Don Kixot» romanini kim yozgan?" }
+      back:
+        ru: "Мигель де Сервантес."
+        uz: "Migel de Servantes."
+    - id: trivia_058
+      front: { ru: "Кто сформулировал три закона движения в классической механике?", uz: "Klassik mexanikadagi uch harakat qonunini kim ta'rifladi?" }
+      back:
+        ru: "Исаак Ньютон."
+        uz: "Isaak Nyuton."
+    - id: trivia_059
+      front: { ru: "Какой газ составляет большую часть атмосферы Земли?", uz: "Yer atmosferasining katta qismini qaysi gaz tashkil qiladi?" }
+      back:
+        ru: "Азот (около 78%)."
+        uz: "Azot (taxminan 78%)."
+    - id: trivia_060
+      front: { ru: "Сколько хромосом у человека в норме?", uz: "Odamda normada nechta xromosoma bo'ladi?" }
+      back:
+        ru: "46 (23 пары)."
+        uz: "46 ta (23 juft)."
+    - id: trivia_061
+      front: { ru: "Кто написал картину «Мона Лиза»?", uz: "«Mona Liza» rasmini kim chizgan?" }
+      back:
+        ru: "Леонардо да Винчи."
+        uz: "Leonardo da Vinchi."
+    - id: trivia_062
+      front: { ru: "Какая страна считается родиной античных Олимпийских игр?", uz: "Qadimgi Olimpiya o'yinlari vatani hisoblangan davlat qaysi?" }
+      back:
+        ru: "Греция."
+        uz: "Gretsiya."
+    - id: trivia_063
+      front: { ru: "Сколько колец на олимпийском флаге?", uz: "Olimpiya bayrog'ida nechta halqa bor?" }
+      back:
+        ru: "Пять."
+        uz: "Beshta."
+    - id: trivia_064
+      front: { ru: "Сколько игроков от одной команды находится на поле в футболе (включая вратаря)?", uz: "Futbolda maydonda bir jamoadan nechta o'yinchi bo'ladi (darvozabon bilan)?" }
+      back:
+        ru: "11 игроков."
+        uz: "11 o'yinchi."
+    - id: trivia_065
+      front: { ru: "Какой известный правитель и полководец, родившийся в 14 веке в Центральной Азии, основал империю Тимуридов?", uz: "14-asrda Markaziy Osiyoda tug'ilgan va Temuriylar sulolasiga asos solgan mashhur sarkarda kim?" }
+      back:
+        ru: "Амир Темур (Тамерлан)."
+        uz: "Amir Temur."
+    - id: trivia_066
+      front: { ru: "Какой известный учёный открыл пенициллин?", uz: "Penitsillinni qaysi mashhur olim kashf etgan?" }
+      back:
+        ru: "Александр Флеминг."
+        uz: "Aleksandr Fleming."
+    - id: trivia_067
+      front: { ru: "Сколько материков принято выделять по одной из распространённых классификаций?", uz: "Keng tarqalgan tasniflardan biriga ko'ra, nechta qit'a ajratiladi?" }
+      back:
+        ru: "Шесть (Евразия, Африка, Северная Америка, Южная Америка, Австралия, Антарктида) — по одной из распространённых классификаций."
+        uz: "Olti (Yevroosiyo, Afrika, Shimoliy Amerika, Janubiy Amerika, Avstraliya, Antarktida) — keng tarqalgan tasniflardan biriga ko'ra."
+    - id: trivia_068
+      front: { ru: "Какая самая маленькая по площади страна — полноправный член ООН?", uz: "BMTga to'liq a'zo, hududi bo'yicha eng kichik davlat qaysi?" }
+      back:
+        ru: "Монако (Ватикан имеет статус наблюдателя, а не полноправного члена ООН)."
+        uz: "Monako (Vatikan BMTda a'zo emas, balki kuzatuvchi maqomiga ega)."
+    - id: trivia_069
+      front: { ru: "Какой элемент имеет химический символ «H»?", uz: "«H» belgisi qaysi elementga tegishli?" }
+      back:
+        ru: "Водород."
+        uz: "Vodorod."
+    - id: trivia_070
+      front: { ru: "Сколько дней длится февраль в обычный (невисокосный) год?", uz: "Oddiy (kabisa bo'lmagan) yilda fevral necha kun davom etadi?" }
+      back:
+        ru: "28 дней."
+        uz: "28 kun."
+    - id: trivia_071
+      front: { ru: "Какая гора является самым высоким действующим вулканом в Африке?", uz: "Afrikadagi eng baland faol vulqon qaysi tog'?" }
+      back:
+        ru: "Килиманджаро."
+        uz: "Kilimanjaro."
+    - id: trivia_072
+      front: { ru: "Какой известный учёный предложил периодическую таблицу химических элементов?", uz: "Kimyoviy elementlar davriy jadvalini qaysi olim taklif qilgan?" }
+      back:
+        ru: "Дмитрий Менделеев."
+        uz: "Dmitriy Mendeleyev."
+    - id: trivia_073
+      front: { ru: "Какой самый большой по площади остров в мире?", uz: "Dunyodagi maydoni bo'yicha eng katta orol qaysi?" }
+      back:
+        ru: "Гренландия."
+        uz: "Grenlandiya."
+    - id: trivia_074
+      front: { ru: "Сколько будет 12 умножить на 12?", uz: "12 ni 12 ga ko'paytirsak necha bo'ladi?" }
+      back:
+        ru: "144."
+        uz: "144."
+    - id: trivia_075
+      front: { ru: "Какая планета известна как «Красная планета»?", uz: "Qaysi sayyora «Qizil sayyora» deb ataladi?" }
+      back:
+        ru: "Марс."
+        uz: "Mars."

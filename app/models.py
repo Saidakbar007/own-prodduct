@@ -568,3 +568,22 @@ class ExpenseEntry(SQLModel, table=True):
     amount: float
     logged_on: date = Field(index=True)  # дата пользователя (today_for)
     created_at: datetime = Field(default_factory=_utcnow)
+
+
+class FlashcardReview(SQLModel, table=True):
+    """Состояние интервального повторения одной карточки для одного
+    пользователя (PRD 1.0 F5) — app/services/flashcards.py. Интервалы
+    1→3→7→16→35 дней (stage 0..4), "не вспомнил" — stage сбрасывается в 0.
+    Одна строка на (uid, deck_id, card_id); создаётся при первом показе
+    карточки (introduced_on — для лимита 15 новых карточек в день)."""
+
+    __tablename__ = "flashcard_review"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    deck_id: str = Field(index=True)
+    card_id: str = Field(index=True)
+    stage: int = Field(default=0)
+    due_date: date = Field(index=True)
+    introduced_on: date
+    last_reviewed_at: datetime = Field(default_factory=_utcnow)

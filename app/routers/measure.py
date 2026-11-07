@@ -3,7 +3,7 @@
 графика, предложение адаптации фазы (решение — за пользователем, §6).
 """
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Depends, File, Form, Request, UploadFile
@@ -13,7 +13,9 @@ from sqlmodel import Session, select
 from app.auth import require_user
 from app.database import get_session
 from app.models import Measurement, Proof, SeasonDay, User
+from app.newlife.flashcard_decks import load_decks
 from app.newlife.rounding import round_to_step
+from app.services.flashcards import mastered_count_since
 from app.rendering import render
 from app.seasons import engine
 from app.seasons_library.loader import get_template
@@ -48,6 +50,16 @@ def measure_form(request: Request, user: User = Depends(require_user), db: Sessi
         logged = sum_logged_minutes_since_last_measure(db, season, today_day_number(season, today))
         if logged > 0:
             prefill_value = round_to_step(logged, metric.rounding)
+    elif metric and metric.key == "cards_mastered_week":
+        # F5: сколько карточек (во всех наборах) верно вспомнилось на
+        # интервале 35 дней с последнего замера — чтобы не считать вручную.
+        last_measured_day = db.exec(
+            select(Measurement.day_number).where(Measurement.season_id == season.id).order_by(Measurement.day_number.desc())
+        ).first()
+        since_date = season.start_date + timedelta(days=last_measured_day or 0)
+        mastered = sum(mastered_count_since(db, user.id, deck_id, since_date) for deck_id in load_decks().keys())
+        if mastered > 0:
+            prefill_value = round_to_step(mastered, metric.rounding)
 
     return render(
         request,

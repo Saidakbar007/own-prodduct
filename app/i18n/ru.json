@@ -263,6 +263,16 @@
   "season.conversation_starters_cta": "Банк вопросов для начала разговора",
   "season.cta_expenses": "Открыть трекер трат",
   "season.resources_cta": "Проверенные бесплатные ресурсы",
+  "season.cta_flashcards": "Открыть карточки",
+
+  "flashcards.hub_title": "Карточки",
+  "flashcards.back": "Назад",
+  "flashcards.debt_badge": "долг: {n}",
+  "flashcards.cta_reveal": "Показать ответ",
+  "flashcards.cta_forgot": "Не вспомнил(а)",
+  "flashcards.cta_recalled": "Вспомнил(а)",
+  "flashcards.done_title": "На сегодня всё",
+  "flashcards.done_body": "Новых карточек на сегодня не осталось (лимит 15 в день), а долга нет — приходи завтра.",
 
   "expenses.page_title": "Траты",
   "expenses.category_label": "Категория",
@@ -427,6 +437,8 @@
   "profile.sources_link": "Откуда эти нормы",
   "profile.about_link": "О NewLife",
   "profile.help_link": "Экран помощи",
+  "profile.flashcards_link": "Карточки",
+  "profile.expenses_link": "Траты",
 
   "help.page_title": "Помощь",
   "help.page_subtitle": "Если тебе прямо сейчас плохо и небезопасно — позвони, это важнее любой цели в приложении.",
