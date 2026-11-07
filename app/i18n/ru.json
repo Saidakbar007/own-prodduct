@@ -224,6 +224,17 @@
   "today.schedule_title": "Сегодня по времени",
   "today.schedule_minimal": "минимум",
   "today.guide_first_step_label": "Первый шаг:",
+  "today.cta_open_workout": "Открыть тренировку",
+
+  "workout.scheme": "{sets} подхода × {reps} повторов, отдых {rest} мин",
+  "workout.equipment_gym": "Зал",
+  "workout.equipment_home": "Дом",
+  "workout.technique_cta": "Как делать",
+  "workout.easy_label": "Легче:",
+  "workout.hard_label": "Сложнее:",
+  "workout.weight_label": "Вес, кг",
+  "workout.reps_label": "Повторы",
+  "workout.log_cta": "Записать",
 
   "season.day_of": "День {n} из {total}",
   "season.forecast_plain": "К финалу, по твоему темпу, — примерно {value} {unit}",

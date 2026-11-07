@@ -1,0 +1,75 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ program_title }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'today' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ program_title }}</h1>
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">
+    {{ t('workout.scheme', sets=program.sets, reps=program.reps_range, rest=program.rest_minutes) }}
+  </p>
+</div>
+
+<div style="display:flex;gap:var(--space-2);margin-bottom:var(--space-5)">
+  <form method="post" action="/workout/equipment" style="flex:1">
+    <input type="hidden" name="equipment" value="gym" />
+    <button type="submit" class="btn {% if equipment == 'gym' %}btn--primary{% else %}btn--secondary{% endif %} btn--block btn--sm">{{ t('workout.equipment_gym') }}</button>
+  </form>
+  <form method="post" action="/workout/equipment" style="flex:1">
+    <input type="hidden" name="equipment" value="home" />
+    <button type="submit" class="btn {% if equipment == 'home' %}btn--primary{% else %}btn--secondary{% endif %} btn--block btn--sm">{{ t('workout.equipment_home') }}</button>
+  </form>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-5)">
+  {% for ex in exercises %}
+  <div class="card" style="padding:var(--space-5)">
+    <div style="display:flex;align-items:center;gap:var(--space-3)">
+      <span style="flex:none;width:40px;height:40px;border-radius:var(--radius-md);background:var(--surface-raised);display:flex;align-items:center;justify-content:center;color:var(--text-faint)">
+        <svg class="icon" style="width:1.4em;height:1.4em"><use href="#i-dumbbell"/></svg>
+      </span>
+      <strong style="font-size:var(--text-sm)">{{ ex.name }}</strong>
+    </div>
+    <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ ex.muscles|join(', ') }}</p>
+    <details style="margin-top:var(--space-2)">
+      <summary class="btn--text" style="cursor:pointer;display:inline">{{ t('workout.technique_cta') }}</summary>
+      <p style="font-size:var(--text-xs);color:var(--text-muted);margin-top:var(--space-2)">{{ ex.technique }}</p>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)"><strong>{{ t('workout.easy_label') }}</strong> {{ ex.easy_version }}</p>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)"><strong>{{ t('workout.hard_label') }}</strong> {{ ex.hard_version }}</p>
+    </details>
+
+    <form method="post" action="/workout/log" style="margin-top:var(--space-4);display:flex;gap:var(--space-3)">
+      <input type="hidden" name="exercise_id" value="{{ ex.id }}" />
+      <div style="flex:1">
+        <label style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('workout.weight_label') }}</label>
+        <div style="display:flex;align-items:center;gap:var(--space-2)">
+          <button type="button" class="btn btn--secondary btn--sm" onclick="var el=document.getElementById('w-{{ ex.id }}');el.value=Math.max(0,(parseFloat(el.value)||0)-2.5)">−</button>
+          <input type="number" step="0.5" min="0" id="w-{{ ex.id }}" name="weight_kg" value="{{ ex.weight_kg if ex.weight_kg is not none else '' }}" style="width:4.5em;text-align:center;min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text)" />
+          <button type="button" class="btn btn--secondary btn--sm" onclick="var el=document.getElementById('w-{{ ex.id }}');el.value=(parseFloat(el.value)||0)+2.5">+</button>
+        </div>
+      </div>
+      <div style="flex:1">
+        <label style="font-size:var(--text-xs);color:var(--text-faint)">{{ t('workout.reps_label') }}</label>
+        <div style="display:flex;align-items:center;gap:var(--space-2)">
+          <button type="button" class="btn btn--secondary btn--sm" onclick="var el=document.getElementById('r-{{ ex.id }}');el.value=Math.max(0,(parseInt(el.value)||0)-1)">−</button>
+          <input type="number" step="1" min="0" id="r-{{ ex.id }}" name="reps" value="{{ ex.reps if ex.reps is not none else '' }}" style="width:3.5em;text-align:center;min-height:var(--touch-min);border-radius:var(--radius-md);border:1px solid var(--border-strong);background:var(--surface);color:var(--text)" />
+          <button type="button" class="btn btn--secondary btn--sm" onclick="var el=document.getElementById('r-{{ ex.id }}');el.value=(parseInt(el.value)||0)+1">+</button>
+        </div>
+      </div>
+      <button type="submit" class="btn btn--primary btn--sm" style="flex:none;align-self:flex-end">{{ t('workout.log_cta') }}</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card" style="padding:var(--space-4);margin-bottom:var(--space-5)">
+  <p style="font-size:var(--text-xs);color:var(--text-faint)">{{ progression }}</p>
+</div>
+
+<form method="post" action="/today/done" enctype="multipart/form-data" style="display:flex;flex-direction:column;gap:var(--space-3)">
+  <button class="btn btn--primary btn--block" type="submit">{{ t('today.cta_done') }}</button>
+</form>
+<form method="post" action="/today/minimal">
+  <button class="btn btn--secondary btn--block" type="submit" style="margin-top:var(--space-3)">{{ t('today.cta_minimal') }}</button>
+</form>
+{% endblock %}

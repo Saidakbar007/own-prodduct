@@ -19,6 +19,7 @@ from app.database import get_session
 from app.models import Profile, Proof, Season, SeasonDay, User
 from app.newlife import methods as methods_catalog
 from app.newlife.goal_catalog import first_guide_step
+from app.newlife.workout_programs import WORKOUT_PROGRAM_GOALS
 from app.rendering import render
 from app.seasons import engine
 from app.services import mascot
@@ -128,6 +129,7 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
                 "wave_size": wave_size,
                 "other_seasons": other_seasons,
                 "first_guide_step": first_guide_step(season.template_id, user.language),
+                "has_workout_program": season.template_id in WORKOUT_PROGRAM_GOALS,
             }
 
     checkin = get_checkin(db, user.id, today)

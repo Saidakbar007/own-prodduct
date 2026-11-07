@@ -39,6 +39,7 @@ from app.routers import squad as squad_router
 from app.routers import telegram as telegram_router
 from app.routers import today as today_router
 from app.routers import week as week_router
+from app.routers import workout as workout_router
 from app.services.telegram_api import is_configured as telegram_is_configured
 from app.services.telegram_bot import run_due_reminders
 
@@ -127,6 +128,7 @@ app.include_router(proofs_router.router)
 app.include_router(telegram_router.router)
 app.include_router(week_router.router)
 app.include_router(habits_router.router)
+app.include_router(workout_router.router)
 app.include_router(admin_router.router)
 
 

@@ -18,6 +18,8 @@ services:
         sync: false
       - key: TELEGRAM_WEBHOOK_SECRET
         sync: false
+      - key: HELPLINE_UZ
+        sync: false
       # APP_BASE_URL не нужен отдельно — бот берёт RENDER_EXTERNAL_URL
       # (Render подставляет её сам для любого веб-сервиса).
     # Миграции Alembic применяются при каждом старте процесса — см.

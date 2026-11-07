@@ -113,6 +113,13 @@ class SeasonDay(SQLModel, table=True):
     # обычную кнопку "Сделал" (app/routers/focus.py). Используется, чтобы
     # предзаполнить недельный замер суммой уже залогированных минут.
     logged_minutes: Optional[float] = None
+    # NewLife 1.0 (доп. задача, см. DECISIONS.md → wger/ACSM): JSON-список
+    # [{"exercise_id": str, "weight_kg": float|None, "reps": int|None}, ...]
+    # — по одной рабочей записи на упражнение программы (/workout), не на
+    # каждый отдельный подход; как и logged_minutes, это текстовое поле, не
+    # отдельная таблица — объём данных и паттерн использования (один экран
+    # в день) не оправдывают новую сущность.
+    workout_log: Optional[str] = None
 
 
 class Measurement(SQLModel, table=True):

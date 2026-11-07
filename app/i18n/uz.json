@@ -46,6 +46,17 @@
   "nav.profile": "Profil",
 
   "today.guide_first_step_label": "Birinchi qadam:",
+  "today.cta_open_workout": "Mashg'ulotni ochish",
+
+  "workout.scheme": "{sets} ta yondashuv × {reps} takror, dam {rest} daqiqa",
+  "workout.equipment_gym": "Zal",
+  "workout.equipment_home": "Uy",
+  "workout.technique_cta": "Qanday bajarish",
+  "workout.easy_label": "Osonroq:",
+  "workout.hard_label": "Qiyinroq:",
+  "workout.weight_label": "Vazn, kg",
+  "workout.reps_label": "Takrorlar",
+  "workout.log_cta": "Yozib qo'y",
   "season.guide_cta": "Buni qanday qilish kerak",
   "season.guide_steps_title": "Qadamlar",
   "season.guide_mistakes_title": "Tez-tez uchraydigan xatolar",
