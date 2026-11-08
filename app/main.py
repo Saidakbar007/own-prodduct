@@ -105,10 +105,23 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="NewLife", lifespan=lifespan)
 
-# Подпись cookie-сессий секретным ключом из .env
+# Подпись cookie-сессий секретным ключом из .env. NEWLIFE_2_0.md Этап 1 п.3:
+# сессия должна жить 90 дней (а не падать на дефолт Starlette в 14 дней) —
+# иначе онбординг проходится повторно при каждом визите после долгого
+# перерыва. На Render (RENDER=true в окружении — Render проставляет сам)
+# трафик всегда идёт по HTTPS — https_only=True там безопасен и обязателен
+# для Telegram Mini App (WebView не всегда шлёт cookie без Secure на https
+# origin); на локальной машине (http://127.0.0.1) https_only=True убил бы
+# cookie совсем, поэтому только на Render. same_site="lax" — компромисс:
+# работает и для обычного браузера, и внутри Telegram WebView (initData
+# не зависит от cookie при первом входе, см. app/routers/telegram.py).
+SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 90  # 90 дней
 app.add_middleware(
     SessionMiddleware,
     secret_key=os.getenv("SECRET_KEY", "dev-secret-key-change-me"),
+    max_age=SESSION_MAX_AGE_SECONDS,
+    same_site="lax",
+    https_only=bool(os.getenv("RENDER")),
 )
 
 # Дизайн-система (docs/design/DESIGN.md) и 3D-арт — те же каталоги, что использует /design для показа
