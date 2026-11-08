@@ -1,0 +1,37 @@
+# Банк вопросов для начала разговора (доп. задача, см. docs/decisions/
+# DECISIONS.md → «Этап "Доделай" + guide + wger») — упомянут в guide цели
+# start_conversations (content/spheres/social.yaml): "в приложении есть
+# банк готовых вопросов". Схема и загрузчик —
+# app/newlife/conversation_starters_bank.py. Просто список для просмотра,
+# не вопрос с кнопками-вариантами (это не квиз, а шпаргалка фраз).
+questions:
+  - { ru: "Как тебе сегодняшняя лекция/пара?", uz: "Bugungi ma'ruza/dars senga qanday?" }
+  - { ru: "Ты тоже на этот курс записался(ась)?", uz: "Sen ham shu kursga yozilgansan?" }
+  - { ru: "Что будешь делать на выходных?", uz: "Dam olish kunlari nima qilasan?" }
+  - { ru: "Давно здесь учишься/работаешь?", uz: "Bu yerda qachondan o'qiysan/ishlaysan?" }
+  - { ru: "Что посоветуешь — где здесь нормально поесть?", uz: "Nimani tavsiya qilasan — bu yerda qayerda yaxshi ovqatlanish mumkin?" }
+  - { ru: "Какую музыку сейчас слушаешь?", uz: "Hozir qaysi musiqani tinglaysan?" }
+  - { ru: "Смотрел(а) что-нибудь интересное на днях?", uz: "Yaqinda qiziqarli narsa ko'rdingmi?" }
+  - { ru: "Как добираешься сюда — далеко живёшь?", uz: "Bu yergacha qanday kelasan — uzoqda yashaysanmi?" }
+  - { ru: "Чем занимаешься кроме учёбы/работы?", uz: "Oʻqish/ishdan tashqari nima bilan shug'ullanasan?" }
+  - { ru: "Какой предмет/направление тебе больше нравится?", uz: "Qaysi fan/yo'nalish senga ko'proq yoqadi?" }
+  - { ru: "Есть любимое место в городе, куда ты часто ходишь?", uz: "Shaharda tez-tez boradigan sevimli joying bormi?" }
+  - { ru: "Какая у тебя погода любимая — жара или прохлада?", uz: "Qaysi ob-havo senga ko'proq yoqadi — issiq yoki salqin?" }
+  - { ru: "Пробовал(а) что-нибудь новое на этой неделе?", uz: "Shu hafta yangi narsa sinab ko'rdingmi?" }
+  - { ru: "Какой фильм или сериал сейчас смотришь?", uz: "Hozir qaysi film yoki serialni ko'rayapsan?" }
+  - { ru: "Ты скорее сова или жаворонок?", uz: "Sen tungi odammisan yoki ertalabchi?" }
+  - { ru: "Что обычно делаешь, чтобы расслабиться после учёбы/работы?", uz: "Oʻqish/ishdan keyin dam olish uchun odatda nima qilasan?" }
+  - { ru: "Какая у тебя любимая кухня?", uz: "Senga qaysi taom turi ko'proq yoqadi?" }
+  - { ru: "Занимаешься спортом? Каким?", uz: "Sport bilan shug'ullanasanmi? Qaysi turi bilan?" }
+  - { ru: "Что было самым интересным в этой неделе?", uz: "Shu haftaning eng qiziqarli jihati nima bo'ldi?" }
+  - { ru: "Есть книга, которую посоветуешь?", uz: "Tavsiya qiladigan kitobing bormi?" }
+  - { ru: "Как ты обычно готовишься к экзаменам/дедлайнам?", uz: "Imtihon/muddatlarga odatda qanday tayyorlanasan?" }
+  - { ru: "Какой у тебя план на лето/каникулы?", uz: "Yoz/ta'tilga rejang qanday?" }
+  - { ru: "Что тебя сюда привело — почему выбрал(а) это место?", uz: "Seni bu yerga nima olib keldi — nega shu joyni tanlading?" }
+  - { ru: "Какой совет дал(а) бы себе год назад?", uz: "Bir yil oldingi o'zingga qanday maslahat bergan bo'lardin?" }
+  - { ru: "Есть хобби, которым давно хочешь заняться?", uz: "Uzoqdan buyon shug'ullanishni xohlagan hobbiying bormi?" }
+  - { ru: "Какое приложение или сайт используешь каждый день?", uz: "Har kuni qaysi ilova yoki saytdan foydalanasan?" }
+  - { ru: "Что тебя сегодня удивило или порадовало?", uz: "Bugun seni nima hayratga soldi yoki xursand qildi?" }
+  - { ru: "Какую игру или настолку любишь?", uz: "Qaysi o'yin yoki stol o'yinini yoqtirasan?" }
+  - { ru: "Куда бы ты поехал(а), если бы мог(ла) выбрать прямо сейчас?", uz: "Hozir tanlasang qayerga borardin?" }
+  - { ru: "Какая у тебя любимая часть дня — утро, день или вечер?", uz: "Kunning qaysi qismini ko'proq yoqtirasan — ertalab, kunduzi yoki kechqurun?" }

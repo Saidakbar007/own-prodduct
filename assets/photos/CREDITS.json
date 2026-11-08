@@ -15,11 +15,15 @@
         "https://unsplash.com/photos/silhouette-of-man-running-on-beach-during-sunset-crkFn69OLHE",
         "https://unsplash.com/photos/a-person-running-through-a-park-at-sunset-finuOZQiKQk"
       ],
-      "search_pages": ["https://unsplash.com/s/photos/running-outside"],
+      "search_pages": [
+        "https://unsplash.com/s/photos/running-outside"
+      ],
       "photos": []
     },
     "турник": {
-      "search_pages": ["https://unsplash.com/s/photos/pull-up-bar"],
+      "search_pages": [
+        "https://unsplash.com/s/photos/pull-up-bar"
+      ],
       "photos": []
     },
     "сон_утро": {
@@ -28,7 +32,9 @@
         "https://unsplash.com/photos/dimly-lit-bedroom-with-sunlight-through-window-D2QjyBiACmY",
         "https://unsplash.com/photos/sunlight-inside-bed-l6BenhrIc2w"
       ],
-      "search_pages": ["https://unsplash.com/s/photos/morning-sunlight"],
+      "search_pages": [
+        "https://unsplash.com/s/photos/morning-sunlight"
+      ],
       "photos": []
     },
     "город_на_рассвете": {
@@ -37,7 +43,9 @@
         "https://unsplash.com/photos/sunrise-over-a-city-skyline-with-clouds-DqWdU6BBrKs",
         "https://unsplash.com/photos/sunrise-over-a-foggy-city-skyline-Z0JVfNqv2VE"
       ],
-      "search_pages": ["https://unsplash.com/s/photos/sunrise-city"],
+      "search_pages": [
+        "https://unsplash.com/s/photos/sunrise-city"
+      ],
       "photos": []
     },
     "еда": {
@@ -46,6 +54,224 @@
         "https://unsplash.com/s/photos/food-prep"
       ],
       "photos": []
+    }
+  },
+  "exercises": {
+    "_readme": "Кандидаты фото для content/exercises.yaml (поле image), подобраны через wger API v2 (https://wger.de/api/v2/) — открытая база, все лицензии в её таблице license/ разрешающие (CC-BY-SA 3/4, CC-BY 4, CC0, ODbL — 'all rights reserved' там структурно не существует). wger_exercise_id — это exercise (base) id, не id перевода. Для 3 из 20 упражнений (push_up, bulgarian_split_squat, side_plank) не нашлось записи с реальной картинкой в wger (у push_up/bulgarian_split_squat вообще нет точного перевода с таким названием в БД, у side_plank перевод есть, но без фото) — для них ключи не добавлены, останется SVG-заглушка. downloaded:false — фото ещё не скачано и не положено в assets/photos/exercises/, это ручной шаг (см. корень CREDITS.json).",
+    "squat": {
+      "wger_image_url": "https://wger.de/media/exercise-images/191/Front-squat-1-857x1024.png",
+      "wger_exercise_id": 257,
+      "license": "CC-BY-SA 3.0",
+      "license_author": "Everkinetic",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/squat.webp"
+    },
+    "romanian_deadlift": {
+      "wger_image_url": "https://wger.de/media/exercise-images/507/13d526ab-12fc-461e-828a-051dd7c13fb1.png",
+      "wger_exercise_id": 507,
+      "license": "CC-BY-SA 4.0",
+      "license_author": null,
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/romanian_deadlift.webp"
+    },
+    "bench_press": {
+      "wger_image_url": "https://wger.de/media/exercise-images/192/Bench-press-1.png",
+      "wger_exercise_id": 73,
+      "license": "CC-BY-SA 3.0",
+      "license_author": "Everkinetic",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/bench_press.webp"
+    },
+    "seated_dumbbell_press": {
+      "wger_image_url": "https://wger.de/media/exercise-images/123/dumbbell-shoulder-press-large-1.png",
+      "wger_exercise_id": 567,
+      "license": "CC-BY-SA 3.0",
+      "license_author": "Everkinetic",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/seated_dumbbell_press.webp"
+    },
+    "bent_over_row": {
+      "wger_image_url": "https://wger.de/media/exercise-images/109/Barbell-rear-delt-row-1.png",
+      "wger_exercise_id": 83,
+      "license": "CC-BY-SA 3.0",
+      "license_author": "Everkinetic",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/bent_over_row.webp"
+    },
+    "pull_up_lat_pulldown": {
+      "wger_image_url": "https://wger.de/media/exercise-images/475/b0554016-16fd-4dbe-be47-a2a17d16ae0e.jpg",
+      "wger_exercise_id": 475,
+      "license": "CC-BY-SA 4.0",
+      "license_author": "Imobard",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/pull_up_lat_pulldown.webp"
+    },
+    "lunge": {
+      "wger_image_url": "https://wger.de/media/exercise-images/984/5c7ffe68-e7b2-47f3-a22a-f9cc28640432.png",
+      "wger_exercise_id": 984,
+      "license": "CC-BY-SA 4.0",
+      "license_author": "Franpol",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/lunge.webp"
+    },
+    "glute_bridge": {
+      "wger_image_url": "https://wger.de/media/exercise-images/265/7528acb4-b2cc-4b75-b6ae-d514cbd4f78b.png",
+      "wger_exercise_id": 265,
+      "license": "CC-BY-SA 4.0",
+      "license_author": null,
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/glute_bridge.webp"
+    },
+    "plank": {
+      "wger_image_url": "https://wger.de/media/exercise-images/458/b7bd9c28-9f1d-4647-bd17-ab6a3adf5770.png",
+      "wger_exercise_id": 458,
+      "license": "CC-BY-SA 4.0",
+      "license_author": "utkb",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/plank.webp"
+    },
+    "bird_dog": {
+      "wger_image_url": "https://wger.de/media/exercise-images/1572/3d14e761-a73d-49da-8804-f3016a7573ff.png",
+      "wger_exercise_id": 1572,
+      "license": "CC-BY-SA 4.0",
+      "license_author": "Settebello",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/bird_dog.webp"
+    },
+    "crunch": {
+      "wger_image_url": "https://wger.de/media/exercise-images/91/Crunches-1.png",
+      "wger_exercise_id": 167,
+      "license": "CC-BY-SA 3.0",
+      "license_author": null,
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/crunch.webp"
+    },
+    "conventional_deadlift": {
+      "wger_image_url": "https://wger.de/media/exercise-images/184/1709c405-620a-4d07-9658-fade2b66a2df.jpeg",
+      "wger_exercise_id": 184,
+      "license": "CC-BY-SA 4.0",
+      "license_author": "philip",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/conventional_deadlift.webp"
+    },
+    "overhead_press": {
+      "wger_image_url": "https://wger.de/media/exercise-images/119/seated-barbell-shoulder-press-large-1.png",
+      "wger_exercise_id": 566,
+      "license": "CC-BY-SA 3.0",
+      "license_author": "Everkinetic",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/overhead_press.webp"
+    },
+    "leg_raise": {
+      "wger_image_url": "https://wger.de/media/exercise-images/125/Leg-raises-2.png",
+      "wger_exercise_id": 377,
+      "license": "CC-BY-SA 3.0",
+      "license_author": "Everkinetic",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/leg_raise.webp"
+    },
+    "back_extension": {
+      "wger_image_url": "https://wger.de/media/exercise-images/301/2d5c2f99-b8ff-4095-b515-4c2a85afde70.png",
+      "wger_exercise_id": 301,
+      "license": "CC-BY-SA 4.0",
+      "license_author": null,
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/back_extension.webp"
+    },
+    "triceps_dip": {
+      "wger_image_url": "https://wger.de/media/exercise-images/83/Bench-dips-1.png",
+      "wger_exercise_id": 197,
+      "license": "CC-BY-SA 3.0",
+      "license_author": "Everkinetic",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/triceps_dip.webp"
+    },
+    "calf_raise": {
+      "wger_image_url": "https://wger.de/media/exercise-images/622/9a429bd0-afd3-4ad0-8043-e9beec901c81.jpeg",
+      "wger_exercise_id": 622,
+      "license": "CC-BY-SA 4.0",
+      "license_author": "clafal",
+      "downloaded": true,
+      "local_path": "assets/photos/exercises/calf_raise.webp"
+    }
+  },
+  "spheres": {
+    "body": {
+      "photographer": "Michael Pointner",
+      "unsplash_url": "https://unsplash.com/photos/a-person-running-in-a-park-l95oMx3CHPo",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/body.webp",
+      "downloaded": true
+    },
+    "mind": {
+      "photographer": "Yen Vu",
+      "unsplash_url": "https://unsplash.com/photos/desk-with-open-book-laptop-and-study-materials-HNjWq8WPyoY",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/mind.webp",
+      "downloaded": true
+    },
+    "character": {
+      "photographer": "Nubelson Fernandes",
+      "unsplash_url": "https://unsplash.com/photos/a-person-writing-on-a-notebook-with-a-pen-5VplEcYvMrE",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/character.webp",
+      "downloaded": true
+    },
+    "social": {
+      "photographer": "Vitaly Gariev",
+      "unsplash_url": "https://unsplash.com/photos/four-friends-walking-together-in-a-park-0w8_lBRYWuA",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/social.webp",
+      "downloaded": true
+    },
+    "career": {
+      "photographer": "Vitaly Gariev",
+      "unsplash_url": "https://unsplash.com/photos/man-working-on-laptop-in-modern-office-space-IKgE2DyCIoE",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/career.webp",
+      "downloaded": true
+    },
+    "finance": {
+      "photographer": "Jakub Żerdzicki",
+      "unsplash_url": "https://unsplash.com/photos/hand-writing-in-notebook-with-calculator-and-cash-leLj_06wjJQ",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/finance.webp",
+      "downloaded": true
+    },
+    "relationships": {
+      "photographer": "Vitalii Khodzinskyi",
+      "unsplash_url": "https://unsplash.com/photos/father-and-daughter-laughing-together-in-bed-k77C6w1HSoA",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/relationships.webp",
+      "downloaded": true
+    },
+    "knowledge": {
+      "photographer": "CHUTTERSNAP",
+      "unsplash_url": "https://unsplash.com/photos/984e1Fk4E04",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/knowledge.webp",
+      "downloaded": true
+    },
+    "values": {
+      "photographer": "Pouya Hajiebrahimi",
+      "unsplash_url": "https://unsplash.com/photos/person-sitting-in-a-misty-field-at-sunrise-Qqq5Aw-CYJE",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/values.webp",
+      "downloaded": true
+    },
+    "lifestyle": {
+      "photographer": "Zahraa Hassan",
+      "unsplash_url": "https://unsplash.com/photos/sunlight-streams-into-a-cozy-room-with-plants-vFYK8li2V_s",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/lifestyle.webp",
+      "downloaded": true
+    },
+    "energy": {
+      "photographer": "Anton Sobotyak",
+      "unsplash_url": "https://unsplash.com/photos/the-sun-is-shining-through-the-curtains-on-a-bed-VPFi-s-xyXU",
+      "license": "Unsplash License (free for commercial/non-commercial use, no attribution required — credited here anyway)",
+      "local_path": "assets/photos/spheres/energy.webp",
+      "downloaded": true
     }
   }
 }

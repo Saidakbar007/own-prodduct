@@ -1,0 +1,36 @@
+id: memory_retention
+version: 1
+title: "Сезон: память на изученное"
+title_uz: "Mavsum: oʻrganilganni yodda saqlash"
+category: mind
+metric: { name: "Точность отложенной проверки", unit: "%", direction: up }
+lengths: [30, 60]
+target_default: 70
+baseline_test:
+  prompt: "Если проверить себя по теме через 7 дней после изучения — сколько процентов обычно вспоминаешь?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [2, 4, 6], minutes: [10, 15] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Проверка через неделю"
+        instructions: "Возьми тему, изученную примерно неделю назад, и ответь на вопросы по ней без конспекта. Потом сверься с конспектом и отметь, что забылось."
+        minimal: "1 вопрос по вчерашней теме"
+        expected_progress: 1.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Проверки не физическая нагрузка — в остальные дни просто учись как обычно"
+measure_every_days: 7
+measure:
+  prompt: "Сколько процентов материала недельной давности ты вспомнил(а) верно на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 4

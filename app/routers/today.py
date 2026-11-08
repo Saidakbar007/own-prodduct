@@ -18,6 +18,8 @@ from app.auth import require_user
 from app.database import get_session
 from app.models import Profile, Proof, Season, SeasonDay, User
 from app.newlife import methods as methods_catalog
+from app.newlife.goal_catalog import first_guide_step
+from app.newlife.workout_programs import WORKOUT_PROGRAM_GOALS
 from app.rendering import render
 from app.seasons import engine
 from app.services import mascot
@@ -28,6 +30,9 @@ from app.services.checkin_service import (
     should_offer_recovery_mode,
     start_recovery_mode,
 )
+from app.services.day_questions import record_answer, todays_question
+from app.services.weekly_reflection import next_question as next_reflection_question
+from app.services.weekly_reflection import record_answer as record_reflection_answer
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import has_completed_profile
@@ -39,6 +44,7 @@ from app.services.seasons import (
     get_active_seasons,
     get_current_season,
     get_day,
+    goal_metric_for_season,
     set_current_season,
     sync_season_state,
     today_day_number,
@@ -111,17 +117,21 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
                 "missed": "skip",
             }.get(day.status, "wave_start" if day_number == 1 else "pending")
             other_seasons = [s for s in get_active_seasons(db, user.id) if s.id != season.id]
+            metric = goal_metric_for_season(season)
             season_ctx = {
                 "has_season": True,
                 "season": season,
                 "day": day,
                 "day_number": day_number,
+                "metric_kind": metric.kind if metric else "measure",
                 "ring_circumference": round(RING_CIRCUMFERENCE, 1),
                 "ring_offset": round(RING_CIRCUMFERENCE * (1 - percent), 1),
                 "forecast": round(forecast, 1),
                 "checkins": checkins,
                 "wave_size": wave_size,
                 "other_seasons": other_seasons,
+                "first_guide_step": first_guide_step(season.template_id, user.language),
+                "has_workout_program": season.template_id in WORKOUT_PROGRAM_GOALS,
             }
 
     checkin = get_checkin(db, user.id, today)
@@ -134,6 +144,9 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
         now_minutes = now_for(user).hour * 60 + now_for(user).minute
         show_sleep_hygiene = methods_catalog.should_show_sleep_hygiene_reminder(now_minutes, parse_hhmm(profile.sleep_time))
 
+    day_question = todays_question(db, user.id, profile, today)
+    reflection_question = next_reflection_question(db, user.id, today)
+
     return render(
         request,
         "today.html",
@@ -145,6 +158,9 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
             "offer_recovery": offer_recovery,
             "schedule_blocks": schedule_blocks,
             "show_sleep_hygiene": show_sleep_hygiene,
+            "day_question": day_question,
+            "reflection_question": reflection_question,
+            "minimal_only": bool(profile and profile.has_medical_diagnosis),
             "mascot_phrase": mascot.phrase_for(mascot_event, user.language),
             "mascot_state": mascot.state_for(mascot_event),
             "show_tour": request.query_params.get("tour") == "1",
@@ -167,6 +183,32 @@ def submit_checkin(
     stress = max(1, min(5, stress))
     mood = max(1, min(5, mood))
     log_checkin(db, user.id, today, energy, stress, mood)
+    return RedirectResponse("/today", status_code=303)
+
+
+@router.post("/today/question")
+def submit_day_question(
+    request: Request,
+    question_id: str = Form(...),
+    option_index: int = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    record_answer(db, user.id, question_id, option_index, today_for(user))
+    push_flash(request, "today.question_answered_flash", "success")
+    return RedirectResponse("/today", status_code=303)
+
+
+@router.post("/today/reflection")
+def submit_reflection(
+    request: Request,
+    question_id: str = Form(...),
+    option_index: int = Form(...),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    record_reflection_answer(db, user.id, question_id, option_index, today_for(user))
+    push_flash(request, "today.reflection_answered_flash", "success")
     return RedirectResponse("/today", status_code=303)
 
 

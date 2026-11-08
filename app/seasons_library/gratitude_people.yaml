@@ -1,0 +1,36 @@
+id: gratitude_people
+version: 1
+title: "Сезон: благодарность людям"
+title_uz: "Mavsum: odamlarga minnatdorlik"
+category: values
+metric: { name: "Конкретные «спасибо»", unit: "раз/нед", direction: up }
+lengths: [30, 60]
+target_default: 3
+baseline_test:
+  prompt: "Сколько раз за последнюю неделю ты говорил(а) «спасибо» с конкретикой — за что именно?"
+  input: number
+  min: 0
+  max: 14
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Спасибо, что…"
+        instructions: "Скажи человеку конкретное «спасибо, что ты…» — не формальность, а за реальное действие. Раз в неделю — отдельное благодарственное сообщение."
+        minimal: "1 «спасибо, что…»"
+        expected_progress: 0.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Благодарить можно в любой день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько раз на этой неделе ты поблагодарил(а) кого-то конкретно?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

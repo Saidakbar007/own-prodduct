@@ -1,0 +1,39 @@
+id: certificate
+version: 1
+title: "Сезон: подготовка к сертификации"
+title_uz: "Mavsum: sertifikatga tayyorgarlik"
+category: career
+metric: { name: "Пройдено плана подготовки", unit: "%", direction: up }
+lengths: [30, 60]
+target_default: 100
+baseline_test:
+  prompt: "Сколько % плана подготовки к экзамену ты уже прошёл?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4], minutes: [60, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Блок подготовки"
+        instructions: >-
+          60 минут подготовки по плану экзамена: пробные задания, разбор
+          ошибок или теория. Если дата экзамена ещё не назначена — сначала
+          выбери экзамен и назначь дату.
+        minimal: "1 вопрос пробника"
+        expected_progress: 7
+rest_day:
+  title: "День без подготовки"
+  instructions: "Повтори список своих частых ошибок, 5 минут"
+measure_every_days: 7
+measure:
+  prompt: "Сколько % плана подготовки пройдено на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 3

@@ -1,0 +1,213 @@
+# Каталог целей сферы «Ценности и дух» (PRD 1.0). Источник:
+# docs/content/NEWLIFE_1_0_CONTENT.md (раздел "3. ЦЕННОСТИ И ДУХ
+# (благодарность, рефлексия, осознанность, ценности, религиозная практика по
+# желанию)", строки ~403-445) — приоритет выше docs/specs/NEWLIFE_V8_SPEC.md §7.
+# Схема и загрузчик — app/newlife/goal_catalog.py.
+# Сценарий сезона (день за днём) каждой цели — app/seasons_library/<id>.yaml.
+#
+# Решение по неоднозначности: контент-документ описывает 6 шаблонов целей,
+# шестой — «Своя практика (по желанию)» — это слот для религиозной/личной
+# практики, которую человек САМ называет и задаёт себе частоту ("задаёт сам"
+# во всех колонках таблицы). У него нет фиксированной метрики/темпа/недели,
+# которые можно было бы зашить в этот статический каталог, и продукт явно
+# выключает религиозную практику по умолчанию (§F «Безопасность»: «Выключена
+# по умолчанию, контент нейтральный, данные приватные») — то есть это
+# отдельная будущая фича (кнопка «Отслеживать» + пользовательский ввод имени
+# и частоты практики), а не статическая запись каталога. Поэтому здесь —
+# только 5 целей с фиксированными метриками; «своя практика» не реализована
+# (см. отчёт агента).
+sphere: values
+goals:
+  - id: gratitude_journal
+    sphere: values
+    title: { ru: "Дневник благодарности", uz: "Minnatdorlik kundaligi" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто редко останавливается заметить хорошее"
+    outcome: "В конце — регулярные записи благодарности входят в привычку"
+    metric: { key: gratitude_entries, kind: counter, unit: "записей/нед", rounding: 1 }
+    secondary: ["число пунктов в записи"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      10 недель при записи 1 раз в неделю (Emmons & McCullough 2003: в
+      исходном исследовании записи делали раз в неделю — поэтому по умолчанию
+      не навязываем ежедневные записи). Варианты цели — 1 / 3 / 7 записей в неделю.
+    week_skeleton: "1–3 записи по 3–5 пунктов благодарности в неделю"
+    minimal_version: "1 пункт"
+    guide:
+      steps:
+        - ru: "Выбери фиксированный момент (например, воскресенье вечером) и запиши 3–5 вещей, за которые благодарен на этой неделе."
+          uz: "Doimiy bir vaqtni tanlang (masalan, yakshanba kechqurun) va shu haftada minnatdor bo'lgan 3–5 narsani yozing."
+        - ru: "Пиши конкретно: не «семья», а «сестра помогла с переездом в среду» — конкретные детали работают лучше общих слов."
+          uz: "Aniq yozing: 'oila' emas, 'opam chorshanbada ko'chishda yordam berdi' — aniq tafsilotlar umumiy so'zlardan yaxshiroq ishlaydi."
+        - ru: "Если 1 записи в неделю мало — добавь ещё, но не заставляй себя писать каждый день, если это превращается в рутину."
+          uz: "Haftada 1 yozish kam bo'lsa — ko'proq qo'shing, lekin har kuni yozishga o'zingizni majburlamang, agar bu rutinaga aylansa."
+        - ru: "Периодически просматривай старые записи — это усиливает эффект благодарности."
+          uz: "Vaqti-vaqti bilan eski yozuvlarni qayta o'qing — bu minnatdorlik ta'sirini kuchaytiradi."
+      mistakes:
+        - ru: "Писать одни и те же общие фразы каждую неделю («хорошая погода», «всё ок») — конкретные детали работают намного лучше."
+          uz: "Har hafta bir xil umumiy iboralarni yozish ('yaxshi ob-havo', 'hammasi joyida') — aniq tafsilotlar ancha yaxshi ishlaydi."
+        - ru: "Превращать практику в обязанность «для галочки» — тогда эффект падает почти до нуля."
+          uz: "Amaliyotni 'galochka uchun' majburiyatga aylantirish — shunda ta'sir deyarli nolga tushadi."
+        - ru: "Пытаться сразу писать каждый день, хотя исходное исследование показывало эффект при записи раз в неделю."
+          uz: "Darhol har kuni yozishga urinish, holbuki asl tadqiqotda ta'sir haftada bir marta yozishda ko'rilgan."
+      first_week_example:
+        ru: "Воскресенье вечером — 3–5 пунктов благодарности за неделю, с конкретными деталями (кто, что, когда)."
+        uz: "Yakshanba kechqurun — haftadagi 3–5 minnatdorlik punkti, aniq tafsilotlar bilan (kim, nima, qachon)."
+    source:
+      name: "Emmons & McCullough 2003"
+      url: "https://stafforini.com/works/emmons-2003-counting-blessings-burdens/"
+    template_id: gratitude_journal
+
+  - id: gratitude_people
+    sphere: values
+    title: { ru: "Благодарность людям", uz: "Odamlarga minnatdorlik" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет чаще благодарить людей вокруг конкретно, не формально"
+    outcome: "В конце — конкретное «спасибо, что…» звучит почти каждый день"
+    metric: { key: thank_you_specific, kind: counter, unit: "раз/нед", rounding: 1 }
+    secondary: ["число благодарственных сообщений"]
+    targets: ["30 дней", "60 дней"]
+    pace: "4–6 недель (эвристика). Варианты цели — 3 / 5 / 7 раз в неделю."
+    week_skeleton: "1 благодарственное сообщение в неделю + ежедневно вслух"
+    minimal_version: "1 «спасибо, что…»"
+    guide:
+      steps:
+        - ru: "Говори «спасибо, что…» конкретно, называя действие, а не просто «спасибо» на автомате."
+          uz: "'Rahmat, chunki...' deb aniq ayting, harakatni nomlab, shunchaki avtomatik 'rahmat' demang."
+        - ru: "Хотя бы раз в неделю напиши отдельное благодарственное сообщение человеку, который давно что-то для тебя сделал."
+          uz: "Haftada kamida bir marta sizga ancha oldin yaxshilik qilgan odamga alohida minnatdorlik xabari yozing."
+        - ru: "Благодари вслух в быту: родителям, друзьям, преподавателям — даже за маленькие вещи."
+          uz: "Kundalik hayotda ovoz chiqarib rahmat ayting: ota-onaga, do'stlarga, o'qituvchilarga — kichik narsalar uchun ham."
+        - ru: "Отмечай в приложении, сколько раз за неделю получилось сказать конкретное «спасибо, что…»."
+          uz: "Haftada necha marta aniq 'rahmat, chunki...' deyishga ulgurganingizni ilovada belgilang."
+      mistakes:
+        - ru: "Ограничиваться коротким «спасибо» без уточнения — конкретика делает благодарность заметнее и ценнее для другого человека."
+          uz: "Faqat qisqa 'rahmat' deyish bilan cheklanish — aniqlik minnatdorlikni boshqa odam uchun sezilarli va qadrli qiladi."
+        - ru: "Благодарить только за крупные поступки, игнорируя мелкие повседневные — именно мелкие случаи встречаются чаще и легче входят в привычку."
+          uz: "Faqat katta ishlar uchun rahmat aytish, kundalik kichik narsalarni e'tiborsiz qoldirish — aynan kichik holatlar ko'p uchraydi va odatga aylanishi osonroq."
+        - ru: "Откладывать благодарственное сообщение «на потом» — лучше написать сразу, пока эмоция свежая."
+          uz: "Minnatdorlik xabarini 'keyinroq' ga qoldirish — his-tuyg'u yangi bo'lganida darhol yozgan yaxshiroq."
+      first_week_example:
+        ru: "Каждый день — хотя бы 1 конкретное «спасибо, что…» вслух; Пт — одно благодарственное сообщение человеку, которого давно не благодарил."
+        uz: "Har kuni — kamida 1 aniq 'rahmat, chunki...' ovoz chiqarib; Juma — ancha vaqt rahmat aytmagan odamga bitta minnatdorlik xabari."
+    source:
+      name: "эвристика"
+    template_id: gratitude_people
+
+  - id: weekly_reflection
+    sphere: values
+    title: { ru: "Рефлексия недели", uz: "Hafta tahlili" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет осознанно подводить итоги, а не просто жить дальше"
+    outcome: "В конце — еженедельный разбор по 5 вопросам входит в привычку"
+    metric: { key: weekly_reviews, kind: counter, unit: "разборов", rounding: 1 }
+    secondary: ["% недель без пропуска"]
+    targets: ["30 дней", "60 дней", "90 дней"]
+    pace: "Постоянная привычка (эвристика). Варианты цели — 4 / 8 / 12 разборов."
+    week_skeleton: "Воскресенье, 10 минут: разбор по 5 вопросам-кнопкам"
+    minimal_version: "Ответить на 1 вопрос"
+    guide:
+      steps:
+        - ru: "Выдели в воскресенье 10 минут без телефона и других дел — это время только для разбора недели."
+          uz: "Yakshanba kuni telefonsiz va boshqa ishlarsiz 10 daqiqa ajratib qo'ying — bu vaqt faqat hafta tahlili uchun."
+        - ru: "Пройди по 5 вопросам-кнопкам в приложении: что получилось, что не получилось, что чувствовал, что взять в следующую неделю."
+          uz: "Ilovadagi 5 savol-tugmadan o'ting: nima yaxshi chiqdi, nima chiqmadi, o'zingizni qanday his qildingiz, keyingi haftaga nimani olib o'tish kerak."
+        - ru: "Отвечай коротко и честно, не нужно писать развёрнутые тексты — главное зафиксировать мысль."
+          uz: "Qisqa va rostgo'y javob bering, batafsil matn yozish shart emas — asosiysi fikrni belgilab qo'yish."
+        - ru: "Сравнивай разбор с прошлой неделей: какие темы повторяются, что изменилось."
+          uz: "Tahlilni o'tgan hafta bilan solishtiring: qaysi mavzular qaytarilayapti, nima o'zgardi."
+      mistakes:
+        - ru: "Переносить разбор на будний день «как получится» — без фиксированного времени привычка легко теряется."
+          uz: "Tahlilni 'qulay vaqtda' ish kuniga ko'chirish — qat'iy vaqtsiz odat tez yo'qoladi."
+        - ru: "Писать только положительное, избегая того, что не получилось — тогда разбор теряет смысл как инструмент роста."
+          uz: "Faqat ijobiy narsalarni yozib, chiqmagan narsalardan qochish — shunda tahlil o'sish vositasi sifatida ma'nosini yo'qotadi."
+        - ru: "Делать разбор слишком длинным и подробным — 10 минут достаточно, длинный формат быстро надоедает."
+          uz: "Tahlilni juda uzun va batafsil qilish — 10 daqiqa yetarli, uzun format tezda zeriktiradi."
+      first_week_example:
+        ru: "Воскресенье, 10 минут вечером — ответить на 5 вопросов-кнопок о неделе, без телефона рядом."
+        uz: "Yakshanba, kechqurun 10 daqiqa — hafta haqida 5 savol-tugmaga javob berish, yonida telefonsiz."
+    source:
+      name: "эвристика"
+    template_id: weekly_reflection
+
+  - id: mindfulness
+    sphere: values
+    title: { ru: "Осознанность", uz: "Ongli idrok (mindfulness)" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет меньше жить на автопилоте и спокойнее переживать стресс"
+    outcome: "В конце — практика дыхания/осознанности входит в привычный день"
+    metric: { key: mindfulness_minutes, kind: timer, unit: "мин", rounding: 1 }
+    secondary: ["число дней с практикой"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      8 недель: программы медитации умеренно снижают тревогу и депрессию
+      (Goyal et al. 2014, JAMA Intern Med). Варианты цели — 5 / 10 / 20 минут
+      в день. Если на практике становится хуже (паника, тяжёлые воспоминания) —
+      остановить (§F).
+    week_skeleton: "5 дней практики дыхания в неделю"
+    minimal_version: "2 минуты дыхания"
+    guide:
+      steps:
+        - ru: "Выбери фиксированное время (например, утром после пробуждения) и дыши осознанно 5–20 минут, считая вдохи и выдохи."
+          uz: "Doimiy vaqt tanlang (masalan, uyg'ongandan keyin ertalab) va 5–20 daqiqa nafas sanab, ongli nafas oling."
+        - ru: "Садись в удобное положение, закрой глаза, если комфортно, и верни внимание к дыханию каждый раз, когда мысли уводят."
+          uz: "Qulay holatda o'tirib, agar qulay bo'lsa ko'zingizni yuming va fikrlar chalg'itganda e'tiborni nafasga qaytaring."
+        - ru: "Начни с меньшего времени (5 минут) и увеличивай постепенно, когда практика станет привычной."
+          uz: "Kamroq vaqtdan (5 daqiqa) boshlang va amaliyot odatga aylanganda asta-sekin oshiring."
+        - ru: "Практикуй минимум 5 дней в неделю — регулярность важнее длительности одной сессии."
+          uz: "Haftada kamida 5 kun mashq qiling — bir seansning uzunligidan muntazamlik muhimroq."
+        - ru: "Если во время практики возникает паника или тяжёлые воспоминания — остановись, это не тот вид практики, который тебе подходит сейчас."
+          uz: "Agar mashq paytida vahima yoki og'ir xotiralar paydo bo'lsa — to'xtating, bu hozir sizga mos amaliyot emas."
+      mistakes:
+        - ru: "Сразу пытаться медитировать по 20 минут — скорее бросишь, начни с 2–5 минут."
+          uz: "Darhol 20 daqiqa meditatsiya qilishga urinish — ko'pincha tashlab qo'yasiz, 2–5 daqiqadan boshlang."
+        - ru: "Ждать, что мысли «исчезнут» — цель не остановить мысли, а каждый раз мягко возвращать внимание к дыханию."
+          uz: "Fikrlar 'yo'qolishini' kutish — maqsad fikrlarni to'xtatish emas, har safar e'tiborni yumshoqlik bilan nafasga qaytarish."
+        - ru: "Продолжать практику через панику или тяжёлые состояния «через силу» — в этом случае нужно остановиться, а не заставлять себя."
+          uz: "Vahima yoki og'ir holat paytida amaliyotni 'kuch bilan' davom ettirish — bu holda o'zingizni majburlamay, to'xtatish kerak."
+      first_week_example:
+        ru: "5 дней в неделю, утром — 5 минут осознанного дыхания; 2 дня — отдых от практики."
+        uz: "Haftada 5 kun, ertalab — 5 daqiqa ongli nafas olish; 2 kun — amaliyotdan dam olish."
+    source:
+      name: "Goyal et al. 2014"
+      url: "https://pubmed.ncbi.nlm.nih.gov/24395196/"
+    template_id: mindfulness
+
+  - id: live_by_values
+    sphere: values
+    title: { ru: "Жить по ценностям", uz: "Qadriyatlarga mos yashash" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет действовать в согласии со своими ценностями, а не на автомате"
+    outcome: "В конце — действия под свои ценности выбираются осознанно, каждую неделю"
+    metric: { key: values_actions, kind: counter, unit: "действий/нед", rounding: 1 }
+    secondary: ["число затронутых ценностей"]
+    targets: ["60 дней", "90 дней"]
+    pace: >-
+      6–8 недель (Cohen & Sherman 2014: самоаффирмация через ценности).
+      Варианты цели — 3 / 5 / 7 действий в неделю.
+    week_skeleton: "Пн: выбрать ценность недели (из своих 3), ежедневно отмечать действие"
+    minimal_version: "Назвать 1 ценность утром"
+    guide:
+      steps:
+        - ru: "В понедельник выбери одну ценность недели из своих 3 главных ценностей (например, «честность», «забота о близких»)."
+          uz: "Dushanba kuni o'zingizning 3 asosiy qadriyatingizdan birini — hafta qadriyatini tanlang (masalan, 'halollik', 'yaqinlarga g'amxorlik')."
+        - ru: "Каждый день ищи хотя бы 1 маленькое действие, которое отражает эту ценность, и отмечай его в приложении."
+          uz: "Har kuni shu qadriyatni aks ettiruvchi kamida 1 kichik harakat toping va ilovada belgilang."
+        - ru: "Действие не обязано быть масштабным — важно, чтобы оно было осознанным выбором, а не случайностью."
+          uz: "Harakat katta bo'lishi shart emas — muhimi, u tasodif emas, ongli tanlov bo'lishi."
+        - ru: "В конце недели посмотри, сколько действий получилось и какие ценности были задействованы."
+          uz: "Hafta oxirida necha harakat qilinganini va qaysi qadriyatlar qamrab olinganini ko'rib chiqing."
+      mistakes:
+        - ru: "Выбирать ценность недели и забывать про неё до следующего понедельника — без ежедневных действий выбор остаётся формальным."
+          uz: "Hafta qadriyatini tanlab, keyingi dushanbagacha unutib qo'yish — kunlik harakatlarsiz tanlov rasmiy bo'lib qoladi."
+        - ru: "Путать ценность с целью (например, «накачаться» вместо «здоровье») — ценность это то, что направляет выбор, а не конкретный результат."
+          uz: "Qadriyatni maqsad bilan aralashtirib yuborish (masalan, 'mushak qilish' o'rniga 'sog'liq') — qadriyat tanlovni yo'naltiruvchi narsa, aniq natija emas."
+        - ru: "Браться сразу за все 3 ценности одновременно — проще закрепить привычку, фокусируясь на одной ценности в неделю."
+          uz: "Birdan 3 qadriyatning hammasini birga olishga urinish — bir haftada bitta qadriyatga diqqat qilish odatni mustahkamlashni osonlashtiradi."
+      first_week_example:
+        ru: "Пн — выбрать ценность недели; каждый день — отметить 1 действие по этой ценности; Вс — посмотреть, сколько действий получилось."
+        uz: "Dush — hafta qadriyatini tanlash; har kuni — shu qadriyat bo'yicha 1 harakatni belgilash; Yak — necha harakat qilinganini ko'rib chiqish."
+    source:
+      name: "Cohen & Sherman 2014"
+      url: "https://labs.psych.ucsb.edu/sherman/david/node/323"
+    template_id: live_by_values

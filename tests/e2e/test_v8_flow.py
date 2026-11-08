@@ -1,9 +1,9 @@
 """
-NewLife v8 — прогон (ветка `v8`, NEWLIFE_V8_SPEC.md §16): полный сценарий
+NewLife v8 — прогон (ветка `v8`, docs/specs/NEWLIFE_V8_SPEC.md §16): полный сценарий
 нового пользователя через все 12 экранов онбординга (точка А → цель →
 режим дня → обязательные дела → ... → WOOP → раскрытие → регистрация) и
 demo-аккаунт с заполненными данными по всем модулям v8. Скриншоты — 375px,
-светлая и тёмная тема, в design_review/v8/.
+светлая и тёмная тема, в docs/design/design_review/v8/.
 """
 
 import json
@@ -31,7 +31,7 @@ DEMO_PASSWORD = "V8Demo2026!"
 def _shots_dir():
     from pathlib import Path
 
-    d = Path(__file__).parent.parent.parent / "design_review" / "v8"
+    d = Path(__file__).parent.parent.parent / "docs" / "design" / "design_review" / "v8"
     d.mkdir(parents=True, exist_ok=True)
     return d
 

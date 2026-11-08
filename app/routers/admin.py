@@ -15,16 +15,19 @@ from app.auth import require_admin
 from app.database import get_session
 from app.models import CustomTemplateDraft, Measurement, Season, SeasonDay, SphereState, User
 from app.newlife.habit_catalog import load_bad_habit_catalog, load_habit_catalog
+from app.newlife.question_bank import load_question_bank
 from app.newlife.scheduler import format_hhmm
 from app.newlife.spheres import SPHERES
 from app.rendering import render
 from app.seasons.schema import SeasonTemplate
 from app.seasons_library.loader import get_template, load_approved_custom_templates, load_library
+from app.newlife.spheres import SPHERE_BY_ID
 from app.services.admin_stats import (
     funnel_counts,
     next_season_rate,
     retention_overview,
     reveal_completion_rate,
+    sphere_popularity,
     virality,
 )
 from app.services.episodes import get_or_create_episode
@@ -36,7 +39,12 @@ router = APIRouter(prefix="/admin")
 
 
 @router.get("")
+@router.get("/analytics")
 def dashboard(request: Request, user: User = Depends(require_admin), db: Session = Depends(get_session)):
+    """Дашборд аналитики (PRD 1.0 «Техника и запуск»): /admin и
+    /admin/analytics — один и тот же экран (алиас маршрута, не дублирующий
+    код). Админы и demo-аккаунт исключены из всех чисел — см.
+    app.services.admin_stats._excluded_uids."""
     cohort_day = date.today() - timedelta(days=30)
     return render(
         request,
@@ -47,6 +55,9 @@ def dashboard(request: Request, user: User = Depends(require_admin), db: Session
             "reveal_rate": reveal_completion_rate(db),
             "next_season_rate": next_season_rate(db),
             "virality": virality(db),
+            "sphere_popularity": [
+                (SPHERE_BY_ID[sid].id, count) for sid, count in sphere_popularity(db) if sid in SPHERE_BY_ID
+            ],
             "lang": user.language,
         },
     )
@@ -229,6 +240,15 @@ def catalog_admin(request: Request, user: User = Depends(require_admin)):
         "admin/catalog.html",
         {"goal_templates": goal_templates, "habits": habits, "bad_habits": bad_habits, "triggers": triggers, "lang": user.language},
     )
+
+
+@router.get("/questions")
+def questions_admin(request: Request, user: User = Depends(require_admin)):
+    """PRD 1.0 F7: банк "вопрос дня" — версионируется в YAML/git, здесь
+    только просмотр (как /admin/catalog для целей/привычек)."""
+    bank = load_question_bank()
+    rows = [{"sphere": sphere, "questions": bank.get(sphere.id, [])} for sphere in SPHERES]
+    return render(request, "admin/questions.html", {"rows": rows, "lang": user.language})
 
 
 @router.get("/schedule-sandbox")

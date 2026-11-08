@@ -4,21 +4,26 @@
 настройки, «Методы NewLife», «Откуда эти нормы», «О NewLife», выход.
 """
 
+import json
 import os
 from datetime import datetime, timezone as dt_timezone
+from typing import Optional
 
 from fastapi import APIRouter, Depends, Form, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from sqlmodel import Session, select
 
-from app.auth import require_user
+from app.auth import get_current_user, require_user, verify_password
 from app.database import get_session
 from app.i18n import translate
 from app.models import Commitment, Profile, Proof, Reveal, Season, SphereLevelHistory, SphereState, User
+from app.newlife.goal_catalog import all_goals
 from app.newlife.methods import METHODS
+from app.newlife.question_bank import question_by_id
 from app.newlife.spheres import SPHERE_BY_ID, SPHERES
 from app.rendering import render
-from app.seasons_library.catalog_meta import CATALOG_META
+from app.services.data_privacy import delete_user_account, export_user_data
+from app.services.day_questions import recent_answers
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import WEEKDAY_LABELS
 from app.services.usertime import can_change_timezone, is_valid_timezone
@@ -96,6 +101,11 @@ def profile_page(request: Request, user: User = Depends(require_user), db: Sessi
         if s.sphere_id in SPHERE_BY_ID
     ]
     commitments = db.exec(select(Commitment).where(Commitment.uid == user.id, Commitment.active.is_(True))).all()
+    day_answers = [
+        {"question_text": q.text, "option_text": a.option_text, "answered_on": a.answered_on}
+        for a in recent_answers(db, user.id, limit=5)
+        if (q := question_by_id(a.question_id))
+    ]
 
     return render(
         request,
@@ -105,6 +115,7 @@ def profile_page(request: Request, user: User = Depends(require_user), db: Sessi
             "profile": profile,
             "wheel": wheel,
             "commitments_count": len(commitments),
+            "day_answers": day_answers,
             "completed": completed,
             "reveals": reveals,
             "hero_stage": stage,
@@ -175,16 +186,33 @@ def methods_page(request: Request, user: User = Depends(require_user)):
 def sources_page(request: Request, user: User = Depends(require_user)):
     seen = set()
     sources = []
-    for meta in CATALOG_META.values():
-        if meta.get("source") and meta["source"] not in seen:
-            seen.add(meta["source"])
-            sources.append(meta)
+    for goal in all_goals():
+        if goal.source.is_heuristic or goal.source.name in seen:
+            continue
+        seen.add(goal.source.name)
+        sources.append({"source": goal.source.name, "source_url": goal.source.url, "safe_rate": goal.pace})
     return render(request, "sources.html", {"sources": sources, "lang": user.language})
 
 
 @router.get("/about")
 def about_page(request: Request, user: User = Depends(require_user)):
     return render(request, "about.html", {"lang": user.language})
+
+
+@router.get("/help")
+def help_page(request: Request, user: User = Depends(get_current_user)):
+    """Экран помощи (PRD 1.0 «Безопасность»): 103/112 — общеизвестные номера
+    скорой и экстренных служб Узбекистана, встроены всегда. Линия
+    психологической помощи — из HELPLINE_UZ (.env); без неё строка просто
+    не показывается, чтобы не вывести на экран непроверенный номер.
+    БЕЗ обязательного входа (get_current_user, не require_user) — номера
+    должны быть доступны сразу, в т.ч. во время онбординга до регистрации
+    и при мыслях о самоповреждении (NEWLIFE_1_0_CONTENT.md §6 п.7)."""
+    return render(
+        request,
+        "help.html",
+        {"helpline_uz": os.getenv("HELPLINE_UZ") or None, "lang": user.language if user else "ru"},
+    )
 
 
 @router.post("/profile/settings")
@@ -225,3 +253,48 @@ def delete_all_photos(request: Request, user: User = Depends(require_user), db: 
     db.commit()
     push_flash(request, "profile.photos_deleted", "success")
     return RedirectResponse("/profile", status_code=303)
+
+
+@router.get("/profile/export")
+def export_data(user: User = Depends(require_user), db: Session = Depends(get_session)):
+    """Экспорт всех своих данных в JSON (PRD 1.0 «Безопасность и данные») —
+    app/services/data_privacy.py, дженерик по всем таблицам с uid."""
+    data = export_user_data(db, user.id)
+    payload = json.dumps(data, ensure_ascii=False, indent=2)
+    return Response(
+        content=payload,
+        media_type="application/json",
+        headers={"Content-Disposition": f'attachment; filename="newlife-export-{user.id}.json"'},
+    )
+
+
+@router.get("/profile/delete-account")
+def delete_account_form(request: Request, user: User = Depends(require_user)):
+    return render(request, "profile_delete_account.html", {"error": None, "lang": user.language})
+
+
+@router.post("/profile/delete-account")
+def delete_account_submit(
+    request: Request,
+    password: str = Form(...),
+    confirm: str = Form(""),
+    user: User = Depends(require_user),
+    db: Session = Depends(get_session),
+):
+    """Удаление аккаунта (PRD 1.0 «Безопасность и данные») — требует пароль
+    и явное подтверждение чекбоксом, необратимо, удаляет ВСЕ данные
+    (app/services/data_privacy.py::delete_user_account)."""
+    if not verify_password(password, user.password_hash) or confirm != "1":
+        return render(
+            request,
+            "profile_delete_account.html",
+            {"error": "profile.delete_account_error", "lang": user.language},
+        )
+    delete_user_account(db, user.id)
+    request.session.clear()
+    return RedirectResponse("/", status_code=303)
+
+
+@router.get("/privacy")
+def privacy_page(request: Request, user: Optional[User] = Depends(get_current_user)):
+    return render(request, "privacy.html", {"lang": user.language if user else "ru"})

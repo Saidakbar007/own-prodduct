@@ -1,5 +1,5 @@
 """
-Онбординг NewLife v8 (§5 NEWLIFE_V8_SPEC.md): философия → сферы → уровень
+Онбординг NewLife v8 (§5 docs/specs/NEWLIFE_V8_SPEC.md): философия → сферы → уровень
 по сфере → цель (для "Тела" — каталог Сезонов, §7.1 старого ТЗ: рост/вес/
 год рождения для fat_loss_safe/muscle_gain, тест уровня) → режим дня →
 обязательные дела → время на себя → когда больше сил → ограничения → WOOP →
@@ -24,11 +24,11 @@ from app.auth import get_current_user, require_user
 from app.database import get_session
 from app.models import Profile, SphereState, User
 from app.newlife import point_a
-from app.newlife.spheres import SPHERES, SPHERE_BY_ID, has_goal_catalog
+from app.newlife.goal_catalog import goal_meta
+from app.newlife.spheres import SPHERES, SPHERE_BY_ID
 from app.rendering import render
 from app.seasons import engine
 from app.seasons_library.loader import get_template, load_library
-from app.services.custom_goal import ai_generation_available, generate_custom_template
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.services.newlife_onboarding import (
@@ -50,6 +50,7 @@ from app.services.seasons import (
     get_or_create_wave,
     wave_composition_count,
 )
+from app.services.usertime import today_for
 
 router = APIRouter(prefix="/onboarding")
 
@@ -144,29 +145,65 @@ def sphere_level_submit(request: Request, option_index: Optional[int] = Form(Non
 
 
 @router.get("/goal")
-def goal_picker(request: Request, db: Session = Depends(get_session)):
-    """Экран 4: цель из каталога (пока полноценно — только "Тело", §3)."""
-    tiles = [
-        {"id": t.id, "title": t.title, "category": t.category, "lengths": t.lengths}
-        for t in load_library().values()
-    ]
-    tiles.sort(key=lambda t: t["id"])
+def goal_picker(
+    request: Request, db: Session = Depends(get_session), user: Optional[User] = Depends(get_current_user)
+):
+    """Экран 4: карточки целей из каталога выбранных на экране 2 сфер (PRD
+    1.0 F2 — любая из 11, не только "Тело"). Без выбранных сфер в черновике
+    (человек уже зарегистрирован и зашёл сюда за новой целью/сезоном,
+    см. docstring модуля) — показываем каталог всех сфер без фильтра."""
     draft = _draft(request)
+    chosen_spheres = draft.get("spheres") or []
+
+    hidden_ids: set[str] = set()
+    if user:
+        profile = db.exec(select(Profile).where(Profile.uid == user.id)).first()
+        if profile:
+            # §6: уже известный профиль прячет цели, которые ему недоступны,
+            # не дожидаясь повторного прохода через /onboarding/health.
+            if profile.is_pregnant:
+                hidden_ids |= {"fat_loss_safe", "muscle_gain"}
+            if profile.disordered_eating_signal:
+                hidden_ids |= {"fat_loss_safe", "nutrition"}
+
+    tiles = []
+    for t in load_library().values():
+        entry = goal_meta(t.id)
+        if entry is None:
+            continue
+        if entry.id in hidden_ids:
+            continue
+        if chosen_spheres and entry.sphere not in chosen_spheres:
+            continue
+        tiles.append(
+            {
+                "id": t.id,
+                "title": entry.title.ru,
+                "sphere": entry.sphere,
+                "lengths": t.lengths,
+            }
+        )
+
+    sphere_order = {s: i for i, s in enumerate(chosen_spheres)}
+    tiles.sort(key=lambda tile: (sphere_order.get(tile["sphere"], 99), tile["id"]))
+
+    spheres_shown = sorted({tile["sphere"] for tile in tiles}, key=lambda s: sphere_order.get(s, 99))
+
     return render(
         request,
         "onboarding/goal.html",
         {
             "tiles": tiles,
-            "ai_available": ai_generation_available(),
-            "can_skip": not draft.get("spheres") or any(not has_goal_catalog(s) for s in draft.get("spheres", [])),
+            "spheres_shown": [SPHERE_BY_ID[s] for s in spheres_shown],
         },
     )
 
 
 @router.post("/goal/skip")
 def goal_skip(request: Request):
-    """Выбранные сферы без каталога целей (пока только "Тело" его имеет) —
-    пропускаем создание сезона, привычку в любую сферу можно завести позже."""
+    """«Пропустить» (PRD 1.0 §5: кнопка-пропуск есть на каждом экране) —
+    без выбора цели сейчас; привычку/цель в любую сферу можно завести позже
+    из «Сезонов»."""
     draft = _draft(request)
     draft.pop("template_id", None)
     _save(request, draft)
@@ -177,17 +214,8 @@ def goal_skip(request: Request):
 def goal_submit(
     request: Request,
     template_id: str = Form(...),
-    custom_text: str = Form(""),
     db: Session = Depends(get_session),
 ):
-    if template_id == "custom":
-        template = generate_custom_template(db, custom_text)
-        if template is None:
-            return render(request, "onboarding/custom_unavailable.html", {"goal_text": custom_text})
-        # Сгенерированный шаблон сохранён как draft и используется так же, как
-        # библиотечный — здесь просто продолжаем с его id.
-        template_id = template.id
-
     draft = _draft(request)
     draft["template_id"] = template_id
     request.session["onboarding"] = draft
@@ -211,6 +239,9 @@ def health_submit(
     height_cm: int = Form(...),
     weight_kg: float = Form(...),
     birth_year: int = Form(...),
+    has_medical_diagnosis: str = Form("0"),
+    is_pregnant: str = Form("0"),
+    disordered_eating_signal: str = Form("0"),
 ):
     draft = _draft(request)
     template_id = draft.get("template_id")
@@ -220,12 +251,33 @@ def health_submit(
     if date.today().year - birth_year < MIN_AGE:
         return render(request, "onboarding/health.html", {"error": "auth.error_age_limit"})
 
-    if template_id == "fat_loss_safe" and not engine.meets_fat_loss_eligibility(weight_kg, height_cm):
-        return render(request, "onboarding/bmi_blocked.html", {})
+    pregnant_flag = is_pregnant == "1"
+    diagnosis_flag = has_medical_diagnosis == "1"
+    eating_signal_flag = disordered_eating_signal == "1"
+
+    if pregnant_flag:
+        # NEWLIFE_1_0_CONTENT.md §6 п.4: беременность — похудение и набор
+        # массы недоступны оба, оба шаблона здесь попадают под этот гейт.
+        return render(request, "onboarding/pregnancy_blocked.html", {})
+
+    if template_id == "fat_loss_safe":
+        # Ориентировочный целевой вес до клампа темпа (длительность сезона
+        # выбирается позже, на /onboarding/schedule) — PRD 1.0: блокировать
+        # при текущем ИЛИ целевом ИМТ < 18,5, не только текущем.
+        nominal_target = weight_kg - get_template(template_id).target_default
+        if not engine.meets_fat_loss_eligibility(weight_kg, height_cm, nominal_target):
+            return render(request, "onboarding/bmi_blocked.html", {})
+        if engine.has_eating_disorder_signal(weight_kg, height_cm, nominal_target, eating_signal_flag):
+            # §6 п.5: сигнал РПП (самоотчёт — ИМТ уже проверен строкой выше)
+            # — нейтральная карточка вместо продолжения на цель похудения.
+            return render(request, "onboarding/eating_signal_blocked.html", {})
 
     draft["height_cm"] = height_cm
     draft["weight_kg"] = weight_kg
     draft["birth_year"] = birth_year
+    draft["has_medical_diagnosis"] = diagnosis_flag
+    draft["is_pregnant"] = pregnant_flag
+    draft["disordered_eating_signal"] = eating_signal_flag
     request.session["onboarding"] = draft
 
     if template_id == "fat_loss_safe":
@@ -562,14 +614,29 @@ def start_for_existing_user(
         push_flash(request, "onboarding.error_too_many_active", "error")
         return RedirectResponse("/seasons", status_code=303)
 
+    if any(k in draft for k in ("has_medical_diagnosis", "is_pregnant", "disordered_eating_signal")):
+        # Безопасность (§6): ответы могли обновиться с прошлого раза —
+        # обновляем уже существующий профиль, не только при регистрации.
+        profile = db.exec(select(Profile).where(Profile.uid == user.id)).first()
+        if profile:
+            profile.has_medical_diagnosis = draft.get("has_medical_diagnosis", profile.has_medical_diagnosis)
+            profile.is_pregnant = draft.get("is_pregnant", profile.is_pregnant)
+            profile.disordered_eating_signal = draft.get(
+                "disordered_eating_signal", profile.disordered_eating_signal
+            )
+            db.add(profile)
+            db.commit()
+
+    entry = goal_meta(template_id)
     season = create_season(
         db,
         uid=user.id,
         template_id=template_id,
         length_days=draft["length_days"],
         baseline_value=draft["baseline_value"],
-        reference_date=date.today(),
+        reference_date=today_for(user),  # не date.today() — см. auth.py register_submit
         secondary_baseline_value=draft.get("secondary_baseline_value"),
+        sphere_id=entry.sphere if entry else None,
     )
     log_event_safe(db, "season_started", uid=user.id, season_id=season.id)
     request.session.pop("onboarding", None)

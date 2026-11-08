@@ -1,0 +1,36 @@
+id: keep_promises
+version: 1
+title: "Сезон: держать слово себе"
+title_uz: "Mavsum: oʻz-oʻzingga bergan soʻzni ushlash"
+category: character
+metric: { name: "Выполненные обещания себе", unit: "%", direction: up }
+lengths: [60, 90]
+target_default: 20
+baseline_test:
+  prompt: "Как по-твоему, какой % обещаний себе ты обычно выполняешь?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "3 обещания себе"
+        instructions: "В понедельник выбери 3 обещания себе на неделю. Каждый вечер отметь по каждому «сделал / не сделал»."
+        minimal: "1 микро-обещание в день"
+        expected_progress: 0.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Вечерняя отметка работает каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Какой % из обещанного себе на этой неделе ты выполнил(а)?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

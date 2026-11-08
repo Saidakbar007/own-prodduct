@@ -1,0 +1,36 @@
+id: positive_communication
+version: 1
+title: "Сезон: позитив в общении"
+title_uz: "Mavsum: muloqotda ijobiylik"
+category: relationships
+metric: { name: "Слова благодарности или признания в день", unit: "раз/день", direction: up }
+lengths: [30, 60]
+target_default: 3
+baseline_test:
+  prompt: "Сколько раз в день ты говоришь близким слова благодарности или признания?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Скажи «спасибо за…»"
+        instructions: "В течение дня отметь хотя бы один раз, за что ты благодарен(на) близкому человеку, и скажи это вслух или напиши."
+        minimal: "Сказать «спасибо за…»"
+        expected_progress: 1
+rest_day:
+  title: "Обычный день"
+  instructions: "Эта привычка работает каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько раз в день в среднем ты говорил(а) слова благодарности или признания на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

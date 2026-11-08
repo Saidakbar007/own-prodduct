@@ -1,0 +1,43 @@
+# Недельная рефлексия (доп. задача, см. docs/decisions/DECISIONS.md →
+# «Этап "Доделай" + guide + wger»): 5 фиксированных вопросов кнопками, один
+# раз в неделю, ru/uz. Схема и загрузчик — app/newlife/weekly_reflection_bank.py.
+questions:
+  - id: week_overall
+    text: { ru: "Как прошла эта неделя в целом?", uz: "Bu hafta umuman qanday oʻtdi?" }
+    options:
+      - { ru: "Отлично", uz: "Aʼlo" }
+      - { ru: "Хорошо", uz: "Yaxshi" }
+      - { ru: "Так себе", uz: "Oʻrtacha" }
+      - { ru: "Тяжело", uz: "Qiyin" }
+
+  - id: week_best_part
+    text: { ru: "Что в этой неделе получилось лучше всего?", uz: "Bu hafta eng yaxshi nima chiqdi?" }
+    options:
+      - { ru: "Учёба/работа", uz: "Oʻqish/ish" }
+      - { ru: "Привычки и цели", uz: "Odatlar va maqsadlar" }
+      - { ru: "Отношения", uz: "Munosabatlar" }
+      - { ru: "Отдых", uz: "Dam olish" }
+
+  - id: week_hardest_part
+    text: { ru: "Что было сложнее всего?", uz: "Eng qiyini nima boʻldi?" }
+    options:
+      - { ru: "Учёба/работа", uz: "Oʻqish/ish" }
+      - { ru: "Мотивация", uz: "Motivatsiya" }
+      - { ru: "Сон и энергия", uz: "Uyqu va energiya" }
+      - { ru: "Отношения", uz: "Munosabatlar" }
+
+  - id: week_plan_completion
+    text: { ru: "Сколько из плана недели ты выполнил(а)?", uz: "Haftalik rejadan qanchasini bajarding?" }
+    options:
+      - { ru: "Почти всё", uz: "Deyarli hammasi" }
+      - { ru: "Половину", uz: "Yarmi" }
+      - { ru: "Меньше половины", uz: "Yarmidan kam" }
+      - { ru: "Почти ничего", uz: "Deyarli hech narsa" }
+
+  - id: week_next_week_pace
+    text: { ru: "Что возьмёшь с собой на следующую неделю?", uz: "Keyingi haftaga nimani olib oʻtasan?" }
+    options:
+      - { ru: "Тот же темп", uz: "Xuddi shu sur'at" }
+      - { ru: "Чуть легче темп", uz: "Biroz yengilroq sur'at" }
+      - { ru: "Чуть сложнее темп", uz: "Biroz qiyinroq sur'at" }
+      - { ru: "Нужен перерыв", uz: "Tanaffus kerak" }

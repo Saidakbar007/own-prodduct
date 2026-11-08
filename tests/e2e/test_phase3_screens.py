@@ -1,4 +1,4 @@
-"""E2E для новых экранов Фазы 3 (§7 п.7, §12): 375px, обе темы, скриншоты в design_review/final/."""
+"""E2E для новых экранов Фазы 3 (§7 п.7, §12): 375px, обе темы, скриншоты в docs/design/design_review/final/."""
 
 import hashlib
 import hmac
@@ -13,7 +13,7 @@ from playwright.sync_api import Page, expect
 from tests.e2e.test_phase2_screens import VIEWPORT, _register_with_season, _set_theme
 
 THEMES = ["dark", "light"]
-SCREENSHOT_DIR = Path(__file__).parent.parent.parent / "design_review" / "final"
+SCREENSHOT_DIR = Path(__file__).parent.parent.parent / "docs" / "design" / "design_review" / "final"
 SCREENSHOT_DIR.mkdir(parents=True, exist_ok=True)
 
 BOT_TOKEN = "123456:TEST-TOKEN-not-real"

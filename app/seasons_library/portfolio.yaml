@@ -1,0 +1,39 @@
+id: portfolio
+version: 1
+title: "Сезон: портфолио"
+title_uz: "Mavsum: portfolio"
+category: career
+metric: { name: "Законченные проекты", unit: "проектов", direction: up }
+lengths: [30, 60]
+target_default: 1
+baseline_test:
+  prompt: "Сколько законченных проектов с публичной ссылкой у тебя сейчас есть?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 3, 5], minutes: [60, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Блок над проектом"
+        instructions: >-
+          60 минут над текущим проектом: код, контент или описание. Если
+          идея разрослась — сократи её до минимальной версии, которую
+          реально закончить и опубликовать.
+        minimal: "1 коммит или 1 строка описания"
+        expected_progress: 0.05
+rest_day:
+  title: "День без проекта"
+  instructions: "Посмотри на проект свежим взглядом, без правок — просто список следующих шагов"
+measure_every_days: 7
+measure:
+  prompt: "На сколько % готов текущий проект на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 3

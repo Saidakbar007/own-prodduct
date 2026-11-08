@@ -1,0 +1,36 @@
+id: nature_time
+version: 1
+title: "Сезон: время на природе"
+title_uz: "Mavsum: tabiatda vaqt"
+category: energy
+metric: { name: "Время на улице", unit: "мин/нед", direction: up }
+lengths: [30, 60]
+target_default: 120
+baseline_test:
+  prompt: "Сколько минут в неделю ты сейчас проводишь на улице при дневном свете (парк, двор, прогулка)?"
+  input: number
+  min: 0
+  max: 500
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [15, 60] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Время на улице"
+        instructions: "Проведи 15–30 минут на улице при дневном свете: прогулка, парк, двор. Можно разбить на части в течение дня — суммарно за неделю нужно набрать 120 минут."
+        minimal: "Прогулка 5 минут"
+        expected_progress: 10
+rest_day:
+  title: "Обычный день"
+  instructions: "Это не тренировка — выходи на улицу в любой день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько минут за эту неделю ты провёл(а) на улице при дневном свете?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

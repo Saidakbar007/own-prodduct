@@ -43,7 +43,7 @@ class User(SQLModel, table=True):
 class Wave(SQLModel, table=True):
     """Волна: метка недели (понедельник), по которой людей группируют в
     команду. С UX-правки сезон не ждёт понедельника — start_date здесь не
-    момент старта, а бакет для группировки (см. DECISIONS.md)."""
+    момент старта, а бакет для группировки (см. docs/decisions/DECISIONS.md)."""
 
     __tablename__ = "wave"
 
@@ -81,6 +81,11 @@ class Season(SQLModel, table=True):
     result_tier: Optional[str] = None  # clean | passed | completed
     second_chances_left: int
     current_phase: int = Field(default=1)
+    # NewLife 1.0 (доп. задача, см. DECISIONS.md → guide/wger): текущая
+    # ступень лестницы вызовов (1-индексация, как current_phase) — только
+    # для целей с GoalCatalogEntry.ladder (confidence_through_action,
+    # public_speaking_confidence); у остальных целей просто остаётся 1.
+    ladder_rung: int = Field(default=1)
     # Вторая метрика (пока только muscle_gain: вес тела рядом с рабочим весом,
     # §7 задачи Фазы 2) — nullable, большинство сезонов её не используют.
     secondary_metric_name: Optional[str] = None
@@ -108,6 +113,18 @@ class SeasonDay(SQLModel, table=True):
     done_at: Optional[datetime] = None  # серверное время отметки
     proof_id: Optional[int] = Field(default=None, foreign_key="proof.id")
     reminder_sent: bool = Field(default=False)  # §12: без дублей напоминаний бота
+    # NewLife 1.0 (F4): минуты завершённого блока таймера фокуса/практики —
+    # только для дней, где главное действие отмечено через таймер, а не
+    # обычную кнопку "Сделал" (app/routers/focus.py). Используется, чтобы
+    # предзаполнить недельный замер суммой уже залогированных минут.
+    logged_minutes: Optional[float] = None
+    # NewLife 1.0 (доп. задача, см. DECISIONS.md → wger/ACSM): JSON-список
+    # [{"exercise_id": str, "weight_kg": float|None, "reps": int|None}, ...]
+    # — по одной рабочей записи на упражнение программы (/workout), не на
+    # каждый отдельный подход; как и logged_minutes, это текстовое поле, не
+    # отдельная таблица — объём данных и паттерн использования (один экран
+    # в день) не оправдывают новую сущность.
+    workout_log: Optional[str] = None
 
 
 class Measurement(SQLModel, table=True):
@@ -287,7 +304,7 @@ class Event(SQLModel, table=True):
 
 
 # ---------------------------------------------------------------------------
-# NewLife v8 (NEWLIFE_V8_SPEC.md §4): точка А, сферы, расписание, привычки,
+# NewLife v8 (docs/specs/NEWLIFE_V8_SPEC.md §4): точка А, сферы, расписание, привычки,
 # методы. Сезоны (выше) не меняются по сути — Goal лишь связывает их с целью
 # и сферой; вся старая модель данных и данные существующих пользователей
 # сохраняются без изменений (только новые таблицы и nullable-поля).
@@ -311,6 +328,14 @@ class Profile(SQLModel, table=True):
     main_obstacle: Optional[str] = None  # tired|no_time|forget|phone|quit_after_week
     onboarding_done_at: Optional[datetime] = None
     created_at: datetime = Field(default_factory=_utcnow)
+    # Безопасность (NEWLIFE_1_0_CONTENT.md §6 «Предупреждения и красные
+    # флаги»), собираются на /onboarding/health при выборе fat_loss_safe/
+    # muscle_gain — см. app/seasons/engine.py и DECISIONS.md:
+    has_medical_diagnosis: Optional[bool] = None  # "да" → только минимальные версии
+    is_pregnant: Optional[bool] = None  # "да" → похудение и набор массы недоступны
+    disordered_eating_signal: Optional[bool] = None  # самоотчёт (пропуск еды/рвота/
+    # страх набрать вес) ИЛИ ИМТ<18,5 текущий/целевой — скрывает цели на
+    # снижение веса и подсчёт порций, прячет сравнение "до/после"
 
 
 class SphereState(SQLModel, table=True):
@@ -502,3 +527,71 @@ class MethodEvent(SQLModel, table=True):
     trigger: str
     shown_at: datetime = Field(default_factory=_utcnow)
     accepted: Optional[bool] = None
+
+
+class DayQuestionAnswer(SQLModel, table=True):
+    """Ответ на "вопрос дня" (PRD 1.0 F7, app/newlife/question_bank.yaml) —
+    один в день, в первые 7 дней после регистрации."""
+
+    __tablename__ = "day_question_answer"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    question_id: str = Field(index=True)
+    sphere_id: str
+    option_index: int
+    option_text: str
+    answered_on: date  # дата пользователя (today_for), не UTC-дата сервера
+    answered_at: datetime = Field(default_factory=_utcnow)
+
+
+class WeeklyReflectionAnswer(SQLModel, table=True):
+    """Ответ на вопрос недельной рефлексии (доп. задача, см. DECISIONS.md →
+    guide/wger) — до 5 в неделю, по одному на каждый question_id,
+    привязаны к понедельнику той недели пользователя (week_start)."""
+
+    __tablename__ = "weekly_reflection_answer"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    question_id: str = Field(index=True)
+    option_index: int
+    option_text: str
+    week_start: date = Field(index=True)  # понедельник недели пользователя (today_for)
+    answered_at: datetime = Field(default_factory=_utcnow)
+
+
+class ExpenseEntry(SQLModel, table=True):
+    """Трата (доп. задача, см. DECISIONS.md → guide/wger): цель
+    expense_tracking — категории кнопками + сумма степпером, итог месяца по
+    категориям. Категория — строка из фиксированного списка
+    app.services.expenses.CATEGORIES, не отдельная таблица (5 категорий,
+    заводить справочник ради этого избыточно)."""
+
+    __tablename__ = "expense_entry"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    category: str = Field(index=True)
+    amount: float
+    logged_on: date = Field(index=True)  # дата пользователя (today_for)
+    created_at: datetime = Field(default_factory=_utcnow)
+
+
+class FlashcardReview(SQLModel, table=True):
+    """Состояние интервального повторения одной карточки для одного
+    пользователя (PRD 1.0 F5) — app/services/flashcards.py. Интервалы
+    1→3→7→16→35 дней (stage 0..4), "не вспомнил" — stage сбрасывается в 0.
+    Одна строка на (uid, deck_id, card_id); создаётся при первом показе
+    карточки (introduced_on — для лимита 15 новых карточек в день)."""
+
+    __tablename__ = "flashcard_review"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    uid: int = Field(foreign_key="users.id", index=True)
+    deck_id: str = Field(index=True)
+    card_id: str = Field(index=True)
+    stage: int = Field(default=0)
+    due_date: date = Field(index=True)
+    introduced_on: date
+    last_reviewed_at: datetime = Field(default_factory=_utcnow)

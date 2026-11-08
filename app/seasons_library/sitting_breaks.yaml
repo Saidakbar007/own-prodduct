@@ -1,0 +1,36 @@
+id: sitting_breaks
+version: 1
+title: "Сезон: меньше сидеть"
+title_uz: "Mavsum: kamroq oʻtirish"
+category: fitness
+metric: { name: "Перерывы от сидения", unit: "перерывов/день", direction: up }
+lengths: [30, 60]
+target_default: 3
+baseline_test:
+  prompt: "Сколько раз в день ты встаёшь и двигаешься после долгого сидения?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Перерыв каждый час"
+        instructions: "Раз в час вставай и подвигайся хотя бы 1–2 минуты: пройдись, потянись."
+        minimal: "Три перерыва в день"
+        expected_progress: 0.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Привычка работает каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько раз в день ты вставал(а) и двигался(ась) после сидения на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

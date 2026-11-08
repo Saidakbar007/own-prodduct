@@ -1,0 +1,37 @@
+id: water
+version: 1
+title: "Сезон: вода"
+title_uz: "Mavsum: suv ichish"
+category: nutrition
+metric: { name: "Жидкость", unit: "л/день", direction: up }
+lengths: [30, 60]
+target_default: 0.5
+baseline_test:
+  prompt: "Сколько литров жидкости (вода, чай, другие напитки) ты пьёшь в среднем за день?"
+  input: number
+  min: 0
+  max: 5
+eligibility:
+  min_age: 18
+  warnings:
+    - "Ориентир — около 1,6 л для женщин и 2,0 л для мужчин с учётом всех напитков; больше 3 л без рекомендации врача не нужно"
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Вода в течение дня"
+        instructions: "Пей воду понемногу в течение дня, не жди жажды: стакан после пробуждения и перед каждым приёмом пищи."
+        minimal: "Один дополнительный стакан воды в день"
+        expected_progress: 0.1
+rest_day:
+  title: "Обычный день"
+  instructions: "Привычка работает каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько литров жидкости ты выпивал(а) в среднем за день на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

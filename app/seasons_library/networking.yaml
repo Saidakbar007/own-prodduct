@@ -1,0 +1,36 @@
+id: networking
+version: 1
+title: "Сезон: нетворкинг"
+title_uz: "Mavsum: tanishuvlar tarmogʻi"
+category: social
+metric: { name: "Новые профессиональные контакты", unit: "контактов/нед", direction: up }
+lengths: [60, 90]
+target_default: 3
+baseline_test:
+  prompt: "Сколько новых профессиональных контактов (сообщение, встреча, мероприятие) у тебя было за последний месяц?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [2, 5], minutes: [5, 30] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "1 мероприятие или 2 сообщения"
+        instructions: "Посети 1 профессиональное мероприятие или напиши 2 новых сообщения с представлением себя, плюс сделай 1 follow-up по старому контакту."
+        minimal: "Написать 1 сообщение"
+        expected_progress: 0.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Нетворкинг не ежедневная задача — считаются только отмеченные дни"
+measure_every_days: 7
+measure:
+  prompt: "Сколько новых контактов и follow-up было на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

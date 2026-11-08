@@ -1,0 +1,51 @@
+# Программы силовых тренировок для новичка (ACSM Position Stand — 2-3
+# подхода по 8-12 повторов, отдых 1-2 мин, прогрессия +2-10% при запасе
+# 1-2 повтора). Схема и загрузчик — app/newlife/workout_programs.py.
+# Привязка к целям — WORKOUT_PROGRAM_GOALS в том же модуле, не здесь (это
+# решение по продукту, не по контенту).
+programs:
+  - id: full_body_gym
+    title: { ru: "Фулбади в зале", uz: "Zalda butun tana mashqlari" }
+    equipment: gym
+    sets: 3
+    reps_range: "8-12"
+    rest_minutes: "1-2"
+    progression:
+      ru: >-
+        Когда упражнение даётся с запасом 1-2 повтора — добавь 2-10% к весу
+        или 1 повтор в следующий раз. Если тяжелее ожидаемого — повтори тот
+        же вес на следующей тренировке.
+      uz: >-
+        Mashq 1-2 takror zahira bilan bajarilganda — keyingi safar vaznga
+        2-10% yoki 1 takror qoʻsh. Agar kutilganidan ogʻirroq boʻlsa —
+        keyingi mashg'ulotda xuddi shu vaznni takrorla.
+    exercises:
+      - squat
+      - bench_press
+      - bent_over_row
+      - seated_dumbbell_press
+      - romanian_deadlift
+      - plank
+
+  - id: full_body_home
+    title: { ru: "Фулбади дома", uz: "Uyda butun tana mashqlari" }
+    equipment: home
+    sets: 3
+    reps_range: "8-12"
+    rest_minutes: "1-2"
+    progression:
+      ru: >-
+        Без гантелей вес не растёт — вместо этого усложняй версию
+        упражнения (см. "сложная версия" у каждого упражнения) или добавляй
+        1-2 повтора, когда текущая версия даётся с запасом 1-2 повтора.
+      uz: >-
+        Gantelsiz vazn oshmaydi — buning oʻrniga mashqning qiyinroq
+        versiyasiga oʻt (har mashqdagi "qiyin versiya") yoki joriy versiya
+        1-2 takror zahira bilan bajarilganda 1-2 takror qoʻsh.
+    exercises:
+      - squat
+      - push_up
+      - glute_bridge
+      - lunge
+      - bird_dog
+      - plank

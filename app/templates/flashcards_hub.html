@@ -1,0 +1,18 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('flashcards.hub_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'me' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('flashcards.hub_title') }}</h1>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+  {% for deck in decks %}
+  <a href="/flashcards/{{ deck.id }}" class="card" style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-5)">
+    <strong style="font-size:var(--text-sm)">{{ deck.title }}</strong>
+    {% if deck.debt > 0 %}<span class="badge">{{ t('flashcards.debt_badge', n=deck.debt) }}</span>{% endif %}
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

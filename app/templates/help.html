@@ -1,0 +1,40 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ t('help.page_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'me' %}
+
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('help.page_title') }}</h1>
+  <p style="font-size:var(--text-sm);color:var(--text-faint);margin-top:var(--space-2)">{{ t('help.page_subtitle') }}</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-5)">
+  <a href="tel:103" class="card" style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-5)">
+    <div>
+      <strong style="font-size:var(--text-sm)">{{ t('help.ambulance_title') }}</strong>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ t('help.ambulance_body') }}</p>
+    </div>
+    <span class="btn btn--primary btn--sm" style="flex:none">103</span>
+  </a>
+
+  <a href="tel:112" class="card" style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-5)">
+    <div>
+      <strong style="font-size:var(--text-sm)">{{ t('help.emergency_title') }}</strong>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ t('help.emergency_body') }}</p>
+    </div>
+    <span class="btn btn--primary btn--sm" style="flex:none">112</span>
+  </a>
+
+  {% if helpline_uz %}
+  <a href="tel:{{ helpline_uz }}" class="card" style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-5)">
+    <div>
+      <strong style="font-size:var(--text-sm)">{{ t('help.psych_title') }}</strong>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ t('help.psych_body') }}</p>
+    </div>
+    <span class="btn btn--primary btn--sm" style="flex:none">{{ helpline_uz }}</span>
+  </a>
+  {% endif %}
+</div>
+
+<p style="font-size:var(--text-xs);color:var(--text-faint);text-align:center">{{ t('help.disclaimer') }}</p>
+{% endblock %}

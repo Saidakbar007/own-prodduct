@@ -5,14 +5,14 @@
 на часах — принимает простые значения, возвращает простые значения, поэтому
 полностью покрывается юнит-тестами таблицами случаев (tests/test_engine.py).
 
-Примечание по безопасности набора/снижения веса (§6): жёсткий недельный
-лимit (``clamp_weight_target``) осмысленен только для метрики "вес тела".
-Из пяти стартовых шаблонов это только fat_loss_safe (direction=down) — в
-muscle_gain выбрана метрика "рабочий вес в приседе" (не вес тела), чтобы
-``target_default`` имел единый смысл "изменение от baseline" для всех
-шаблонов разом (см. SEASONS_SPEC.md → «Изменения»); поэтому clamp_weight_target
-для muscle_gain намеренно не вызывается — прогрессия силы не ограничена
-лимитом роста массы тела.
+Примечание по безопасности набора/снижения веса (§6, §7): жёсткий недельный
+лимит (``clamp_weight_target``) осмысленен только для метрики "вес тела".
+Это fat_loss_safe (direction=down) и muscle_gain (direction=up, с v8 §7
+главная метрика — вес тела, среднее за 7 дней; рабочий вес в приседе —
+вспомогательный индикатор тренировки, Season.secondary_metric_*) — см.
+BODYWEIGHT_METRIC_TEMPLATES в app/services/seasons.py. Для похудения лимит
+дополнительно ограничен абсолютным потолком (PRD 1.0: ≤ min(1%, 1 кг) массы
+тела в неделю) — при крупном baseline 1% может быть больше 1 кг/нед.
 """
 
 from __future__ import annotations
@@ -31,6 +31,7 @@ RESCUE_WINDOW_DAYS = 1  # "до конца следующего дня"
 PHASE_ADAPT_THRESHOLD = 0.15  # ±15%
 SAFE_WEEKLY_LOSS_RATE = 0.01  # ≤1% массы тела в неделю
 SAFE_WEEKLY_GAIN_RATE = 0.005  # ≤0.5% массы тела в неделю
+SAFE_WEEKLY_LOSS_ABS_CAP_KG = 1.0  # PRD 1.0 §«Критерии»: ≤ min(1%, 1 кг) в неделю
 MIN_BMI = 18.5
 
 
@@ -317,16 +318,19 @@ def clamp_weight_target(
     weeks: float,
 ) -> float:
     """Ограничивает цель по весу тела безопасным темпом. Если цель требует
-    больше — возвращает цель по безопасному темпу вместо исходной (§6)."""
+    больше — возвращает цель по безопасному темпу вместо исходной (§6). Для
+    снижения веса темп дополнительно не может превышать абсолютный потолок
+    SAFE_WEEKLY_LOSS_ABS_CAP_KG кг/нед, даже если 1% массы тела — больше
+    (PRD 1.0: «похудение ≤ min(1% массы, 1 кг) в неделю»)."""
     if weeks <= 0 or baseline_value <= 0:
         return raw_target_value
 
-    max_change = baseline_value * safe_weekly_change_limit(direction) * weeks
+    pct_change = baseline_value * safe_weekly_change_limit(direction) * weeks
     if direction == "down":
+        max_change = min(pct_change, SAFE_WEEKLY_LOSS_ABS_CAP_KG * weeks)
         safe_floor = baseline_value - max_change
         return max(raw_target_value, safe_floor)
-    safe_ceiling = baseline_value + max_change
-    return min(raw_target_value, safe_ceiling)
+    return min(raw_target_value, baseline_value + pct_change)
 
 
 def bmi(weight_kg: float, height_cm: float) -> float:
@@ -336,6 +340,37 @@ def bmi(weight_kg: float, height_cm: float) -> float:
     return weight_kg / (height_m**2)
 
 
-def meets_fat_loss_eligibility(weight_kg: float, height_cm: float) -> bool:
-    """§5: при ИМТ < 18.5 шаблон fat_loss_safe недоступен."""
-    return bmi(weight_kg, height_cm) >= MIN_BMI
+def meets_fat_loss_eligibility(
+    weight_kg: float, height_cm: float, target_weight_kg: Optional[float] = None
+) -> bool:
+    """§5, PRD 1.0: при ИМТ < 18.5 — текущем ИЛИ целевом — шаблон
+    fat_loss_safe недоступен. target_weight_kg — ориентировочный целевой вес
+    (до клампа безопасного темпа, он известен раньше длительности сезона);
+    без него проверяется только текущий ИМТ, как в v8."""
+    if bmi(weight_kg, height_cm) < MIN_BMI:
+        return False
+    if target_weight_kg is not None and bmi(target_weight_kg, height_cm) < MIN_BMI:
+        return False
+    return True
+
+
+def has_eating_disorder_signal(
+    weight_kg: float,
+    height_cm: float,
+    target_weight_kg: Optional[float],
+    self_reported: bool,
+) -> bool:
+    """NEWLIFE_1_0_CONTENT.md §6 «Предупреждения и красные флаги»: сигнал
+    РПП = ИМТ<18,5 текущий ИЛИ целевой, ИЛИ самоотчёт (вопрос на
+    /onboarding/health объединяет "пропускаю еду"/"вызываю рвоту"/"боюсь
+    набрать вес" в один да/нет — кнопки, не текст). Желаемый темп >1%/нед
+    отдельно не проверяется здесь: он уже ограничен инженерно
+    (clamp_weight_target, SAFE_WEEKLY_LOSS_PCT) до того, как могла бы
+    возникнуть такая цифра."""
+    if self_reported:
+        return True
+    if bmi(weight_kg, height_cm) < MIN_BMI:
+        return True
+    if target_weight_kg is not None and bmi(target_weight_kg, height_cm) < MIN_BMI:
+        return True
+    return False

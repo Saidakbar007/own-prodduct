@@ -1,0 +1,36 @@
+id: stable_wake_time
+version: 1
+title: "Сезон: стабильный подъём"
+title_uz: "Mavsum: barqaror turish vaqti"
+category: energy
+metric: { name: "Разброс времени подъёма", unit: "мин", direction: down }
+lengths: [30, 60]
+target_default: 60
+baseline_test:
+  prompt: "На сколько минут отличается твоё время подъёма в будни и выходные (разброс за неделю)?"
+  input: number
+  min: 0
+  max: 300
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Подъём в одно время"
+        instructions: "Встань в то же время, что и вчера (± 15–20 минут), включая выходные. Отметь, во сколько встал(а)."
+        minimal: "Встать не позже обычного максимум на 30 минут"
+        expected_progress: 0.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Разброс подъёма отслеживается каждый день, включая выходные — пропуска здесь нет"
+measure_every_days: 7
+measure:
+  prompt: "Насколько сильно отличалось твоё время подъёма на этой неделе (разброс в минутах)?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

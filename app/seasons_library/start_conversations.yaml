@@ -1,0 +1,50 @@
+id: start_conversations
+version: 1
+title: "Сезон: начинать разговоры"
+title_uz: "Mavsum: suhbatni boshlash"
+category: social
+metric: { name: "Начатые разговоры", unit: "разговоров/нед", direction: up }
+lengths: [30, 60]
+target_default: 4
+baseline_test:
+  prompt: "Сколько разговоров с новыми людьми ты начал(а) на прошлой неделе?"
+  input: number
+  min: 0
+  max: 14
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 3, 5, 7], minutes: [1, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Продавец или бариста"
+        instructions: "Начни короткий разговор с продавцом, баристой или кем-то из обслуживания — вопрос или комментарий."
+        minimal: "Приветствие + 1 вопрос"
+        expected_progress: 1
+  - phase: 2
+    unlock_if_baseline_gte: 2
+    days:
+      - title: "Одногруппник"
+        instructions: "Начни разговор с одногруппником или коллегой, с которым обычно не общаешься."
+        minimal: "Приветствие + 1 вопрос"
+        expected_progress: 1
+  - phase: 3
+    unlock_if_baseline_gte: 4
+    days:
+      - title: "Новый человек"
+        instructions: "Начни разговор с незнакомым человеком — на мероприятии, в очереди, в коридоре."
+        minimal: "Приветствие + 1 вопрос"
+        expected_progress: 1
+rest_day:
+  title: "Обычный день"
+  instructions: "Начинать разговор не обязательно каждый день — считаются только отмеченные дни"
+measure_every_days: 7
+measure:
+  prompt: "Сколько разговоров с новыми людьми ты начал(а) на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

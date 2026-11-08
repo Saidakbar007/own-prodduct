@@ -28,3 +28,11 @@ skills_extract/
 .idea/
 .DS_Store
 .claude/scheduled_tasks.lock
+
+# тестовые прогоны
+.pytest_cache/
+playwright-report/
+test-results/
+*.sqlite
+*.sqlite3
+test.db

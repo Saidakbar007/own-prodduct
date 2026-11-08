@@ -1,0 +1,35 @@
+# Проверенные бесплатные ресурсы (доп. задача, см. docs/decisions/
+# DECISIONS.md → «Этап "Доделай" + guide + wger») — каждая ссылка открыта и
+# проверена (WebFetch) перед добавлением сюда. Схема и загрузчик —
+# app/newlife/resources_bank.py. Привязка категория -> цель —
+# RESOURCE_CATEGORY_FOR_GOAL в том же модуле.
+languages:
+  - title: "Duolingo"
+    url: "https://www.duolingo.com"
+    description:
+      ru: "Бесплатные короткие уроки языков с игровой механикой — подходит для ежедневной практики по 10-15 минут"
+      uz: "Til darslarining bepul qisqa o'yinli darslari — har kuni 10-15 daqiqalik mashq uchun mos"
+  - title: "British Council — LearnEnglish"
+    url: "https://learnenglish.britishcouncil.org"
+    description:
+      ru: "Бесплатные материалы и курсы английского от British Council — все уровни, включая подготовку к экзаменам"
+      uz: "British Council'dan bepul ingliz tili materiallari va kurslari — barcha darajalar, imtihonlarga tayyorgarlik ham bor"
+
+programming:
+  - title: "CS50x (Harvard)"
+    url: "https://cs50.harvard.edu/x/"
+    description:
+      ru: "Бесплатный вводный курс Гарварда по программированию — C, Python, SQL, веб-разработка, с нуля"
+      uz: "Garvardning bepul dasturlashga kirish kursi — C, Python, SQL, veb-dasturlash, noldan"
+  - title: "freeCodeCamp"
+    url: "https://www.freecodecamp.org"
+    description:
+      ru: "Бесплатные интерактивные курсы веб-разработки с сертификатами по итогам"
+      uz: "Yakunida sertifikat beriluvchi bepul interaktiv veb-dasturlash kurslari"
+
+financial_literacy:
+  - title: "Markaziy bank (Центробанк Узбекистана)"
+    url: "https://cbu.uz/uz/"
+    description:
+      ru: "Официальный сайт Центробанка Узбекистана — курсы валют, новости, материалы по финансовой грамотности"
+      uz: "O'zbekiston Markaziy bankining rasmiy sayti — valyuta kurslari, yangiliklar, moliyaviy savodxonlik materiallari"

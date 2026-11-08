@@ -1,0 +1,36 @@
+id: friends
+version: 1
+title: "Сезон: друзья"
+title_uz: "Mavsum: doʻstlar"
+category: relationships
+metric: { name: "Встречи или созвоны с друзьями", unit: "встреч/нед", direction: up }
+lengths: [30, 60]
+target_default: 2
+baseline_test:
+  prompt: "Сколько встреч или созвонов с друзьями у тебя бывает в неделю?"
+  input: number
+  min: 0
+  max: 10
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [2, 30] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Поддержи дружбу"
+        instructions: "Напиши другу — спроси, как дела, или предложи встретиться. Раз в неделю — реальная встреча или долгий созвон, не просто переписка."
+        minimal: "Написать 1 другу"
+        expected_progress: 0.3
+rest_day:
+  title: "Обычный день"
+  instructions: "Друзьям можно писать в любой день — отдельного дня отдыха не предусмотрено"
+measure_every_days: 7
+measure:
+  prompt: "Сколько встреч или созвонов с друзьями было на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

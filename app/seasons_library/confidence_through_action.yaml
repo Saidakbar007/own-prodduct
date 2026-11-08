@@ -1,0 +1,52 @@
+id: confidence_through_action
+version: 1
+title: "Сезон: уверенность через действие"
+title_uz: "Mavsum: harakat orqali ishonch"
+category: character
+metric: { name: "Пройденные вызовы", unit: "вызовов/нед", direction: up }
+lengths: [60, 90]
+target_default: 4
+baseline_test:
+  prompt: "Сколько раз за последние 2 недели ты делал(а) что-то, что выходит за рамки твоей обычной зоны комфорта?"
+  input: number
+  min: 0
+  max: 10
+eligibility:
+  min_age: 18
+  warnings:
+    - "Все вызовы — только добровольно: любой можно пропустить кнопкой «Не сегодня» без штрафа"
+    - "Перескочить ступень лестницы нельзя; вызовов с риском для здоровья, денег, закона или унижения — нет"
+schedule: { train_days: [1, 3, 5], minutes: [2, 15] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Лёгкий вызов"
+        instructions: "Выбери лёгкий вызов из своей лестницы: спросить время у незнакомца, задать вопрос на паре."
+        minimal: "Задать 1 вопрос незнакомому человеку (продавцу, преподавателю)"
+        expected_progress: 1
+  - phase: 2
+    unlock_if_baseline_gte: 2
+    days:
+      - title: "Средний вызов"
+        instructions: "Выбери вызов среднего уровня: заговорить первым с новым человеком, высказать своё мнение в группе."
+        minimal: "Лёгкий вызов вместо среднего"
+        expected_progress: 1
+  - phase: 3
+    unlock_if_baseline_gte: 4
+    days:
+      - title: "Трудный вызов"
+        instructions: "Выбери самый трудный вызов из своей лестницы — в рамках добровольности и безопасности."
+        minimal: "Вызов среднего уровня вместо трудного"
+        expected_progress: 1
+rest_day:
+  title: "День без вызова"
+  instructions: "Можно просто понаблюдать за собой — без нового вызова"
+measure_every_days: 7
+measure:
+  prompt: "Сколько вызовов из лестницы ты выполнил(а) на этой неделе? Какая была тревога до/после, 0–10?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

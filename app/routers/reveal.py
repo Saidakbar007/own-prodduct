@@ -11,7 +11,7 @@ import os
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import Proof, Season, SeasonDay, User
+from app.models import Profile, Proof, Season, SeasonDay, User
 from app.rendering import render
 from app.services import mascot
 from app.services.cards import CARDS_DIR, save_card
@@ -101,6 +101,13 @@ def reveal_page(
     ).all()
     has_video = ffmpeg_available() and bool(proof_ids)
 
+    # §6 «Предупреждения и красные флаги»: при сигнале РПП не показываем
+    # сравнение «до/после» у целей, завязанных на вес тела.
+    profile = db.exec(select(Profile).where(Profile.uid == user.id)).first()
+    hide_before_after = bool(
+        profile and profile.disordered_eating_signal and season.template_id in ("fat_loss_safe", "muscle_gain")
+    )
+
     return render(
         request,
         "reveal.html",
@@ -109,6 +116,7 @@ def reveal_page(
             "reveal": reveal,
             "mascot_phrase": mascot.phrase_for(mascot_event, user.language),
             "has_video": has_video,
+            "hide_before_after": hide_before_after,
             "lang": user.language,
         },
     )

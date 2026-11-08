@@ -117,18 +117,18 @@
     <h3 class="action-card__title">{{ day.title }}</h3>
     <p class="action-card__body">{{ day.instructions }}</p>
   </div>
-  {% else %}
+  {% elif has_workout_program %}
   <div class="action-card" data-tour="action">
     <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
     <h3 class="action-card__title">{{ day.title }}</h3>
     <p class="action-card__body">{{ day.instructions }}</p>
-    <form method="post" action="/today/done" enctype="multipart/form-data" id="today-done-form" data-main-button-label="{{ t('today.cta_done') }}" style="display:flex;flex-direction:column;gap:var(--space-3)">
-      <input type="file" name="photo" accept="image/*" capture="environment" class="sr-only" id="proof-photo" />
-      <div class="action-card__actions">
-        <button class="btn btn--primary" type="submit" data-haptic="success"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-camera"/></svg>{{ t('today.cta_done') }}</button>
-        <label for="proof-photo" class="btn btn--secondary" style="cursor:pointer">{{ t('today.cta_attach_photo') }}</label>
-      </div>
-    </form>
+    {% if minimal_only %}
+    <p style="font-size:var(--text-xs);color:var(--text-faint);margin-bottom:var(--space-3)">{{ t('today.minimal_only_notice') }}</p>
+    {% else %}
+    <div class="action-card__actions">
+      <a class="btn btn--primary" href="/workout"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-check"/></svg>{{ t('today.cta_open_workout') }}</a>
+    </div>
+    {% endif %}
     <form method="post" action="/today/minimal" id="today-minimal-form">
       <button class="btn btn--secondary" type="submit" data-haptic="light" style="margin-top:var(--space-3)">{{ t('today.cta_minimal') }}</button>
     </form>
@@ -137,6 +137,52 @@
       <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('today.skip_explainer', chances=season.second_chances_left) }}</p>
     </details>
   </div>
+  {% elif metric_kind == 'timer' %}
+  <div class="action-card" data-tour="action">
+    <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
+    <h3 class="action-card__title">{{ day.title }}</h3>
+    <p class="action-card__body">{{ day.instructions }}</p>
+    <div class="action-card__actions">
+      <a class="btn btn--primary" href="/focus" data-haptic="success"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-check"/></svg>{{ t('today.cta_start_timer') }}</a>
+    </div>
+    <form method="post" action="/today/minimal" id="today-minimal-form">
+      <button class="btn btn--secondary" type="submit" data-haptic="light" style="margin-top:var(--space-3)">{{ t('today.cta_minimal') }}</button>
+    </form>
+    <details style="margin-top:var(--space-4)">
+      <summary class="btn--text" style="cursor:pointer;display:inline">{{ t('today.cta_skip') }}</summary>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('today.skip_explainer', chances=season.second_chances_left) }}</p>
+    </details>
+  </div>
+  {% else %}
+  <div class="action-card" data-tour="action">
+    <span class="action-card__kicker">{{ t('today.day_of', n=day_number, total=season.length_days) }}</span>
+    <h3 class="action-card__title">{{ day.title }}</h3>
+    <p class="action-card__body">{{ day.instructions }}</p>
+    {% if minimal_only %}
+    <p style="font-size:var(--text-xs);color:var(--text-faint);margin-bottom:var(--space-3)">{{ t('today.minimal_only_notice') }}</p>
+    {% else %}
+    <form method="post" action="/today/done" enctype="multipart/form-data" id="today-done-form" data-main-button-label="{{ t('today.cta_done') }}" style="display:flex;flex-direction:column;gap:var(--space-3)">
+      <input type="file" name="photo" accept="image/*" capture="environment" class="sr-only" id="proof-photo" />
+      <div class="action-card__actions">
+        <button class="btn btn--primary" type="submit" data-haptic="success"><svg class="icon" style="width:1.1em;height:1.1em"><use href="#i-camera"/></svg>{{ t('today.cta_done') }}</button>
+        <label for="proof-photo" class="btn btn--secondary" style="cursor:pointer">{{ t('today.cta_attach_photo') }}</label>
+      </div>
+    </form>
+    {% endif %}
+    <form method="post" action="/today/minimal" id="today-minimal-form">
+      <button class="btn btn--secondary" type="submit" data-haptic="light" style="margin-top:var(--space-3)">{{ t('today.cta_minimal') }}</button>
+    </form>
+    <details style="margin-top:var(--space-4)">
+      <summary class="btn--text" style="cursor:pointer;display:inline">{{ t('today.cta_skip') }}</summary>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ t('today.skip_explainer', chances=season.second_chances_left) }}</p>
+    </details>
+  </div>
+  {% endif %}
+
+  {% if first_guide_step and day.status not in ('done', 'minimal', 'rescued') %}
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-3)">
+    <strong>{{ t('today.guide_first_step_label') }}</strong> {{ first_guide_step }}
+  </p>
   {% endif %}
 
   {% if season.second_chances_left > 0 %}
@@ -155,6 +201,38 @@
   <h3>{{ t('today.no_goal_title') }}</h3>
   <p>{{ t('today.no_goal_body') }}</p>
   <a href="/seasons" class="btn btn--primary btn--block" style="margin-top:var(--space-3)">{{ t('today.no_goal_cta') }}</a>
+</div>
+{% endif %}
+
+{% if day_question %}
+<div class="card" style="padding:var(--space-5);margin-top:var(--space-5)" data-tour="day-question">
+  <span style="font-size:var(--text-xs);color:var(--text-faint);text-transform:uppercase;letter-spacing:var(--tracking-wide)">{{ t('today.question_kicker') }}</span>
+  <p style="font-size:var(--text-sm);margin:var(--space-2) 0 var(--space-4)">{{ day_question.text }}</p>
+  <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+    {% for option in day_question.options %}
+    <form method="post" action="/today/question">
+      <input type="hidden" name="question_id" value="{{ day_question.id }}" />
+      <input type="hidden" name="option_index" value="{{ loop.index0 }}" />
+      <button class="btn btn--secondary btn--block" type="submit">{{ option }}</button>
+    </form>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% if reflection_question %}
+<div class="card" style="padding:var(--space-5);margin-top:var(--space-5)" data-tour="weekly-reflection">
+  <span style="font-size:var(--text-xs);color:var(--text-faint);text-transform:uppercase;letter-spacing:var(--tracking-wide)">{{ t('today.reflection_kicker') }}</span>
+  <p style="font-size:var(--text-sm);margin:var(--space-2) 0 var(--space-4)">{{ reflection_question.text.text(lang) }}</p>
+  <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+    {% for option in reflection_question.options %}
+    <form method="post" action="/today/reflection">
+      <input type="hidden" name="question_id" value="{{ reflection_question.id }}" />
+      <input type="hidden" name="option_index" value="{{ loop.index0 }}" />
+      <button class="btn btn--secondary btn--block" type="submit">{{ option.text(lang) }}</button>
+    </form>
+    {% endfor %}
+  </div>
 </div>
 {% endif %}
 

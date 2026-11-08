@@ -12,7 +12,7 @@ from sqlmodel import Session, select
 from app.models import Goal, Measurement, Season, SeasonDay, Wave
 from app.seasons import engine
 from app.seasons.schema import Phase, SeasonTemplate
-from app.seasons_library.catalog_meta import meta_for
+from app.newlife.goal_catalog import goal_meta
 from app.seasons_library.loader import get_template
 from app.services.events import log_event_safe
 from app.services.squads import assign_squad
@@ -67,7 +67,7 @@ def create_season(
     """Создаёт волну-бакет недели (если нужно), сезон и первые дни (скользящее
     окно), плюс стартовый замер (день 0 = baseline). Сезон стартует сразу:
     start_date = reference_date, без ожидания понедельника (§6 ТЗ, изменено
-    UX-правкой — см. SEASONS_SPEC.md → «Изменения»). Волна (Wave.start_date =
+    UX-правкой — см. docs/specs/SEASONS_SPEC.md → «Изменения»). Волна (Wave.start_date =
     понедельник недели reference_date) остаётся только меткой для группировки
     в команду. sphere_id (NewLife v8 §4) — если задан, заодно заводит Goal и
     связывает Season.goal_id с ней."""
@@ -81,13 +81,14 @@ def create_season(
 
     goal_id: Optional[int] = None
     if sphere_id:
-        meta = meta_for(template_id)
+        goal_catalog_entry = goal_meta(template_id)
+        metric_key = goal_catalog_entry.metric.key if goal_catalog_entry else "custom"
         goal = Goal(
             uid=uid,
             sphere_id=sphere_id,
             template_id=template_id,
             title=template.title,
-            metric_key=meta.get("metric_key", "custom"),
+            metric_key=metric_key,
             baseline=baseline_value,
             target=target_value,
             safe_rate=None,
@@ -260,7 +261,7 @@ def today_day_number(season: Season, today: date) -> int:
 
 def sync_season_state(db: Session, season: Season, today: date) -> Season:
     """Ленивая синхронизация без фонового планировщика (его пока нет — см.
-    DECISIONS.md): при каждом заходе пользователя просроченные "planned" дни
+    docs/decisions/DECISIONS.md): при каждом заходе пользователя просроченные "planned" дни
     (кроме rest) становятся "missed", а последний день с терминальным
     статусом переводит сезон в "finished"."""
     changed = False
@@ -355,3 +356,33 @@ def season_statuses(db: Session, season_id: int) -> list[str]:
     return db.exec(
         select(SeasonDay.status).where(SeasonDay.season_id == season_id).order_by(SeasonDay.day_number)
     ).all()
+
+
+def goal_metric_for_season(season: Season):
+    """Метрика цели из каталога (app/newlife/goal_catalog.GoalMetric) — None,
+    если у шаблона нет записи в каталоге (например, "своя цель" от ИИ,
+    BACKLOG.md). PRD 1.0 F3: по ней на /measure выбирается виджет ввода
+    (замер/счётчик/таймер/да-нет/процент) и шаг округления."""
+    entry = goal_meta(season.template_id)
+    return entry.metric if entry else None
+
+
+def sum_logged_minutes_since_last_measure(db: Session, season: Season, today_day_number: int) -> float:
+    """Сумма минут, залогированных через таймер фокуса (F4) с последнего
+    замера — предзаполняет /measure для целей с metric.kind == 'timer',
+    чтобы не приходилось вспоминать и вводить число самому."""
+    last_measured_day = db.exec(
+        select(Measurement.day_number)
+        .where(Measurement.season_id == season.id)
+        .order_by(Measurement.day_number.desc())
+    ).first()
+    since_day = last_measured_day if last_measured_day is not None else 0
+    minutes = db.exec(
+        select(SeasonDay.logged_minutes).where(
+            SeasonDay.season_id == season.id,
+            SeasonDay.day_number > since_day,
+            SeasonDay.day_number <= today_day_number,
+            SeasonDay.logged_minutes.is_not(None),
+        )
+    ).all()
+    return sum(minutes)

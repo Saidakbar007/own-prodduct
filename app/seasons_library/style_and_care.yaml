@@ -1,0 +1,36 @@
+id: style_and_care
+version: 1
+title: "Сезон: стиль и уход"
+title_uz: "Mavsum: uslub va parvarish"
+category: lifestyle
+metric: { name: "Доля дней с выполненной рутиной", unit: "%", direction: up }
+lengths: [30, 60]
+target_default: 80
+baseline_test:
+  prompt: "В какой % дней у тебя выполнена базовая рутина ухода и одежда готова с вечера?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Подготовь вечером"
+        instructions: "Вечером сделай базовую рутину ухода (по своему списку) и приготовь одежду на завтра. Раз в неделю — короткая ревизия гардероба на «капсульные» сочетания."
+        minimal: "Приготовить одежду на завтра"
+        expected_progress: 14
+rest_day:
+  title: "Обычный день"
+  instructions: "Эта привычка работает каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "В какой % дней на этой неделе рутина была выполнена?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

@@ -5,6 +5,8 @@
 «Замер», §7.3/§7.4 ТЗ, переименовано UX-правкой).
 """
 
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
@@ -13,8 +15,29 @@ from app.auth import require_user
 from app.database import get_session
 from app.models import Measurement, Reveal, Season, SeasonDay, User
 from app.rendering import render
-from app.seasons_library.catalog_meta import meta_for, poster_hero_for
+from app.newlife.conversation_starters_bank import conversation_starters_for_display
+from app.newlife.goal_catalog import goal_meta, guide_for_display, ladder_for_display
+from app.newlife.resources_bank import resources_for_goal
+from app.services.events import log_event_safe
+from app.services.flash import push_flash
+from app.seasons_library.catalog_meta import poster_hero_for
 from app.seasons_library.loader import load_library
+
+_DEFAULT_CATALOG_META = {
+    "difficulty": "Свой уровень",
+    "for_whom": "Под твою собственную цель",
+    "outcome": "Результат — по условиям, которые задаёт сама цель",
+}
+
+
+def _display_meta(template_id: str) -> dict:
+    """Текст карточки каталога (§7 PRD «Откуда эти нормы»): из
+    content/spheres/*.yaml, с запасным текстом для шаблонов без каталога
+    (своя цель от ИИ — см. BACKLOG.md)."""
+    entry = goal_meta(template_id)
+    if entry is None:
+        return _DEFAULT_CATALOG_META
+    return {"difficulty": entry.difficulty, "for_whom": entry.for_whom, "outcome": entry.outcome}
 from app.services.seasons import (
     MAX_ACTIVE_SEASONS,
     compute_forecast,
@@ -57,7 +80,7 @@ def seasons_hub(request: Request, user: User = Depends(require_user), db: Sessio
     catalog = [
         {
             "template": t,
-            "meta": meta_for(t.id),
+            "meta": _display_meta(t.id),
             "poster_hero": poster_hero_for(t.id),
         }
         for t in sorted(load_library().values(), key=lambda t: t.id)
@@ -91,6 +114,35 @@ def _own_season(db: Session, season_id: int, user: User) -> Season:
     if not season or season.uid != user.id:
         raise HTTPException(status_code=404)
     return season
+
+
+@router.post("/season/{season_id}/ladder/advance")
+def ladder_advance(
+    season_id: int, request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)
+):
+    """Отметить текущую ступень лестницы сделанной — переход только по
+    порядку (§F: нельзя перескочить), следующий визит показывает следующий
+    вызов. Без штрафа и без привязки к дню сезона — ступени добровольны."""
+    season = _own_season(db, season_id, user)
+    rungs = ladder_for_display(season.template_id, user.language)
+    if rungs and season.ladder_rung < len(rungs):
+        season.ladder_rung += 1
+        db.add(season)
+        db.commit()
+        log_event_safe(db, "ladder_rung_done", uid=user.id, season_id=season.id)
+    return RedirectResponse(f"/season/{season_id}", status_code=303)
+
+
+@router.post("/season/{season_id}/ladder/skip")
+def ladder_skip(
+    season_id: int, request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)
+):
+    """«Не сегодня» — без штрафа, ступень остаётся текущей (guide целей
+    явно обещает: пропуск не наказывается)."""
+    season = _own_season(db, season_id, user)
+    log_event_safe(db, "ladder_rung_skipped", uid=user.id, season_id=season.id)
+    push_flash(request, "season.ladder_skip_flash", "info")
+    return RedirectResponse(f"/season/{season_id}", status_code=303)
 
 
 @router.get("/season/{season_id}")
@@ -134,9 +186,31 @@ def season_detail(
             "forecast": round(forecast, 1),
             "present_statuses": present_statuses,
             "poster_hero": poster_hero_for(season.template_id),
+            "guide": guide_for_display(season.template_id, user.language),
+            "ladder": _ladder_context(season, user.language),
+            "conversation_starters": (
+                conversation_starters_for_display(user.language)
+                if season.template_id == "start_conversations"
+                else None
+            ),
+            "resources": resources_for_goal(season.template_id, user.language),
             "lang": user.language,
         },
     )
+
+
+def _ladder_context(season: Season, lang: str) -> Optional[dict]:
+    rungs = ladder_for_display(season.template_id, lang)
+    if not rungs:
+        return None
+    current = min(max(season.ladder_rung, 1), len(rungs))
+    return {
+        "rungs": rungs,
+        "current_index": current - 1,
+        "current_number": current,
+        "total": len(rungs),
+        "is_last": current >= len(rungs),
+    }
 
 
 def _build_sparkline(measurements, width: int = 280, height: int = 48) -> dict:

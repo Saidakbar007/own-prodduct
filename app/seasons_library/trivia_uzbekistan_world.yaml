@@ -1,0 +1,39 @@
+id: trivia_uzbekistan_world
+version: 1
+title: "Сезон: знать Узбекистан и мир"
+title_uz: "Mavsum: Oʻzbekiston va dunyoni bilish"
+category: knowledge
+metric: { name: "Точность теста-викторины", unit: "%", direction: up }
+lengths: [30, 60]
+target_default: 70
+baseline_test:
+  prompt: "Какой % в тесте-викторине про Узбекистан и мир ты наберёшь прямо сейчас?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4], minutes: [10, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Тема дня"
+        instructions: >-
+          Прочитай или посмотри короткий материал по теме (история,
+          география, наука, экономика) и ответь себе на 3 вопроса по
+          памяти, без подсказок.
+        minimal: "3 вопроса"
+        expected_progress: 5
+rest_day:
+  title: "День без темы"
+  instructions: "Повтори одну тему из уже пройденных"
+measure_every_days: 7
+measure:
+  prompt: "Пройди недельную мини-викторину. Какой результат, %?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 3

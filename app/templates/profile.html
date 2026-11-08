@@ -27,6 +27,18 @@
   {% endif %}
 </a>
 
+{% if day_answers %}
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-6)">
+  <h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.day_answers_title') }}</h2>
+  {% for a in day_answers %}
+  <div style="padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <p style="font-size:var(--text-xs);color:var(--text-faint)">{{ a.question_text }}</p>
+    <p style="font-size:var(--text-sm)">{{ a.option_text }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 <div class="card" style="padding:var(--space-5);margin-bottom:var(--space-6)">
   <h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.mode_title') }}</h2>
   {% if profile and profile.wake_time %}
@@ -87,12 +99,20 @@
   <form method="post" action="/profile/delete-photos">
     <button class="btn btn--secondary btn--sm" type="submit">{{ t('profile.delete_photos') }}</button>
   </form>
+  <div style="display:flex;gap:var(--space-2);margin-top:var(--space-3)">
+    <a href="/profile/export" class="btn btn--secondary btn--sm" style="flex:1">{{ t('profile.export_data_cta') }}</a>
+    <a href="/profile/delete-account" class="btn btn--secondary btn--sm" style="flex:1">{{ t('profile.delete_account_cta') }}</a>
+  </div>
+  <a href="/privacy" class="btn--text" style="display:block;text-align:center;margin-top:var(--space-3)">{{ t('profile.privacy_link') }}</a>
 </div>
 
 <div style="display:flex;flex-direction:column;gap:var(--space-1);margin-bottom:var(--space-4)">
   <a href="/methods" class="btn--text" style="display:block;padding:var(--space-2) 0">{{ t('profile.methods_link') }}</a>
   <a href="/sources" class="btn--text" style="display:block;padding:var(--space-2) 0">{{ t('profile.sources_link') }}</a>
   <a href="/about" class="btn--text" style="display:block;padding:var(--space-2) 0">{{ t('profile.about_link') }}</a>
+  <a href="/help" class="btn--text" style="display:block;padding:var(--space-2) 0">{{ t('profile.help_link') }}</a>
+  <a href="/flashcards" class="btn--text" style="display:block;padding:var(--space-2) 0">{{ t('profile.flashcards_link') }}</a>
+  <a href="/expenses" class="btn--text" style="display:block;padding:var(--space-2) 0">{{ t('profile.expenses_link') }}</a>
 </div>
 
 <a href="/logout" class="btn btn--text" style="display:block;text-align:center;margin-top:var(--space-4)">{{ t('home.logout') }}</a>

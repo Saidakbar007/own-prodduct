@@ -1,0 +1,36 @@
+id: responsibility_deadlines
+version: 1
+title: "Сезон: ответственность"
+title_uz: "Mavsum: masʼuliyat"
+category: character
+metric: { name: "Дедлайны вовремя", unit: "%", direction: up }
+lengths: [90]
+target_default: 20
+baseline_test:
+  prompt: "Какой % дедлайнов за последний месяц ты сдал(а) вовремя, без переноса?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 4], minutes: [2, 10] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Внести и проверить дедлайны"
+        instructions: "В понедельник внеси все дедлайны недели в план. В четверг проверь прогресс по каждому и скорректируй, если нужно."
+        minimal: "Записать 1 дедлайн"
+        expected_progress: 2
+rest_day:
+  title: "Обычный день"
+  instructions: "Дедлайны планируются только по понедельникам и четвергам, остальные дни — без отметки"
+measure_every_days: 7
+measure:
+  prompt: "Какой % дедлайнов этой недели сдан вовремя?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

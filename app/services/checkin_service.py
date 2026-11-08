@@ -2,7 +2,7 @@
 Чек-ин энергии/стресса/настроения (§11) и режим восстановления (§9) —
 связывает app/newlife/methods.py с БД. Режим восстановления хранится как
 MethodEvent(method_id="recovery_mode", accepted=True, shown_at=дата начала) —
-отдельной таблицы не заводим (§4 не описывает такую, see DECISIONS.md).
+отдельной таблицы не заводим (§4 не описывает такую, see docs/decisions/DECISIONS.md).
 """
 
 from datetime import date, datetime, timedelta, timezone

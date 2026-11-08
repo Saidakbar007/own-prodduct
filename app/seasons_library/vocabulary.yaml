@@ -1,0 +1,39 @@
+id: vocabulary
+version: 1
+title: "Сезон: словарь языка"
+title_uz: "Mavsum: til lugʻati"
+category: career
+metric: { name: "Слова, усвоенные надолго", unit: "слов", direction: up }
+lengths: [30, 60]
+target_default: 500
+baseline_test:
+  prompt: "Сколько новых слов в неделю ты сейчас реально усваиваешь?"
+  input: number
+  min: 0
+  max: 200
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [15, 15] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Новые слова"
+        instructions: >-
+          Добавь 10–20 новых слов в карточки и повтори те, что уже пора
+          повторить. Словом считается усвоенным, если ты верно вспомнил
+          его при интервале 21+ день.
+        minimal: "3 слова"
+        expected_progress: 10
+rest_day:
+  title: "День без новых слов"
+  instructions: "Повтори только старые слова, без новых"
+measure_every_days: 7
+measure:
+  prompt: "Сколько слов усвоено надолго на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

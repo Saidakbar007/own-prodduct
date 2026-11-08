@@ -1,0 +1,38 @@
+{% extends "shell_base.html" %}
+{% block title %}{{ deck_title }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+{% set active = 'me' %}
+
+<a href="/flashcards" class="btn--text" style="display:block;margin-bottom:var(--space-4)">{{ t('flashcards.back') }}</a>
+
+<div class="home-hero" style="padding:0 0 var(--space-4);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ deck_title }}</h1>
+  {% if debt > 0 %}<p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ t('flashcards.debt_badge', n=debt) }}</p>{% endif %}
+</div>
+
+{% if card %}
+<div class="card" style="padding:var(--space-6);text-align:center;min-height:200px;display:flex;flex-direction:column;justify-content:center;gap:var(--space-4)">
+  <p style="font-size:var(--text-lg)">{{ front_text }}</p>
+  <p id="flashcard-back" style="font-size:var(--text-sm);color:var(--text-muted);display:none">{{ back_text }}</p>
+  <button type="button" id="flashcard-reveal" class="btn btn--secondary btn--block" onclick="document.getElementById('flashcard-back').style.display='block';document.getElementById('flashcard-reveal').style.display='none';document.getElementById('flashcard-answers').style.display='flex'">{{ t('flashcards.cta_reveal') }}</button>
+</div>
+
+<div id="flashcard-answers" style="display:none;gap:var(--space-3);margin-top:var(--space-4)">
+  <form method="post" action="/flashcards/{{ deck_id }}/review" style="flex:1">
+    <input type="hidden" name="card_id" value="{{ card.id }}" />
+    <input type="hidden" name="correct" value="false" />
+    <button class="btn btn--secondary btn--block" type="submit">{{ t('flashcards.cta_forgot') }}</button>
+  </form>
+  <form method="post" action="/flashcards/{{ deck_id }}/review" style="flex:1">
+    <input type="hidden" name="card_id" value="{{ card.id }}" />
+    <input type="hidden" name="correct" value="true" />
+    <button class="btn btn--primary btn--block" type="submit">{{ t('flashcards.cta_recalled') }}</button>
+  </form>
+</div>
+{% else %}
+<div class="card empty-state">
+  <h3>{{ t('flashcards.done_title') }}</h3>
+  <p>{{ t('flashcards.done_body') }}</p>
+</div>
+{% endif %}
+{% endblock %}

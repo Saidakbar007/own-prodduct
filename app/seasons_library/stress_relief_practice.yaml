@@ -1,0 +1,37 @@
+id: stress_relief_practice
+version: 1
+title: "Сезон: практика снижения стресса"
+title_uz: "Mavsum: stressni kamaytirish amaliyoti"
+category: energy
+metric: { name: "Практика снижения стресса", unit: "мин/день", direction: up }
+lengths: [30, 60]
+target_default: 10
+baseline_test:
+  prompt: "Сколько минут в день ты сейчас тратишь на осознанные практики снижения стресса (дыхание, заземление, пауза от мыслей)?"
+  input: number
+  min: 0
+  max: 60
+eligibility:
+  min_age: 18
+  warnings:
+    - "Это не лечение и не диагностика; при постоянном сильном стрессе или тревоге — обратись к специалисту"
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [5, 15] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Заземление и пауза от мыслей"
+        instructions: "Найди 5–15 минут в течение дня. Используй технику заземления (назови 5 предметов вокруг, которые видишь) или просто замечай мысль и возвращайся к дыханию, не борясь с ней."
+        minimal: "3 медленных вдоха"
+        expected_progress: 0.3
+rest_day:
+  title: "Обычный день"
+  instructions: "Практика работает каждый день, включая выходные — это не тренировка, которая требует отдыха"
+measure_every_days: 7
+measure:
+  prompt: "Сколько минут в день ты в среднем практиковал(а) снижение стресса на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

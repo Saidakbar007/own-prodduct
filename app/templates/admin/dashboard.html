@@ -7,6 +7,7 @@
   <div style="margin-top:var(--space-3);display:flex;gap:var(--space-3);flex-wrap:wrap">
     <a href="/admin/gallery" class="btn--text">Галерея</a>
     <a href="/admin/catalog" class="btn--text">Каталог</a>
+    <a href="/admin/questions" class="btn--text">Вопросы дня</a>
     <a href="/admin/spheres" class="btn--text">Сферы</a>
     <a href="/admin/sandbox" class="btn--text">Песочница</a>
     <a href="/admin/schedule-sandbox" class="btn--text">Песочница расписания</a>
@@ -47,5 +48,17 @@
     <span style="color:var(--text-muted)">Вирусность (вызовы/пользователя)</span>
     <strong class="tabular">{{ "%.2f"|format(virality) if virality is not none else "—" }}</strong>
   </div>
+</div>
+
+<div class="card" style="padding:var(--space-5);margin-top:var(--space-5)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-3)">Популярность сфер (активных людей)</h3>
+  {% for sphere_id, count in sphere_popularity %}
+  <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);padding:var(--space-2) 0;border-bottom:1px solid var(--border)">
+    <span style="color:var(--text-muted)">{{ t('sphere.' + sphere_id + '.name') }}</span>
+    <strong class="tabular">{{ count }}</strong>
+  </div>
+  {% else %}
+  <p style="font-size:var(--text-xs);color:var(--text-faint)">Пока нет данных.</p>
+  {% endfor %}
 </div>
 {% endblock %}

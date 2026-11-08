@@ -1,0 +1,36 @@
+id: savings
+version: 1
+title: "Сезон: сбережения"
+title_uz: "Mavsum: jamgʻarma"
+category: finance
+metric: { name: "Доля дохода, отложенная за месяц", unit: "%", direction: up }
+lengths: [30, 60, 90]
+target_default: 10
+baseline_test:
+  prompt: "Какой % дохода ты откладываешь сейчас в обычный месяц?"
+  input: number
+  min: 0
+  max: 100
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 2] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Сначала заплати себе"
+        instructions: "Если сегодня пришёл доход — сразу отложи часть в сбережения, прежде чем тратить на что-то ещё."
+        minimal: "Отложить 5 000 сум"
+        expected_progress: 1
+rest_day:
+  title: "День без дохода"
+  instructions: "Если сегодня дохода не было — просто не трогай отложенное"
+measure_every_days: 7
+measure:
+  prompt: "Какой % дохода за эту неделю ты отложил(а)?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

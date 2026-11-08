@@ -1,0 +1,545 @@
+# Каталог базовых упражнений (доп. задача, см. docs/decisions/DECISIONS.md
+# → «Этап "Доделай" + guide + wger»). Схема и загрузчик —
+# app/newlife/exercise_catalog.py. Картинки — из wger (только с разрешающей
+# лицензией, см. assets/photos/CREDITS.json); без картинки — SVG-иконка.
+exercises:
+  - id: squat
+    image: "squat.webp"
+    name: { ru: "Присед", uz: "Squat (oʻtirib-turish)" }
+    muscles: ["квадрицепсы", "ягодицы", "кор"]
+    equipment: [gym, home]
+    technique:
+      ru: >-
+        Ноги на ширине плеч, носки чуть разведены. Опускайся, отводя таз
+        назад, будто садишься на стул — колени идут в направлении носков.
+        Спина прямая, вес на всей стопе. Внизу бёдра параллельны полу или
+        чуть выше, затем вставай, толкаясь пятками.
+      uz: >-
+        Oyoqlar yelka kengligida, uchlari ozgina tashqariga qaragan.
+        Stulga oʻtirayotgandek dumbani orqaga olib pastga tush — tizzalar
+        oyoq uchi tomoniga qarasin. Orqa toʻgʻri, vazn butun tovonda. Pastda
+        son polga parallel yoki biroz yuqori boʻlsin, keyin tovon bilan
+        itarib tur.
+    mistakes:
+      - ru: "Колени уходят внутрь — следи, чтобы они смотрели в направлении носков."
+        uz: "Tizzalar ichkariga ketadi — ular oyoq uchi tomonga qarashiga eʼtibor ber."
+      - ru: "Округляется поясница внизу — лучше сократить глубину, чем сгибать спину."
+        uz: "Pastda bel egiladi — orqani bukish oʻrniga chuqurlikni kamaytir."
+      - ru: "Пятки отрываются от пола — вес должен оставаться на всей стопе."
+        uz: "Tovonlar poldan koʻtariladi — vazn butun tovonda qolishi kerak."
+    easy_version:
+      ru: "Присед у стула/стены с опорой, неглубокий диапазон."
+      uz: "Stul/devor tayanchi bilan, chuqur boʻlmagan diapazonda squat."
+    hard_version:
+      ru: "Присед с гантелями у груди (гоблет) или на одной ноге у опоры."
+      uz: "Koʻkrakda gantel bilan (goblet) yoki tayanch yordamida bir oyoqda squat."
+
+  - id: romanian_deadlift
+    image: "romanian_deadlift.webp"
+    name: { ru: "Румынская тяга", uz: "Rumin tortishi (RDL)" }
+    muscles: ["задняя поверхность бедра", "ягодицы", "низ спины"]
+    equipment: [gym, home]
+    technique:
+      ru: >-
+        Гантели/штанга у бёдер, ноги почти прямые (лёгкий сгиб в коленях).
+        Наклоняйся вперёд, отводя таз назад, спина прямая, снаряд скользит
+        вдоль ног. Остановись, когда почувствуешь натяжение задней
+        поверхности бедра, затем вернись вверх, толкая таз вперёд.
+      uz: >-
+        Gantel/shtanga sonlar oldida, oyoqlar deyarli toʻgʻri (tizzada
+        yengil bukilish). Dumbani orqaga olib, orqa toʻgʻri holda oldinga
+        egil, snaryad oyoq boʻylab sirpanadi. Son orqasida tortishish
+        sezilganda toʻxta, keyin dumbani oldinga itarib tikla.
+    mistakes:
+      - ru: "Округлять спину — она должна оставаться прямой на всём движении."
+        uz: "Orqani bukish — u butun harakat davomida toʻgʻri boʻlishi kerak."
+      - ru: "Сгибать колени слишком сильно, превращая тягу в присед."
+        uz: "Tizzani haddan tashqari bukib, tortishni squatga aylantirish."
+      - ru: "Опускать снаряд слишком низко через силу, не чувствуя растяжения."
+        uz: "Tortishish sezilmasdan, kuch bilan snaryadni haddan tashqari pastga tushirish."
+    easy_version:
+      ru: "Наклон вперёд без веса, руки скользят по бёдрам."
+      uz: "Vaznsiz oldinga egilish, qoʻllar son boʻylab sirpanadi."
+    hard_version:
+      ru: "Румынская тяга на одной ноге для баланса и большей нагрузки."
+      uz: "Muvozanat va koʻproq yuklama uchun bir oyoqda rumin tortishi."
+
+  - id: bench_press
+    image: "bench_press.webp"
+    name: { ru: "Жим лёжа", uz: "Yotib jim (bench press)" }
+    muscles: ["грудь", "трицепс", "передняя часть плеча"]
+    equipment: [gym]
+    technique:
+      ru: >-
+        Лежишь на скамье, лопатки сведены, ступни твёрдо стоят на полу.
+        Опускай штангу/гантели к середине груди по контролируемой
+        траектории, локти под углом примерно 45° к корпусу. Выжимай вверх
+        до почти прямых рук, не разгибая локти до щелчка.
+      uz: >-
+        Skameykada yotasan, kurak suyaklari yigʻilgan, oyoqlar polda
+        mustahkam turadi. Shtanga/gantelni koʻkrak oʻrtasiga nazorat
+        ostida tushir, tirsaklar tanaga ~45° burchakda. Qoʻllar deyarli
+        toʻgʻri boʻlguncha yuqoriga it, tirsakni oxirigacha qulfama.
+    mistakes:
+      - ru: "Отрывать таз от скамьи, чтобы «дожать» вес — так растёт риск травмы."
+        uz: "Vaznni «qisib chiqarish» uchun dumbani skameykadan koʻtarish — shikastlanish xavfi oshadi."
+      - ru: "Разводить локти в стороны на 90° — это перегружает плечевые суставы."
+        uz: "Tirsaklarni yon tomonga 90° ochish — bu yelka boʻgʻimiga ortiqcha yuklama beradi."
+      - ru: "Бросать вес вниз без контроля вместо плавного опускания."
+        uz: "Vaznni silliq tushirish oʻrniga nazoratsiz tashlab yuborish."
+    easy_version:
+      ru: "Жим гантелей меньшего веса или отжимания от скамьи под углом."
+      uz: "Yengilroq gantel bilan jim yoki skameykadan burchak ostida pusup."
+    hard_version:
+      ru: "Жим на наклонной скамье или с паузой на груди 1–2 секунды."
+      uz: "Qiya skameykada jim yoki koʻkrakda 1–2 soniya pauza bilan."
+
+  - id: seated_dumbbell_press
+    image: "seated_dumbbell_press.webp"
+    name: { ru: "Жим гантелей сидя", uz: "Oʻtirib gantel jim (yelka)" }
+    muscles: ["плечи", "трицепс"]
+    equipment: [gym, home]
+    technique:
+      ru: >-
+        Сидишь с прямой спиной, гантели на уровне плеч, ладони смотрят
+        вперёд. Выжимай гантели вверх почти до соединения над головой, не
+        прогибаясь в пояснице. Опускай обратно до уровня плеч под контролем.
+      uz: >-
+        Toʻgʻri orqa bilan oʻtirasan, gantel yelka balandligida, kaft
+        oldinga qaragan. Bel botmasdan gantellarni tepada deyarli
+        birlashtirib yuqoriga it. Nazorat ostida yelka darajasigacha
+        qaytar.
+    mistakes:
+      - ru: "Прогибать поясницу, чтобы «помочь» рукам — нагрузка уходит со спины."
+        uz: "Qoʻllarga «yordam berish» uchun belni botirish — yuklama orqaga oʻtadi."
+      - ru: "Разгибать локти до щелчка в верхней точке — суставам нужен небольшой запас."
+        uz: "Tepada tirsakni oxirigacha qulflash — boʻgʻimga ozgina zahira kerak."
+    easy_version:
+      ru: "Жим меньшим весом или одной рукой попеременно."
+      uz: "Yengilroq vazn bilan yoki bir qoʻlda almashinib jim."
+    hard_version:
+      ru: "Жим стоя (без опоры спины) для включения кора."
+      uz: "Kor mushaklarini ishga solish uchun tik turib (orqa tayanchsiz) jim."
+
+  - id: bent_over_row
+    image: "bent_over_row.webp"
+    name: { ru: "Тяга гантели в наклоне", uz: "Engashib gantel tortish" }
+    muscles: ["спина", "задняя часть плеча", "бицепс"]
+    equipment: [gym, home]
+    technique:
+      ru: >-
+        Наклонись вперёд с прямой спиной, колени чуть согнуты, гантель
+        свисает вниз. Тяни гантель к поясу, сводя лопатку, локоть идёт
+        близко к корпусу. Опускай под контролем до полного вытягивания руки.
+      uz: >-
+        Toʻgʻri orqa bilan oldinga egil, tizzalar ozgina bukilgan, gantel
+        pastga osilgan. Kurak suyagini yigʻib, gantelni belga tomon tort,
+        tirsak tanaga yaqin boʻlsin. Qoʻl toʻliq yozilguncha nazorat ostida
+        tushir.
+    mistakes:
+      - ru: "Округлять спину в наклоне — это главный риск травмы упражнения."
+        uz: "Egilganda orqani bukish — bu mashqning asosiy shikastlanish xavfi."
+      - ru: "Тянуть весом корпуса (рывком), а не силой спины и руки."
+        uz: "Orqa va qoʻl kuchi bilan emas, tana bilan silkinib tortish."
+    easy_version:
+      ru: "Тяга с опорой на скамью одной рукой, вес меньше."
+      uz: "Bir qoʻlda, skameykaga tayanib, yengilroq vazn bilan tortish."
+    hard_version:
+      ru: "Тяга двумя гантелями одновременно в наклоне без опоры."
+      uz: "Tayanchsiz, ikki gantel bilan bir vaqtda engashib tortish."
+
+  - id: pull_up_lat_pulldown
+    image: "pull_up_lat_pulldown.webp"
+    name: { ru: "Подтягивания / тяга верхнего блока", uz: "Turnikda tortilish / Yuqori blokni tortish" }
+    muscles: ["спина", "бицепс"]
+    equipment: [gym]
+    technique:
+      ru: >-
+        Хват чуть шире плеч. Тянись грудью к перекладине/рукоятке, сводя
+        лопатки и ведя локти вниз-назад, а не раскачиваясь всем телом.
+        Опускайся под контролем до почти прямых рук.
+      uz: >-
+        Ushlash yelkadan ozgina kengroq. Kurak suyaklarini yigʻib,
+        tirsaklarni pastga-orqaga olib, butun tana bilan silkinmasdan,
+        koʻkrak bilan turnik/dastaga tortil. Qoʻllar deyarli toʻgʻri
+        boʻlguncha nazorat ostida tush.
+    mistakes:
+      - ru: "Раскачиваться всем телом вместо работы спиной и руками."
+        uz: "Orqa va qoʻl bilan ishlash oʻrniga butun tana bilan silkinish."
+      - ru: "Не долетать грудью до перекладины, делая только половину амплитуды."
+        uz: "Koʻkrak turnikkacha yetmasdan, faqat yarim amplituda bajarish."
+    easy_version:
+      ru: "Тяга верхнего блока с небольшим весом или негативные повторения (медленно вниз)."
+      uz: "Yengil vazn bilan yuqori blokni tortish yoki negativ takror (sekin pastga)."
+    hard_version:
+      ru: "Подтягивания с дополнительным весом на поясе."
+      uz: "Belga qoʻshimcha vazn bilan turnikda tortilish."
+
+  - id: push_up
+    name: { ru: "Отжимания", uz: "Yerda tortilish (push-up)" }
+    muscles: ["грудь", "трицепс", "кор"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Руки чуть шире плеч, тело — прямая линия от плеч до пяток, живот
+        подтянут. Опускайся, сгибая локти под углом ~45° к корпусу, грудь
+        почти касается пола. Выжимай вверх, не прогибая поясницу.
+      uz: >-
+        Qoʻllar yelkadan ozgina kengroq, tana yelkadan tovongacha toʻgʻri
+        chiziq, qorin tortilgan. Tirsakni tanaga ~45° burchakda bukib
+        pastga tush, koʻkrak polga deyarli tegsin. Belni botirmay yuqoriga
+        it.
+    mistakes:
+      - ru: "Поднимать таз или прогибать поясницу — техника важнее количества."
+        uz: "Dumbani koʻtarish yoki belni botirish — texnika sondan muhimroq."
+      - ru: "Не опускаться достаточно низко (неполная амплитуда)."
+        uz: "Yetarlicha pastga tushmaslik (toʻliq boʻlmagan amplituda)."
+    easy_version:
+      ru: "Отжимания от колен или от скамьи/стола под углом."
+      uz: "Tizzadan yoki skameyka/stoldan burchak ostida pusup."
+    hard_version:
+      ru: "Отжимания с подъёмом ног на возвышение или с хлопком."
+      uz: "Oyoqlarni koʻtarilgan joyga qoʻyib yoki chapak bilan pusup."
+
+  - id: lunge
+    image: "lunge.webp"
+    name: { ru: "Выпады", uz: "Oldinga qadam bilan choʻkish" }
+    muscles: ["квадрицепсы", "ягодицы"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Сделай широкий шаг вперёд, опускай таз вниз, пока оба колена не
+        согнутся примерно под 90°, переднее колено над стопой, а не
+        выходит за носок. Корпус прямой. Отталкивайся передней ногой,
+        возвращаясь в исходное положение.
+      uz: >-
+        Oldinga keng qadam tashla, ikkala tizza ~90° bukilguncha dumbani
+        pastga tush, oldingi tizza tovon ustida boʻlsin, oyoq uchidan
+        oshmasin. Tana toʻgʻri. Oldingi oyoq bilan itarib, boshlang'ich
+        holatga qayt.
+    mistakes:
+      - ru: "Переднее колено уходит далеко вперёд за носок — это перегружает сустав."
+        uz: "Oldingi tizza oyoq uchidan uzoqqa chiqib ketadi — bu boʻgʻimga ortiqcha yuklama beradi."
+      - ru: "Наклонять корпус сильно вперёд вместо того, чтобы держать его прямым."
+        uz: "Tanani toʻgʻri tutish oʻrniga kuchli oldinga engashtirish."
+    easy_version:
+      ru: "Выпад с опорой рукой на стул, небольшая амплитуда."
+      uz: "Stulga qoʻl bilan tayanib, kichik amplitudada choʻkish."
+    hard_version:
+      ru: "Выпады с гантелями в руках или выпад назад на возвышении."
+      uz: "Qoʻlda gantel bilan yoki koʻtarilgan joyda orqaga choʻkish."
+
+  - id: glute_bridge
+    image: "glute_bridge.webp"
+    name: { ru: "Ягодичный мост", uz: "Dumba koʻprigi" }
+    muscles: ["ягодицы", "задняя поверхность бедра"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Лежишь на спине, колени согнуты, стопы у ягодиц. Поднимай таз
+        вверх, сжимая ягодицы в верхней точке, тело от плеч до колен —
+        прямая линия. Опускайся под контролем, не касаясь пола резко.
+      uz: >-
+        Chalqancha yotasan, tizzalar bukilgan, tovon dumbaga yaqin. Tepa
+        nuqtada dumbani qisib, yelkadan tizzagacha toʻgʻri chiziq hosil
+        qilib, dumbani yuqoriga koʻtar. Keskin tegmasdan, nazorat ostida
+        tush.
+    mistakes:
+      - ru: "Прогибать поясницу вместо работы ягодицами."
+        uz: "Dumba bilan ishlash oʻrniga belni botirish."
+      - ru: "Поднимать таз слишком высоко, отрывая поясницу от прямой линии."
+        uz: "Dumbani haddan tashqari yuqori koʻtarib, belni toʻgʻri chiziqdan chiqarish."
+    easy_version:
+      ru: "Мост без веса, небольшая амплитуда."
+      uz: "Vaznsiz, kichik amplitudada koʻprik."
+    hard_version:
+      ru: "Мост на одной ноге или с весом на бёдрах."
+      uz: "Bir oyoqda yoki sonda vazn bilan koʻprik."
+
+  - id: plank
+    image: "plank.webp"
+    name: { ru: "Планка", uz: "Plank" }
+    muscles: ["кор", "плечи"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Опора на предплечья и носки, тело — прямая линия от плеч до пяток.
+        Подтяни живот и ягодицы, не прогибай и не поднимай таз. Дыши
+        спокойно, удерживая позу заданное время.
+      uz: >-
+        Bilak va oyoq uchiga tayanib, yelkadan tovongacha toʻgʻri chiziq
+        hosil qil. Qorin va dumbani tort, dumbani botirma yoki koʻtarma.
+        Xotirjam nafas olib, belgilangan vaqt davomida tur.
+    mistakes:
+      - ru: "Поднимать таз высоко («домиком») — это снимает нагрузку с кора."
+        uz: "Dumbani yuqoriga koʻtarish («uycha») — bu kor mushaklaridan yuklamani olib tashlaydi."
+      - ru: "Прогибать поясницу вниз — живот должен оставаться подтянутым."
+        uz: "Belni pastga botirish — qorin tortilgan holda qolishi kerak."
+    easy_version:
+      ru: "Планка на коленях вместо носков."
+      uz: "Oyoq uchi oʻrniga tizzada plank."
+    hard_version:
+      ru: "Планка с поочерёдным подъёмом руки/ноги."
+      uz: "Qoʻl/oyoqni almashlab koʻtarib plank."
+
+  - id: bird_dog
+    image: "bird_dog.webp"
+    name: { ru: "Птица-собака", uz: "Qush-it mashqi" }
+    muscles: ["кор", "низ спины"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Стойка на четырёх опорах. Вытягивай одновременно разноимённую
+        руку и ногу, держа спину и таз неподвижными. Задержись 1–2
+        секунды, вернись и повтори на другую сторону.
+      uz: >-
+        Toʻrt tayanch holatida turasan. Orqa va dumbani harakatsiz
+        ushlab, qarama-qarshi qoʻl va oyoqni bir vaqtda yoz. 1–2 soniya
+        ushlab tur, qaytar va boshqa tomonga takrorla.
+    mistakes:
+      - ru: "Поворачивать таз или заваливаться на бок — таз должен смотреть вниз."
+        uz: "Dumbani burish yoki yonga qiyshayish — dumba pastga qaragan boʻlishi kerak."
+      - ru: "Поднимать руку/ногу слишком быстро, теряя контроль и баланс."
+        uz: "Qoʻl/oyoqni juda tez koʻtarib, nazorat va muvozanatni yoʻqotish."
+    easy_version:
+      ru: "Только нога или только рука поочерёдно, без одновременного движения."
+      uz: "Faqat oyoq yoki faqat qoʻl, bir vaqtda emas, almashlab."
+    hard_version:
+      ru: "С задержкой 3–5 секунд в вытянутом положении."
+      uz: "Yozilgan holatda 3–5 soniya ushlab turish bilan."
+
+  - id: crunch
+    image: "crunch.webp"
+    name: { ru: "Скручивания", uz: "Qorin burish (crunch)" }
+    muscles: ["прямая мышца живота"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Лежишь на спине, колени согнуты, руки у висков или на груди.
+        Отрывай верх спины от пола, скручиваясь к коленям, не дёргая
+        головой и шеей. Опускайся под контролем.
+      uz: >-
+        Chalqancha yotasan, tizzalar bukilgan, qoʻllar chakkada yoki
+        koʻkrakda. Bosh va boʻyinni tortmasdan, tizzaga tomon burilib,
+        orqaning yuqori qismini poldan uzib koʻtar. Nazorat ostida tush.
+    mistakes:
+      - ru: "Тянуть себя руками за голову — работать должен именно живот."
+        uz: "Oʻzini qoʻl bilan boshdan tortish — ishlashi kerak boʻlgan aynan qorin."
+      - ru: "Делать резкие рывки вместо плавного контролируемого движения."
+        uz: "Silliq nazorat ostidagi harakat oʻrniga keskin silkinishlar qilish."
+    easy_version:
+      ru: "Частичная амплитуда, руки вдоль тела."
+      uz: "Qisman amplituda, qoʻllar tana boʻylab."
+    hard_version:
+      ru: "Скручивания с удержанием небольшого веса на груди."
+      uz: "Koʻkrakda kichik vaznni ushlab qorin burish."
+
+  - id: bulgarian_split_squat
+    name: { ru: "Болгарские выпады", uz: "Bolgar choʻkishi (bir oyoqda)" }
+    muscles: ["квадрицепсы", "ягодицы"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Задняя нога стоит на возвышении (стул/скамья), передняя — впереди
+        на полу. Опускайся вертикально вниз, сгибая переднее колено, пока
+        бедро не станет параллельно полу. Отталкивайся передней ногой вверх.
+      uz: >-
+        Orqadagi oyoq koʻtarilgan joyda (stul/skameyka), oldingi oyoq
+        polda oldinda. Oldingi tizzani bukib, son polga parallel
+        boʻlguncha vertikal pastga tush. Oldingi oyoq bilan yuqoriga
+        itaring.
+    mistakes:
+      - ru: "Наклонять корпус далеко вперёд, перегружая колено."
+        uz: "Tizzaga ortiqcha yuklama berib, tanani uzoqqa oldinga engashtirish."
+      - ru: "Делать движение слишком быстро, теряя баланс на одной ноге."
+        uz: "Harakatni juda tez bajarib, bir oyoqda muvozanatni yoʻqotish."
+    easy_version:
+      ru: "Небольшая амплитуда, с опорой рукой на стену."
+      uz: "Qoʻl bilan devorga tayanib, kichik amplitudada."
+    hard_version:
+      ru: "С гантелями в руках, большая амплитуда."
+      uz: "Qoʻlda gantel bilan, katta amplitudada."
+
+  - id: conventional_deadlift
+    image: "conventional_deadlift.webp"
+    name: { ru: "Классическая тяга", uz: "Klassik tortish (deadlift)" }
+    muscles: ["задняя поверхность бедра", "ягодицы", "спина"]
+    equipment: [gym]
+    technique:
+      ru: >-
+        Штанга у голеней, хват чуть шире плеч, спина прямая, таз отведён
+        назад. Вставай, разгибая бёдра и спину одновременно, снаряд
+        скользит близко к ногам. Опускай под контролем, сгибая сначала
+        бёдра, затем колени.
+      uz: >-
+        Shtanga boldir yaqinida, ushlash yelkadan biroz kengroq, orqa
+        toʻgʻri, dumba orqaga olingan. Sonlar va orqani bir vaqtda yozib
+        tur, snaryad oyoqqa yaqin sirpanadi. Avval sonlarni, keyin
+        tizzalarni bukib nazorat ostida tushir.
+    mistakes:
+      - ru: "Округлять спину в нижней точке — главный риск травмы."
+        uz: "Pastki nuqtada orqani bukish — asosiy shikastlanish xavfi."
+      - ru: "Отдалять штангу от ног, превращая тягу в наклон с рывком."
+        uz: "Shtangani oyoqdan uzoqlashtirib, tortishni silkinishli engashishga aylantirish."
+    easy_version:
+      ru: "Тяга с гантелями или с возвышения (меньше диапазон)."
+      uz: "Gantel bilan yoki koʻtarilgan joydan (kamroq diapazon) tortish."
+    hard_version:
+      ru: "Тяга на прямых ногах (румынская) с большим весом как продолжение."
+      uz: "Katta vazn bilan toʻgʻri oyoqda (rumin) tortish davomi sifatida."
+
+  - id: overhead_press
+    image: "overhead_press.webp"
+    name: { ru: "Жим над головой стоя", uz: "Tik turib bosh ustidan jim" }
+    muscles: ["плечи", "трицепс", "кор"]
+    equipment: [gym, home]
+    technique:
+      ru: >-
+        Стоя, ноги на ширине плеч, снаряд у плеч. Выжимай вверх, слегка
+        отводя голову назад на пути снаряда, вверху руки почти прямые.
+        Не прогибай поясницу, держи кор напряжённым.
+      uz: >-
+        Tik turib, oyoqlar yelka kengligida, snaryad yelkada. Snaryad
+        yoʻlidan boshni ozgina orqaga olib yuqoriga it, tepada qoʻllar
+        deyarli toʻgʻri. Belni botirmay, kor mushaklarini tarang tut.
+    mistakes:
+      - ru: "Прогибать поясницу, чтобы вытолкнуть вес — используй ноги и кор."
+        uz: "Vaznni itarish uchun belni botirish — oyoq va kor mushaklaridan foydalan."
+      - ru: "Не убирать голову с траектории снаряда."
+        uz: "Boshni snaryad yoʻlidan olib qoʻymaslik."
+    easy_version:
+      ru: "Жим сидя с опорой на спинку стула."
+      uz: "Stul suyanchigʻiga tayanib oʻtirib jim."
+    hard_version:
+      ru: "Жим с толчком ног (push press) для большего веса."
+      uz: "Katta vazn uchun oyoq bilan itarib (push press) jim."
+
+  - id: side_plank
+    name: { ru: "Боковая планка", uz: "Yon plank" }
+    muscles: ["косые мышцы живота", "кор"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Лежишь на боку, опора на предплечье и стопу, тело — прямая линия.
+        Поднимай таз, удерживая прямую линию от плеча до стопы. Не
+        проваливай бедро вниз, дыши спокойно.
+      uz: >-
+        Yon tomonda yotasan, bilak va tovonga tayanasan, tana toʻgʻri
+        chiziq. Yelkadan tovongacha toʻgʻri chiziqni ushlab, dumbani
+        koʻtar. Sonni pastga botirma, xotirjam nafas ol.
+    mistakes:
+      - ru: "Опускать бедро к полу вместо удержания прямой линии."
+        uz: "Toʻgʻri chiziqni ushlash oʻrniga sonni polga tushirish."
+      - ru: "Поворачивать корпус вперёд или назад вместо строго боковой стойки."
+        uz: "Qattiq yon turish oʻrniga tanani oldinga yoki orqaga burish."
+    easy_version:
+      ru: "Боковая планка с опорой на колено."
+      uz: "Tizzaga tayanib yon plank."
+    hard_version:
+      ru: "С поднятой верхней ногой или рукой."
+      uz: "Yuqori oyoq yoki qoʻlni koʻtarib."
+
+  - id: leg_raise
+    image: "leg_raise.webp"
+    name: { ru: "Подъём ног лёжа", uz: "Yotib oyoq koʻtarish" }
+    muscles: ["нижняя часть пресса", "кор"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Лежишь на спине, руки под поясницей или по бокам. Поднимай
+        прямые (или чуть согнутые) ноги вверх, не отрывая поясницу от
+        пола, затем опускай под контролем, не касаясь пола резко.
+      uz: >-
+        Chalqancha yotasan, qoʻllar bel ostida yoki yon tomonda. Belni
+        poldan uzmasdan, toʻgʻri (yoki ozgina bukilgan) oyoqlarni yuqoriga
+        koʻtar, keyin keskin tegmasdan nazorat ostida tushir.
+    mistakes:
+      - ru: "Отрывать поясницу от пола — нагрузка переходит на спину, не на пресс."
+        uz: "Belni poldan uzish — yuklama orqaga, qorinmas oʻtadi."
+      - ru: "Бросать ноги вниз без контроля в конце движения."
+        uz: "Harakat oxirida oyoqlarni nazoratsiz tashlab yuborish."
+    easy_version:
+      ru: "Поднимать согнутые в коленях ноги, меньшая амплитуда."
+      uz: "Tizzada bukilgan oyoqlarni kichik amplitudada koʻtarish."
+    hard_version:
+      ru: "Прямые ноги с паузой 1–2 секунды вверху."
+      uz: "Tepada 1–2 soniya pauza bilan toʻgʻri oyoqlar."
+
+  - id: back_extension
+    image: "back_extension.webp"
+    name: { ru: "Супермен (гиперэкстензия без снаряда)", uz: "Super-odam mashqi" }
+    muscles: ["низ спины", "ягодицы"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Лежишь на животе, руки вытянуты вперёд. Одновременно поднимай
+        руки, грудь и ноги над полом, задержись 1–2 секунды, опускайся
+        под контролем.
+      uz: >-
+        Qornida yotasan, qoʻllar oldinga yozilgan. Qoʻl, koʻkrak va
+        oyoqlarni bir vaqtda poldan koʻtar, 1–2 soniya ushlab tur,
+        nazorat ostida tush.
+    mistakes:
+      - ru: "Поднимать слишком высоко с резким прогибом — достаточно небольшой амплитуды."
+        uz: "Juda yuqoriga keskin botirib koʻtarish — kichik amplituda yetarli."
+      - ru: "Делать резко и быстро вместо плавного контролируемого темпа."
+        uz: "Silliq nazorat ostidagi tempo oʻrniga keskin va tez bajarish."
+    easy_version:
+      ru: "Поднимать только верх тела или только ноги по отдельности."
+      uz: "Faqat tananing yuqori qismini yoki faqat oyoqlarni alohida koʻtarish."
+    hard_version:
+      ru: "С удержанием верхней точки 3–5 секунд."
+      uz: "Yuqori nuqtada 3–5 soniya ushlab turish bilan."
+
+  - id: triceps_dip
+    image: "triceps_dip.webp"
+    name: { ru: "Отжимания на трицепс от скамьи", uz: "Skameykadan triseps uchun tushish" }
+    muscles: ["трицепс", "плечи"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Руки на краю скамьи/стула позади тела, ноги вытянуты вперёд.
+        Опускай таз вниз, сгибая локти назад (не в стороны), затем
+        выжимай вверх, разгибая руки.
+      uz: >-
+        Qoʻllar tana orqasida skameyka/stul chetida, oyoqlar oldinga
+        yozilgan. Tirsaklarni orqaga (yonga emas) bukib dumbani pastga
+        tush, keyin qoʻllarni yozib yuqoriga it.
+    mistakes:
+      - ru: "Разводить локти в стороны — это перегружает плечевой сустав."
+        uz: "Tirsaklarni yon tomonga ochish — bu yelka boʻgʻimiga ortiqcha yuklama beradi."
+      - ru: "Опускаться слишком низко, если чувствуется боль в плечах."
+        uz: "Yelkada ogʻriq sezilsa, juda past tushish."
+    easy_version:
+      ru: "Ноги согнуты в коленях, стопы ближе к телу."
+      uz: "Tizzalar bukilgan, tovonlar tanaga yaqinroq."
+    hard_version:
+      ru: "Ноги прямые на возвышении, бо́льшая амплитуда."
+      uz: "Oyoqlar koʻtarilgan joyda toʻgʻri, kattaroq amplituda."
+
+  - id: calf_raise
+    image: "calf_raise.webp"
+    name: { ru: "Подъём на носки", uz: "Oyoq uchida koʻtarilish" }
+    muscles: ["икры"]
+    equipment: [home, gym]
+    technique:
+      ru: >-
+        Стоя, ноги на ширине плеч (можно у опоры для баланса). Поднимайся
+        на носки максимально высоко, задержись 1 секунду, опускайся под
+        контролем до полного растяжения икр.
+      uz: >-
+        Tik turib, oyoqlar yelka kengligida (muvozanat uchun tayanch
+        boʻlishi mumkin). Oyoq uchida imkon qadar yuqoriga koʻtaril, 1
+        soniya ushlab tur, boldir toʻliq tortilguncha nazorat ostida
+        tushir.
+    mistakes:
+      - ru: "Делать быстро и рывками вместо медленного контролируемого темпа."
+        uz: "Sekin nazorat ostidagi tempo oʻrniga tez va silkinib bajarish."
+      - ru: "Не опускаться полностью вниз, укорачивая амплитуду."
+        uz: "Toʻliq pastga tushmasdan, amplitudani qisqartirish."
+    easy_version:
+      ru: "Обеими ногами с опорой на стену или стул."
+      uz: "Devor yoki stulga tayanib ikki oyoqda."
+    hard_version:
+      ru: "На одной ноге или с гантелями в руках."
+      uz: "Bir oyoqda yoki qoʻlda gantel bilan."

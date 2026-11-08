@@ -1,5 +1,5 @@
 """
-Загрузка и валидация каталогов привычек (§10 NEWLIFE_V8_SPEC.md):
+Загрузка и валидация каталогов привычек (§10 docs/specs/NEWLIFE_V8_SPEC.md):
 habit_catalog.yaml (~40 полезных) и bad_habit_catalog.yaml (плохие +
 общий список триггеров).
 """

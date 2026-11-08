@@ -1,0 +1,36 @@
+id: digital_detox
+version: 1
+title: "Сезон: цифровой детокс"
+title_uz: "Mavsum: raqamli detoks"
+category: lifestyle
+metric: { name: "Экранное время соцсетей", unit: "мин/день", direction: down }
+lengths: [30, 60]
+target_default: 45
+baseline_test:
+  prompt: "Сколько минут в день у тебя уходит на соцсети (по данным экранного времени телефона)?"
+  input: number
+  min: 0
+  max: 300
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 5] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Проверь и ограничь"
+        instructions: "Вечером посмотри в настройках телефона, сколько времени ушло на соцсети, и внеси число. Если видишь, что превысил лимит — убери 1 приложение с главного экрана."
+        minimal: "Убрать 1 приложение с главного экрана"
+        expected_progress: 5
+rest_day:
+  title: "Обычный день"
+  instructions: "Эта привычка работает каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько минут в день в среднем ушло на соцсети на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

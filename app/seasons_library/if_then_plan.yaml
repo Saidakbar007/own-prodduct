@@ -1,0 +1,36 @@
+id: if_then_plan
+version: 1
+title: "Сезон: план «если — то»"
+title_uz: "Mavsum: «agar — unda» rejasi"
+category: character
+metric: { name: "Сработавшие планы «если — то»", unit: "раз/нед", direction: up }
+lengths: [30, 60]
+target_default: 3
+baseline_test:
+  prompt: "Сколько раз за последнюю неделю у тебя сработал план «если — то» (если такие планы уже есть)?"
+  input: number
+  min: 0
+  max: 14
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5, 6, 7], minutes: [1, 3] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "2 плана «если — то»"
+        instructions: "Выбери 2 плана из шаблонов (например: «если скука в ленте — то 2 минуты фокуса на задаче»). Отмечай в момент или вечером, когда план сработал."
+        minimal: "Прочитать свой план утром"
+        expected_progress: 0.5
+rest_day:
+  title: "Обычный день"
+  instructions: "Планы работают каждый день, включая выходные"
+measure_every_days: 7
+measure:
+  prompt: "Сколько раз план «если — то» сработал на этой неделе?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

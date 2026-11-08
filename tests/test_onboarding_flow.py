@@ -32,9 +32,13 @@ def test_onboarding_entry_shows_philosophy_screen(client):
 
 
 def test_goal_picker_lists_all_templates(client):
+    """Без выбранных сфер в черновике (прямой заход, как у уже
+    зарегистрированного человека за новой целью) — показываются цели всех
+    11 сфер без фильтра; названия — короткие, из каталога (content/spheres/
+    body.yaml и др.), не полное "Сезон: ..." из SeasonTemplate."""
     resp = client.get("/onboarding/goal")
     assert resp.status_code == 200
-    for title_part in ["5 км", "подтягиваний", "отжиманий", "веса", "мышц", "активности", "сон"]:
+    for title_part in ["5 км", "Подтягивания", "Отжимания", "Похудеть", "Набрать массу", "активности", "сон"]:
         assert title_part in resp.text
 
 
@@ -114,15 +118,6 @@ def test_muscle_gain_primary_metric_is_bodyweight_not_squat(client, unique, db_s
     assert season.target_value <= 75.0 * 1.005 * (90 / 7) + 0.01  # безопасный лимит набора
     assert season.secondary_baseline_value == 40.0  # рабочий вес в приседе
     assert season.secondary_metric_name == "Рабочий вес в приседе"
-
-
-def test_custom_goal_shows_coming_soon_without_anthropic_key(client, monkeypatch):
-    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
-    resp = client.post(
-        "/onboarding/goal", data={"template_id": "custom", "custom_text": "научиться плавать"}
-    )
-    assert resp.status_code == 200
-    assert "скоро появится" in resp.text
 
 
 def test_measure_flow_records_value_and_updates_season(client, unique):

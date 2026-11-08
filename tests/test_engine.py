@@ -115,7 +115,11 @@ def test_schedule_respects_safety_false_when_not_enough_rest():
 
 @pytest.mark.parametrize(
     "template_id",
-    ["run_5k", "pullups_10", "pushups_50", "fat_loss_safe", "muscle_gain", "activity_steps", "sleep_consistency"],
+    [
+        "run_5k", "pullups_10", "pushups_50", "fat_loss_safe", "muscle_gain",
+        "activity_steps", "sleep_consistency", "flexibility", "nutrition",
+        "water", "sitting_breaks",
+    ],
 )
 def test_library_templates_respect_safety(template_id):
     assert engine.schedule_respects_safety(get_template(template_id)) is True
@@ -329,6 +333,12 @@ def test_clamp_weight_target_noop_for_zero_weeks_or_baseline():
     assert engine.clamp_weight_target(0, 64, "down", weeks=8) == 64
 
 
+def test_clamp_weight_target_loss_respects_absolute_1kg_cap():
+    # 150 кг: 1% в неделю = 1.5 кг > потолка 1 кг/нед (PRD 1.0) -> урезаем до 1 кг/нед * 4 = 4 кг
+    clamped = engine.clamp_weight_target(baseline_value=150, raw_target_value=130, direction="down", weeks=4)
+    assert clamped == pytest.approx(150 - engine.SAFE_WEEKLY_LOSS_ABS_CAP_KG * 4)
+
+
 # ---------------------------------------------------------------------------- BMI
 
 @pytest.mark.parametrize(
@@ -346,3 +356,12 @@ def test_meets_fat_loss_eligibility(weight, height, eligible):
 def test_bmi_rejects_non_positive_height():
     with pytest.raises(ValueError):
         engine.bmi(70, 0)
+
+
+def test_meets_fat_loss_eligibility_blocks_on_target_bmi_even_if_current_is_fine():
+    # Текущий ИМТ в норме (70 кг/175 см ~ 22.9), но цель 55 кг даёт ИМТ ~18.0 < 18.5
+    assert engine.meets_fat_loss_eligibility(70, 175, target_weight_kg=55) is False
+
+
+def test_meets_fat_loss_eligibility_allows_when_both_current_and_target_fine():
+    assert engine.meets_fat_loss_eligibility(70, 175, target_weight_kg=64) is True

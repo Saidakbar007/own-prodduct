@@ -1,0 +1,66 @@
+id: public_speaking_confidence
+version: 1
+title: "Сезон: выступления без страха"
+title_uz: "Mavsum: qoʻrqmasdan chiqish"
+category: social
+metric: { name: "Пройденные экспозиции", unit: "экспозиций/нед", direction: up }
+lengths: [60, 90]
+target_default: 6
+baseline_test:
+  prompt: "Сколько раз за последний месяц ты сам(а) выступал(а) публично или записывал(а) видео с речью?"
+  input: number
+  min: 0
+  max: 20
+eligibility:
+  min_age: 18
+  warnings:
+    - "Любую экспозицию можно пропустить кнопкой «Не сегодня» без штрафа, перескочить ступень нельзя"
+    - "Если тревога 8–10 держится на нескольких экспозициях подряд — приложение предложит поговорить со специалистом"
+schedule: { train_days: [1, 3, 5], minutes: [5, 20] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Видеозапись себе"
+        instructions: "Запиши на видео 30–60 секунд речи или рассказа — без зрителей, только для себя. Посмотри запись один раз."
+        minimal: "Записать 30-секундное видео"
+        expected_progress: 1
+  - phase: 2
+    unlock_if_baseline_gte: 2
+    days:
+      - title: "Перед другом"
+        instructions: "Повтори свою речь перед 1 близким другом или родственником живьём."
+        minimal: "Видео вместо живого выступления"
+        expected_progress: 1
+  - phase: 3
+    unlock_if_baseline_gte: 4
+    days:
+      - title: "Перед малой группой"
+        instructions: "Выступи перед 3–5 людьми — друзьями или одногруппниками."
+        minimal: "Повторение перед 1 другом"
+        expected_progress: 1
+  - phase: 4
+    unlock_if_baseline_gte: 6
+    days:
+      - title: "Перед группой"
+        instructions: "Выступи перед учебной группой или похожей по размеру аудиторией."
+        minimal: "Выступление перед 3–5 людьми"
+        expected_progress: 1
+  - phase: 5
+    unlock_if_baseline_gte: 8
+    days:
+      - title: "Перед аудиторией"
+        instructions: "Выступи перед большой аудиторией или незнакомыми людьми."
+        minimal: "Выступление перед учебной группой"
+        expected_progress: 1
+rest_day:
+  title: "День репетиции"
+  instructions: "Если нет сил на новую экспозицию — просто прорепетируй текст вслух"
+measure_every_days: 7
+measure:
+  prompt: "Сколько экспозиций из лестницы ты прошёл(ла) на этой неделе? Какая была тревога до/после, 0–10?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 0

@@ -1,0 +1,50 @@
+id: deep_work
+version: 1
+title: "Сезон: глубокая работа"
+title_uz: "Mavsum: chuqur fokus bilan ishlash"
+category: character
+metric: { name: "Фокус без телефона", unit: "мин", direction: up }
+lengths: [60, 90]
+target_default: 65
+baseline_test:
+  prompt: "Сколько минут подряд ты можешь работать в полном фокусе без телефона?"
+  input: number
+  min: 0
+  max: 120
+eligibility:
+  min_age: 18
+  warnings: []
+schedule: { train_days: [1, 2, 3, 4, 5], minutes: [25, 90] }
+phases:
+  - phase: 1
+    unlock_if_baseline_gte: 0
+    days:
+      - title: "Сессия 25 минут"
+        instructions: "Убери телефон из комнаты или в другую сумку, поставь таймер на 25 минут и работай над одной задачей без переключений."
+        minimal: "2 минуты без телефона за задачей"
+        expected_progress: 5
+  - phase: 2
+    unlock_if_baseline_gte: 25
+    days:
+      - title: "Сессия 50 минут"
+        instructions: "Таймер на 50 минут, одна задача, короткий перерыв 5 минут после сессии."
+        minimal: "10 минут фокуса без телефона"
+        expected_progress: 5
+  - phase: 3
+    unlock_if_baseline_gte: 50
+    days:
+      - title: "Сессия 90 минут"
+        instructions: "Таймер на 90 минут с одним перерывом 5 минут в середине, всё время — одна задача."
+        minimal: "20 минут фокуса без телефона"
+        expected_progress: 5
+rest_day:
+  title: "День без сессий"
+  instructions: "2 дня в неделю — без таймера, обычная работа в своём темпе"
+measure_every_days: 7
+measure:
+  prompt: "Сколько минут подряд фокуса без телефона получилось на пике этой недели?"
+  proof: optional
+  progress_photo: false
+safety:
+  max_phase_jump: 1
+  rest_days_min_per_week: 2

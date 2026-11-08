@@ -1,0 +1,228 @@
+# Каталог целей сферы «Отношения» (PRD 1.0). Источник: docs/content/NEWLIFE_1_0_CONTENT.md
+# (раздел «2. ОТНОШЕНИЯ (только своё поведение)»). Схема и загрузчик —
+# app/newlife/goal_catalog.py. Сценарий сезона каждой цели —
+# app/seasons_library/<id>.yaml.
+#
+# Продуктовый принцип (из раздела «F. Приватность и безопасность» контент-ТЗ):
+# все метрики оценивают только собственные действия пользователя — партнёр и
+# другие люди не оцениваются, слежки/геолокации/оценки «насколько партнёр
+# хорош» здесь нет и быть не может.
+sphere: relationships
+goals:
+  - id: family
+    sphere: relationships
+    title: { ru: "Семья", uz: "Oila" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто редко бывает с близкими без телефона в руках"
+    outcome: "В конце — регулярное качественное время с семьёй без телефона"
+    metric: { key: family_quality_hours, kind: measure, unit: "ч/нед", rounding: 0.5 }
+    secondary: ["число звонков родным в неделю"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Варианты цели: 2 / 4 / 6 часов качественного времени в неделю без
+      телефона. +1 час в неделю каждые 2 недели (продуктовая эвристика).
+    week_skeleton: "1 общий ужин + 1 звонок родным в неделю"
+    minimal_version: "Спросить «как прошёл день?»"
+    guide:
+      steps:
+        - ru: "Выбери конкретный день и время для общего ужина без телефонов хотя бы раз в неделю."
+          uz: "Haftada kamida bir marta telefonsiz birgalikdagi kechki ovqat uchun aniq kun va vaqt tanla."
+        - ru: "Запланируй звонок родителям или бабушке/дедушке — поставь напоминание на конкретный день."
+          uz: "Ota-ona yoki buvi-bobo bilan qo'ng'iroqni rejalashtir — aniq kunga eslatma qo'y."
+        - ru: "Во время общего времени убери телефон из поля зрения — именно это делает время «качественным»."
+          uz: "Birgalikdagi vaqtda telefonni ko'z oldidan olib qo'y — aynan shu vaqtni 'sifatli' qiladi."
+        - ru: "Каждые 2 недели добавляй ещё один час общего времени, не пытайся сразу набрать много часов."
+          uz: "Har 2 haftada yana bir soat birgalikdagi vaqt qo'sh, darhol ko'p soatga chiqishga urinma."
+      mistakes:
+        - ru: "Находиться рядом с семьёй, но при этом сидеть в телефоне — такое время не считается качественным."
+          uz: "Oila yonida bo'lib, lekin telefonga tikilib o'tirish — bunday vaqt sifatli hisoblanmaydi."
+        - ru: "Звонить родным только по праздникам — короткие, но частые звонки работают лучше редких длинных."
+          uz: "Yaqinlarga faqat bayramlarda qo'ng'iroq qilish — qisqa, lekin tez-tez qo'ng'iroqlar kamdan-kam uzun qo'ng'iroqlardan yaxshiroq ishlaydi."
+      first_week_example:
+        ru: "Один общий ужин без телефонов + один звонок родителям на этой неделе; в остальные дни — хотя бы вопрос «как прошёл день?»."
+        uz: "Shu hafta — telefonsiz bir umumiy kechki ovqat + ota-onaga bir qo'ng'iroq; qolgan kunlarda — hech bo'lmasa 'kuningiz qanday o'tdi?' savoli."
+    source:
+      name: "эвристика"
+    template_id: family
+
+  - id: friends
+    sphere: relationships
+    title: { ru: "Друзья", uz: "Doʻstlar" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет регулярно поддерживать дружбу"
+    outcome: "В конце — встречи и созвоны с друзьями входят в привычку"
+    metric: { key: friends_meetings, kind: counter, unit: "встреч/нед", rounding: 1 }
+    secondary: ["часы общения с друзьями в неделю"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Варианты цели: 1 / 2 / 3 встречи или созвона в неделю. Hall 2018 (KU):
+      около 50 часов общения нужно, чтобы стать приятелями, около 200 —
+      близкими друзьями.
+    week_skeleton: "1 встреча + 2 сообщения друзьям в неделю"
+    minimal_version: "Написать 1 другу"
+    guide:
+      steps:
+        - ru: "Выбери 1–3 друзей, с кем хочешь поддерживать связь регулярно, а не распыляйся сразу на всех."
+          uz: "Muntazam aloqada bo'lishni xohlagan 1–3 do'stni tanla, hammasiga birdan tarqalib ketma."
+        - ru: "Заранее договорись на конкретный день для встречи или созвона на этой неделе."
+          uz: "Shu haftaga uchrashuv yoki qo'ng'iroq uchun aniq kunni oldindan kelishib ol."
+        - ru: "Между встречами пиши короткие сообщения — необязательно начинать длинный разговор каждый раз."
+          uz: "Uchrashuvlar orasida qisqa xabarlar yoz — har safar uzun suhbat boshlash shart emas."
+        - ru: "Если встреча не получилась — замени её звонком, не пропускай неделю совсем."
+          uz: "Uchrashuv bo'lmasa — uni qo'ng'iroq bilan almashtir, haftani butunlay o'tkazib yubormang."
+      mistakes:
+        - ru: "Считать лайки и реакции в переписке полноценным общением — нужен настоящий разговор или встреча."
+          uz: "Yozishmadagi layk va reaksiyalarni to'liq muloqot deb hisoblash — haqiqiy suhbat yoki uchrashuv kerak."
+        - ru: "Откладывать встречи «на потом», пока дружба не остынет — крепкая дружба держится на регулярности, а не на редких всплесках."
+          uz: "Uchrashuvlarni do'stlik so'nguncha 'keyinroq'ga qoldirish — mustahkam do'stlik muntazamlikka, kamdan-kam chaqnashga emas, tayanadi."
+      first_week_example:
+        ru: "Одна встреча или созвон с другом + два коротких сообщения другим друзьям на этой неделе."
+        uz: "Shu hafta — do'st bilan bir uchrashuv yoki qo'ng'iroq + boshqa do'stlarga ikki qisqa xabar."
+    source:
+      name: "Hall 2018 (University of Kansas)"
+      url: "https://news.ku.edu/2018/03/06/study-reveals-number-hours-it-takes-make-friend"
+    template_id: friends
+
+  - id: partner_attention
+    sphere: relationships
+    title: { ru: "Партнёр: внимание", uz: "Sherik: eʼtibor" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто состоит в отношениях и хочет быть внимательнее"
+    outcome: "В конце — привычка замечать и откликаться на знаки внимания партнёра"
+    metric: { key: partner_bid_response_rate, kind: percent, unit: "%", rounding: 5 }
+    secondary: ["часы вместе в неделю"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Варианты цели: откликаться на знаки внимания («bids») 50 / 70 / 85%
+      времени. Gottman: пары, оставшиеся вместе, откликались на bids около
+      86% времени, распавшиеся — около 33%.
+    week_skeleton: "Ежедневная отметка + 1 свидание в неделю"
+    minimal_version: "1 искренний вопрос или комплимент"
+    guide:
+      steps:
+        - ru: "Учись замечать «знаки внимания» партнёра — короткие попытки поделиться чем-то, пошутить, попросить внимание."
+          uz: "Sherikning 'e'tibor belgilarini' sezishni o'rgan — biror narsa haqida gapirish, hazillashish, e'tibor so'rashga urinishlar."
+        - ru: "Старайся откликнуться в момент, а не «позже» — даже короткий отклик важнее, чем молчание."
+          uz: "O'sha zahoti javob berishga harakat qil, 'keyinroq' emas — qisqa javob ham sukutdan yaxshiroq."
+        - ru: "Каждый день отмечай, получилось ли откликнуться на знаки внимания партнёра."
+          uz: "Har kuni sherikning e'tibor belgilariga javob bera olganingni belgila."
+        - ru: "Раз в неделю устраивай свидание или время только вдвоём, без бытовых дел и телефонов."
+          uz: "Haftada bir marta faqat ikkovlon, uy ishlari va telefonlarsiz uchrashuv uyushtir."
+      mistakes:
+        - ru: "Откладывать отклик «до свободной минуты» — момент внимания партнёра к тому времени уже проходит."
+          uz: "Javobni 'bo'sh vaqt topguncha' kechiktirish — sherikning e'tibor lahzasi shu vaqtda allaqachon o'tib ketadi."
+        - ru: "Путать совместное присутствие в одной комнате с настоящим откликом — партнёр должен почувствовать, что его услышали."
+          uz: "Bir xonada birga bo'lishni haqiqiy javob bilan aralashtirish — sherik eshitilganini his qilishi kerak."
+      first_week_example:
+        ru: "Каждый день — отмечать, откликнулся ли на знаки внимания партнёра; один вечер на неделе — свидание без телефонов."
+        uz: "Har kuni — sherikning e'tibor belgilariga javob berganingni belgila; haftada bir kechqurun — telefonsiz uchrashuv."
+    source:
+      name: "Gottman: Turn Toward Instead of Away"
+      url: "https://www.gottman.com/blog/turn-toward-instead-of-away/"
+    template_id: partner_attention
+
+  - id: positive_communication
+    sphere: relationships
+    title: { ru: "Позитив в общении", uz: "Muloqotda ijobiylik" }
+    difficulty: "Для новичков"
+    for_whom: "Для тех, кто хочет меньше резкости и больше тепла в общении"
+    outcome: "В конце — благодарность и признание близким входят в привычку"
+    metric: { key: positive_comments_daily, kind: counter, unit: "раз/день", rounding: 1 }
+    secondary: ["число резких фраз за день (самоотметка)"]
+    targets: ["30 дней", "60 дней"]
+    pace: >-
+      Варианты цели: 1 / 3 / 5 слов благодарности или признания в день.
+      Gottman: в устойчивых парах соотношение позитива к негативу в
+      конфликте — около 5:1.
+    week_skeleton: "Вечерняя отметка каждый день"
+    minimal_version: "Сказать «спасибо за…»"
+    guide:
+      steps:
+        - ru: "Говори слова благодарности или признания близким хотя бы один раз в день, начиная с малого."
+          uz: "Yaqinlaringizga kamida kuniga bir marta, kichikdan boshlab, minnatdorchilik yoki tanish so'zlarini ayt."
+        - ru: "Будь конкретным: «спасибо за…» плюс за что именно, а не общее «спасибо»."
+          uz: "Aniq bo'l: umumiy 'rahmat' o'rniga 'aynan nima uchun rahmat' deb ayt."
+        - ru: "Вечером отмечай, сколько раз за день сказал что-то тёплое близкому человеку."
+          uz: "Kechqurun kun davomida yaqin odamga necha marta iliq gap aytganingizni belgilang."
+        - ru: "Постепенно увеличивай число таких фраз в день, по мере того как это становится привычкой."
+          uz: "Bu odatga aylangani sayin kundagi bunday gaplar sonini asta-sekin oshir."
+      mistakes:
+        - ru: "Говорить общие фразы без конкретики — конкретная благодарность чувствуется сильнее."
+          uz: "Aniqlik bo'lmagan umumiy gaplar aytish — aniq minnatdorchilik kuchliroq his qilinadi."
+        - ru: "Считать шутки или сарказм «позитивом» — цель именно про тёплые, искренние слова."
+          uz: "Hazil yoki sarkazmni 'ijobiylik' deb hisoblash — maqsad aynan iliq, samimiy so'zlar haqida."
+      first_week_example:
+        ru: "Каждый вечер — вспомнить и сказать близкому хотя бы одну конкретную фразу благодарности за прошедший день."
+        uz: "Har kuni kechqurun — o'tgan kun uchun yaqin odamga kamida bitta aniq minnatdorchilik gapini eslab ayting."
+    source:
+      name: "Gottman: The Magic Relationship Ratio (5:1)"
+      url: "https://www.gottman.com/blog/the-magic-relationship-ratio/"
+    template_id: positive_communication
+
+  - id: new_connections
+    sphere: relationships
+    title: { ru: "Новые знакомства", uz: "Yangi tanishlar" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто хочет расширять круг общения"
+    outcome: "В конце — новые разговоры и знакомства входят в привычку"
+    metric: { key: new_conversations, kind: counter, unit: "раз/мес", rounding: 1 }
+    secondary: ["число повторных встреч"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Варианты цели: 2 / 4 / 6 новых разговоров или мероприятий в месяц. 1 в неделю (продуктовая эвристика)."
+    week_skeleton: "1 клуб или мероприятие в неделю"
+    minimal_version: "Поздороваться и задать вопрос"
+    guide:
+      steps:
+        - ru: "Найди 1 клуб, кружок или мероприятие по интересу, куда можно приходить регулярно."
+          uz: "Qiziqishga mos muntazam borish mumkin bo'lgan 1 ta klub, to'garak yoki tadbir top."
+        - ru: "На встрече подойди хотя бы к одному новому человеку, поздоровайся и задай простой вопрос."
+          uz: "Tadbirda kamida bitta yangi odamga yaqinlashib, salomlashing va oddiy savol bering."
+        - ru: "Если разговор пошёл хорошо — предложи обменяться контактами для повторной встречи."
+          uz: "Agar suhbat yaxshi ketsa — qayta uchrashish uchun kontakt almashishni taklif qiling."
+        - ru: "Отмечай каждый новый разговор или мероприятие в приложении, независимо от результата."
+          uz: "Har bir yangi suhbat yoki tadbirni natijasidan qat'i nazar ilovada belgilang."
+      mistakes:
+        - ru: "Ждать «идеального момента» для знакомства — часто проще просто подойти и поздороваться первым."
+          uz: "Tanishish uchun 'ideal lahza'ni kutish — ko'pincha shunchaki yaqinlashib birinchi salomlashish osonroq."
+        - ru: "Считать знакомство успешным только если сразу появилась дружба — цель про сам факт нового разговора."
+          uz: "Tanishuvni faqat darhol do'stlik paydo bo'lsa muvaffaqiyatli deb hisoblash — maqsad yangi suhbatning o'zi haqida."
+      first_week_example:
+        ru: "Одно мероприятие или клуб на этой неделе; там — поздороваться и задать вопрос хотя бы одному новому человеку."
+        uz: "Shu hafta — bir tadbir yoki klub; u yerda kamida bitta yangi odamga salom berib, savol bering."
+    source:
+      name: "эвристика"
+    template_id: new_connections
+
+  - id: calm_conflicts
+    sphere: relationships
+    title: { ru: "Конфликты: спокойствие", uz: "Janjallarda sokinlik" }
+    difficulty: "Средний уровень"
+    for_whom: "Для тех, кто срывается на резкость во время споров"
+    outcome: "В конце — пауза перед ответом в конфликте входит в привычку"
+    metric: { key: conflict_pause_rate, kind: percent, unit: "%", rounding: 10 }
+    secondary: ["часы на примирение после конфликта"]
+    targets: ["30 дней", "60 дней"]
+    pace: "Варианты цели: пауза 20 минут перед ответом в 50 / 80 / 100% конфликтов. 4–8 недель (продуктовая эвристика)."
+    week_skeleton: "Разбор конфликтов раз в неделю"
+    minimal_version: "3 вдоха перед ответом"
+    guide:
+      steps:
+        - ru: "Заранее договорись с собой (и, если можно, с партнёром) о правиле: в конфликте — пауза перед ответом."
+          uz: "O'zing bilan (va imkon bo'lsa sherik bilan) oldindan kelishib ol: janjalda — javobdan oldin pauza."
+        - ru: "Когда чувствуешь, что накаляешься, возьми паузу хотя бы 20 минут, прежде чем отвечать."
+          uz: "Qizishayotganingni sezsang, javob berishdan oldin kamida 20 daqiqa pauza qil."
+        - ru: "Если 20 минут нет — сделай хотя бы 3 медленных вдоха перед тем, как сказать что-то в запале."
+          uz: "20 daqiqa imkoni bo'lmasa — g'azab bilan gapirishdan oldin kamida 3 marta sekin nafas ol."
+        - ru: "Раз в неделю вспомни прошедшие конфликты и отметь, получилось ли взять паузу."
+          uz: "Haftada bir marta o'tgan janjallarni eslab, pauza ola olganingni belgila."
+      mistakes:
+        - ru: "Пытаться «выиграть» спор немедленно, не беря паузу вообще — самые резкие слова говорятся в первые секунды накала."
+          uz: "Pauza olmasdan janjalni darhol 'yutishga' urinish — eng achchiq so'zlar qizishning birinchi soniyalarida aytiladi."
+        - ru: "Использовать паузу как способ уйти от разговора навсегда — после паузы важно вернуться и договорить."
+          uz: "Pauzani suhbatdan butunlay qochish usuli qilib ishlatish — pauzadan keyin qaytib, gaplashib tugatish muhim."
+      first_week_example:
+        ru: "После каждого замеченного конфликта — пауза минимум 20 минут (или 3 вдоха, если больше не получилось); в конце недели — короткий разбор, что сработало."
+        uz: "Har bir sezilgan janjaldan keyin — kamida 20 daqiqa pauza (yoki ko'proq imkon bo'lmasa 3 nafas); hafta oxirida — nima ishlagani haqida qisqa tahlil."
+    source:
+      name: "эвристика"
+    template_id: calm_conflicts

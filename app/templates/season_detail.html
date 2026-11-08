@@ -47,6 +47,86 @@
   {% endif %}
 </div>
 
+{% if ladder %}
+<div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-1)">{{ t('season.ladder_title') }}</h3>
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin-bottom:var(--space-4)">{{ t('season.ladder_current_label', n=ladder.current_number, total=ladder.total) }}</p>
+
+  <ol style="padding-left:0;list-style:none;display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-4)">
+    {% for rung in ladder.rungs %}
+    {% set idx = loop.index0 %}
+    <li style="display:flex;align-items:center;gap:var(--space-3);font-size:var(--text-xs);{% if idx > ladder.current_index %}color:var(--text-faint);opacity:0.5{% elif idx < ladder.current_index %}color:var(--text-faint){% else %}color:var(--text){% endif %}">
+      {% if idx < ladder.current_index %}<svg class="icon" style="width:1em;height:1em;flex:none"><use href="#i-check"/></svg>
+      {% elif idx == ladder.current_index %}<svg class="icon" style="width:1em;height:1em;flex:none;color:var(--accent)"><use href="#i-target"/></svg>
+      {% else %}<svg class="icon" style="width:1em;height:1em;flex:none"><use href="#i-dash"/></svg>
+      {% endif %}
+      <span>{{ rung }}</span>
+    </li>
+    {% endfor %}
+  </ol>
+
+  {% if not ladder.is_last %}
+  <form method="post" action="/season/{{ season.id }}/ladder/advance" style="display:flex;flex-direction:column;gap:var(--space-2)">
+    <button class="btn btn--primary btn--block" type="submit">{{ t('season.ladder_cta_done') }}</button>
+  </form>
+  <form method="post" action="/season/{{ season.id }}/ladder/skip">
+    <button class="btn btn--text" type="submit" style="margin-top:var(--space-2)">{{ t('season.ladder_cta_skip') }}</button>
+  </form>
+  {% else %}
+  <p style="font-size:var(--text-xs);color:var(--accent);text-align:center">{{ t('season.ladder_done_all') }}</p>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if season.template_id == 'expense_tracking' %}
+<a href="/expenses" class="btn btn--secondary btn--block" style="margin-bottom:var(--space-5)">{{ t('season.cta_expenses') }}</a>
+{% endif %}
+
+{% if season.template_id in ('flashcards_mastered', 'flashcards_streak') %}
+<a href="/flashcards" class="btn btn--secondary btn--block" style="margin-bottom:var(--space-5)">{{ t('season.cta_flashcards') }}</a>
+{% endif %}
+
+{% if conversation_starters %}
+<details class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <summary class="btn btn--secondary btn--block" style="cursor:pointer;text-align:center">{{ t('season.conversation_starters_cta') }}</summary>
+  <ul style="margin-top:var(--space-4);padding-left:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-xs);color:var(--text-muted)">
+    {% for question in conversation_starters %}<li>{{ question }}</li>{% endfor %}
+  </ul>
+</details>
+{% endif %}
+
+{% if resources %}
+<details class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <summary class="btn btn--secondary btn--block" style="cursor:pointer;text-align:center">{{ t('season.resources_cta') }}</summary>
+  <div style="margin-top:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3)">
+    {% for r in resources %}
+    <a href="{{ r.url }}" target="_blank" rel="noopener" class="card" style="padding:var(--space-4);display:block">
+      <strong style="font-size:var(--text-xs)">{{ r.title }}</strong>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ r.description }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</details>
+{% endif %}
+
+{% if guide %}
+<details class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <summary class="btn btn--secondary btn--block" style="cursor:pointer;text-align:center">{{ t('season.guide_cta') }}</summary>
+  <div style="margin-top:var(--space-4)">
+    <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-2)">{{ t('season.guide_steps_title') }}</h3>
+    <ol style="padding-left:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-xs);color:var(--text-muted)">
+      {% for step in guide.steps %}<li>{{ step }}</li>{% endfor %}
+    </ol>
+    <h3 style="font-size:var(--text-sm);margin:var(--space-4) 0 var(--space-2)">{{ t('season.guide_mistakes_title') }}</h3>
+    <ul style="padding-left:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-xs);color:var(--text-muted)">
+      {% for mistake in guide.mistakes %}<li>{{ mistake }}</li>{% endfor %}
+    </ul>
+    <h3 style="font-size:var(--text-sm);margin:var(--space-4) 0 var(--space-2)">{{ t('season.guide_first_week_title') }}</h3>
+    <p style="font-size:var(--text-xs);color:var(--text-faint)">{{ guide.first_week_example }}</p>
+  </div>
+</details>
+{% endif %}
+
 {% if sparkline.has_data %}
 <div class="card measure-tile" style="margin-bottom:var(--space-5)">
   <div class="measure-tile__top">
