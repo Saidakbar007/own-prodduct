@@ -16,7 +16,12 @@ goals:
     metric: { key: stress_relief_minutes, kind: timer, unit: "мин/день", rounding: 1 }
     secondary: ["дней подряд без практики"]
     targets: ["30 дней", "60 дней"]
-    pace: "5 → 10–15 мин/день, +2 мин в неделю"
+    pace: >-
+      5 → 10 мин/день, +2 мин в неделю (ВОЗ: «несколько минут практики каждый
+      день»; короткая версия 30 сек подходит в любой момент, углублённая —
+      5–10 мин). Это самопомощь, а не лечение: при долгом подавленном
+      настроении (от 2 недель) или тревожных мыслях лучше поговорить со
+      специалистом, а не рассчитывать только на практику.
     week_skeleton: "Ежедневно, в любое удобное время, лучше в одно и то же"
     minimal_version: "3 медленных вдоха"
     guide:
@@ -75,6 +80,8 @@ goals:
           uz: "Mashqni tezroq tugatish uchun juda tez va sayoz nafas olish — bu butun samarani yo'qqa chiqaradi."
         - ru: "Практиковать только в момент сильного стресса, а не делать это регулярной ежедневной привычкой."
           uz: "Faqat kuchli stress paytida mashq qilish, buni muntazam kundalik odatga aylantirmaslik."
+        - ru: "Делать длинные задержки дыхания или практиковать за рулём и в воде — при головокружении или покалывании в пальцах сразу вернись к обычному дыханию."
+          uz: "Uzoq nafas ushlab turish yoki rulda va suvda mashq qilish — bosh aylanishi yoki barmoqlar uvishishi sezilsa, darhol odatdagi nafasga qayt."
       first_week_example:
         ru: "Каждый день по 5 минут: 2 минуты утром + 3 минуты вечером, медленное дыхание 4 сек вдох / 6 сек выдох."
         uz: "Har kuni 5 daqiqa: ertalab 2 daqiqa + kechqurun 3 daqiqa, sekin nafas 4 soniya olish / 6 soniya chiqarish."
@@ -92,7 +99,11 @@ goals:
     metric: { key: nature_minutes_week, kind: timer, unit: "мин/нед", rounding: 5 }
     secondary: []
     targets: ["30 дней", "60 дней"]
-    pace: "≥120 мин/нед на улице, можно частями"
+    pace: >-
+      ≥120 мин/нед на улице, можно частями; дополнительной пользы сверх
+      200–300 мин/нед не находят (White 2019). В сильную жару или при плохом
+      качестве воздуха — переносить прогулку, а не гнаться за минутами любой
+      ценой.
     week_skeleton: "В любые дни недели, по 15–30 минут за раз"
     minimal_version: "Прогулка 5 минут"
     guide:
@@ -112,6 +123,8 @@ goals:
           uz: "Haftada bir marta 'to'ldirish uchun' uzoq sayr rejalashtirish — vaqtni teng taqsimlash yaxshiroq."
         - ru: "Засчитывать время внутри помещений (ТЦ, зал) как «время на природе» — нужно именно на улице, при дневном свете."
           uz: "Yopiq joylarda (savdo markazi, sport zali) o'tkazilgan vaqtni 'tabiatdagi vaqt' deb hisoblash — aynan ko'chada, kunduzgi yorug'likda bo'lishi kerak."
+        - ru: "Гнаться за 300+ минутами в неделю «про запас» — дополнительной пользы сверх этого уровня не нашли."
+          uz: "'Zaxira uchun' haftasiga 300+ daqiqaga intilish — bu darajadan ortig'i qo'shimcha foyda bermaydi."
       first_week_example:
         ru: "Пн/Ср/Пт/Вс — 30 минут прогулки на улице после пар или работы, всего 120 минут за неделю."
         uz: "Dush/Chor/Juma/Yak — dars yoki ishdan keyin 30 daqiqa ko'chada sayr, haftada jami 120 daqiqa."
@@ -129,7 +142,7 @@ goals:
     metric: { key: screen_off_minutes, kind: timer, unit: "мин", rounding: 5 }
     secondary: []
     targets: ["30 дней", "60 дней"]
-    pace: "15 → 30–60 мин без экрана до сна"
+    pace: "15 → 30–60 мин без портативной электроники перед сном (AASM, 2026)"
     week_skeleton: "Ежедневно, в последние минуты перед сном"
     minimal_version: "15 минут без экрана перед сном"
     guide:
@@ -149,12 +162,14 @@ goals:
           uz: "Faqat bildirishnoma ovozini o'chirib, 'tekshirib ko'ray' deb telefonni tutib, varaqlab o'tirish — bu baribir ekran vaqti."
         - ru: "Менять телефон на ноутбук или телевизор перед сном — тот же яркий свет, та же проблема."
           uz: "Uyquga yaqin telefon o'rniga noutbuk yoki televizorga o'tish — xuddi shunday yorqin nur, xuddi shunday muammo."
+        - ru: "Покупать очки с фильтром синего света вместо реального отказа от экрана — доказанной пользы для сна у них нет."
+          uz: "Ekrandan voz kechish o'rniga ko'k nur filtrli ko'zoynak sotib olish — bunday ko'zoynaklarning uyquga isbotlangan foydasi yo'q."
       first_week_example:
         ru: "Каждый день — телефон уходит заряжаться в другую комнату за 15 минут до сна, вместо него — пара страниц бумажной книги."
         uz: "Har kuni — telefon uyquga 15 daqiqa qolganda boshqa xonaga quvvatlashga ketadi, o'rniga — qog'oz kitobdan bir necha sahifa."
     source:
-      name: "CDC, гигиена сна"
-      url: "https://www.cdc.gov/sleep/about/index.html"
+      name: "AASM 2026 (доомскроллинг и сон)"
+      url: "https://aasm.org/americans-are-doomscrolling-at-bedtime-prioritizing-screen-time-over-sleep/"
     template_id: screen_off_before_sleep
 
   - id: stable_wake_time
@@ -166,7 +181,12 @@ goals:
     metric: { key: wake_time_spread_minutes, kind: measure, unit: "мин", rounding: 5 }
     secondary: []
     targets: ["30 дней", "60 дней"]
-    pace: "Разброс времени подъёма ≤60 минут за неделю, в том числе в выходные"
+    pace: >-
+      Разброс времени подъёма ≤60 минут в первый месяц, дальше ≤30 минут,
+      включая выходные (один и тот же подъём 7 дней в неделю — совет NHS
+      inform). Если нарушения сна держатся ≥1 месяц и мешают жизни, есть
+      громкий храп с остановками дыхания или засыпание за рулём — это повод
+      обратиться к врачу, а не только подстраивать режим.
     week_skeleton: "Ежедневно — отметка, во сколько встал(а)"
     minimal_version: "Встать не позже обычного максимум на 30 минут"
     guide:
@@ -186,10 +206,12 @@ goals:
           uz: "Dam olish kunlari katta tarqoqlikka yo'l qo'yish, bu ish kunlariga ta'sir qilmaydi deb o'ylash — aslida butun hafta ritmi siljiydi."
         - ru: "Гнаться за точностью до минуты вместо допустимого диапазона — отклонение ±30 минут от цели — это нормально."
           uz: "Minutigacha aniqlikka intilish o'rniga — maqsaddan ±30 daqiqa chetlanish — bu normal holat."
+        - ru: "Досыпать длинным дневным сном вместо того, чтобы лечь раньше вечером — это ещё больше сбивает ритм."
+          uz: "Kechroq yotish o'rniga kunduzi uzoq uxlab qoplash — bu ritmni yanada buzadi."
       first_week_example:
         ru: "Каждый день — подъём в выбранное время ±30 минут, включая субботу и воскресенье; отметка времени каждое утро."
         uz: "Har kuni — tanlangan vaqtda ±30 daqiqa turish, shanba va yakshanbani ham qo'shib; har ertalab vaqtni belgilash."
     source:
-      name: "AASM / SRS"
-      url: "https://aasm.org/aasm-and-srs-publish-new-sleep-duration-consensus-statement/"
+      name: "Watson 2015 (AASM/SRS) / NHS inform"
+      url: "https://www.aasm.org/resources/pdf/adultsleepdurationconsensus.pdf"
     template_id: stable_wake_time

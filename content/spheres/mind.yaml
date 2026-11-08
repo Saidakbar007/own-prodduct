@@ -17,17 +17,18 @@ goals:
     targets: ["60 дней", "90 дней"]
     pace: >-
       60→150 / 150→300 / 300→500 мин/нед; длину блока увеличивать на 5 минут
-      в неделю. Даже беззвучное уведомление сбивает внимание (Stothart, 2015).
+      в неделю. Входящее уведомление, даже без ответа, более чем втрое
+      повышает риск ошибки во время фокус-блока (Stothart 2015).
     week_skeleton: "5×25–50 минут в неделю"
     minimal_version: "2 минуты на одну задачу, телефон в другой комнате"
     guide:
       steps:
         - ru: "Выбери одну задачу и поставь таймер на 25 минут (или сколько осилишь сейчас) — никакой многозадачности."
           uz: "Bitta vazifani tanla va 25 daqiqaga taymer qo'y (yoki hozircha chidaganingcha) — multitasking yo'q."
-        - ru: "Убери телефон в другую комнату или на беззвучный режим вне поля зрения — даже бесшумное уведомление сбивает внимание."
-          uz: "Telefonni boshqa xonaga olib qo'y yoki ko'zga ko'rinmaydigan joyga ovozsiz rejimda qo'y — hatto ovozsiz bildirishnoma ham diqqatni buzadi."
-        - ru: "Если отвлёкся — нажми кнопку «отвлёкся», блок обнулится; начни заново без самокритики."
-          uz: "Chalg'ib qolsang — 'chalg'idim' tugmasini bos, blok noldan boshlanadi; o'zingni ayblamay qaytadan boshla."
+        - ru: "Главное — выключить уведомления (это доказанно помогает); куда положить телефон (сумка, другая комната) — дополнительная, более слабая мера, но тоже дешёвая и полезная."
+          uz: "Eng muhimi — bildirishnomalarni o'chirish (bu isbotlangan yordam beradi); telefonni qayerga qo'yish (sumka, boshqa xona) — qo'shimcha, kuchsizroq, lekin baribir arzon va foydali chora."
+        - ru: "Если отвлёкся — нажми кнопку «отвлёкся»: блок не обнуляется, но помечается прерванным, а минуты до прерывания всё равно идут в счёт; просто продолжай без самокритики."
+          uz: "Chalg'ib qolsang — 'chalg'idim' tugmasini bos: blok noldan boshlanmaydi, lekin 'uzilgan' deb belgilanadi, uzilishgacha bo'lgan daqiqalar baribir hisobga kiradi; shunchaki davom et, o'zingni ayblamay."
         - ru: "Каждую неделю прибавляй к длине блока около 5 минут."
           uz: "Har hafta blok uzunligiga taxminan 5 daqiqa qo'shib bor."
         - ru: "Делай 5 фокус-блоков в неделю, по возможности в одно и то же время дня."
@@ -37,13 +38,14 @@ goals:
           uz: "Darhol bir soat tanaffussiz o'tirishga urinish — chalg'ishlar bilan uzun bitta blokdan ko'ra, bir necha halol qisqa blok yaxshiroq."
         - ru: "Держать телефон «на всякий случай» на столе рядом — даже выключенный экран всё равно притягивает внимание."
           uz: "Telefonni 'har ehtimolga qarshi' stol ustida yonda qoldirish — o'chirilgan ekran ham diqqatni tortadi."
-        - ru: "Засчитывать блок с прерыванием как выполненный — это искажает статистику и мешает видеть настоящий прогресс."
-          uz: "Chalg'igan blokni bajarilgan deb hisoblash — bu statistikani buzadi va haqiqiy natijani ko'rishga xalaqit beradi."
+        - ru: "Считать прерванный блок полностью непрерывным — в счёт идут только минуты до прерывания, иначе картина прогресса искажается."
+          uz: "Uzilgan blokni to'liq uzluksiz deb hisoblash — faqat uzilishgacha bo'lgan daqiqalar hisobga kiradi, aks holda taraqqiyot manzarasi buziladi."
       first_week_example:
         ru: "5 раз в неделю — 25 минут одна задача, телефон в другой комнате; при отвлечении — кнопка «отвлёкся» и блок заново."
         uz: "Haftada 5 marta — 25 daqiqa bitta vazifa, telefon boshqa xonada; chalg'isang — 'chalg'idim' tugmasi va blok qaytadan."
     source:
       name: "Stothart 2015"
+      url: "https://www.sciencedaily.com/releases/2015/07/150709133044.htm"
     template_id: deep_focus
 
   - id: self_check_study
@@ -56,9 +58,10 @@ goals:
     secondary: ["точность самопроверки, %"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      30→60% / 60→90% сессий с самопроверкой; самопроверка и распределённая
-      практика — самые полезные техники из изученных (Dunlosky, 2013), эффект
-      заметен уже через неделю.
+      30→70% / 70→90% сессий с самопроверкой вместо перечитывания;
+      самопроверка — одна из техник «высокой полезности» (Dunlosky 2013), но
+      эффект во многом зависит от обязательной сверки с конспектом после
+      попытки (Yang 2021).
     week_skeleton: "4–5 учебных сессий в неделю"
     minimal_version: "Закрыть конспект и вспомнить 3 главные мысли"
     guide:
@@ -76,11 +79,14 @@ goals:
           uz: "Konspektni ketma-ket bir necha marta qayta o'qish, tanish matnni haqiqiy bilim deb hisoblash — bu yolg'on ishonch hissini yaratadi."
         - ru: "Проверять себя сразу после прочтения, без паузы — так работает кратковременная память, а не реальное усвоение."
           uz: "O'qib bo'lishi bilanoq, tanaffussiz o'zini tekshirish — bu qisqa muddatli xotira ishlaydi, haqiqiy o'zlashtirish emas."
+        - ru: "Оценивать себя «вспомнил» без реальной сверки с конспектом — без обратной связи самопроверка приносит намного меньше пользы."
+          uz: "Konspekt bilan solishtirmasdan 'eslab qoldim' deb o'zini baholash — teskari aloqasiz o'z-o'zini tekshirish ancha kam foyda beradi."
       first_week_example:
         ru: "4–5 учебных сессий за неделю: после каждой — закрыть конспект, вспомнить 3 главные мысли, затем проверить себя по тексту."
         uz: "Haftada 4–5 ta dars sessiyasi: har birida — konspektni yopish, 3 asosiy fikrni eslash, keyin matn bo'yicha o'zini tekshirish."
     source:
-      name: "Dunlosky 2013"
+      name: "Dunlosky 2013 / Yang 2021"
+      url: "https://www.psychologicalscience.org/news/releases/which-study-strategies-make-the-grade.html"
     template_id: self_check_study
 
   - id: memory_retention
@@ -93,8 +99,9 @@ goals:
     secondary: ["число проверенных тем"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      50→70% / 70→85% точности при проверке через 7 дней; тест после изучения
-      работает лучше перечитывания (Roediger & Karpicke, 2006). Цикл 4–8 недель.
+      50→70% / 70→85% точности при проверке через 7 дней; самопроверка после
+      изучения работает лучше перечитывания — метаанализ 222 исследований в
+      реальных классах, g=0,499 (Yang 2021). Цикл 4–8 недель.
     week_skeleton: "3×15 минут в неделю"
     minimal_version: "1 вопрос по вчерашней теме"
     guide:
@@ -116,7 +123,8 @@ goals:
         ru: "3 раза в неделю по 15 минут — проверка тем, изученных неделю назад, без конспекта."
         uz: "Haftada 3 marta 15 daqiqa — bir hafta oldin o'rganilgan mavzularni konspektsiz tekshirish."
     source:
-      name: "Roediger & Karpicke 2006"
+      name: "Yang 2021 / Dunlosky 2013"
+      url: "https://pubmed.ncbi.nlm.nih.gov/33683913/"
     template_id: memory_retention
 
   - id: hard_tasks
@@ -129,14 +137,16 @@ goals:
     secondary: ["доля задач, решённых без подсказки, %"]
     targets: ["60 дней", "90 дней"]
     pace: >-
-      5→15 / 15→30 шт/нед; чередовать типы задач (логика, математика, кейсы) —
-      «полезная трудность» (Bjork). Цикл 8 недель.
+      5→15 / 15→30 шт/нед; чередование типов задач в среднем даёт заметный
+      эффект (g≈0,34 для математики, метаанализ 59 исследований — Brunmair &
+      Richter 2019), но для словесного материала (словарь, определения)
+      работает наоборот — там эффективнее блоки. Цикл 8 недель.
     week_skeleton: "4×20 минут в неделю"
     minimal_version: "Одна задача"
     guide:
       steps:
-        - ru: "Выбери 2–3 разных типа задач (логика, математика, кейсы) — чередование сложнее, но эффективнее одной темы подряд."
-          uz: "2–3 xil turdagi masala tanla (mantiq, matematika, keyslar) — turlarni almashtirish bir xil mavzudan ko'ra qiyinroq, ammo samaraliroq."
+        - ru: "Сначала разберись в каждом типе задач отдельно (2–3 разобранных примера), а потом чередуй 2–3 типа вперемешку — так сложнее, но эффективнее одной темы подряд."
+          uz: "Avval har bir masala turini alohida tushunib ol (2–3 ta tahlil qilingan misol), keyin 2–3 turni aralashtirib yech — bu qiyinroq, ammo bir xil mavzudan ko'ra samaraliroq."
         - ru: "Садись решать без немедленной подсказки — дай себе хотя бы 10–15 минут честной попытки."
           uz: "Darhol yordamga qaramay yecha boshla — o'zingga kamida 10–15 daqiqa halol urinish vaqtini ber."
         - ru: "Если застрял — попробуй другой подход, а не сразу открывай готовое решение."
@@ -150,11 +160,14 @@ goals:
           uz: "Faqat bir xil turdagi masala yechish — miya shablonga o'rganib qoladi va haqiqiy mashq qilmay qo'yadi."
         - ru: "Сразу смотреть решение при первой трудности — без борьбы с задачей тренировки мышления не происходит."
           uz: "Birinchi qiyinchilikda darhol yechimga qarash — masala bilan kurashmasdan fikrlash mashqi bo'lmaydi."
+        - ru: "Перемешивать так же словарь и определения — для них, наоборот, лучше работают блоки, а не чередование."
+          uz: "Lug'at va ta'riflarni ham xuddi shunday aralashtirish — ular uchun, aksincha, bloklar aralashtirishdan ko'ra yaxshi ishlaydi."
       first_week_example:
         ru: "4 раза в неделю по 20 минут, чередуя логику/математику/кейсы; подсказку использовать только после честной попытки."
         uz: "Haftada 4 marta 20 daqiqa, mantiq/matematika/keyslarni almashtirib; yordamdan faqat halol urinishdan keyin foydalan."
     source:
-      name: "Bjork"
+      name: "Brunmair & Richter 2019"
+      url: "https://pubmed.ncbi.nlm.nih.gov/31556629/"
     template_id: hard_tasks
 
   - id: reading_minutes
@@ -166,7 +179,11 @@ goals:
     metric: { key: reading_minutes_week, kind: timer, unit: "мин/нед", rounding: 5 }
     secondary: ["прочитанные книги или главы, шт."]
     targets: ["30 дней", "60 дней"]
-    pace: "60→150 / 150→300 мин/нед; прибавлять около 10 минут в день каждую неделю"
+    pace: >-
+      60→150 / 150→300 мин/нед; прибавлять около 10 минут в день каждую
+      неделю. Для учебных/информационных текстов бумага даёт небольшое
+      преимущество перед экраном (Delgado 2018); для художественных книг
+      разницы нет.
     week_skeleton: "6×10–40 минут в неделю"
     minimal_version: "1 страница"
     guide:
@@ -184,9 +201,12 @@ goals:
           uz: "Darhol kuniga bir soat o'qishga urinish — tezda zerikadi va bir necha kunda tashlab qo'yiladi."
         - ru: "Засчитывать короткие посты и ленту соцсетей как «чтение» — цель именно про длинные связные тексты."
           uz: "Qisqa postlar va ijtimoiy tarmoq lentasini 'o'qish' deb hisoblash — maqsad aynan uzun, bog'langan matnlar haqida."
+        - ru: "Читать учебный текст только с экрана, когда есть выбор — для информационных текстов бумага работает чуть лучше, особенно при ограничении времени."
+          uz: "Tanlov bo'lsa ham, o'quv matnini faqat ekrandan o'qish — axborot xarakteridagi matnlar uchun qog'oz biroz yaxshiroq ishlaydi, ayniqsa vaqt cheklangan bo'lsa."
       first_week_example:
         ru: "6 дней в неделю по 10–15 минут одной книги или статьи, без телефона рядом; к концу недели — немного больше времени."
         uz: "Haftada 6 kun, 10–15 daqiqa bitta kitob yoki maqola, yonida telefonsiz; hafta oxiriga biroz ko'proq vaqt."
     source:
-      name: "эвристика"
+      name: "Delgado 2018"
+      url: "https://www.uv.es/lasalgon/papers/Delgado%202018%20dont%20throw%20away%20your%20printed%20books.pdf"
     template_id: reading_minutes

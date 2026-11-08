@@ -17,10 +17,14 @@ goals:
       - "рабочие веса — только индикатор тренировки"
     targets: ["90 дней"]
     pace: >-
-      +0,25–0,5% веса тела в неделю (темп ограничен кодом, engine.clamp_weight_target).
-      Белок по умолчанию 1,6 г/кг/сут, допустимый диапазон 1,4–2,2 (Morton 2018:
-      эффект выходит на плато около 1,6 г/кг — не 1,4–2,0, как было раньше).
-      Силовые 2–3 раза в неделю.
+      +0,25–0,5% веса тела в неделю (темп ограничен кодом, engine.clamp_weight_target;
+      диапазон подтверждён Iraki 2019 для новичков и среднего уровня). Белок по
+      умолчанию 1,6 г/кг/сут, допустимый диапазон 1,4–2,2 (Morton 2018: эффект
+      выходит на плато около 1,6 г/кг). Силовые ≥2 раза в неделю, для роста массы —
+      около 10 рабочих подходов на группу мышц в неделю (ACSM 2026, Currier et al.,
+      MSSE 58(4):851–872 — первое обновление позиции ACSM по силовым с 2009 года).
+      Если вес растёт быстрее 0,5%/нед несколько недель подряд — это чаще жир, а не
+      мышцы, стоит немного снизить профицит.
     week_skeleton: "3 силовые тренировки в неделю (Пн/Ср/Пт), 1 день отдыха минимум"
     minimal_version: "1 круг упражнений в половину объёма вместо полной тренировки"
     guide:
@@ -29,8 +33,8 @@ goals:
           uz: "Butun tanaga 5–6 ta asosiy mashq tanla (squat, tortish, jim, turnikda tortilish, gantel bilan jim) — har bir mashg'ulotning asosi shu."
         - ru: "Тренируйся 3 раза в неделю с хотя бы одним днём отдыха между тренировками."
           uz: "Haftada 3 marta mashq qil, mashg'ulotlar orasida kamida 1 kun dam ol."
-        - ru: "На каждой тренировке старайся сделать 1 повтор больше или взять чуть больший вес, чем в прошлый раз — это и есть прогрессия."
-          uz: "Har safar oldingidan 1 marta ko'proq takrorlashga yoki ozgina ko'proq vazn ko'tarishga harakat qil — bu progressiya."
+        - ru: "Когда на двух тренировках подряд получается сделать на 1–2 повтора больше с запасом — добавь немного веса (2–10%); поднимать вес на каждой отдельной тренировке не нужно."
+          uz: "Ketma-ket ikki mashg'ulotda zahira bilan 1–2 marta ko'proq takrorlay olsang — ozgina (2–10%) vazn qo'sh; har bir alohida mashg'ulotda vazn oshirish shart emas."
         - ru: "Ешь по 1,6 г белка на кг веса тела в день, раздели на 3–4 приёма пищи."
           uz: "Kuniga tana vazningning har kg'iga 1,6 g oqsil ye, buni 3–4 ovqatlanishga bo'lib ol."
         - ru: "Спи 7+ часов — мышцы растут не на тренировке, а во время восстановления."
@@ -46,7 +50,7 @@ goals:
         ru: "Пн — силовая (присед, жим, тяга), Вт — отдых, Ср — силовая, Чт — отдых, Пт — силовая, Сб–Вс — отдых; белок на каждом приёме пищи."
         uz: "Dush — kuch mashqi (squat, jim, tortish), Sesh — dam, Chor — kuch mashqi, Pay — dam, Juma — kuch mashqi, Shan–Yak — dam; har ovqatda oqsil."
     source:
-      name: "Iraki 2019 / ISSN (Jäger 2017) / Morton 2018 / ACSM"
+      name: "ACSM 2026 (Currier et al.) / Iraki 2019 / Morton 2018"
       url: "https://doi.org/10.3390/sports7070154"
     template_id: muscle_gain
 
@@ -60,9 +64,13 @@ goals:
     secondary: ["обхват талии", "шаги", "силовые 2×/нед"]
     targets: ["30 дней", "60 дней", "90 дней"]
     pace: >-
-      ≤ min(1% массы тела, 1 кг) в неделю (Helms 2014; абсолютный потолок —
-      PRD 1.0, т.к. для лёгких людей 1 кг/нед — это больше 1%). Недоступно при
-      текущем ИЛИ целевом ИМТ < 18,5 (engine.meets_fat_loss_eligibility).
+      ≤ min(1% массы тела, 1 кг) в неделю — абсолютный потолок (PRD 1.0: для
+      лёгких людей 1 кг/нед больше 1%; темп ограничен кодом,
+      engine.clamp_weight_target). Реалистичный целевой темп — 0,5–1%/нед; CDC
+      подтверждает ориентир «около 1–2 фунтов в неделю» = 0,45–0,9 кг/нед.
+      Недоступно при текущем ИЛИ целевом ИМТ < 18,5 (engine.meets_fat_loss_eligibility).
+      Головокружения, пропуск менструального цикла или навязчивые мысли о еде —
+      сигнал остановиться и обратиться к специалисту, а не продолжать худеть.
     week_skeleton: "3 тренировки в неделю (Пн/Ср/Пт) + ежедневные шаги, 2 дня отдыха от силовых"
     minimal_version: "1 круг упражнений и 4000 шагов вместо полной тренировки"
     guide:
@@ -88,8 +96,8 @@ goals:
         ru: "Пн/Ср/Пт — силовая тренировка, ежедневно — шаги и отметка веса утром; порции чуть меньше обычного."
         uz: "Dush/Chor/Juma — kuch mashqi, har kuni — qadamlar va ertalabki vazn; porsiyalar odatdagidan ozroq."
     source:
-      name: "CDC / WHO / Helms 2014"
-      url: "https://doi.org/10.1186/1550-2783-11-20"
+      name: "CDC / Helms 2014"
+      url: "https://www.cdc.gov/healthy-weight-growth/losing-weight/index.html"
     template_id: fat_loss_safe
 
   - id: run_5k
@@ -97,7 +105,7 @@ goals:
     title: { ru: "Пробежать 5 км", uz: "5 km yugurish" }
     difficulty: "Для новичков"
     for_whom: "Для тех, кто пока не пробегает и пяти минут без остановки"
-    outcome: "В конце — 5 км бега без остановки"
+    outcome: "В конце — 30 минут непрерывного бега (у большинства это около 5 км, точная дистанция у всех разная)"
     metric: { key: run_minutes, kind: measure, unit: "мин", rounding: 0.5 }
     secondary: ["пробежек в неделю"]
     targets: ["60 дней", "90 дней"]
@@ -105,7 +113,9 @@ goals:
       9 недель, 3 пробежки в неделю, день отдыха между ними. Если неделя
       далась тяжело — повторить её, а не переходить дальше (совет самой NHS;
       в движке это уже делает общий adapt_phase: результат заметно хуже
-      ожидаемого → фаза не продвигается вперёд).
+      ожидаемого → фаза не продвигается вперёд). Боль или давление в груди,
+      сильная одышка непропорционально нагрузке, головокружение — остановиться
+      сразу, независимо от недели программы.
     week_skeleton: "3 пробежки в неделю (Пн/Ср/Пт), день отдыха между ними"
     minimal_version: "15–20 минут быстрой ходьбы вместо пробежки"
     guide:
@@ -145,9 +155,10 @@ goals:
     secondary: ["недельный объём"]
     targets: ["60 дней", "90 дней"]
     pace: >-
-      2–3 тренировки в неделю, между тренировками одной группы мышц ≥48 ч
-      (ACSM). Нагрузку повышать на 2–10%, когда текущая выполняется с запасом
-      1–2 повтора.
+      2–3 тренировки в неделю, между тренировками одной группы мышц чередовать
+      дни (например Пн/Ср/Пт) — точной цифры «48 часов» у ACSM 2009 нет, это
+      практическое правило, не научная норма. Нагрузку повышать на 2–10%, когда
+      на двух тренировках подряд выполняется с запасом 1–2 повтора.
     week_skeleton: "2–3 тренировки в неделю, не подряд"
     minimal_version: "Половина обычного объёма подходов"
     guide:
@@ -187,9 +198,10 @@ goals:
     secondary: ["недельный объём"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      2–3 тренировки в неделю, между тренировками одной группы мышц ≥48 ч
-      (ACSM). Нагрузку повышать на 2–10%, когда текущая выполняется с запасом
-      1–2 повтора.
+      2–3 тренировки в неделю, между тренировками одной группы мышц чередовать
+      дни (например Пн/Ср/Пт) — точной цифры «48 часов» у ACSM 2009 нет, это
+      практическое правило, не научная норма. Нагрузку повышать на 2–10%, когда
+      на двух тренировках подряд выполняется с запасом 1–2 повтора.
     week_skeleton: "2–3 тренировки в неделю, не подряд"
     minimal_version: "Половина обычного объёма подходов"
     guide:
@@ -229,18 +241,19 @@ goals:
     secondary: ["минуты активности"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      Рост постепенно, +500–1000 шагов в неделю; цель 8–10 тыс. до 60 лет
-      (Paluch 2022). Дополняет ВОЗ: 150–300 мин умеренной ИЛИ 75–150 мин
-      интенсивной активности в неделю, плюс силовые ≥2 дня/нед, плюс меньше
-      сидеть (см. цель «Меньше сидеть»).
+      Неделя 1 — замер текущей базы; дальше +1000 шагов в неделю, не выше
+      10 тыс.; цель 8–10 тыс. шагов в день до 60 лет — дальше риск смертности
+      почти не снижается (Paluch 2022, подтверждено). Дополняет ВОЗ: 150–300 мин
+      умеренной ИЛИ 75–150 мин интенсивной активности в неделю, плюс силовые
+      ≥2 дня/нед, плюс меньше сидеть (см. цель «Меньше сидеть»).
     week_skeleton: "Ежедневная цель по шагам + 150–300 мин умеренной активности в неделю"
     minimal_version: "Прогулка 10 минут"
     guide:
       steps:
         - ru: "Поставь телефон или часы считать шаги и посмотри, сколько выходит в обычный день — это твоя точка старта."
           uz: "Telefon yoki soatingizga qadamlarni sanashni qo'ying va odatdagi kunda nechta chiqishini ko'ring — bu boshlang'ich nuqtangiz."
-        - ru: "Добавляй 500–1000 шагов в неделю, а не пытайся сразу дойти до 10 тысяч."
-          uz: "Darhol 10 mingga yetishga urinmang, haftasiga 500–1000 qadam qo'shib boring."
+        - ru: "После первой недели просто отслеживания добавляй около 1000 шагов в неделю, а не пытайся сразу дойти до 10 тысяч."
+          uz: "Birinchi hafta shunchaki kuzatuvdan keyin haftasiga taxminan 1000 qadam qo'shib boring, darhol 10 mingga yetishga urinmang."
         - ru: "Используй короткие промежутки: выйди на одну остановку раньше, поднимись по лестнице вместо лифта."
           uz: "Qisqa imkoniyatlardan foydalaning: bir bekat oldin tushing, liftning o'rniga zinadan ko'taring."
         - ru: "Раз в день сделай отдельную прогулку 10–20 минут — это проще, чем набирать шаги урывками весь день."
@@ -256,8 +269,8 @@ goals:
         ru: "Ежедневно — текущая норма шагов +500; дополнительно одна прогулка 15 минут после пар или работы."
         uz: "Har kuni — joriy qadam me'yori +500; qo'shimcha, dars yoki ishdan keyin 15 daqiqalik bir sayr."
     source:
-      name: "Paluch 2022 / WHO"
-      url: "https://www.eurekalert.org/news-releases/945267"
+      name: "Paluch 2022 / ВОЗ 2020"
+      url: "https://pubmed.ncbi.nlm.nih.gov/35247352/"
     template_id: activity_steps
 
   - id: sleep_consistency
@@ -269,7 +282,7 @@ goals:
     metric: { key: sleep_hours_avg7d, kind: measure, unit: "часов", rounding: 0.25 }
     secondary: ["разброс времени подъёма"]
     targets: ["30 дней", "60 дней"]
-    pace: "7+ часов (AASM/SRS для 18–60 лет; NSF для 18–25 — 7–9 часов); подъём ± 30 минут изо дня в день"
+    pace: "7+ часов регулярно (AASM/SRS, Watson 2015, для 18–60 лет; молодым взрослым после недосыпа может требоваться больше); подъём ± 30 минут изо дня в день, 7 дней в неделю без исключений для выходных (NHS inform)"
     week_skeleton: "Ежедневно — подъём и отбой в одно время, включая выходные"
     minimal_version: "Лечь не позже обычного хотя бы на 30 минут"
     guide:
@@ -282,6 +295,8 @@ goals:
           uz: "Uyquga 30–60 daqiqa qolganda telefonni yig'ib qo'ying va yorug'likni pasaytiring — bu tanaga uyquga tayyorlanish signali."
         - ru: "Не отсыпайся в выходные больше чем на 1 час — это сбивает режим на всю следующую неделю."
           uz: "Dam olish kunlari 1 soatdan ko'p uxlab qolmang — bu keyingi butun haftaning rejimini buzadi."
+        - ru: "Если нужно сдвинуть время подъёма (например, из-за расписания или Рамадана) — делай это постепенно, не больше чем на 15 минут раз в 2–3 дня, а не одним скачком."
+          uz: "Turish vaqtini siljitish kerak bo'lsa (masalan, dars jadvali yoki Ramazon tufayli) — buni birdaniga emas, har 2–3 kunda 15 daqiqadan oshirmay, asta-sekin qiling."
       mistakes:
         - ru: "Ложиться в разное время в будни и выходные — организм не может подстроиться, сон становится хуже."
           uz: "Ish va dam olish kunlari turli vaqtda yotish — organizm moslasha olmaydi, uyqu sifati pasayadi."
@@ -293,8 +308,8 @@ goals:
         ru: "Каждый день — подъём в одно время ± 30 минут; за час до сна — без телефона, свет приглушен."
         uz: "Har kuni — bir xil vaqtda ± 30 daqiqa turish; uyquga bir soat qolganda — telefonsiz, yorug'lik past."
     source:
-      name: "AASM / SRS"
-      url: "https://aasm.org/aasm-and-srs-publish-new-sleep-duration-consensus-statement/"
+      name: "Watson 2015 (AASM/SRS) / NHS inform"
+      url: "https://www.aasm.org/resources/pdf/adultsleepdurationconsensus.pdf"
     template_id: sleep_consistency
 
   - id: flexibility
@@ -387,7 +402,8 @@ goals:
     pace: >-
       Ориентир EFSA: всего жидкости ж ~2,0 л, м ~2,5 л в день, из них 20–30%
       приходит с едой — то есть напитков ~1,6 л (ж) / ~2,0 л (м). При жаре и
-      спорте — больше. Цели выше 3 л в день не ставим.
+      спорте — больше. Цели выше 3 л в день не ставим. При отёках или
+      заболеваниях почек норму воды лучше согласовать с врачом.
     week_skeleton: "Ежедневно, кнопка «+250 мл» в течение дня"
     minimal_version: "1 стакан воды утром"
     guide:
