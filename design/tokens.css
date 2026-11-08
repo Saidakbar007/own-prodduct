@@ -92,6 +92,22 @@
   --glow-accent: 0 0 0 1px rgba(255, 182, 72, 0.3), 0 8px 32px rgba(255, 182, 72, 0.22);
   --glow-secondary: 0 0 0 1px rgba(31, 190, 140, 0.28), 0 8px 28px rgba(31, 190, 140, 0.2);
 
+  /* --- Цвета 11 сфер (NEWLIFE_2_0.md §Этап 4) — одни и те же в обеих
+     темах, значения синхронизированы с app/newlife/spheres.py Sphere.color.
+     Используй .sphere-glow (ниже) на карточке/иконке сферы — свечение
+     берёт цвет из --sphere-color, который задаёт .sphere-<id>. --- */
+  --sphere-body: #ff5a5a;
+  --sphere-mind: #7c6bff;
+  --sphere-character: #ffd166;
+  --sphere-social: #5b8def;
+  --sphere-career: #3ddc97;
+  --sphere-finance: #29c7c7;
+  --sphere-relationships: #ff6fae;
+  --sphere-knowledge: #c6e26d;
+  --sphere-values: #b06bff;
+  --sphere-lifestyle: #6fcf6f;
+  --sphere-energy: #ff9f43;
+
   /* --- Движение --- */
   --duration-fast: 120ms;
   --duration-base: 220ms;

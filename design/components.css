@@ -803,3 +803,45 @@
   width: 72px;
   flex: none;
 }
+
+/* --- Сферы: цвет + неоновое свечение (NEWLIFE_2_0.md §Этап 4) ---
+   .sphere-<id> задаёт --sphere-color для всего, что внутри (иконка,
+   текст, кольцо прогресса). .sphere-glow применяет само свечение —
+   отдельный класс, чтобы можно было включать/выключать по активности
+   (яркая/активная сфера сегодня -> свечение сильнее, тусклая -> слабее
+   или без него, см. .sphere-dim). */
+.sphere-body { --sphere-color: var(--sphere-body); }
+.sphere-mind { --sphere-color: var(--sphere-mind); }
+.sphere-character { --sphere-color: var(--sphere-character); }
+.sphere-social { --sphere-color: var(--sphere-social); }
+.sphere-career { --sphere-color: var(--sphere-career); }
+.sphere-finance { --sphere-color: var(--sphere-finance); }
+.sphere-relationships { --sphere-color: var(--sphere-relationships); }
+.sphere-knowledge { --sphere-color: var(--sphere-knowledge); }
+.sphere-values { --sphere-color: var(--sphere-values); }
+.sphere-lifestyle { --sphere-color: var(--sphere-lifestyle); }
+.sphere-energy { --sphere-color: var(--sphere-energy); }
+
+.sphere-glow {
+  color: var(--sphere-color, var(--accent));
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--sphere-color, var(--accent)) 70%, transparent))
+    drop-shadow(0 0 14px color-mix(in srgb, var(--sphere-color, var(--accent)) 40%, transparent));
+  transition: filter var(--duration-base) var(--ease-standard), opacity var(--duration-base) var(--ease-standard);
+}
+.sphere-glow--sm {
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--sphere-color, var(--accent)) 60%, transparent));
+}
+.sphere-dim {
+  color: var(--text-faint);
+  filter: none;
+  opacity: 0.55;
+}
+
+/* Кольцо/линия с цветом сферы (SVG stroke) — используй stroke:var(--sphere-color) напрямую в инлайн-SVG */
+.sphere-ring-bg {
+  stroke: var(--border);
+}
+.sphere-ring-fg {
+  stroke: var(--sphere-color, var(--accent));
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--sphere-color, var(--accent)) 55%, transparent));
+}

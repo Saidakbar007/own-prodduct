@@ -416,6 +416,7 @@
   "habits.unit_minutes": "минут",
   "habits.unit_times": "раз",
   "habits.bad_no_data": "пока нет отметок",
+  "habits.clean_since": "Держусь: {days} дн {hours} ч",
   "habits.cta_slip": "Сорвался",
   "habits.bad_empty": "Пока ничего не отслеживаешь — это нормально, можно добавить позже.",
   "habits.bad_add_cta": "Отслеживать плохую привычку",

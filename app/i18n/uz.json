@@ -416,6 +416,7 @@
   "habits.unit_minutes": "daqiqa",
   "habits.unit_times": "marta",
   "habits.bad_no_data": "hozircha belgi yo'q",
+  "habits.clean_since": "Chidayapman: {days} kun {hours} soat",
   "habits.cta_slip": "Yiqildim",
   "habits.bad_empty": "Hozircha hech narsani kuzatmayapsan — bu normal, keyinroq qo'shish mumkin.",
   "habits.bad_add_cta": "Yomon odatni kuzatish",

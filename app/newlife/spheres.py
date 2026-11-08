@@ -16,20 +16,21 @@ from dataclasses import dataclass
 class Sphere:
     id: str
     icon: str  # id символа в SVG-спрайте (<use href="#{icon}"/>)
+    color: str  # hex, см. design/tokens.css --sphere-<id> (NEWLIFE_2_0.md §Этап 4)
 
 
 SPHERES: list[Sphere] = [
-    Sphere(id="body", icon="i-sphere-body"),
-    Sphere(id="mind", icon="i-sphere-mind"),
-    Sphere(id="character", icon="i-sphere-character"),
-    Sphere(id="social", icon="i-sphere-social"),
-    Sphere(id="career", icon="i-sphere-career"),
-    Sphere(id="finance", icon="i-sphere-finance"),
-    Sphere(id="relationships", icon="i-sphere-relationships"),
-    Sphere(id="knowledge", icon="i-sphere-knowledge"),
-    Sphere(id="values", icon="i-sphere-values"),
-    Sphere(id="lifestyle", icon="i-sphere-lifestyle"),
-    Sphere(id="energy", icon="i-sphere-energy"),
+    Sphere(id="body", icon="i-sphere-body", color="#ff5a5a"),
+    Sphere(id="mind", icon="i-sphere-mind", color="#7c6bff"),
+    Sphere(id="character", icon="i-sphere-character", color="#ffd166"),
+    Sphere(id="social", icon="i-sphere-social", color="#5b8def"),
+    Sphere(id="career", icon="i-sphere-career", color="#3ddc97"),
+    Sphere(id="finance", icon="i-sphere-finance", color="#29c7c7"),
+    Sphere(id="relationships", icon="i-sphere-relationships", color="#ff6fae"),
+    Sphere(id="knowledge", icon="i-sphere-knowledge", color="#c6e26d"),
+    Sphere(id="values", icon="i-sphere-values", color="#b06bff"),
+    Sphere(id="lifestyle", icon="i-sphere-lifestyle", color="#6fcf6f"),
+    Sphere(id="energy", icon="i-sphere-energy", color="#ff9f43"),
 ]
 
 SPHERE_IDS: list[str] = [s.id for s in SPHERES]

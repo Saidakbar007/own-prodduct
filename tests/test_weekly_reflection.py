@@ -53,28 +53,15 @@ def test_bank_has_exactly_five_bilingual_questions():
             assert option.ru.strip() and option.uz.strip()
 
 
-def test_today_shows_reflection_card_for_fresh_user(client, unique):
+def test_today_never_shows_the_weekly_reflection_card(client, unique):
+    """NEWLIFE_2_0.md Этап 1 п.5: «На Сегодня снова опрос» — убрать.
+    Единственный допустимый опрос на «Сегодня» — «вопрос дня»
+    (app/services/day_questions.py); недельная рефлексия была вторым
+    опросом на этом же экране и убрана оттуда (функции/данные остаются,
+    карточка на «Сегодня» не рисуется)."""
     _register(client, unique)
     resp = client.get("/today")
     assert resp.status_code == 200
-    assert "Недельная рефлексия" in resp.text
-
-
-def test_answering_all_five_clears_the_card_for_the_week(client, unique, db_session):
-    _register(client, unique)
-    user = db_session.exec(select(User).where(User.login == f"wr-{unique}")).first()
-    today = date.today()
-
-    for q in load_weekly_reflection():
-        assert next_question(db_session, user.id, today).id == q.id
-        record_answer(db_session, user.id, q.id, 0, today)
-
-    assert next_question(db_session, user.id, today) is None
-    assert answered_question_ids_this_week(db_session, user.id, today) == {
-        q.id for q in load_weekly_reflection()
-    }
-
-    resp = client.get("/today")
     assert "Недельная рефлексия" not in resp.text
 
 
