@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ t('onboarding.potential_title') }} — {{ t('common.app_name') }}{% endblock %}
+{% block content %}
+<div class="onboarding-progress"><span class="onboarding-progress__fill" style="width:90%"></span></div>
+
+<div class="home-hero" style="padding-top:var(--space-8)">
+  <h1>{{ t('onboarding.potential_title') }}</h1>
+  <p>{{ t('onboarding.potential_subtitle') }}</p>
+</div>
+
+{% if cards %}
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+  {% for card in cards %}
+  <div class="card {% if card.sphere %}sphere-{{ card.sphere.id }}{% endif %}" style="padding:var(--space-5);border-left:3px solid var(--sphere-color, var(--border-strong))">
+    <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-3)">
+      {% if card.sphere %}<svg class="icon sphere-glow--sm" style="width:1.1em;height:1.1em"><use href="#{{ card.sphere.icon }}"/></svg>{% endif %}
+      <strong style="font-size:var(--text-sm)">{{ card.title }}</strong>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-sm)">
+      {% if card.day_30 %}<p><span style="color:var(--text-faint);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:var(--tracking-wide)">{{ t('onboarding.potential_30') }}</span><br>{{ card.day_30 }}</p>{% endif %}
+      {% if card.day_60 %}<p><span style="color:var(--text-faint);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:var(--tracking-wide)">{{ t('onboarding.potential_60') }}</span><br>{{ card.day_60 }}</p>{% endif %}
+      {% if card.day_90 %}<p><span style="color:var(--text-faint);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:var(--tracking-wide)">{{ t('onboarding.potential_90') }}</span><br>{{ card.day_90 }}</p>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p style="color:var(--text-faint);font-size:var(--text-sm)">{{ t('onboarding.potential_empty') }}</p>
+{% endif %}
+
+<a class="btn btn--primary btn--block" href="/onboarding/trailer" style="margin-top:var(--space-6)">{{ t('onboarding.continue') }}</a>
+{% endblock %}

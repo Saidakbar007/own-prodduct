@@ -76,6 +76,9 @@ def _complete_onboarding_wizard(page: Page, base_url: str, template_id: str = "p
     page.locator('form[action="/onboarding/woop/obstacle"] button[type="submit"] >> nth=0').click()  # экран 11
     page.click('form[action="/onboarding/woop"] button[type="submit"]')
 
+    # экран 11.5: потенциал 30/60/90 (NEWLIFE_2_0.md §2.1 п.8) — просто продолжить
+    page.click('a[href="/onboarding/trailer"]')
+
     # экран 12: раскрытие — переход к регистрации (анонимный человек)
     page.click('a[href="/register"]')
 
