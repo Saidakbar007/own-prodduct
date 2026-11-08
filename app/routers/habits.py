@@ -24,6 +24,7 @@ from app.newlife.spheres import SPHERE_BY_ID, SPHERES
 from app.rendering import render
 from app.services.habits import (
     bad_habit_recent_average,
+    clean_duration,
     habit_streak,
     log_bad_habit_slip,
     log_habit,
@@ -63,13 +64,17 @@ def habits_page(request: Request, user: User = Depends(require_user), db: Sessio
 
     bad_habits = db.exec(select(BadHabit).where(BadHabit.uid == user.id, BadHabit.active.is_(True))).all()
     bad_rows = []
+    now = datetime.now(timezone.utc)
     for bh in bad_habits:
         avg = bad_habit_recent_average(db, bh.id, today)
+        clean = clean_duration(db, bh, now)
         bad_rows.append(
             {
                 "bad_habit": bh,
                 "avg_per_day": round(avg, 1) if avg is not None else None,
                 "common_trigger": most_common_trigger(db, bh.id),
+                "clean_days": clean.days,
+                "clean_hours": clean.seconds // 3600,
             }
         )
 

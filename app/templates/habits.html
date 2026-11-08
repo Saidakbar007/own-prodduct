@@ -55,6 +55,9 @@
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)">
       <div>
         <strong style="font-size:var(--text-sm)">{{ row.bad_habit.title }}</strong>
+        <div style="font-size:var(--text-xs);color:var(--accent-secondary);margin-top:var(--space-1);font-weight:600">
+          {{ t('habits.clean_since', days=row.clean_days, hours=row.clean_hours) }}
+        </div>
         <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">
           {% if row.avg_per_day is not none %}{{ t('habits.bad_trend', avg=row.avg_per_day, unit=t('habits.unit_' + row.bad_habit.unit)) }}{% else %}{{ t('habits.bad_no_data') }}{% endif %}
         </div>

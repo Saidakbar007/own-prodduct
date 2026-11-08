@@ -4,7 +4,7 @@
 серию, два подряд — рвёт), % выполнения за неделю, тренд плохой привычки.
 """
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 from sqlmodel import Session, select
@@ -118,6 +118,21 @@ def bad_habit_recent_average(db: Session, bad_habit_id: int, upto: date, window_
     if not any(d in by_date for d in days):
         return None
     return sum(by_date.get(d, 0) for d in days) / window_days
+
+
+def clean_duration(db: Session, bad_habit: BadHabit, now: datetime) -> timedelta:
+    """Сколько времени "держится" без срыва — для таймера воздержания на
+    Главной/Привычках (NEWLIFE_2_0.md §3.1: "Держусь: 5 дн 14 ч"). Срыв
+    (log_bad_habit_slip) не сбрасывает рекорд, только текущий счётчик —
+    отсчёт идёт от последнего срыва, либо от создания привычки, если
+    срывов ещё не было."""
+    last_log = db.exec(
+        select(BadHabitLog)
+        .where(BadHabitLog.bad_habit_id == bad_habit.id)
+        .order_by(BadHabitLog.at.desc())
+    ).first()
+    since = last_log.at if last_log else bad_habit.created_at
+    return max(now - since, timedelta(0))
 
 
 def most_common_trigger(db: Session, bad_habit_id: int) -> Optional[str]:
