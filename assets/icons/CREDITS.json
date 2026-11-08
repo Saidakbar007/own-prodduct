@@ -1,0 +1,79 @@
+[
+  {
+    "sphere": "body",
+    "base_set": "Lucide",
+    "base_icon": "dumbbell",
+    "license": "ISC",
+    "url": "https://lucide.dev/icons/dumbbell"
+  },
+  {
+    "sphere": "mind",
+    "base_set": "Lucide",
+    "base_icon": "brain",
+    "license": "ISC",
+    "url": "https://lucide.dev/icons/brain"
+  },
+  {
+    "sphere": "character",
+    "base_set": "Lucide",
+    "base_icon": "shield-check",
+    "license": "ISC",
+    "url": "https://lucide.dev/icons/shield-check"
+  },
+  {
+    "sphere": "social",
+    "base_set": "Tabler Icons",
+    "base_icon": "messages",
+    "license": "MIT",
+    "url": "https://tabler.io/icons/icon/messages"
+  },
+  {
+    "sphere": "career",
+    "base_set": "Lucide",
+    "base_icon": "briefcase",
+    "license": "ISC",
+    "url": "https://lucide.dev/icons/briefcase"
+  },
+  {
+    "sphere": "finance",
+    "base_set": "Lucide",
+    "base_icon": "wallet",
+    "license": "ISC",
+    "url": "https://lucide.dev/icons/wallet"
+  },
+  {
+    "sphere": "relationships",
+    "base_set": "Tabler Icons",
+    "base_icon": "heart-handshake",
+    "license": "MIT",
+    "url": "https://tabler.io/icons/icon/heart-handshake"
+  },
+  {
+    "sphere": "knowledge",
+    "base_set": "Lucide",
+    "base_icon": "book-open",
+    "license": "ISC",
+    "url": "https://lucide.dev/icons/book-open"
+  },
+  {
+    "sphere": "values",
+    "base_set": "Lucide",
+    "base_icon": "star",
+    "license": "ISC",
+    "url": "https://lucide.dev/icons/star"
+  },
+  {
+    "sphere": "lifestyle",
+    "base_set": "Lucide",
+    "base_icon": "home",
+    "license": "ISC",
+    "url": "https://lucide.dev/icons/home"
+  },
+  {
+    "sphere": "energy",
+    "base_set": "Lucide",
+    "base_icon": "zap",
+    "license": "ISC",
+    "url": "https://lucide.dev/icons/zap"
+  }
+]
