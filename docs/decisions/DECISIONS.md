@@ -753,3 +753,83 @@ findings:
 - Остальное (критерии 1-4 на всех ~41 целях, безопасность mindfulness,
   отсутствие придуманных фактов в trivia-цели, сверка с фактчеком по
   finance/energy) — без находок.
+
+### Обновление knowledge/career/character по NEWLIFE_KNOWLEDGE_BASE.md
+
+Сверил `content/spheres/{knowledge,career,character}.yaml` с
+`docs/knowledge/NEWLIFE_KNOWLEDGE_BASE.md` (§04, §05, §06) — приоритет над
+старым `NEWLIFE_1_0_CONTENT.md` для цифр/норм/источников. Обновил `pace`,
+часть `guide`/`secondary`/`source`/`ladder` с сохранением
+`id`/`sphere`/`metric.key|kind|unit|rounding`/`template_id`. Конфликты,
+которые **не стал** решать правкой `app/seasons_library/*.yaml` (вне
+скоупа — это код/сценарий, не контент сферы):
+
+- **`knowledge::reading_notes`.** KB рекомендует основной метрикой сделать
+  минуты чтения (таймер) с ежедневной растущей практикой 10→20–25 мин, а
+  текущие `goal_catalog.metric` (`reading_notes_count`, счётчик мыслей/мес)
+  и `app/seasons_library/reading_notes.yaml` (`train_days: [1,3,5]`, 3
+  сессии/неделю) считают число мыслей и держат cadence 3×/нед. Оставил
+  метрику и сезонный шаблон как есть (поля заблокированы для правки),
+  обновил только текст `pace`/`guide` с точными цифрами KB, подогнанными
+  под реальный cadence 3×/неделю, а не под ежедневную практику.
+- **`knowledge::flashcards_streak`.** KB советует показывать прогресс как
+  «23/30 дней без долга», а не как настоящую серию дней подряд (серия
+  обнуляется от одного пропуска и отбивает желание продолжать) — но
+  `metric.key = streak_no_debt_days` (counter, «дней подряд») уже
+  зафиксирован в схеме и в коде движка. Добавил пояснение про формат
+  «23/30» только в текст `pace`, саму метрику/движок не менял.
+- **`career::foreign_language`.** KB настаивает делить часы языка на 3
+  отдельных таймера (понимание/извлечение/речь), иначе «нечестный» прогресс.
+  `metric.key = language_hours` — один общий timer, и
+  `app/seasons_library/foreign_language.yaml` тоже считает один
+  неразделённый таймер часов. Разбивку на 3 типа добавил только как
+  описание в `secondary`/`guide` (текстом, не как отдельные измеряемые
+  поля) — настоящая 3-метрика потребовала бы менять схему `GoalMetric`
+  (вне моего скоупа).
+
+Прогон `pytest tests/test_goal_catalog.py tests/test_season_templates.py
+tests/test_engine.py` — зелёный (148 passed), ничего в
+`app/seasons_library/*` и `app/newlife/goal_catalog.py` не трогал.
+
+### Обновление social/finance по NEWLIFE_KNOWLEDGE_BASE.md
+
+Сверил `content/spheres/{social,finance}.yaml` с
+`docs/knowledge/NEWLIFE_KNOWLEDGE_BASE.md` (§07, §08) — приоритет над
+старым `NEWLIFE_1_0_CONTENT.md`. Обновил `pace`/`outcome`/`secondary`/
+`week_skeleton`/`minimal_version`/`guide`/`source`/`ladder` (социальное:
+расширил лестницу `public_speaking_confidence` с 5 до 7 ступеней, в
+рамках `LadderSpec.rungs` max_length=7 — ближе к 8-ступенчатой модели из
+KB, две первые ступени объединены), `id`/`sphere`/`metric.key|kind|unit|
+rounding`/`template_id` не трогал. Конфликты с `app/seasons_library/*`,
+которые **не стал** решать правкой season-файлов (вне скоупа):
+
+- **`social::public_speaking_confidence`.** KB описывает лестницу из
+  8 ступеней (видео → видео+просмотр → 1 близкий → 3–5 знакомых → реплика
+  на паре → доклад/доска → клуб/большая аудитория → экспромт). В каталоге
+  `ladder.rungs` расширен до 7 (максимум по схеме `LadderSpec`), а
+  `app/seasons_library/public_speaking_confidence.yaml` реализует только
+  5 фаз (video → друг → малая группа → группа → аудитория). Текст/лестница
+  в YAML каталога теперь на 2 ступени детальнее, чем сценарий сезона —
+  season-файл не трогал.
+- **`social::start_conversations`.** KB предлагает 4-уровневую лестницу
+  (сервис → знакомый-незнакомец → новый человек → предложить продолжение),
+  в `guide`/`week_skeleton` упомянут 4-й уровень «предложить продолжение».
+  `app/seasons_library/start_conversations.yaml` реализует только 3 фазы
+  (продавец → одногруппник → новый человек), без уровня «продолжение» —
+  season-файл не трогал.
+- **Отсутствующие цели по KB (финансы).** KB перечисляет 8 целей сферы
+  «Финансы» и явно советует добавить 2 новые — «Без долгов и рассрочек» и
+  «Защита от мошенников» (для студентов Узбекистана это риски №1: ПДН
+  микрозаймов, схемы мошенничества с «ЦБ в Telegram», самозапрет на
+  кредиты). В `content/spheres/finance.yaml` таких целей нет, а задача
+  запрещает добавлять/удалять цели каталога — только обновлять
+  существующие 6. Узбекистанские факты по безопасности (гарантия вкладов
+  ЗРУ-1031 до 200 млн сум, инфляция 6,4%, ПДН ≤50% у микрозаймов) вместо
+  этого встроены в `emergency_fund` и `financial_literacy` (ближайшие по
+  смыслу существующие цели), но полноценного отдельного протокола
+  «Без долгов»/«Защита от мошенников» в каталоге по-прежнему нет —
+  требует отдельного решения с правом добавлять цели.
+
+Прогон `pytest tests/test_goal_catalog.py tests/test_season_templates.py
+tests/test_engine.py` — зелёный (148 passed), ничего в
+`app/seasons_library/*` и `app/newlife/goal_catalog.py` не трогал.

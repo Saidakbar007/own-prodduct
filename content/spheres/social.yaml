@@ -10,54 +10,68 @@ goals:
     title: { ru: "Выступления без страха", uz: "Qoʻrqmasdan chiqish" }
     difficulty: "Средний уровень"
     for_whom: "Для тех, кто боится говорить на публике или выступать"
-    outcome: "В конце — лестница экспозиций пройдена, выступать заметно легче"
+    outcome: >-
+      За 30 дней — пройдены 3–4 ступени лестницы, прогноз катастрофы перед
+      выступлением расходится с реальностью минимум в 2 из 3 случаев. За 90
+      дней — выступление 3–5 минут без чтения перед группой ≥10 человек.
     metric: { key: speaking_exposures, kind: counter, unit: "экспозиций/нед", rounding: 1 }
-    secondary: ["тревога 0–10 до/после — только для графика, не оценка человека"]
+    secondary:
+      - "тревога 0–10 до/после — только для графика, не оценка человека"
+      - "ответ «Случилось ли то, чего боялся?» (Да / Частично / Нет)"
     targets: ["60 дней", "90 дней"]
     pace: >-
-      6–10 недель: повторная экспозиция снижает тревогу (метаанализ VR- и
-      in-vivo-экспозиции при страхе выступлений). Лестница: запись на видео →
-      1 друг → 3–5 человек → группа/пара → аудитория; перескочить ступень
-      нельзя, каждый шаг можно пропустить без штрафа (§F).
-    week_skeleton: "2 экспозиции + 1 репетиция в неделю"
-    minimal_version: "Записать 30-секундное видео"
+      2–3 экспозиции в неделю, на ступень — 1–2 недели. Экспозиция in vivo
+      даёт большой эффект снижения тревоги (g≈−1.41, Reeves et al. 2022);
+      свежий метаанализ по интервенциям против страха выступлений в целом
+      даёт g=1.17 (McWilliam et al. 2025, 26 исследований, n=2 253).
+      Перескочить ступень нельзя, каждый шаг можно пропустить без штрафа.
+      Если тревога 8–10 держится на трёх попытках подряд без снижения, была
+      паника или появилось избегание пар/экзаменов из-за страха — поставь
+      цель на паузу и обратись к специалисту (индивидуальная КПТ для
+      социальной тревожности, NICE CG159).
+    week_skeleton: "2–3 экспозиции в неделю, ступень меняется каждые 1–2 недели"
+    minimal_version: "Записать 30-секундное видео «о чём я сегодня думал» и не удалять сразу"
     guide:
       steps:
-        - ru: "Начни с нижней ступени лестницы — запиши 30-секундное видео на телефон и посмотри его сам/сама, прежде чем показывать кому-то."
-          uz: "Zinapoyaning eng past bosqichidan boshla — telefonga 30 soniyalik video yoz va boshqaga ko'rsatishdan oldin o'zing tomosha qil."
-        - ru: "Поднимайся по лестнице по порядку: видео → 1 друг → 3–5 человек → группа/пара → аудитория — не перескакивай ступень, если тревога ещё высокая."
-          uz: "Zinapoyadan tartib bilan ko'tarilib bor: video → 1 do'st → 3–5 kishi → guruh/juftlik → auditoriya — tashvish hali yuqori bo'lsa, zinapoyani o'tkazib yubormang."
-        - ru: "Перед каждой экспозицией отмечай тревогу от 0 до 10, после — ещё раз: так видно, что тревога снижается с каждым разом."
-          uz: "Har bir chiqishdan oldin tashvishni 0 dan 10 gacha belgila, keyin yana bir marta — shunda har safar tashvish kamayayotganini ko'rasiz."
-        - ru: "1 раз в неделю репетируй выступление целиком, а не только отдельные фразы."
-          uz: "Haftada 1 marta butun chiqishni, alohida jumlalarni emas, to'liq mashq qil."
-        - ru: "Если неделя не получилась (пропустил ступень) — не штрафуй себя, просто повтори её на следующей неделе."
-          uz: "Agar hafta chiqmasa (zinapoya o'tkazib yuborilsa) — o'zingizni jazolamang, keyingi haftada shunchaki qaytaring."
+        - ru: "Перед экспозицией отметь прогноз — что, по-твоему, случится (забуду текст / засмеются / покраснею / голос задрожит / ничего страшного) — и 3 опорных тезиса, а не дословный текст."
+          uz: "Chiqishdan oldin prognozingizni belgilang — sizningcha nima bo'ladi (matnni unutaman / kulishadi / qizarib ketaman / ovozim titraydi / hech narsa bo'lmaydi) — va so'zma-so'z matn emas, 3 ta tayanch tezis tayyorlang."
+        - ru: "Поднимайся по лестнице по порядку: видео → близкий человек → 3–5 знакомых → реплика на паре → доклад → клуб/большая аудитория → экспромт — не перескакивай ступень, даже если тревога ещё высокая."
+          uz: "Zinapoyadan tartib bilan ko'tarilib bor: video → yaqin odam → 3–5 tanish → parda replika → doklad → klub/katta auditoriya → ekspromt — tashvish hali yuqori bo'lsa ham, zinapoyani o'tkazib yubormang."
+        - ru: "На ступенях от 3-й и выше не используй защитное поведение (не читай с листа, смотри на людей) — именно оно поддерживает тревогу."
+          uz: "3-bosqichdan boshlab himoya xatti-harakatidan foydalanmang (qog'ozdan o'qimang, odamlarga qarang) — aynan shu narsa tashvishni saqlab turadi."
+        - ru: "Сразу после выступления отметь тревогу 0–10 и ответь, случилось ли то, чего боялся — чаще всего нет."
+          uz: "Chiqishdan darhol keyin tashvishni 0 dan 10 gacha belgilang va qo'rqqan narsangiz sodir bo'ldimi, javob bering — ko'pincha yo'q."
+        - ru: "Повторяй ступень 1–2 недели (несколько попыток), прежде чем переходить дальше; если неделя не получилась — не штрафуй себя, просто повтори её."
+          uz: "Keyingi bosqichga o'tishdan oldin 1–2 hafta (bir necha urinish) shu bosqichni takrorlang; agar hafta chiqmasa — o'zingizni jazolamang, shunchaki qaytaring."
       mistakes:
-        - ru: "Пытаться сразу выступить перед большой аудиторией, минуя лестницу — это только усиливает страх."
-          uz: "Zinapoyani o'tkazib, darhol katta auditoriya oldida chiqishga urinish — bu faqat qo'rquvni kuchaytiradi."
-        - ru: "Готовить текст наизусть слово в слово — любая запинка выбивает из колеи; лучше выучить структуру и ключевые мысли."
-          uz: "Matnni so'zma-so'z yodlash — har qanday adashish sizni chalg'itadi; tuzilma va asosiy fikrlarni eslab qolish yaxshiroq."
-        - ru: "Избегать повторных попыток после одной неудачной экспозиции — тревога снижается только при повторении."
-          uz: "Bir marta muvaffaqiyatsiz chiqishdan keyin qayta urinishdan voz kechish — tashvish faqat takrorlash orqali kamayadi."
+        - ru: "Перескакивать ступени или выступать «на зубах» с бумажкой и считать, что ступень пройдена."
+          uz: "Zinapoyalarni o'tkazib yuborish yoki qog'ozga qarab 'base' chiqish va bosqich o'tildi deb hisoblash."
+        - ru: "Ждать, пока тревога станет 0, прежде чем перейти дальше — переход не требует нулевой тревоги, это нормально."
+          uz: "Keyingi bosqichga o'tishdan oldin tashvish 0 bo'lishini kutish — o'tish uchun tashvish nolga tushishi shart emas."
+        - ru: "После неудачной попытки бросать вместо повтора, или пересматривать видео ради самокритики, а не по чек-листу."
+          uz: "Muvaffaqiyatsiz urinishdan keyin tashlab qo'yish, qayta urinish o'rniga; yoki videoni o'z-o'zini tanqid qilish uchun qayta ko'rish, chek-list bo'yicha emas."
       first_week_example:
-        ru: "Пн — запись 30-секундного видео, тревога до/после; Чт — показать видео 1 другу, тревога до/после; Сб — репетиция перед зеркалом."
-        uz: "Dush — 30 soniyalik video yozish, oldin/keyin tashvish darajasi; Pay — videoni 1 do'stga ko'rsatish, oldin/keyin tashvish; Shan — oyna oldida mashq."
+        ru: "Пн, Ср, Пт — запись 60-секундного видео, прогноз и тревога до/после; один раз за неделю — просмотр со звуком по чек-листу из 3 пунктов (взгляд в камеру, пауза вместо «э-э», чёткая концовка)."
+        uz: "Dush, Chor, Juma — 60 soniyalik video yozish, prognoz va tashvish oldin/keyin; haftada bir marta — ovoz bilan 3 bandli chek-list bo'yicha ko'rib chiqish (kameraga qarash, 'э-э' o'rniga pauza, aniq yakun)."
     ladder:
       rungs:
-        - ru: "Записать 30-секундное видео себя и посмотреть его самому/самой"
-          uz: "O'zingizning 30 soniyalik videongizni yozib, o'zingiz tomosha qiling"
-        - ru: "Показать это видео или выступить перед 1 близким другом или родственником"
-          uz: "Shu videoni 1 yaqin do'st yoki qarindoshga ko'rsatish yoki uning oldida chiqish"
-        - ru: "Выступить перед 3–5 близкими людьми"
-          uz: "3–5 yaqin odam oldida chiqish"
-        - ru: "Выступить перед группой или парой (однокурсники, коллеги)"
-          uz: "Guruh yoki juftlik oldida (kursdoshlar, hamkasblar) chiqish"
-        - ru: "Выступить перед большой аудиторией (лекция, мероприятие)"
-          uz: "Katta auditoriya oldida (ma'ruza, tadbir) chiqish"
+        - ru: "Видео себе 60 секунд, без показа никому — 3 записи в разные дни"
+          uz: "O'zingizga 60 soniyalik video — turli kunlarda 3 marta yozing, hech kimga ko'rsatmasdan"
+        - ru: "Рассказ 2 минуты одному близкому человеку стоя, без чтения с листа — 2 раза"
+          uz: "1 yaqin odamga 2 daqiqalik hikoya, qog'ozsiz, tik turib — 2 marta"
+        - ru: "3–5 знакомых (друзья, семья, учебная группа) — 2–3 минуты, 2 раза"
+          uz: "3–5 tanish (do'stlar, oila, guruh) oldida — 2–3 daqiqa, 2 marta"
+        - ru: "Реплика или вопрос на паре/семинаре — 15–30 секунд, 3 раза за 2 недели"
+          uz: "Parda/seminarda replika yoki savol — 15–30 soniya, 2 hafta ichida 3 marta"
+        - ru: "Короткий доклад или ответ у доски, опора — только 3 тезиса — 2–3 минуты, 2 раза"
+          uz: "Qisqa doklad yoki doska oldida javob, faqat 3 ta tezisga tayangan holda — 2–3 daqiqa, 2 marta"
+        - ru: "Ice Breaker в клубе (Toastmasters/дебаты/студклуб) или речь 4–6 минут перед ≥10 людьми с обратной связью"
+          uz: "Klubda Ice Breaker (Toastmasters/bahs/talaba klubi) yoki ≥10 kishi oldida 4–6 daqiqalik nutq, fikr-mulohaza bilan"
+        - ru: "Экспромт: ответ на неожиданный вопрос или Table Topics 1–2 минуты, затем сам(а) оцени чужую речь — 2 раза"
+          uz: "Ekspromt: kutilmagan savolga javob yoki Table Topics 1–2 daqiqa, keyin boshqa birovning nutqini o'zingiz baholang — 2 marta"
     source:
-      name: "Метаанализ VR/in-vivo экспозиции (2023)"
-      url: "https://www.frontiersin.org/journals/virtual-reality/articles/10.3389/frvir.2023.1240778/pdf"
+      name: "Reeves et al. 2022 (метаанализ VR/in-vivo экспозиции) и McWilliam et al. 2025"
+      url: "https://pure.qub.ac.uk/en/publications/a-meta-analysis-of-the-efficacy-of-virtual-reality-and-in-vivo-ex/"
     template_id: public_speaking_confidence
 
   - id: active_listening
@@ -65,40 +79,51 @@ goals:
     title: { ru: "Активное слушание", uz: "Faol tinglash" }
     difficulty: "Для новичков"
     for_whom: "Для тех, кто хочет, чтобы собеседник чувствовал себя понятым"
-    outcome: "В конце — перефраз в разговоре входит в привычку"
+    outcome: >-
+      За 30 дней — в ≥10 разговорах сделан перефраз и задан уточняющий
+      вопрос, собеседник реже перебивается (самоотчёт). За 90 дней —
+      привычка срабатывает автоматически даже в спорах.
     metric: { key: listening_paraphrases, kind: counter, unit: "раз/нед", rounding: 1 }
-    secondary: ["число уточняющих вопросов"]
+    secondary: ["число разговоров с уточняющим вопросом (кнопка «уточнение ✓»)"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      4 недели (Weger 2014). Важная оговорка: перефраз усиливает ощущение,
-      что собеседника поняли, но не повышает симпатию к слушающему заметно
-      сильнее простых знаков согласия — метод подаём как «чтобы человек
-      чувствовал, что его поняли», а не как способ понравиться.
-    week_skeleton: "Ежедневно 1 разговор с техникой «Правильно понимаю, что…?»"
-    minimal_version: "1 перефраз в день"
+      3 → 5 → 7 разговоров в неделю, рост по неделям. Поправка к мифу:
+      активное слушание (перефраз + уточнение) сильнее всего даёт собеседнику
+      чувство «меня поняли»; по тому, насколько слушающий понравился, активное
+      слушание и советы были одинаково выше, чем простые кивки — то есть
+      перефраз реально повышает симпатию, просто не сильнее советов (Weger et
+      al. 2014, n=115). Уточняющие вопросы отдельно повышают симпатию к тому,
+      кто их задаёт (Huang et al. 2017, n=430).
+    week_skeleton: >-
+      Нед.1 — только уточняющий вопрос; нед.2 — + перефраз «То есть ты
+      имеешь в виду…?»; нед.3 — + отражение чувств («Похоже, тебя это
+      задело»); нед.4 — перефраз в споре перед своим мнением
+    minimal_version: "1 уточняющий вопрос в любом разговоре сегодня"
     guide:
       steps:
-        - ru: "В одном разговоре в день выбери момент и скажи: «Правильно понимаю, что…?», переформулировав своими словами то, что услышал."
-          uz: "Kuniga 1 suhbatda bir lahzani tanlab, eshitganingizni o'z so'zlaringiz bilan qayta aytib: 'To'g'ri tushundimmi, …?' deb so'rang."
-        - ru: "Дай собеседнику закончить мысль, не перебивай, прежде чем перефразировать."
-          uz: "Suhbatdoshni to'xtatmasdan, fikrini tugatishiga ruxsat bering, keyin qayta aytib bering."
-        - ru: "Задай хотя бы один уточняющий вопрос по теме — это показывает, что ты слушаешь, а не просто ждёшь свою очередь говорить."
-          uz: "Mavzu bo'yicha kamida bitta aniqlashtiruvchi savol bering — bu sizning haqiqatan tinglayotganingizni ko'rsatadi, shunchaki navbatingizni kutayotganingizni emas."
-        - ru: "Отмечай в приложении каждый перефраз — за неделю ты увидишь, как часто это входит в привычку."
-          uz: "Ilovada har bir qayta aytishni belgilang — haftada bu qanchalik odatga aylanganini ko'rasiz."
+        - ru: "Перед перефразом убери телефон и дай собеседнику закончить мысль — выдержи паузу 2 секунды, прежде чем отвечать."
+          uz: "Qayta aytishdan oldin telefonni olib qo'ying va suhbatdoshga fikrini tugatishga ruxsat bering — javob berishdan oldin 2 soniya kuting."
+        - ru: "На этой неделе сначала добавь только уточняющий вопрос («А что было дальше?», «Как ты это понял?»), перефраз — со 2-й недели: «То есть ты имеешь в виду…?»"
+          uz: "Shu hafta avval faqat aniqlashtiruvchi savol qo'shing ('Keyin nima bo'ldi?', 'Buni qanday tushundingiz?'), qayta aytish 2-haftadan: 'Demak, nazarda tutyapsizki…?'"
+        - ru: "Перефразируй суть одной фразой своими словами, а не повторяй дословно («эхо»)."
+          uz: "Mohiyatni o'z so'zlaringiz bilan bitta jumlada qayta ayting, so'zma-so'z takrorlamang ('aks-sado')."
+        - ru: "Совет давай только если попросили: «Хочешь совет или просто выговориться?» — иначе цель перефраза теряется."
+          uz: "Maslahatni faqat so'rashganda bering: 'Maslahat kerakmi yoki shunchaki gapirib olmoqchimisiz?' — aks holda qayta aytishning ma'nosi yo'qoladi."
+        - ru: "Отмечай в приложении каждый перефраз и уточнение — за неделю ты увидишь, как часто это входит в привычку."
+          uz: "Ilovada har bir qayta aytish va aniqlashtirishni belgilang — haftada bu qanchalik odatga aylanganini ko'rasiz."
       mistakes:
-        - ru: "Использовать перефраз формально, одними и теми же словами — собеседник чувствует отсутствие интереса."
-          uz: "Qayta aytishni rasmiy, har doim bir xil so'zlar bilan qilish — suhbatdosh qiziqish yo'qligini seza boshlaydi."
-        - ru: "Перефразировать, чтобы тут же перевести разговор на себя — цель перефраза показать, что услышал, а не начать свой рассказ."
-          uz: "Qayta aytib, darhol suhbatni o'zingizga burish — maqsad eshitganingizni ko'rsatish, o'z hikoyangizni boshlash emas."
-        - ru: "Ждать «подходящего» разговора вместо того, чтобы практиковать в обычных бытовых беседах."
-          uz: "'Mos' suhbatni kutib o'tirish, oddiy kundalik gaplarda mashq qilmaslik."
+        - ru: "Повторять перефраз механически одними и теми же словами каждые 10 секунд («эхо») — собеседник чувствует отсутствие интереса."
+          uz: "Qayta aytishni mexanik tarzda, har 10 soniyada bir xil so'zlar bilan qilish ('aks-sado') — suhbatdosh qiziqish yo'qligini sezadi."
+        - ru: "Задавать слишком много вопросов подряд («допрос») — это тоже мешает, как и их полное отсутствие (Huang 2017)."
+          uz: "Ketma-ket juda ko'p savol berish ('so'roq') — bu ham, savol umuman bo'lmasligi kabi, xalaqit beradi (Huang 2017)."
+        - ru: "Перефразировать, чтобы сразу перевести разговор на себя, или давать советы без запроса."
+          uz: "Qayta aytib, darhol suhbatni o'zingizga burish yoki so'ralmagan maslahat berish."
       first_week_example:
-        ru: "Каждый день — 1 разговор (с другом, преподавателем, в магазине), в котором хотя бы раз говоришь «Правильно понимаю, что…?» и задаёшь 1 уточняющий вопрос."
-        uz: "Har kuni — 1 suhbat (do'st, o'qituvchi, do'konda), unda kamida bir marta 'To'g'ri tushundimmi, …?' deb aytib, 1 aniqlashtiruvchi savol bering."
+        ru: "Каждый день — 1 разговор, где задаёшь только один уточняющий вопрос («А что было дальше?», «Как ты это понял?»), без перефраза — перефраз добавится на неделе 2."
+        uz: "Har kuni — 1 suhbat, unda faqat bitta aniqlashtiruvchi savol berasiz ('Keyin nima bo'ldi?', 'Buni qanday tushundingiz?'), qayta aytishsiz — qayta aytish 2-haftada qo'shiladi."
     source:
-      name: "Weger et al. 2014"
-      url: "https://greatergood.berkeley.edu/images/uploads/ActiveListening.pdf"
+      name: "Weger et al. 2014 (активное слушание) и Huang et al. 2017 (уточняющие вопросы)"
+      url: "https://reachfamilies.umn.edu/sites/default/files/prtw/2021-09/Weger_2014__2021091010606.pdf"
     template_id: active_listening
 
   - id: start_conversations
@@ -106,37 +131,48 @@ goals:
     title: { ru: "Начинать разговоры", uz: "Suhbatni boshlash" }
     difficulty: "Для новичков"
     for_whom: "Для тех, кому трудно заговорить первым"
-    outcome: "В конце — заговорить первым с новым человеком не страшно"
+    outcome: >-
+      За 30 дней — 15–25 коротких разговоров, прогноз «отвергнут» почти
+      всегда не сбывается. За 90 дней — заговорить первым в новом месте не
+      страшно, 2–4 новых знакомства с обменом контактами.
     metric: { key: conversations_started, kind: counter, unit: "разговоров/нед", rounding: 1 }
-    secondary: ["число продолжившихся >2 мин"]
+    secondary:
+      - "прогноз до разговора (откажут / неловко / нормально / приятно) и факт после — для графика «прогноз против факта»"
     targets: ["30 дней", "60 дней"]
-    pace: "6 недель (эвристика). Варианты цели — 3 / 5 / 7 разговоров в неделю."
-    week_skeleton: "Лестница: продавец → одногруппник → новый человек"
-    minimal_version: "Приветствие + 1 вопрос"
+    pace: >-
+      Неделя 1 — 1 миссия в день 7 дней подряд, как в эксперименте Sandstrom,
+      Boothby & Cooney (2022, 1 336 разговоров): 87% разговоров получились с
+      первым же человеком, эффект держался минимум неделю после конца
+      программы. Дальше — 3–5 разговоров в неделю. Безопасность: миссии —
+      только в людных местах и светлое время суток, без цели познакомиться с
+      противоположным полом (фильтр «только сервис / только одногруппники»).
+    week_skeleton: "Лестница уровней: сервис (продавец/кассир) → знакомый-незнакомец (одногруппник) → новый человек → предложить продолжение"
+    minimal_version: "Поздороваться и сказать «спасибо» по имени кассиру или вахтёру"
     guide:
       steps:
-        - ru: "Начни с лестницы простых ситуаций: продавец/кассир → одногруппник, которого плохо знаешь → совсем новый человек — так тревога растёт постепенно."
-          uz: "Oddiy vaziyatlar zinapoyasidan boshla: sotuvchi/kassir → yaxshi tanimaydigan guruhdosh → butunlay yangi odam — shunda tashvish asta-sekin o'sadi."
-        - ru: "Используй простую формулу: приветствие + 1 вопрос о ситуации («Привет, как тебе лекция?») — не нужно придумывать что-то особенное."
-          uz: "Oddiy formuladan foydalan: salom + 1 savol vaziyat haqida ('Salom, ma'ruza senga qanday?') — alohida narsa o'ylab topish shart emas."
-        - ru: "Если не знаешь, с чего начать — в приложении есть банк готовых вопросов для начала разговора, можно взять оттуда."
-          uz: "Nimadan boshlashni bilmasang — ilovada suhbatni boshlash uchun tayyor savollar banki bor, shundan foydalanish mumkin."
-        - ru: "Ставь регулярность важнее длины разговора: 3–5–7 коротких разговоров в неделю лучше одного длинного раз в месяц."
-          uz: "Muntazamlikni suhbat uzunligidan muhimroq qo'y: haftada 3–5–7 ta qisqa suhbat oyda bir marta uzoq suhbatdan yaxshiroq."
-        - ru: "Отмечай, какие разговоры продолжились дольше 2 минут — это знак, что тема зацепила."
-          uz: "2 daqiqadan ko'proq davom etgan suhbatlarni belgilang — bu mavzu qiziq bo'lgani haqida ishora."
+        - ru: "Начни с лестницы уровней: сервис (продавец, кассир) → знакомый-незнакомец (одногруппник) → совсем новый человек → предложение продолжения — так тревога растёт постепенно."
+          uz: "Darajalar zinapoyasidan boshla: xizmat (sotuvchi, kassir) → tanish-notanish (guruhdosh) → butunlay yangi odam → davom etishni taklif qilish — shunda tashvish asta-sekin o'sadi."
+        - ru: "Найди повод из окружения («Это очередь на…?», «Как вам эта пара?») и задай один открытый вопрос — не готовь длинный монолог заранее."
+          uz: "Atrofdan bahona toping ('Bu navbat...ga?', 'Bu para senga qanday?') va bitta ochiq savol bering — oldindan uzoq monolog tayyorlamang."
+        - ru: "Задай хотя бы одно уточнение по ответу собеседника, прежде чем заканчивать разговор."
+          uz: "Suhbatni tugatishdan oldin suhbatdosh javobi bo'yicha kamida bitta aniqlashtiruvchi savol bering."
+        - ru: "Заверши разговор вежливой фразой («Рад был поболтать, удачи!») — так ты тренируешь не только начало, но и выход."
+          uz: "Suhbatni xushmuomalalik bilan yakunlang ('Suhbatlashganimdan xursandman, omad!') — shunda nafaqat boshlashni, balki chiqishni ham mashq qilasiz."
+        - ru: "После разговора отметь, что прогнозировал (откажут/неловко/нормально/приятно) и что случилось на самом деле — большинство прогнозов не сбывается."
+          uz: "Suhbatdan keyin nimani bashorat qilganingizni (rad etishadi/noqulay/normal/yoqimli) va haqiqatda nima bo'lganini belgilang — ko'pchilik bashoratlar amalga oshmaydi."
       mistakes:
-        - ru: "Пытаться сразу заговорить с незнакомым человеком, минуя простые ситуации — лучше начать с низкой ставки (продавец, одногруппник)."
-          uz: "Oddiy vaziyatlarni o'tkazib, darhol notanish odam bilan gaplashishga urinish — past tashvishli holatlardan (sotuvchi, guruhdosh) boshlash yaxshiroq."
+        - ru: "Выбирать для разговора людей в наушниках или спешащих — лучше искать того, кто не занят и не торопится."
+          uz: "Suhbat uchun quloqchinli yoki shoshayotgan odamlarni tanlash — band bo'lmagan va shoshilmayotgan odamni izlash yaxshiroq."
         - ru: "Готовить длинный монолог заранее — одного простого вопроса достаточно, дальше разговор развивается сам."
           uz: "Oldindan uzoq monolog tayyorlash — bitta oddiy savol yetarli, qolgani suhbat davomida o'z-o'zidan rivojlanadi."
-        - ru: "Считать неудачей короткий ответ собеседника — не каждый разговор должен длиться долго, важна регулярность попыток."
-          uz: "Suhbatdoshning qisqa javobini muvaffaqiyatsizlik deb hisoblash — har bir suhbat uzoq bo'lishi shart emas, muntazamlik muhim."
+        - ru: "Считать отказ или короткий ответ провалом — отказ тоже засчитывается как выполненная миссия, важна регулярность, а не результат каждого разговора."
+          uz: "Rad javobi yoki qisqa javobni muvaffaqiyatsizlik deb hisoblash — rad javobi ham bajarilgan missiya sifatida hisoblanadi, muntazamlik muhim, har bir suhbat natijasi emas."
       first_week_example:
-        ru: "Пн/Ср/Пт — заговорить первым с продавцом или одногруппником (приветствие + 1 вопрос); отметить, какие разговоры продлились больше 2 минут."
-        uz: "Dush/Chor/Juma — sotuvchi yoki guruhdosh bilan birinchi bo'lib gaplashish (salom + 1 savol); 2 daqiqadan ko'proq davom etgan suhbatlarni belgilash."
+        ru: "Пн–Вс — 1 миссия в день 7 дней подряд из банка (поздороваться с конкретикой, спросить дорогу/время, спросить одногруппника про задание); отметить прогноз и факт после каждой."
+        uz: "Dush–Yak — bankdan har kuni 1 missiya 7 kun ketma-ket (aniqlik bilan salomlashish, yo'l/vaqt so'rash, guruhdoshdan topshiriq haqida so'rash); har birida prognoz va faktni belgilash."
     source:
-      name: "эвристика"
+      name: "Sandstrom, Boothby & Cooney 2022 (7-дневный эксперимент, 1 336 разговоров)"
+      url: "https://spsp.org/news/character-and-context-blog/sandstrom-boothby-cooney-talking-to-strangers"
     template_id: start_conversations
 
   - id: networking
@@ -144,35 +180,43 @@ goals:
     title: { ru: "Нетворкинг", uz: "Tanishuvlar tarmogʻi" }
     difficulty: "Средний уровень"
     for_whom: "Для тех, кто хочет строить профессиональные связи"
-    outcome: "В конце — регулярные новые контакты и привычка делать follow-up"
+    outcome: >-
+      За 30 дней — 4–6 новых контактов, ≥50% получили follow-up в течение
+      48 часов, 1 разговор о карьере. За 90 дней — 12–20 контактов, 3–5
+      повторных разговоров, 1 возможность (стажировка, проект, рекомендация).
     metric: { key: networking_contacts, kind: counter, unit: "контактов/нед", rounding: 1 }
     secondary: ["число повторных связей (follow-up)"]
     targets: ["60 дней", "90 дней"]
-    pace: "8–12 недель (эвристика). Варианты цели — 1 / 2 / 4 новых контакта в неделю."
-    week_skeleton: "1 мероприятие или 2 сообщения + 1 follow-up в неделю"
-    minimal_version: "Написать 1 сообщение"
+    pace: >-
+      Варианты цели — 1 / 2 / 4 новых контакта в неделю, из них 1–2 должны
+      получить follow-up в течение 48 часов — это сильно повышает шанс, что
+      контакт не забудется (эвристика; ~40% продолжили общение после
+      знакомства в Sandstrom et al. 2022).
+    week_skeleton: "1 мероприятие или 2 сообщения + follow-up ≤48 ч в неделю"
+    minimal_version: "Отправить 1 сообщение с благодарностью или вопросом"
     guide:
       steps:
-        - ru: "Выбери 1 мероприятие в неделю (встреча, лекция, мастер-класс) или напиши 2 новых сообщения людям по учёбе/работе."
-          uz: "Haftada 1 tadbir (uchrashuv, ma'ruza, master-klass) tanlang yoki o'qish/ish bo'yicha odamlarga 2 ta yangi xabar yozing."
-        - ru: "При знакомстве запомни 1–2 детали о человеке (чем занимается, что интересует) — это пригодится для follow-up."
-          uz: "Tanishganda odam haqida 1–2 tafsilotni eslab qoling (nima bilan shug'ullanadi, nimaga qiziqadi) — bu follow-up uchun kerak bo'ladi."
-        - ru: "В течение недели сделай хотя бы 1 follow-up: короткое сообщение с благодарностью или вопросом по теме разговора."
-          uz: "Hafta davomida kamida 1 follow-up qiling: suhbat mavzusi bo'yicha qisqa minnatdorlik yoki savol xabari."
-        - ru: "Храни контакты в одном месте (заметки, приложение) — так проще не терять связь."
-          uz: "Kontaktlarni bitta joyda saqlang (eslatmalar, ilova) — shunda aloqani yo'qotib qo'ymaysiz."
+        - ru: "Сначала дай, а не проси: прояви интерес, задай вопрос или поделись полезной ссылкой — не начинай с просьбы о работе или услуге."
+          uz: "Avval bering, so'ramang: qiziqish bildiring, savol bering yoki foydali havola ulashing — ish yoki xizmat so'rashdan boshlamang."
+        - ru: "Выбери 1 мероприятие в неделю (встреча, лекция, мастер-класс) или напиши 2 новых коротких сообщения: кто ты + почему именно этот человек + 1 конкретный вопрос."
+          uz: "Haftada 1 tadbir (uchrashuv, ma'ruza, master-klass) tanlang yoki 2 ta yangi qisqa xabar yozing: kimligingiz + aynan nega shu odam + 1 ta aniq savol."
+        - ru: "Сделай follow-up в течение 48 часов — упомяни деталь из разговора, чтобы знакомство не забылось."
+          uz: "48 soat ichida follow-up qiling — suhbatdan bir tafsilotni eslatib o'ting, shunda tanishuv unutilmaydi."
+        - ru: "Храни контакты в одном месте (мини-CRM, заметки) — отмечай, кто давно не получал follow-up."
+          uz: "Kontaktlarni bitta joyda saqlang (mini-CRM, eslatmalar) — kim uzoq vaqt follow-up olmaganini belgilang."
       mistakes:
-        - ru: "Знакомиться и не делать follow-up — без повторного контакта знакомство быстро забывается с обеих сторон."
-          uz: "Tanishib, follow-up qilmaslik — qayta aloqasiz tanishuv ikki tomondan ham tezda unutiladi."
-        - ru: "Писать сообщение сразу с просьбой что-то — лучше сначала показать интерес к человеку, а не только к выгоде."
-          uz: "Xabarni darhol biror narsa so'rash bilan yozish — avval odamga qiziqish ko'rsatish, keyin foydaga o'tish yaxshiroq."
+        - ru: "Знакомиться и не делать follow-up в течение 48 часов — без быстрого повторного контакта знакомство быстро забывается с обеих сторон."
+          uz: "Tanishib, 48 soat ichida follow-up qilmaslik — tez qayta aloqasiz tanishuv ikki tomondan ham tezda unutiladi."
+        - ru: "Писать шаблонное сообщение без конкретики или сразу с просьбой об одолжении — лучше сначала показать интерес к человеку."
+          uz: "Aniqlik bo'lmagan shablon xabar yozish yoki darhol iltimos bilan yozish — avval odamga qiziqish ko'rsatish yaxshiroq."
         - ru: "Ограничиваться только своим кругом — чтобы расширить сеть, нужно выходить к новым людям, а не только знакомым."
           uz: "Faqat o'z doirangiz bilan cheklanish — tarmoqni kengaytirish uchun yangi odamlarga chiqish kerak, faqat tanishlarga emas."
       first_week_example:
-        ru: "Ср — написать 2 новых сообщения людям по учёбе/работе с коротким вопросом о них; Пт — сделать 1 follow-up тому, кто ответил."
-        uz: "Chor — o'qish/ish bo'yicha odamlarga ular haqida qisqa savol bilan 2 ta yangi xabar yozish; Juma — javob berganlardan biriga follow-up qilish."
+        ru: "Пн — составить список из 10 человек (преподаватели, выпускники, профи); Ср — написать 2 новых сообщения с конкретным вопросом; Пт — сделать follow-up в течение 48 ч тому, кто ответил."
+        uz: "Dush — 10 kishilik ro'yxat tuzish (o'qituvchilar, bitiruvchilar, mutaxassislar); Chor — aniq savol bilan 2 ta yangi xabar yozish; Juma — javob berganga 48 soat ichida follow-up qilish."
     source:
-      name: "эвристика"
+      name: "Sandstrom, Boothby & Cooney 2022 (follow-up ≈40% продолжили общение); остальные нормы — эвристика"
+      url: "https://spsp.org/news/character-and-context-blog/sandstrom-boothby-cooney-talking-to-strangers"
     template_id: networking
 
   - id: presence_charisma
@@ -180,35 +224,46 @@ goals:
     title: { ru: "Харизма = присутствие", uz: "Jalb qiluvchanlik = toʻliq diqqat" }
     difficulty: "Для новичков"
     for_whom: "Для тех, кто хочет быть по-настоящему включённым в разговор"
-    outcome: "В конце — телефон убран, внимание на собеседнике — само собой"
+    outcome: >-
+      За 30 дней — ≥15 разговоров без телефона в руках, где собеседник
+      назван по имени и задан вопрос о нём. За 90 дней — это поведение по
+      умолчанию, без усилий.
     metric: { key: phone_free_conversations, kind: counter, unit: "разговоров/нед", rounding: 1 }
-    secondary: ["имя собеседника названо (да/нет)"]
+    secondary:
+      - "имя собеседника названо (да/нет)"
+      - "задан вопрос о собеседнике (да/нет)"
     targets: ["30 дней", "60 дней"]
-    pace: "6 недель (эвристика). Варианты цели — 3 / 5 / 7 разговоров в неделю."
-    week_skeleton: "Ежедневная отметка разговоров без телефона в руках"
+    pace: >-
+      3 → 5 → 7 разговоров в неделю. Засчитывается разговор, где отмечено
+      ≥2 из 3: «телефон убран», «назвал по имени», «задал вопрос о нём».
+      Механизм — отзывчивость через вопросы повышает симпатию (Huang et al.
+      2017). Нед.1 — только телефон убран; нед.2 — + имя; нед.3 — + «1
+      вопрос на 1 историю о себе»; нед.4 — все три в групповом разговоре.
+    week_skeleton: "Нед.1 — телефон убран; нед.2 — + имя; нед.3 — + вопрос о собеседнике; нед.4 — всё вместе в группе"
     minimal_version: "Убрать телефон в 1 разговоре"
     guide:
       steps:
         - ru: "Перед разговором убери телефон из рук и с глаз (в карман, в сумку) — даже лежащий на столе телефон снижает ощущение внимания у собеседника."
           uz: "Suhbatdan oldin telefonni qo'ldan va ko'zdan olib qo'ying (cho'ntakka, sumkaga) — stolda yotgan telefon ham e'tibor hissini kamaytiradi."
-        - ru: "В разговоре задай хотя бы один вопрос про собеседника и дослушай ответ, не перебивая."
-          uz: "Suhbatda suhbatdosh haqida kamida bitta savol bering va javobini bo'lmasdan tinglang."
+        - ru: "В разговоре задай хотя бы один вопрос про собеседника и дослушай ответ, не перебивая, прежде чем рассказывать о себе."
+          uz: "Suhbatda suhbatdosh haqida kamida bitta savol bering va javobini bo'lmasdan tinglang, o'zingiz haqida gapirishdan oldin."
         - ru: "Назови собеседника по имени хотя бы раз за разговор — это требует реально слушать, а не думать о своём."
           uz: "Suhbat davomida suhbatdoshni kamida bir marta ismi bilan chaqiring — bu haqiqatan tinglashni talab qiladi, o'zingiz haqida o'ylashni emas."
-        - ru: "Отмечай в приложении каждый разговор, где телефон был убран."
-          uz: "Ilovada telefon qo'lda bo'lmagan har bir suhbatni belgilang."
+        - ru: "Отмечай в приложении каждый разговор, где собрано ≥2 из 3 признаков присутствия."
+          uz: "Ilovada 3 tadan kamida 2 tasi bajarilgan har bir suhbatni belgilang."
       mistakes:
         - ru: "Держать телефон «на всякий случай» на столе экраном вверх — взгляд туда всё равно будет уходить."
           uz: "Telefonni 'ehtiyot uchun' ekrani yuqori qarab stolda qoldirish — nigoh baribir shu tomonga ketadi."
-        - ru: "Задавать вопрос о собеседнике и сразу переключаться на рассказ о себе — присутствие это слушать ответ, а не использовать вопрос как повод заговорить."
-          uz: "Suhbatdosh haqida savol berib, darhol o'zingiz haqida gapirishga o'tish — to'liq diqqat javobni tinglashda, savolni gap boshlash bahonasi qilmaslikda."
-        - ru: "Практиковать это только с незнакомыми, забывая про близких — именно с близкими людьми привычка «телефон в руках» закрепляется сильнее всего."
-          uz: "Buni faqat notanishlar bilan mashq qilib, yaqinlarni unutish — aynan yaqinlar bilan 'qo'lda telefon' odati eng mustahkam bo'ladi."
+        - ru: "«Изображать» харизму — позы силы, заученные шутки — вместо реального интереса к собеседнику."
+          uz: "Jalb qiluvchanlikni 'o'ynash' — kuch pozalari, yodlangan hazillar — suhbatdoshga haqiqiy qiziqish o'rniga."
+        - ru: "Перебивать, чтобы переключиться на свою историю, вместо вопроса собеседнику."
+          uz: "O'z hikoyangizga o'tish uchun gapni bo'lish, suhbatdoshga savol berish o'rniga."
       first_week_example:
-        ru: "Каждый день — хотя бы 1 разговор без телефона в руках, с вопросом о собеседнике и его именем вслух хотя бы раз."
-        uz: "Har kuni — kamida 1 suhbat telefonsiz, suhbatdosh haqida savol bilan va uni kamida bir marta ismi bilan chaqirish."
+        ru: "Каждый день — хотя бы 1 разговор без телефона в руках; со 2-й недели добавь имя собеседника вслух хотя бы раз."
+        uz: "Har kuni — kamida 1 suhbat telefonsiz; 2-haftadan suhbatdoshning ismini kamida bir marta ovoz chiqarib ayting."
     source:
-      name: "эвристика"
+      name: "Huang et al. 2017 (отзывчивость через вопросы) и Weger et al. 2014"
+      url: "https://psychologicalscience.org/news/minds-business/asking-questions-increases-likability.html"
     template_id: presence_charisma
 
   - id: keep_in_touch
@@ -216,33 +271,45 @@ goals:
     title: { ru: "Поддерживать связи", uz: "Aloqalarni saqlab turish" }
     difficulty: "Для новичков"
     for_whom: "Для тех, кто теряет связь с близкими людьми из-за занятости"
-    outcome: "В конце — регулярные контакты с важными людьми входят в привычку"
+    outcome: >-
+      За 30 дней — ≥8 содержательных контактов с «своим кругом», ни один из
+      5 близких людей не остался без контакта дольше 14 дней. За 90 дней —
+      часы совместного времени растут, одиночество по самоотчёту реже.
     metric: { key: close_contact_checkins, kind: counter, unit: "контактов/нед", rounding: 1 }
     secondary: ["число инициированных тобой"]
     targets: ["30 дней", "60 дней"]
-    pace: "Постоянная привычка (эвристика). Варианты цели — 2 / 4 / 7 контактов в неделю."
-    week_skeleton: "Список из 5 человек, звонок или встреча по кругу"
+    pace: >-
+      Варианты цели — 2 / 4 / 7 контактов в неделю, ориентир — 2–4 часа
+      живого общения в неделю (эвристика); до приятельства нужно примерно
+      40–60 часов общения, до близкой дружбы — более 200 часов (Hall 2019).
+      Если одиночество «почти всегда» держится ≥2 недели вместе с плохим
+      настроением — это повод обратиться за помощью: одиночество удваивает
+      риск депрессии (WHO 2025).
+    week_skeleton: "Круг из 5–7 человек с желаемой частотой контакта; 1–2 звонка/встречи по кругу в неделю + восстановление «просроченных» (>14 дней без контакта)"
     minimal_version: "1 короткое сообщение"
     guide:
       steps:
-        - ru: "Составь список из 5 важных людей, с которыми не хочешь терять связь (семья, близкие друзья)."
-          uz: "Aloqani yo'qotmoqchi bo'lmagan 5 muhim odamning ro'yxatini tuzing (oila, yaqin do'stlar)."
+        - ru: "Составь список из 5–7 важных людей, с которыми не хочешь терять связь (семья, близкие друзья), и отметь желаемую частоту контакта."
+          uz: "Aloqani yo'qotmoqchi bo'lmagan 5–7 muhim odamning ro'yxatini tuzing (oila, yaqin do'stlar) va xohlagan aloqa chastotangizni belgilang."
         - ru: "Каждую неделю выбирай по кругу 1–2 человек из списка и пиши или звони первым — не жди, что напишут тебе."
           uz: "Har hafta ro'yxatdan navbat bilan 1–2 kishini tanlang va birinchi bo'lib yozing yoki qo'ng'iroq qiling — ular yozishini kutmang."
-        - ru: "Не обязательно говорить долго — короткое «как ты, что нового» уже поддерживает связь."
-          uz: "Uzoq gaplashish shart emas — qisqa 'qalaysan, yangiliklar bormi' ham aloqani saqlab turadi."
-        - ru: "Отмечай, кто из списка давно не получал сообщения, чтобы никто не выпадал надолго."
-          uz: "Ro'yxatdagi kim uzoq vaqt xabar olmaganini belgilab boring, hech kim uzoq muddat chetda qolmasin."
+        - ru: "Не обязательно говорить долго — короткое «как ты, что нового» уже поддерживает связь; отмечай минуты живого общения."
+          uz: "Uzoq gaplashish shart emas — qisqa 'qalaysan, yangiliklar bormi' ham aloqani saqlab turadi; jonli muloqot daqiqalarini belgilang."
+        - ru: "Раз в 1–2 недели предложи совместное дело (учёба, спорт, прогулка) — именно часы вместе строят дружбу, а не переписка."
+          uz: "1–2 haftada bir marta birgalikda biror ish taklif qiling (o'qish, sport, sayr) — do'stlikni aynan birgalikdagi soatlar quradi, yozishmalar emas."
+        - ru: "Отмечай, кто из списка давно (>14 дней) не получал сообщения, чтобы никто не выпадал надолго."
+          uz: "Ro'yxatdagi kim uzoq (14 kundan ortiq) xabar olmaganini belgilab boring, hech kim uzoq muddat chetda qolmasin."
       mistakes:
-        - ru: "Писать только когда что-то нужно — так связь выглядит формальной, а не искренней."
-          uz: "Faqat biror narsa kerak bo'lganda yozish — shunda aloqa samimiy emas, rasmiy ko'rinadi."
-        - ru: "Ждать, что первый шаг сделает другой человек — тогда месяцы проходят без контакта."
-          uz: "Birinchi qadamni boshqa odam qo'yishini kutish — shunda oylar aloqasiz o'tadi."
-        - ru: "Концентрироваться на 1–2 любимых контактах, забывая остальных из списка — круг нужен, чтобы охватывать всех по очереди."
-          uz: "Faqat 1–2 sevimli kontaktga e'tibor berib, ro'yxatdagi qolganlarini unutish — ro'yxat hammani navbat bilan qamrab olish uchun kerak."
+        - ru: "Считать лайки и реакции в соцсетях живым общением — засчитывается только разговор или встреча."
+          uz: "Ijtimoiy tarmoqlardagi layk va reaksiyalarni jonli muloqot deb hisoblash — faqat suhbat yoki uchrashuv hisobga olinadi."
+        - ru: "Ждать, что первый шаг сделает другой человек — тогда недели или месяцы проходят без контакта."
+          uz: "Birinchi qadamni boshqa odam qo'yishini kutish — shunda haftalar yoki oylar aloqasiz o'tadi."
+        - ru: "Ограничиваться только перепиской без личных встреч или звонков — близость строится через совместное время."
+          uz: "Shaxsiy uchrashuv yoki qo'ng'iroqsiz faqat yozishma bilan cheklanish — yaqinlik birgalikdagi vaqt orqali quriladi."
       first_week_example:
-        ru: "Пн — сообщение 1-му человеку из списка; Чт — звонок или сообщение 2-му; отметить, кто ответил и как давно был последний контакт."
-        uz: "Dush — ro'yxatdagi 1-chi odamga xabar; Pay — 2-chi odamga qo'ng'iroq yoki xabar; kim javob berganini va oxirgi aloqa qachon bo'lganini belgilash."
+        ru: "Пн — сообщение 1-му человеку из списка; Чт — звонок или встреча со 2-м; отметить минуты общения и кто «просрочен» (>14 дней без контакта)."
+        uz: "Dush — ro'yxatdagi 1-chi odamga xabar; Pay — 2-chi odam bilan qo'ng'iroq yoki uchrashuv; muloqot daqiqalarini va kim 'muddati o'tgan'ini (14 kundan ortiq aloqasiz) belgilash."
     source:
-      name: "эвристика"
+      name: "Hall 2019 (часы до дружбы) и WHO 2025 (одиночество и здоровье)"
+      url: "https://news.ku.edu/2018/03/06/study-reveals-number-hours-it-takes-make-friend"
     template_id: keep_in_touch
