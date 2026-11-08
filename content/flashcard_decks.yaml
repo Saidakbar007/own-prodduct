@@ -1641,7 +1641,7 @@ knowledge_trivia:
         ru: "32."
         uz: "32 ta."
     - id: trivia_047
-      front: { ru: "Какой орган отвечает за «насос» крови в теле?", uz: "Tanada qonni haydab turuvchi «насос» vazifasini qaysi a'zo bajaradi?" }
+      front: { ru: "Какой орган отвечает за «насос» крови в теле?", uz: "Tanada qonni haydab turuvchi «pompa» vazifasini qaysi a'zo bajaradi?" }
       back:
         ru: "Сердце."
         uz: "Yurak."

@@ -133,11 +133,20 @@
       CS50x, freeCodeCamp, cbu.uz) — `app/newlife/resources_bank.py`,
       секция на карточке соответствующей цели
 - [x] Reviewer: у каждой цели есть guide и понятное первое действие на
-      2 минуты; факты в карточках «Знания» верны — проверено на выборке
-      24/67 целей (≥2 на сферу) + все 75 карточек knowledge_trivia + ~50
-      english_b1; находок по существу нет, одна стилистическая правка
-      (смешение "Lestnitsa"/"zinapoya" в uz-тексте public_speaking_confidence,
-      исправлено)
+      2 минуты; факты в карточках «Знания» верны — ВСЕ 67/67 целей
+      прочитаны (3 прохода), все 75 карточек knowledge_trivia + ~80
+      english_b1. Найдено и исправлено: смешение "Lestnitsa"/"zinapoya"
+      (public_speaking_confidence), опечатка в uz (`friends`), спутанный
+      uz-заголовок pushups_50 (термин от pullups_10), 5 случаев смешения
+      кириллицы/латиницы в uz-тексте (run_5k, knowledge, exercises.yaml
+      ×3, flashcard_decks.yaml) — найдены полным скан-скриптом кириллицы
+      по всем uz-полям content/*, app/newlife/*.yaml,
+      app/seasons_library/*.yaml, app/i18n/uz.json, больше совпадений
+      нет. Зафиксирован (не исправлен) один содержательный вопрос:
+      target pullups_10/pushups_50 (10/50 повторов) агрессивнее
+      независимого фактчека (1-3/20 для новичка за 90 дней) — это
+      season-шаблон, не guide-текст, менять темп прогрессии вне явного
+      запроса не стал, см. DECISIONS.md
 - [x] «Доделай»: удаление лишнего — тег `pre-cleanup`, затем `git rm`
       старого промта (NEWLIFE_1_0_PROMPT.md) и мёртвых артов отменённой
       системы "личностей" (assets/art/persona/, assets/art/sources/,

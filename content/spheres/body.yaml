@@ -113,7 +113,7 @@ goals:
         - ru: "Начни с чередования бега и ходьбы (например 1 минута бега / 2 минуты ходьбы) — не с попытки сразу пробежать всю дистанцию."
           uz: "Yugurish va yurishni almashtirishdan boshla (masalan, 1 daqiqa yugurish / 2 daqiqa yurish) — darhol butun masofani yugurishga urinmang."
         - ru: "Бегай 3 раза в неделю с днём отдыха между пробежками — связкам и суставам нужно время на адаптацию."
-          uz: "Haftada 3 marta yugur, yugurishlar orasida dam kuni bo'lsin — bo'g'im va payларга moslashish uchun vaqt kerak."
+          uz: "Haftada 3 marta yugur, yugurishlar orasida dam kuni bo'lsin — bo'g'im va paylarga moslashish uchun vaqt kerak."
         - ru: "Увеличивай время бега постепенно, неделя за неделей, не больше чем на 10% за раз."
           uz: "Yugurish vaqtini asta-sekin, haftadan-haftaga, bir yo'la 10%dan ko'p oshirmay oshir."
         - ru: "Если неделя дала с трудом — повтори её ещё раз, а не переходи на следующую через силу."
@@ -179,7 +179,7 @@ goals:
 
   - id: pushups_50
     sphere: body
-    title: { ru: "Отжимания", uz: "Turnikda emas, yerda tortilish" }
+    title: { ru: "Отжимания", uz: "Yerda pusup (otjimaniya)" }
     difficulty: "Для новичков"
     for_whom: "Для тех, кто хочет укрепить верх тела без зала"
     outcome: "В конце — 50 отжиманий подряд"

@@ -203,7 +203,7 @@ exercises:
 
   - id: lunge
     image: "lunge.webp"
-    name: { ru: "Выпады", uz: "Oldinga qadam bilan choʻkish (vыпад)" }
+    name: { ru: "Выпады", uz: "Oldinga qadam bilan choʻkish" }
     muscles: ["квадрицепсы", "ягодицы"]
     equipment: [home, gym]
     technique:
@@ -224,10 +224,10 @@ exercises:
         uz: "Tanani toʻgʻri tutish oʻrniga kuchli oldinga engashtirish."
     easy_version:
       ru: "Выпад с опорой рукой на стул, небольшая амплитуда."
-      uz: "Stulga qoʻl bilan tayanib, kichik amplitudada vыпад."
+      uz: "Stulga qoʻl bilan tayanib, kichik amplitudada choʻkish."
     hard_version:
       ru: "Выпады с гантелями в руках или выпад назад на возвышении."
-      uz: "Qoʻlda gantel bilan yoki koʻtarilgan joyda orqaga vыпад."
+      uz: "Qoʻlda gantel bilan yoki koʻtarilgan joyda orqaga choʻkish."
 
   - id: glute_bridge
     image: "glute_bridge.webp"
