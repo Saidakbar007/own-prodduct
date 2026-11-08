@@ -20,7 +20,13 @@ goals:
     targets: ["30 дней", "60 дней"]
     pace: >-
       Варианты цели: 2 / 4 / 6 часов качественного времени в неделю без
-      телефона. +1 час в неделю каждые 2 недели (продуктовая эвристика).
+      телефона. +1 час каждые 2 недели (продуктовая эвристика — жёсткой
+      научной нормы числа часов нет). Связи важнее числа контактов: более
+      крепкие социальные связи связаны с заметно более высоким шансом
+      дожить до конца периода наблюдения (Holt-Lunstad 2010, метаанализ 148
+      исследований, OR≈1,50), а удовлетворённость близкими отношениями в 50
+      лет лучше предсказывала здоровье в 80, чем холестерин (Harvard Study
+      of Adult Development, Waldinger).
     week_skeleton: "1 общий ужин + 1 звонок родным в неделю"
     minimal_version: "Спросить «как прошёл день?»"
     guide:
@@ -38,11 +44,14 @@ goals:
           uz: "Oila yonida bo'lib, lekin telefonga tikilib o'tirish — bunday vaqt sifatli hisoblanmaydi."
         - ru: "Звонить родным только по праздникам — короткие, но частые звонки работают лучше редких длинных."
           uz: "Yaqinlarga faqat bayramlarda qo'ng'iroq qilish — qisqa, lekin tez-tez qo'ng'iroqlar kamdan-kam uzun qo'ng'iroqlardan yaxshiroq ishlaydi."
+        - ru: "Если контакт с кем-то из близких регулярно вызывает страх, угрозы или контроль — это не вопрос техники, а сигнал обратиться за помощью, а не наращивать часы с этим человеком."
+          uz: "Agar yaqinlardan biri bilan aloqa muntazam qo'rquv, tahdid yoki nazoratga olib kelsa — bu texnika masalasi emas, yordam so'rash signali, bu odam bilan soatlarni ko'paytirish emas."
       first_week_example:
         ru: "Один общий ужин без телефонов + один звонок родителям на этой неделе; в остальные дни — хотя бы вопрос «как прошёл день?»."
         uz: "Shu hafta — telefonsiz bir umumiy kechki ovqat + ota-onaga bir qo'ng'iroq; qolgan kunlarda — hech bo'lmasa 'kuningiz qanday o'tdi?' savoli."
     source:
-      name: "эвристика"
+      name: "Holt-Lunstad et al. 2010 (PLoS Medicine, метаанализ 148 исследований)"
+      url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC2910600"
     template_id: family
 
   - id: friends
@@ -55,9 +64,11 @@ goals:
     secondary: ["часы общения с друзьями в неделю"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      Варианты цели: 1 / 2 / 3 встречи или созвона в неделю. Hall 2018 (KU):
-      около 50 часов общения нужно, чтобы стать приятелями, около 200 —
-      близкими друзьями.
+      Варианты цели: 1 / 2 / 3 встречи или созвона в неделю. Hall 2018 (KU,
+      JSPR; проверено): ориентировочно 40–60 часов общего досуга нужно до
+      уровня «приятель», 80–100 часов — до «друга», больше 200 — до
+      «близкого друга». Считаются часы общения ради общения (не совместной
+      учёбы/работы — та идёт с меньшим весом).
     week_skeleton: "1 встреча + 2 сообщения друзьям в неделю"
     minimal_version: "Написать 1 другу"
     guide:
@@ -94,8 +105,13 @@ goals:
     targets: ["30 дней", "60 дней"]
     pace: >-
       Варианты цели: откликаться на знаки внимания («bids») 50 / 70 / 85%
-      времени. Gottman: пары, оставшиеся вместе, откликались на bids около
-      86% времени, распавшиеся — около 33%.
+      времени. Gottman Institute: пары, оставшиеся вместе через 6 лет,
+      откликались на bids около 86% времени, разведённые — около 33%; это
+      популярный источник (блог института), а не рецензируемая статья,
+      поэтому цифры 86/33 — ориентир, а не точная научная норма.
+      Активно-конструктивный ответ на хорошую новость (эмоция + вопросы, а
+      не «ну норм») связан с большей близостью в отношениях — это уже
+      подтверждено (Gable et al. 2004, JPSP).
     week_skeleton: "Ежедневная отметка + 1 свидание в неделю"
     minimal_version: "1 искренний вопрос или комплимент"
     guide:
@@ -113,6 +129,8 @@ goals:
           uz: "Javobni 'bo'sh vaqt topguncha' kechiktirish — sherikning e'tibor lahzasi shu vaqtda allaqachon o'tib ketadi."
         - ru: "Путать совместное присутствие в одной комнате с настоящим откликом — партнёр должен почувствовать, что его услышали."
           uz: "Bir xonada birga bo'lishni haqiqiy javob bilan aralashtirish — sherik eshitilganini his qilishi kerak."
+        - ru: "Превращать отклик на партнёра в обязанность из страха — если тебе откликаются только из тревоги, что иначе будет плохо, это не про внимание, а про контроль; тогда нужна помощь, а не ещё больше стараний."
+          uz: "Sherikka javob berishni qo'rquvdan majburiyatga aylantirish — agar sizga faqat aks holda yomon bo'ladi, degan tashvishdan javob berishsa, bu e'tibor emas, nazorat; bunda yordam kerak, ko'proq harakat emas."
       first_week_example:
         ru: "Каждый день — отмечать, откликнулся ли на знаки внимания партнёра; один вечер на неделе — свидание без телефонов."
         uz: "Har kuni — sherikning e'tibor belgilariga javob berganingni belgila; haftada bir kechqurun — telefonsiz uchrashuv."
@@ -131,9 +149,13 @@ goals:
     secondary: ["число резких фраз за день (самоотметка)"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      Варианты цели: 1 / 3 / 5 слов благодарности или признания в день.
-      Gottman: в устойчивых парах соотношение позитива к негативу в
-      конфликте — около 5:1.
+      Варианты цели: 1 / 3 / 5 слов благодарности или признания в день
+      (продуктовая эвристика). Уточнение: соотношение «5:1» (Gottman &
+      Levenson 1992) описывает позитив к негативу у стабильных пар именно
+      во время обсуждения конфликта в лаборатории — это не норма для
+      подсчёта тёплых слов в обычный день, здесь это не цель-счётчик по
+      формуле, а просто напоминание, что позитива в общении стоит быть
+      больше, чем резкости.
     week_skeleton: "Вечерняя отметка каждый день"
     minimal_version: "Сказать «спасибо за…»"
     guide:
@@ -151,11 +173,13 @@ goals:
           uz: "Aniqlik bo'lmagan umumiy gaplar aytish — aniq minnatdorchilik kuchliroq his qilinadi."
         - ru: "Считать шутки или сарказм «позитивом» — цель именно про тёплые, искренние слова."
           uz: "Hazil yoki sarkazmni 'ijobiylik' deb hisoblash — maqsad aynan iliq, samimiy so'zlar haqida."
+        - ru: "Думать, что нужно точно считать соотношение 5 тёплых слов на 1 резкое — это цифра из лабораторных разговоров о конфликте, а не бытовая формула; просто старайся говорить тепло чаще, чем резко."
+          uz: "5 ta iliq so'z/1 ta keskin so'z nisbatini aniq hisoblash kerak deb o'ylash — bu laboratoriya janjal suhbatlaridan olingan raqam, kundalik formula emas; shunchaki keskinlikdan ko'ra ko'proq iliq gapirishga harakat qil."
       first_week_example:
         ru: "Каждый вечер — вспомнить и сказать близкому хотя бы одну конкретную фразу благодарности за прошедший день."
         uz: "Har kuni kechqurun — o'tgan kun uchun yaqin odamga kamida bitta aniq minnatdorchilik gapini eslab ayting."
     source:
-      name: "Gottman: The Magic Relationship Ratio (5:1)"
+      name: "Gottman & Levenson 1992 (5:1 из лабораторных разговоров о конфликте, не из ежедневной нормы)"
       url: "https://www.gottman.com/blog/the-magic-relationship-ratio/"
     template_id: positive_communication
 
@@ -202,7 +226,16 @@ goals:
     metric: { key: conflict_pause_rate, kind: percent, unit: "%", rounding: 10 }
     secondary: ["часы на примирение после конфликта"]
     targets: ["30 дней", "60 дней"]
-    pace: "Варианты цели: пауза 20 минут перед ответом в 50 / 80 / 100% конфликтов. 4–8 недель (продуктовая эвристика)."
+    pace: >-
+      Варианты цели: пауза 20 минут перед ответом в 50 / 80 / 100%
+      конфликтов. 4–8 недель (продуктовая эвристика). Gottman Institute
+      рекомендует при «флудинге» (пульс, жар, «не могу думать») паузу не
+      меньше 20 минут и обязательное возвращение к разговору — это
+      клиническая рекомендация института, а не вывод отдельного РКИ. Если
+      в конфликте есть удары, угрозы, порча вещей или ограничение свободы —
+      это не конфликт, а насилие: техники паузы здесь не применяются, нужна
+      помощь специалиста или экстренных служб (102/103/112, для РУз линия
+      1146), а не тренировка навыка.
     week_skeleton: "Разбор конфликтов раз в неделю"
     minimal_version: "3 вдоха перед ответом"
     guide:
@@ -220,9 +253,12 @@ goals:
           uz: "Pauza olmasdan janjalni darhol 'yutishga' urinish — eng achchiq so'zlar qizishning birinchi soniyalarida aytiladi."
         - ru: "Использовать паузу как способ уйти от разговора навсегда — после паузы важно вернуться и договорить."
           uz: "Pauzani suhbatdan butunlay qochish usuli qilib ishlatish — pauzadan keyin qaytib, gaplashib tugatish muhim."
+        - ru: "Пытаться «спокойно договориться», если в конфликте есть удары, угрозы или порча вещей — это не про навык паузы, а про безопасность: здесь нужна помощь, а не техника общения."
+          uz: "Janjalda urish, tahdid yoki narsalarni sindirish bo'lsa, 'tinch kelishishga' urinish — bu pauza mahorati emas, xavfsizlik masalasi: bu yerda yordam kerak, muloqot texnikasi emas."
       first_week_example:
         ru: "После каждого замеченного конфликта — пауза минимум 20 минут (или 3 вдоха, если больше не получилось); в конце недели — короткий разбор, что сработало."
         uz: "Har bir sezilgan janjaldan keyin — kamida 20 daqiqa pauza (yoki ko'proq imkon bo'lmasa 3 nafas); hafta oxirida — nima ishlagani haqida qisqa tahlil."
     source:
-      name: "эвристика"
+      name: "Gottman Institute: Physiological self-soothing (пауза при флудинге)"
+      url: "https://www.gottman.com/blog/weekend-homework-assignment-physiological-self-soothing/"
     template_id: calm_conflicts

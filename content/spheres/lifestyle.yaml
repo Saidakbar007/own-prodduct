@@ -10,12 +10,18 @@ goals:
     for_whom: "Для тех, кто проводит в соцсетях больше, чем хотел бы"
     outcome: "В конце — экранное время соцсетей заметно ниже, без отказа от телефона совсем"
     metric: { key: social_screen_minutes, kind: measure, unit: "мин/день", rounding: 5 }
-    secondary: ["разблокировки телефона в день", "телефон в постели (да/нет)"]
+    secondary: ["разблокировки телефона в день", "телефон в постели (да/нет)", "общее экранное время в день (контроль)"]
     targets: ["30 дней", "60 дней"]
     pace: >-
       Варианты цели: ≤60 / ≤45 / ≤30 минут соцсетей в день. −15 минут в
-      неделю; Hunt 2018: лимит 30 мин/день в течение 3 недель снижал
-      одиночество и депрессию.
+      неделю. Hunt et al. 2018 (143 студента, лимит ~10 мин/платформу, 3
+      недели): меньше депрессии и одиночества, особенно у тех, кому было
+      хуже изначально. Крупные эксперименты показывают честно скромный
+      эффект (Allcott 2020: +0,09 SD; Allcott 2025: +0,04–0,06 SD) — это
+      небольшое, но реальное улучшение настроения, а не «лечение тревоги».
+      Детокс короче 1 недели может быть даже хуже контроля, план — от 3
+      недель (Thrul 2025). Следи и за общим экранным временем: иначе минуты
+      просто перетекают в другие приложения (Allcott 2025).
     week_skeleton: "Ежедневный ввод из экранного времени телефона, вс — итог"
     minimal_version: "Убрать 1 приложение с главного экрана"
     guide:
@@ -41,8 +47,8 @@ goals:
         ru: "Каждый вечер — вводишь экранное время соцсетей из настроек телефона; в воскресенье смотришь на средний результат недели и решаешь, снижать ли лимит дальше."
         uz: "Har kuni kechqurun — telefon sozlamalaridan ijtimoiy tarmoq ekran vaqtini kiritasiz; yakshanba kuni haftaning o'rtacha natijasiga qarab, chegarani yanada kamaytirish kerakmi-yo'qligini hal qilasiz."
     source:
-      name: "Hunt et al. 2018"
-      url: "https://techcrunch.com/2018/11/09/limiting-social-media-use-reduced-loneliness-and-depression-in-new-experiment"
+      name: "Hunt, Marx, Lipson, Young 2018 (J. Social & Clinical Psychology)"
+      url: "https://www.sciencedaily.com/releases/2018/11/181108164316.htm"
     template_id: digital_detox
 
   - id: home_order
@@ -56,9 +62,12 @@ goals:
     targets: ["30 дней", "60 дней"]
     pace: >-
       Варианты цели: 50 / 80 / 100% дней с выполненным «10-минутным сбросом».
-      4 недели; Saxbe & Repetti 2010 (источник вторичный, связь
-      корреляционная): ощущение захламлённости связано с менее здоровым
-      профилем кортизола.
+      4 недели; Saxbe & Repetti 2009/2010 (60 супругов, корреляция, не
+      причинность): у жён, которые описывали дом словами «беспорядок,
+      недоделано», был менее здоровый суточный профиль кортизола и рос
+      подавленный настрой в течение дня. Это не доказывает, что уборка сама
+      по себе снижает стресс — многим так спокойнее, проверь на себе по
+      отметке самочувствия 1–5.
     week_skeleton: "Ежедневно 10 минут порядка + 1 зона в субботу"
     minimal_version: "Убрать 1 вещь на место"
     guide:
@@ -84,8 +93,8 @@ goals:
         ru: "Каждый день — 10 минут сброса порядка перед сном; в субботу — дополнительно разбираешь один ящик или полку, до которой обычно руки не доходят."
         uz: "Har kuni — uyquga ketishdan oldin 10 daqiqalik tartib; shanba kuni — qo'shimcha ravishda odatda qo'l yetmaydigan bitta tortma yoki javonni tartiblaysiz."
     source:
-      name: "Saxbe & Repetti 2010 (обзор о беспорядке и стрессе)"
-      url: "https://clutterscience.pages.dev/blog/does-clutter-cause-stress/"
+      name: "Saxbe & Repetti 2009/2010 (Personality and Social Psychology Bulletin, n=60, корреляция)"
+      url: "https://colab.ws/articles/10.1177/0146167209352864"
     template_id: home_order
 
   - id: hobby
@@ -97,7 +106,14 @@ goals:
     metric: { key: hobby_hours, kind: measure, unit: "ч/нед", rounding: 0.5 }
     secondary: ["число занятий хобби в неделю"]
     targets: ["30 дней", "60 дней"]
-    pace: "Варианты цели: 2 / 4 / 6 часов хобби в неделю. +1 час в 2 недели (продуктовая эвристика)."
+    pace: >-
+      Варианты цели: 2 / 4 / 6 часов хобби в неделю. Старт 2 ч/нед, рост
+      медленный — +30 минут за 2 недели, не рывками (продуктовая эвристика;
+      жёсткой нормы нет). Связь хобби с меньшим числом депрессивных
+      симптомов и большей удовлетворённостью жизнью подтверждена, но это
+      наблюдательные данные на людях 65+ (Mak et al. 2023, Nature Medicine,
+      93 263 человека) — для студентов это перенос по аналогии, а не прямое
+      доказательство.
     week_skeleton: "2–3 слота на хобби в календаре в неделю"
     minimal_version: "2 минуты практики"
     guide:
@@ -108,8 +124,8 @@ goals:
           uz: "Kalendarga haftaga 2–3 ta aniq vaqt oynasini (kun va soat) belgilang — 'vaqt bo'lganda' qiladigan mashg'ulot odatda bo'lmaydi."
         - ru: "В дни без слота делай хотя бы минимальную версию — 2 минуты практики, чтобы не терять связь с занятием."
           uz: "Vaqt oynasi bo'lmagan kunlarda hech bo'lmasa minimal versiyani — 2 daqiqalik mashqni bajaring, shunda mashg'ulot bilan aloqa uzilmaydi."
-        - ru: "Каждые 2 недели пробуй добавить ещё 1 час к недельному объёму — рост постепенный, а не скачком."
-          uz: "Har 2 haftada haftalik hajmga yana 1 soat qo'shishga harakat qiling — o'sish sekin-asta, sakrab emas."
+        - ru: "Каждые 2 недели пробуй добавить ещё около получаса к недельному объёму — рост постепенный, а не скачком."
+          uz: "Har 2 haftada haftalik hajmga yana yarim soatcha qo'shishga harakat qiling — o'sish sekin-asta, sakrab emas."
         - ru: "Отмечай в приложении не только часы, но и само занятие — так видно, растёт ли регулярность, а не только общее время."
           uz: "Ilovada faqat soatlarni emas, mashg'ulotning o'zini ham belgilang — shunda faqat umumiy vaqt emas, muntazamlik o'sayotgani ko'rinadi."
       mistakes:
@@ -123,7 +139,8 @@ goals:
         ru: "Вт/Чт — слот по 1 часу хобби в календаре, в остальные дни — минимум 2 минуты практики, если большого слота нет."
         uz: "Sesh/Pay — kalendarda 1 soatlik mashg'ulot oynasi, qolgan kunlarda — katta oyna bo'lmasa, kamida 2 daqiqalik mashq."
     source:
-      name: "эвристика"
+      name: "Mak et al. 2023 (Nature Medicine, наблюдательно)"
+      url: "https://www.sciencedaily.com/releases/2023/09/230911141131.htm"
     template_id: hobby
 
   - id: new_experiences
@@ -135,7 +152,14 @@ goals:
     metric: { key: new_experiences_monthly, kind: counter, unit: "раз/мес", rounding: 1 }
     secondary: ["% «впервые» со сторонней компанией"]
     targets: ["30 дней", "60 дней"]
-    pace: "Варианты цели: 2 / 4 / 8 «впервые» в месяц (новое место, блюдо, занятие). 1 в неделю (продуктовая эвристика)."
+    pace: >-
+      Варианты цели: 2 / 4 / 8 «впервые» в месяц (новое место, блюдо,
+      занятие). 1 в неделю (продуктовая эвристика). Связь подтверждена
+      корреляционно: в дни, когда люди бывали в большем числе разных мест,
+      они сообщали о более позитивных эмоциях (Heller et al. 2020, Nature
+      Neuroscience, GPS-трекинг 3–4 месяца). Безопасность: новые места — не
+      ночью в одиночку, экстремальные активности — только с лицензированными
+      организаторами.
     week_skeleton: "Вс — выбрать, сб — сделать"
     minimal_version: "Новый маршрут домой"
     guide:
@@ -161,7 +185,8 @@ goals:
         ru: "Вс — выбрал «попробовать новое блюдо в незнакомом месте»; Сб — сделал это, по возможности с другом; отметил в приложении."
         uz: "Yak — 'notanish joyda yangi taom tatib ko'rish'ni tanladi; Shan — buni, imkon qadar do'st bilan, amalga oshirdi; ilovaga belgiladi."
     source:
-      name: "эвристика"
+      name: "Heller et al. 2020 (Nature Neuroscience, корреляционно)"
+      url: "https://sciencedaily.com/releases/2020/05/200518111638.htm"
     template_id: new_experiences
 
   - id: style_and_care
@@ -173,7 +198,13 @@ goals:
     metric: { key: routine_days_rate, kind: percent, unit: "%", rounding: 10 }
     secondary: ["число «капсульных» сочетаний одежды"]
     targets: ["30 дней", "60 дней"]
-    pace: "Варианты цели: 60 / 80 / 100% дней с выполненной рутиной. 2–4 недели (продуктовая эвристика)."
+    pace: >-
+      Варианты цели: 60 / 80 / 100% дней с выполненной рутиной. 2–4 недели
+      (продуктовая эвристика). Приложение не оценивает внешность, вес или
+      кожу и не просит фото для оценки — только сама рутина и самочувствие.
+      Если мысли о «дефектах» внешности становятся навязчивыми, а проверки
+      зеркала — многочасовыми, это повод обратиться к психологу, а не
+      усиливать рутину.
     week_skeleton: "Вечером готовить одежду на завтра, раз в неделю — ревизия гардероба"
     minimal_version: "Приготовить одежду на завтра"
     guide:
@@ -211,7 +242,14 @@ goals:
     metric: { key: offline_evenings, kind: counter, unit: "вечеров/нед", rounding: 1 }
     secondary: ["часы сна (при желании)"]
     targets: ["30 дней", "60 дней"]
-    pace: "Варианты цели: 3 / 5 / 7 вечеров без работы и учёбы после условленного часа. +1 вечер за 2 недели (продуктовая эвристика)."
+    pace: >-
+      Варианты цели: 3 / 5 / 7 вечеров без работы и учёбы после условленного
+      часа. +1 вечер за 2 недели (продуктовая эвристика). Опора —
+      психологическое отключение от рабочих/учебных задач сильнее всего
+      связано с меньшей усталостью (Bennett, Bakker & Field 2018,
+      метаанализ 54 выборок, N=26 592). В сессию и дедлайны реалистично
+      снизить цель до 2 вечеров в неделю, а не держать полную норму через
+      силу.
     week_skeleton: "Каждый день — выбранный «час выключения»"
     minimal_version: "Закрыть ноутбук, сказать «день окончен»"
     guide:
@@ -237,5 +275,6 @@ goals:
         ru: "Пн/Ср/Пт/Вс — в 20:00 список дел на завтра, закрыть ноутбук, сказать «день окончен»; остальные дни — по возможности то же самое."
         uz: "Dush/Chor/Juma/Yak — soat 20:00 da ertangi ishlar ro'yxati, noutbukni yopish, 'kun tugadi' deyish; qolgan kunlarda — imkon qadar xuddi shunday."
     source:
-      name: "эвристика"
+      name: "Bennett, Bakker & Field 2018 (J. Organizational Behavior, метаанализ)"
+      url: "https://repub.eur.nl/pub/105021"
     template_id: work_life_balance
