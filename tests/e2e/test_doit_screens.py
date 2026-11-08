@@ -4,7 +4,9 @@ docs/decisions/DECISIONS.md): 375px, тёмная и светлая тема, ru
 
 Экраны: /workout, /flashcards (хаб + сессия), /expenses, /help,
 /season/{id} (guide/лестница/банк вопросов/ресурсы), /focus (дыхание),
-/today (карточка "Недельная рефлексия" + кнопка "Открыть тренировку").
+/today (кнопка "Открыть тренировку"; карточки "Недельная рефлексия" там
+больше нет — NEWLIFE_2_0.md Этап 1 п.5, единственный опрос на "Сегодня" —
+"вопрос дня").
 
 Скриншоты — docs/design/design_review/1.0/doit/ (новая подпапка по
 аналогии с final/, v8/, ux/).
@@ -69,7 +71,11 @@ def _force_day1_train(login: str, template_id: str) -> None:
 
 
 @pytest.mark.parametrize("theme", THEMES)
-def test_today_shows_open_workout_cta_and_weekly_reflection(page: Page, live_server_url, theme):
+def test_today_shows_open_workout_cta(page: Page, live_server_url, theme):
+    """NEWLIFE_2_0.md Этап 1 п.5: «Недельная рефлексия» убрана с «Сегодня»
+    (был второй опрос на экране, остался только «вопрос дня») — здесь
+    проверяем, что CTA тренировки всё ещё на месте и карточки рефлексии
+    точно нет."""
     unique = _register_with_season(page, live_server_url, template_id="muscle_gain", sphere_id="body")
     _force_day1_train(f"screens-{unique}", "muscle_gain")
 
@@ -78,20 +84,8 @@ def test_today_shows_open_workout_cta_and_weekly_reflection(page: Page, live_ser
     _set_theme(page, theme)
 
     expect(page.get_by_role("link", name="Открыть тренировку")).to_be_visible()
-    expect(page.get_by_text("Недельная рефлексия")).to_be_visible()
+    expect(page.get_by_text("Недельная рефлексия")).to_have_count(0)
     _shoot(page, "today-workout-reflection", theme)
-
-
-def test_weekly_reflection_card_answers_a_question(page: Page, live_server_url):
-    _register_with_season(page, live_server_url)
-    page.set_viewport_size(VIEWPORT)
-    page.goto(f"{live_server_url}/today")
-    expect(page.get_by_text("Недельная рефлексия")).to_be_visible()
-
-    card = page.locator('[data-tour="weekly-reflection"]')
-    first_option = card.locator("form button").first
-    first_option.click()
-    expect(page.locator(".toast")).to_be_visible()
 
 
 @pytest.mark.parametrize("theme", THEMES)
