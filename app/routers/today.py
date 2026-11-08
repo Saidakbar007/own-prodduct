@@ -6,6 +6,7 @@
 привычки/расписание), обязателен лишь заполненный профиль (точка А).
 """
 
+import json
 import math
 from datetime import date, datetime, timezone
 from typing import Optional
@@ -16,9 +17,10 @@ from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import Profile, Proof, Season, SeasonDay, User
+from app.models import BadHabit, Habit, HabitLog, Profile, Proof, Season, SeasonDay, SphereState, User
 from app.newlife import methods as methods_catalog
-from app.newlife.goal_catalog import first_guide_step
+from app.newlife.goal_catalog import first_guide_step, goal_meta
+from app.newlife.spheres import SPHERE_BY_ID, SPHERES
 from app.newlife.workout_programs import WORKOUT_PROGRAM_GOALS
 from app.rendering import render
 from app.seasons import engine
@@ -33,9 +35,12 @@ from app.services.checkin_service import (
 from app.services.day_questions import record_answer, todays_question
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
-from app.services.newlife_onboarding import has_completed_profile
+from app.services.habits import clean_duration, habit_logs_by_date, habit_streak
+from app.services.newlife_onboarding import WEEKDAY_LABELS, has_completed_profile
 from app.newlife.scheduler import parse_hhmm
-from app.services.schedule_service import get_or_build_schedule_for_day
+from app.services.productivity import week_productivity
+from app.services.progress import sphere_radar_values
+from app.services.schedule_service import get_or_build_schedule_for_day, week_dates
 from app.services.seasons import (
     compute_forecast,
     ensure_days_built_for_today,
@@ -83,6 +88,161 @@ def _wave_today_checkins(db: Session, season: Season, today: date) -> int:
         .distinct()
     ).all()
     return len(done_today)
+
+
+# ---------------------------------------------------------------------------
+# NEWLIFE_2_0.md §3.1 «Главная»: дерево сфер + живая паутинка + привычки +
+# продуктивность недели. Геометрия (углы/координаты) считается здесь на
+# сервере, а не в шаблоне (Jinja не умеет sin/cos) — простая тригонометрия,
+# не бизнес-логика планировщика, поэтому живёт прямо в роутере экрана.
+# ---------------------------------------------------------------------------
+
+
+def _circle_point(cx: float, cy: float, radius: float, index: int, total: int, start_deg: float = -90.0) -> tuple[float, float]:
+    """Точка на окружности радиуса `radius` вокруг (cx, cy): `index`-я из
+    `total`, равномерно по кругу, первая сверху (-90°), дальше по часовой."""
+    if total <= 0:
+        return cx, cy
+    angle = math.radians(start_deg + (360.0 / total) * index)
+    return cx + radius * math.cos(angle), cy + radius * math.sin(angle)
+
+
+def _sphere_of_season(season: Season) -> Optional[str]:
+    # Season не хранит sphere_id (есть только у Goal/SphereState) — сфера
+    # сезона определяется через каталог целей, см. app/services/progress.py.
+    entry = goal_meta(season.template_id)
+    return entry.sphere if entry else None
+
+
+def _sphere_active_today(db: Session, uid: int, sphere_id: str, today: date) -> bool:
+    """Была ли сегодня хоть одна отметка (привычка или день сезона) по этой
+    сфере — для яркости линии/иконки на дереве сфер (§3.1 п.1)."""
+    habits = db.exec(select(Habit).where(Habit.uid == uid, Habit.active.is_(True))).all()
+    sphere_habit_ids = [h.id for h in habits if sphere_id in json.loads(h.spheres_json)]
+    if sphere_habit_ids:
+        log = db.exec(
+            select(HabitLog).where(
+                HabitLog.habit_id.in_(sphere_habit_ids),
+                HabitLog.log_date == today,
+                HabitLog.status.in_(["done", "minimal"]),
+            )
+        ).first()
+        if log:
+            return True
+
+    seasons = db.exec(select(Season).where(Season.uid == uid, Season.status == "active")).all()
+    sphere_season_ids = [s.id for s in seasons if _sphere_of_season(s) == sphere_id]
+    if sphere_season_ids:
+        day = db.exec(
+            select(SeasonDay).where(
+                SeasonDay.season_id.in_(sphere_season_ids),
+                SeasonDay.calendar_date == today,
+                SeasonDay.status.in_(["done", "minimal", "rescued"]),
+            )
+        ).first()
+        if day:
+            return True
+    return False
+
+
+def _build_sphere_tree(db: Session, user: User, today: date, radar_values: list[dict]) -> dict:
+    """§3.1 п.1: аватар в центре («Ты · уровень N»), вокруг — иконки только
+    выбранных (активных) сфер, линия ярче у сфер с активностью сегодня."""
+    states = db.exec(select(SphereState).where(SphereState.uid == user.id, SphereState.active.is_(True))).all()
+    active_ids = {s.sphere_id for s in states}
+    tree_spheres = [s for s in SPHERES if s.id in active_ids]
+
+    size, center, radius = 280.0, 140.0, 104.0
+    nodes = []
+    for i, sphere in enumerate(tree_spheres):
+        x, y = _circle_point(center, center, radius, i, len(tree_spheres))
+        nodes.append(
+            {
+                "sphere": sphere,
+                "x": round(x, 1),
+                "y": round(y, 1),
+                "active_today": _sphere_active_today(db, user.id, sphere.id, today),
+            }
+        )
+
+    active_scores = [r["current"] for r in radar_values if r["active"]]
+    avg_level = round(sum(active_scores) / len(active_scores)) if active_scores else 0
+    return {"size": size, "center": center, "nodes": nodes, "avg_level": avg_level}
+
+
+def _build_radar_chart(radar_values: list[dict]) -> dict:
+    """§3.1 п.2: живая паутинка — сплошной полигон (реальное выполнение за
+    14 дней, `sphere_radar_values`), пунктир — точка А, 3-11 осей по
+    выбранным сферам пользователя."""
+    values = [r for r in radar_values if r["active"]]
+    size, center, radius = 260.0, 130.0, 96.0
+    n = len(values)
+
+    axes = []
+    current_points = []
+    baseline_points = []
+    for i, entry in enumerate(values):
+        lx, ly = _circle_point(center, center, radius + 22, i, n)
+        sphere = SPHERE_BY_ID[entry["sphere_id"]]
+        axes.append({"sphere": sphere, "lx": round(lx, 1), "ly": round(ly, 1)})
+
+        cur_r = radius * max(0, min(10, entry["current"])) / 10
+        base_r = radius * max(0, min(10, entry["baseline"])) / 10
+        cx, cy = _circle_point(center, center, cur_r, i, n)
+        bx, by = _circle_point(center, center, base_r, i, n)
+        current_points.append(f"{cx:.1f},{cy:.1f}")
+        baseline_points.append(f"{bx:.1f},{by:.1f}")
+
+    return {
+        "size": size,
+        "center": center,
+        "rings": [round(radius * f) for f in (0.33, 0.66, 1.0)],
+        "axes": axes,
+        "current_points": " ".join(current_points),
+        "baseline_points": " ".join(baseline_points),
+        "has_data": n >= 1,
+    }
+
+
+def _home_good_habits(db: Session, uid: int, today: date, limit: int = 4) -> list[dict]:
+    """§3.1 п.3: 2-4 самые релевантные (due today) полезные привычки, со
+    стриком и отметкой, можно ли ещё нажать «Сделал» сегодня."""
+    habits = db.exec(select(Habit).where(Habit.uid == uid, Habit.active.is_(True))).all()
+    due = [h for h in habits if today.isoweekday() in json.loads(h.days_json)]
+    due.sort(key=lambda h: h.id)
+
+    rows = []
+    for h in due[:limit]:
+        logs = habit_logs_by_date(db, h.id)
+        rows.append(
+            {
+                "habit": h,
+                "today_status": logs.get(today),
+                "streak": habit_streak(db, h, today),
+            }
+        )
+    return rows
+
+
+def _home_bad_habits(db: Session, uid: int, now: datetime, limit: int = 3) -> list[dict]:
+    """§3.1 п.4: вредные привычки с таймером воздержания и кнопкой «Сорвался»."""
+    bad_habits = db.exec(select(BadHabit).where(BadHabit.uid == uid, BadHabit.active.is_(True))).all()
+    rows = []
+    for bh in bad_habits[:limit]:
+        clean = clean_duration(db, bh, now)
+        rows.append({"bad_habit": bh, "clean_days": clean.days, "clean_hours": clean.seconds // 3600})
+    return rows
+
+
+def _build_week_bars(db: Session, user: User, today: date) -> list[dict]:
+    """§3.1 п.5: столбцы Пн-Вс, высота = % выполнения, цвет от красного
+    через жёлтый к зелёному (посчитан в шаблоне через color-mix на основе
+    percent, тут только сами значения + метка дня недели)."""
+    monday = week_dates(today)[0]
+    bars = week_productivity(db, user.id, monday)
+    for i, bar in enumerate(bars):
+        bar["label"] = WEEKDAY_LABELS[i]
+    return bars
 
 
 @router.get("/today")
@@ -148,6 +308,15 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
     # tests/test_weekly_reflection.py).
     day_question = todays_question(db, user.id, profile, today)
 
+    # NEWLIFE_2_0.md §3.1: дерево сфер, живая паутинка, привычки/вредные
+    # привычки со стриком и таймером, продуктивность недели — новая Главная.
+    radar_values = sphere_radar_values(db, user.id, today)
+    sphere_tree = _build_sphere_tree(db, user, today, radar_values)
+    radar_chart = _build_radar_chart(radar_values)
+    home_good_habits = _home_good_habits(db, user.id, today)
+    home_bad_habits = _home_bad_habits(db, user.id, datetime.now(timezone.utc))
+    week_bars = _build_week_bars(db, user, today)
+
     return render(
         request,
         "today.html",
@@ -164,6 +333,11 @@ def today_page(request: Request, user: User = Depends(require_user), db: Session
             "mascot_phrase": mascot.phrase_for(mascot_event, user.language),
             "mascot_state": mascot.state_for(mascot_event),
             "show_tour": request.query_params.get("tour") == "1",
+            "sphere_tree": sphere_tree,
+            "radar_chart": radar_chart,
+            "home_good_habits": home_good_habits,
+            "home_bad_habits": home_bad_habits,
+            "week_bars": week_bars,
             "lang": user.language,
         },
     )

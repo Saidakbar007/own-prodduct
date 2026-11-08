@@ -560,3 +560,222 @@
 .day-feed__item--commitment,
 .day-feed__item--task_fixed { border-left-color: var(--text-faint); }
 .day-feed__item--sleep { border-left-color: var(--status-rest); opacity: 0.7; }
+
+/* ============ Главная v2.0 (NEWLIFE_2_0.md §3.1) ============ */
+
+.home-section {
+  margin-bottom: var(--space-8);
+}
+.home-section__title {
+  font-size: var(--text-md);
+  margin-bottom: var(--space-3);
+}
+
+/* --- Дерево сфер: аватар в центре, иконки активных сфер вокруг,
+   соединённые линиями (референс 1, Этап 4). Координаты узлов приходят из
+   today.py (_build_sphere_tree) — чистая тригонометрия, не бизнес-логика. --- */
+.sphere-tree {
+  position: relative;
+  margin: 0 auto;
+  display: block;
+  overflow: visible;
+}
+.sphere-tree__line {
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+  opacity: 0.5;
+}
+.sphere-tree__line--active {
+  stroke-width: 2.5;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--sphere-color, var(--accent)) 60%, transparent));
+}
+.sphere-tree__avatar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: var(--glow-accent);
+}
+.sphere-tree__avatar-label {
+  font-size: 10px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+.sphere-tree__avatar-level {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+.sphere-tree__node {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sphere-tree__node .icon {
+  width: 22px;
+  height: 22px;
+}
+.sphere-tree__node-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--text-faint);
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.sphere-tree__empty {
+  text-align: center;
+  color: var(--text-faint);
+  font-size: var(--text-sm);
+  padding: var(--space-6) 0;
+}
+
+/* --- Паутинка (radar chart) --- */
+.radar-chart {
+  display: block;
+  margin: 0 auto;
+}
+.radar-chart__ring {
+  fill: none;
+  stroke: var(--border);
+}
+.radar-chart__axis {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+.radar-chart__baseline {
+  fill: none;
+  stroke: var(--text-faint);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+.radar-chart__current {
+  fill: color-mix(in srgb, var(--accent) 22%, transparent);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.radar-chart__label {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.radar-chart__label .icon {
+  width: 14px;
+  height: 14px;
+}
+.radar-legend {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+.radar-legend__swatch {
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  margin-right: var(--space-1);
+  vertical-align: middle;
+  background: var(--accent);
+}
+.radar-legend__swatch--baseline {
+  background: none;
+  border-top: 2px dashed var(--text-faint);
+}
+
+/* --- Полезные/вредные привычки на Главной (компактные карточки) --- */
+.home-habit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+.home-habit-row__streak {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+  margin-top: var(--space-1);
+}
+.home-habit-row__clean {
+  font-size: var(--text-xs);
+  color: var(--accent-secondary);
+  font-weight: 600;
+  margin-top: var(--space-1);
+}
+
+/* --- Продуктивность недели: столбцы, высота = %, цвет красный→жёлтый→зелёный --- */
+.week-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  height: 120px;
+  padding: 0 var(--space-1);
+}
+.week-bars__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: var(--space-2);
+}
+.week-bars__track {
+  width: 100%;
+  max-width: 28px;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  overflow: hidden;
+}
+.week-bars__fill {
+  width: 100%;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  min-height: 3px;
+}
+.week-bars__fill--none {
+  background: var(--border);
+  min-height: 6px;
+}
+.week-bars__label {
+  font-size: var(--text-xs);
+  color: var(--text-faint);
+}
+.week-bars__col--today .week-bars__label {
+  color: var(--accent);
+  font-weight: 700;
+}
+.week-bars__col--today .week-bars__track {
+  box-shadow: 0 0 0 1px var(--accent);
+}
