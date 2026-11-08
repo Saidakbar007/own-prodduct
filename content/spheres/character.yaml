@@ -15,8 +15,12 @@ goals:
     secondary: ["число обязательств за неделю", "серия дней без срыва"]
     targets: ["60 дней", "90 дней"]
     pace: >-
-      8–10 недель на автоматизацию (Lally 2010: медиана 66 дней, разброс
-      18–254 — у всех по-разному, один пропуск серию не обнуляет). Варианты
+      Новая привычка обычно закрепляется за 2–5 месяцев, у всех по-разному
+      (медиана Lally 2010 — 66 дней, разброс 18–254, хотя кривая хорошо
+      описала данные только у 39 из 82 участников; более новый и крупный
+      обзор, Singh et al. 2024, 2 601 человек — медиана 59–66, среднее
+      106–154, разброс 4–335 дней). Один пропуск серию не обнуляет — важнее
+      вернуться на следующий день, чем держать идеальную серию. Варианты
       цели по неделе — 60 / 75 / 90% выполненных обязательств.
     week_skeleton: "Пн: выбрать 3 обязательства, ежедневно отмечать «сделал / не сделал», Вс: итог недели"
     minimal_version: "1 микро-обещание в день"
@@ -57,8 +61,13 @@ goals:
     secondary: ["% срабатываний плана"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      4–6 недель (Gollwitzer & Sheeran 2006: метаанализ 94 исследований,
-      средний эффект d≈0,65). Варианты цели — 3 / 5 / 7 срабатываний в неделю.
+      4–6 недель. Классический метаанализ (Gollwitzer & Sheeran, 2006; 94
+      исследования) даёт d≈0,65; более новый и крупный метаанализ (642
+      исследования, Sheeran et al. 2024) даёт более осторожную оценку
+      d≈0,27–0,66 — честнее говорить «эффект от небольшого до среднего».
+      Эффект сильнее, если план записан именно в форме «если — то»,
+      мотивация высокая и план заранее повторяют про себя. Варианты цели —
+      3 / 5 / 7 срабатываний в неделю.
     week_skeleton: "Пн: выбрать 2 плана из шаблонов, ежедневно отмечать, когда сработал"
     minimal_version: "Прочитать свой план утром"
     guide:
@@ -85,7 +94,7 @@ goals:
         uz: "Dush — 2 ta reja tanlash (masalan, 'agar dars o'rniga ijtimoiy tarmoq ochsam, uni yopib, 10 daqiqalik dars taymerini qo'yaman'); har ertalab — rejalarni o'qish, kechqurun — ishlaganini belgilash."
     source:
       name: "Gollwitzer & Sheeran 2006"
-      url: "https://www.thebehavioralscientist.com/glossary/implementation-intentions"
+      url: "https://kops.uni-konstanz.de/entities/publication/2e749bfb-8533-437c-8203-7e788c910c5f"
     template_id: if_then_plan
 
   - id: deep_work
@@ -99,7 +108,14 @@ goals:
     targets: ["60 дней", "90 дней"]
     pace: >-
       6–8 недель, рост от 25 до 90 минут фокуса за сессию без телефона
-      (эвристика — конкретных сроков в источниках нет).
+      (эвристика — конкретных сроков в источниках нет). Главный механизм —
+      не терпение «на силе воли», а дизайн среды: люди с высоким
+      самоконтролем не сопротивляются искушениям чаще, а реже в них
+      попадают — убери телефон из комнаты заранее, и меньше придётся с ним
+      бороться (Hofmann et al. 2012). Метафора «сила воли истощается, как
+      мышца» (эго-истощение) не подтвердилась в двух масштабных повторах
+      эксперимента (Hagger 2016; Vohs 2021) — работай с усталостью через
+      сон, время дня и минимальную версию, а не жди «прилива воли».
     week_skeleton: "5 дней с сессиями фокуса, 2 дня отдыха"
     minimal_version: "2 минуты без телефона за задачей"
     guide:
@@ -125,7 +141,8 @@ goals:
         ru: "Пн/Вт/Ср/Чт/Пт — одна сессия фокуса по 25 минут без телефона на конкретную задачу; Сб/Вс — отдых от сессий."
         uz: "Dush/Sesh/Chor/Pay/Juma — bitta aniq vazifaga 25 daqiqalik telefonsiz fokus seansi; Shan/Yak — seanslardan dam."
     source:
-      name: "эвристика"
+      name: "Hofmann, Baumeister, Förster, Vohs, 2012 — самоконтроль работает через избегание искушений"
+      url: "https://carlsonschool-d8.prd.umn.edu/sites/carlsonschool.umn.edu/files/2019-04/hofmann_baumeister_forster_vohs_2012_jpsp.pdf"
     template_id: deep_work
 
   - id: beat_procrastination
@@ -137,15 +154,23 @@ goals:
     metric: { key: tasks_started_on_time, kind: counter, unit: "задач/нед", rounding: 1 }
     secondary: ["задержка старта, мин"]
     targets: ["30 дней", "60 дней"]
-    pace: "6 недель (эвристика). Варианты цели — 3 / 5 / 10 начатых вовремя задач в неделю."
+    pace: >-
+      Прокрастинация — это сбой саморегуляции, а не лень и не перфекционизм:
+      главные причины — неприятность задачи, далёкая награда, низкая
+      уверенность в своих силах и отвлекаемость (Steel, 2007, метаанализ 691
+      корреляции). Психологические вмешательства в среднем дают эффект
+      g≈0,34, а когнитивно-поведенческие (КПТ) — g≈0,55 (12 исследований,
+      N=718, Rozental et al. 2018). Задержка старта обычно заметно
+      сокращается за 6 недель при регулярной разбивке задач на первый шаг
+      ≤2 минуты. Варианты цели — 3 / 5 / 10 начатых вовремя задач в неделю.
     week_skeleton: "Каждое утро выбрать «старт в ЧЧ:ММ» для одной задачи"
     minimal_version: "Открыть файл задачи"
     guide:
       steps:
         - ru: "Каждое утро выбирай одну задачу, которую откладываешь чаще всего, и назначай ей точное время старта (ЧЧ:ММ), а не «как-нибудь днём»."
           uz: "Har ertalab eng ko'p kechiktiradigan vazifani tanlang va unga aniq boshlash vaqtini (SS:DD) belgilang, 'kunduzi qaysidir vaqt' emas."
-        - ru: "В назначенное время делай только первый маленький шаг — открыть файл, написать первую строку — не весь объём задачи сразу."
-          uz: "Belgilangan vaqtda faqat birinchi kichik qadamni qiling — faylni ochish, birinchi qatorni yozish — darhol butun vazifani emas."
+        - ru: "В назначенное время делай только первый маленький шаг — открыть файл, написать первую строку — не весь объём задачи сразу. Если ловишь мысль «нет настроения» — знай: настроение обычно приходит после начала, а не до него."
+          uz: "Belgilangan vaqtda faqat birinchi kichik qadamni qiling — faylni ochish, birinchi qatorni yozish — darhol butun vazifani emas. 'Kayfiyat yo'q' degan fikr kelsa — bilib qo'ying: kayfiyat odatda boshlagandan keyin keladi, undan oldin emas."
         - ru: "Отмечай в приложении фактическое время старта — разница между планом и фактом покажет, где ты теряешь время на раздумья."
           uz: "Ilovada haqiqiy boshlash vaqtini belgilang — reja va haqiqat orasidagi farq o'ylanish uchun qayerda vaqt yo'qotayotganingizni ko'rsatadi."
         - ru: "Если задержка старта регулярно большая — разбей задачу на более мелкие кусочки, чтобы первый шаг занимал буквально 2 минуты."
@@ -163,7 +188,8 @@ goals:
         ru: "Каждое утро — выбрать 1 задачу и время старта (например 9:00); в 9:00 — сделать только первый шаг на 2 минуты, остальное — по желанию."
         uz: "Har ertalab — 1 vazifa va boshlash vaqtini tanlash (masalan, 9:00); soat 9:00da — faqat 2 daqiqalik birinchi qadamni qilish, qolgani — xohishga ko'ra."
     source:
-      name: "эвристика"
+      name: "Steel, 2007, The nature of procrastination (метаанализ)"
+      url: "https://prism.ucalgary.ca/items/d0dea740-4751-4e9a-84da-2d8ad446830d/full"
     template_id: beat_procrastination
 
   - id: confidence_through_action
@@ -176,9 +202,14 @@ goals:
     secondary: ["тревога 0–10 до/после — только для графика, не оценка человека"]
     targets: ["60 дней", "90 дней"]
     pace: >-
-      6–8 недель (эвристика). Только добровольно: каждый вызов можно
-      пропустить кнопкой «Не сегодня» без штрафа, перескочить ступень лестницы
-      нельзя, вызовов с риском для здоровья/денег/закона/унижения нет (§F).
+      6–8 недель, 2–3 вызова в неделю; переход на следующую ступень — после
+      2 успешных повторений текущей или когда тревога до вызова ≤4 из 10
+      [эвристика]. Самый надёжный источник уверенности в себе — собственный
+      успешный опыт (mastery experience), а не слова поддержки или
+      аффирмации (Bandura, 1977) — поэтому лестница работает через твои
+      реальные победы. Только добровольно: каждый вызов можно пропустить
+      кнопкой «Не сегодня» без штрафа, перескочить ступень лестницы нельзя,
+      вызовов с риском для здоровья/денег/закона/унижения нет (§F).
     week_skeleton: "3 вызова в неделю: лёгкий, лёгкий, средний"
     minimal_version: "Задать 1 вопрос незнакомому человеку (продавцу, преподавателю)"
     guide:
@@ -207,18 +238,21 @@ goals:
       rungs:
         - ru: "Спросить дорогу или время у незнакомого человека на улице"
           uz: "Ko'chada notanish odamdan yo'l yoki vaqtni so'rash"
-        - ru: "Задать уточняющий вопрос продавцу, официанту или преподавателю"
-          uz: "Sotuvchi, ofitsiant yoki o'qituvchidan aniqlashtiruvchi savol so'rash"
+        - ru: "Задать уточняющий вопрос продавцу, официанту или сотруднику деканата"
+          uz: "Sotuvchi, ofitsiant yoki dekanat xodimidan aniqlashtiruvchi savol so'rash"
+        - ru: "Задать 1 вопрос преподавателю после занятия"
+          uz: "Darsdan keyin o'qituvchidan 1 ta savol so'rash"
         - ru: "Высказать своё мнение в группе, даже если оно отличается от большинства"
           uz: "Guruhda, fikring ko'pchilikdan farq qilsa ham, o'z fikringni bildirish"
+        - ru: "Вежливо отказать в просьбе или попросить о помощи, когда немного неловко"
+          uz: "Biroz noqulay bo'lsa ham, iltimosni muloyimlik bilan rad etish yoki yordam so'rash"
         - ru: "Познакомиться с новым человеком и обменяться контактами"
           uz: "Yangi odam bilan tanishib, aloqa ma'lumotlarini almashish"
         - ru: "Предложить свою идею или инициативу на учёбе или на работе"
           uz: "O'qishda yoki ishda o'z g'oyangni yoki tashabbusingni taklif qilish"
-        - ru: "Попросить обратную связь или помощь у человека, перед которым немного стесняешься"
-          uz: "Biroz uyalib turgan odamdan fikr-mulohaza yoki yordam so'rash"
     source:
-      name: "эвристика"
+      name: "Bandura, 1977, Self-efficacy: toward a unifying theory of behavioral change"
+      url: "https://longevity.stanford.edu/self-efficacy-toward-a-unifying-theory-of-behavior-change/"
     template_id: confidence_through_action
 
   - id: responsibility_deadlines
@@ -230,15 +264,21 @@ goals:
     metric: { key: deadlines_on_time_pct, kind: percent, unit: "%", rounding: 1 }
     secondary: ["число просьб о переносе"]
     targets: ["90 дней"]
-    pace: "Семестр (эвристика). Варианты цели — 70 / 85 / 100% дедлайнов вовремя."
+    pace: >-
+      Семестр (эвристика). Правило «первый шаг минимум за 7 дней до
+      дедлайна» для работ дольше 3 часов — большая задача разбивается на 3
+      промежуточных шага с датами. Далёкая награда — один из факторов
+      прокрастинации, поэтому ближние промежуточные сроки снижают
+      откладывание (Steel, 2007). Варианты цели — 70 / 85 / 100% дедлайнов
+      вовремя.
     week_skeleton: "Пн: внести дедлайны в план, Чт: проверка прогресса"
     minimal_version: "Записать 1 дедлайн"
     guide:
       steps:
         - ru: "В понедельник выпиши все дедлайны на неделю и дальше в одно место — распределённая по памяти информация о сроках легко теряется."
           uz: "Dushanba kuni haftaga va keyingisiga bo'lgan barcha muddatlarni bitta joyga yozib qo'ying — xotirada tarqalgan muddat haqidagi ma'lumot oson yo'qoladi."
-        - ru: "Для каждого дедлайна поставь себе промежуточную точку проверки за несколько дней до срока, а не только финальную дату."
-          uz: "Har bir muddat uchun faqat yakuniy sanani emas, muddatdan bir necha kun oldin oraliq tekshiruv nuqtasini belgilang."
+        - ru: "Для каждой крупной задачи (дольше 3 часов) поставь себе первый шаг минимум за 7 дней до срока и промежуточную точку проверки, а не только финальную дату."
+          uz: "Har bir katta vazifa (3 soatdan ko'p) uchun muddatdan kamida 7 kun oldin birinchi qadamni va oraliq tekshiruv nuqtasini belgilang, faqat yakuniy sanani emas."
         - ru: "В четверг проверяй прогресс по каждому активному дедлайну — если отстаёшь, корректируй план сразу, а не в последний день."
           uz: "Payshanba kuni har bir faol muddat bo'yicha rivojlanishni tekshiring — orqada qolsangiz, rejani oxirgi kunda emas, darhol tuzating."
         - ru: "Если чувствуешь, что не успеешь — проси перенос заранее, за несколько дней, а не в последний момент — это тоже часть ответственности."
@@ -256,5 +296,6 @@ goals:
         ru: "Пн — внести все дедлайны недели и следующих двух недель в план; Чт — проверить прогресс по каждому и скорректировать, если нужно."
         uz: "Dush — hafta va keyingi ikki haftaning barcha muddatlarini rejaga kiritish; Pay — har biri bo'yicha rivojlanishni tekshirish va kerak bo'lsa tuzatish."
     source:
-      name: "эвристика"
+      name: "Steel, 2007, The nature of procrastination (метаанализ)"
+      url: "https://prism.ucalgary.ca/items/d0dea740-4751-4e9a-84da-2d8ad446830d/full"
     template_id: responsibility_deadlines

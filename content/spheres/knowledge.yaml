@@ -3,16 +3,22 @@
 # Схема и загрузчик — app/newlife/goal_catalog.py.
 # Сценарий сезона (день за днём) каждой цели — app/seasons_library/<id>.yaml.
 #
-# ВАЖНО: цели flashcards_mastered и flashcards_streak в документе описаны как
-# работающие "на встроенных карточках" с алгоритмом интервальных повторений
-# 1→3→7→16→35 дней (лимит 15 новых карточек/день, "не вспомнил" — сброс
-# интервала, PRD F5). Сам движок карточек (расчёт интервалов, долг
-# повторений, лимит новых карточек в день) НЕ реализован этим агентом и не
-# входит в эту задачу — он отдельная фича F5. Здесь заведены только каталог
-# цели (метрика/темп/источник) и простой season-шаблон-обёртка (как у любой
-# другой простой цели), без фактической логики интервалов внутри. Когда
-# появится движок карточек, он должен использовать этот template_id и писать
-# прогресс в ту же метрику (cards_mastered_week / streak_no_debt_days).
+# ВАЖНО (обновлено по docs/knowledge/NEWLIFE_KNOWLEDGE_BASE.md §04, п. "Главные
+# исправления черновика" №2-3): движок карточек должен использовать FSRS-6
+# (библиотека py-fsrs, MIT, без ИИ — это детерминированные формулы) как
+# основной алгоритм, а самодельную лестницу 1→3→7→16→35 дней держать только
+# как запасной вариант, если FSRS не успеваем реализовать. В FSRS "не
+# вспомнил" снижает стабильность карточки, но не сбрасывает её в ноль (в
+# запасной лестничной схеме — откат на 2 ступени, а не в начало). Целевая
+# доля вспоминания (desired retention) по умолчанию 90%, лимит новых
+# карточек в день по умолчанию 10 (можно 5 или 20). Сам движок карточек
+# (расчёт интервалов, долг повторений, лимит новых карточек в день) НЕ
+# реализован этим агентом и не входит в эту задачу — он отдельная фича F5.
+# Здесь заведены только каталог цели (метрика/темп/источник) и простой
+# season-шаблон-обёртка (как у любой другой простой цели), без фактической
+# логики интервалов внутри. Когда появится движок карточек, он должен
+# использовать этот template_id и писать прогресс в ту же метрику
+# (cards_mastered_week / streak_no_debt_days).
 sphere: knowledge
 goals:
   - id: flashcards_mastered
@@ -25,16 +31,21 @@ goals:
     secondary: ["точность повторений, %", "долг повторений"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      5–15 новых карточек в день (лимит по умолчанию — часть будущего движка
-      карточек, PRD F5). Карточка считается усвоенной надолго, если ты верно
-      вспомнил её при интервале 21+ день. Лучший перерыв между повторениями —
-      примерно 10–20% от срока, на который нужно запомнить (Cepeda, 2008).
-    week_skeleton: "6 сессий в неделю по 10–15 минут"
+      5–10 новых карточек в день (по умолчанию 10, можно увеличить до 20 —
+      часть будущего движка карточек на FSRS, PRD F5). Карточка считается
+      усвоенной надолго, если её стабильность (по алгоритму) выросла до 21+
+      дня — обычно за 30 дней это 40–80 из 150–250 изученных карточек.
+      Перерыв между повторениями оптимален не как фиксированная доля:
+      примерно 20–40% от срока хранения, если нужно помнить неделю, и
+      примерно 5–10%, если нужно помнить год — с ростом срока доля падает,
+      хотя сам перерыв в днях растёт (Cepeda et al., 2008). Если повторения
+      занимают больше 60 минут в день или вызывают тревогу — снижай нагрузку.
+    week_skeleton: "Ежедневно по 10–15 минут"
     minimal_version: "5 карточек"
     guide:
       steps:
-        - ru: "Выбери одну тему (история, география, наука, экономика) и заводи по ней 5–15 новых карточек в день — вопрос с одной стороны, короткий ответ с другой."
-          uz: "Bitta mavzu tanla (tarix, geografiya, fan, iqtisod) va shu mavzu bo'yicha kuniga 5–15 ta yangi kartochka tuzing — bir tomonida savol, ikkinchi tomonida qisqa javob."
+        - ru: "Выбери одну тему (история, география, наука, экономика) и заводи по ней 5–10 новых карточек в день (по умолчанию 10) — вопрос с одной стороны, короткий ответ с другой."
+          uz: "Bitta mavzu tanla (tarix, geografiya, fan, iqtisod) va shu mavzu bo'yicha kuniga 5–10 ta (odatda 10 ta) yangi kartochka tuzing — bir tomonida savol, ikkinchi tomonida qisqa javob."
         - ru: "Каждый день проходи все карточки, которые приложение показывает «на повторение сегодня» — это важнее, чем добавлять новые."
           uz: "Har kuni ilova 'bugun takrorlash' deb ko'rsatgan barcha kartochkalarni ko'rib chiqing — bu yangi qo'shishdan muhimroq."
         - ru: "Если честно вспомнил ответ — отмечай «вспомнил», если нет — «не вспомнил»; не обманывай себя, иначе карточка не закрепится."
@@ -44,8 +55,8 @@ goals:
         - ru: "Карточка считается усвоенной надолго, когда ты правильно вспомнил её при интервале 21+ день — именно такие карточки идут в счёт цели за неделю."
           uz: "Kartochka 21+ kunlik interval bilan to'g'ri eslab qolinganda chinakam o'zlashtirilgan hisoblanadi — maqsadga haftalik hisobda aynan shu kartochkalar kiradi."
       mistakes:
-        - ru: "Добавлять слишком много новых карточек за один день — долг повторений быстро накапливается и отбивает желание продолжать."
-          uz: "Bir kunda juda ko'p yangi kartochka qo'shish — takrorlash qarzi tez to'planadi va davom ettirish xohishini yo'qotadi."
+        - ru: "Добавлять слишком много новых карточек за один день (намного больше 10–20) — долг повторений быстро накапливается и отбивает желание продолжать."
+          uz: "Bir kunda juda ko'p (10–20 tadan ancha ko'p) yangi kartochka qo'shish — takrorlash qarzi tez to'planadi va davom ettirish xohishini yo'qotadi."
         - ru: "Копить долг повторений несколько дней подряд — лучше пройти хотя бы старые карточки и отложить добавление новых."
           uz: "Bir necha kun ketma-ket takrorlash qarzini to'plash — yangi qo'shishni kechiktirib, hech bo'lmasa eski kartochkalarni ko'rib chiqgan ma'qul."
         - ru: "Отмечать «вспомнил», когда на самом деле подглядел или угадал — это обманывает алгоритм интервалов и мешает реальному запоминанию."
@@ -68,8 +79,12 @@ goals:
     secondary: ["минуты на повторения"]
     targets: ["60 дней", "90 дней"]
     pace: >-
-      На формирование привычки уходит в среднем 66 дней (разброс 18–254);
-      один пропуск не обрушивает привычку целиком (Lally et al. 2010).
+      На формирование привычки уходит в среднем 66 дней (разброс 18–254 —
+      верхняя граница экстраполирована, само исследование шло 84 дня); один
+      пропуск не обрушивает привычку целиком, но частые пропуски снижают
+      итоговую автоматичность (Lally et al. 2010). Прогресс честнее видеть
+      как «23 из 30 дней без долга», а не как серию дней подряд — серия
+      обнуляется от одного пропуска и этим отбивает желание продолжать.
     week_skeleton: "Ежедневно, хотя бы 1 карточка в день"
     minimal_version: "1 карточка"
     guide:
@@ -108,7 +123,14 @@ goals:
     metric: { key: course_progress_pct, kind: percent, unit: "%", rounding: 1 }
     secondary: ["тест модуля, %"]
     targets: ["30 дней", "60 дней"]
-    pace: "Обычный курс занимает 4–8 недель при 2–4 часах в неделю (без отдельного источника — обычная практика)"
+    pace: >-
+      Обычный курс занимает 4–8 недель при 2–4 часах в неделю, один курс
+      одновременно — у большинства MOOC низкая доля завершения, и за 6 лет
+      наблюдений она не улучшилась (Reich & Ruipérez-Valiente, 2019, Science).
+      Важно: с 8 августа 2025 Coursera вместо бесплатного audit даёт только
+      превью первого модуля — полный курс доступен через financial aid; у
+      edX audit-режим по-прежнему бесплатен, но без зачётных заданий и
+      сертификата.
     week_skeleton: "3 сессии по 30 минут в неделю"
     minimal_version: "1 видео 2 минуты"
     guide:
@@ -134,7 +156,8 @@ goals:
         ru: "Пн/Ср/Пт по 30 минут: смотришь модуль курса и проходишь его тест, отмечаешь новый % прогресса после каждой сессии."
         uz: "Dush/Chor/Juma, 30 daqiqadan: kurs modulini ko'rib, testini topshirasiz, har mashg'ulotdan keyin yangi % taraqqiyotni belgilaysiz."
     source:
-      name: "эвристика"
+      name: "Reich & Ruipérez-Valiente, 2019, The MOOC Pivot (Science)"
+      url: "https://tsl.mit.edu/research/the-mooc-pivot/"
     template_id: online_course
 
   - id: trivia_uzbekistan_world
@@ -146,33 +169,40 @@ goals:
     metric: { key: quiz_accuracy_pct, kind: percent, unit: "%", rounding: 1 }
     secondary: ["число тем"]
     targets: ["30 дней", "60 дней"]
-    pace: "Цикл повторения тем — 4 недели (без отдельного источника — практика продукта)"
+    pace: >-
+      Цикл повторения тем — 4 недели: точность отложенной викторины (вопросы,
+      изученные 7+ дней назад) растёт на +15–25 п.п. за 30 дней и держится
+      ≥80% за 90 дней. Норма — 5 новых карточек в день из готовых колод плюс
+      1 викторина в неделю на 10 вопросов [эвристика]. Отложенная проверка
+      показывает именно удержание в памяти, а не узнавание сразу после
+      изучения (Cepeda et al. 2008; Rowland 2014).
     week_skeleton: "4 сессии по 10 минут в неделю"
     minimal_version: "3 вопроса"
     guide:
       steps:
-        - ru: "Выбирай темы по кругу — история, география, устройство мира — и за 4 недели проходи каждую хотя бы раз, а не зацикливайся на одной."
-          uz: "Mavzularni aylanma tartibda tanlang — tarix, geografiya, dunyo tuzilishi — va 4 hafta davomida har birini kamida bir marta ko'rib chiqing, bittasida qolib ketmang."
-        - ru: "4 раза в неделю по 10 минут читай короткие факты или смотри короткое видео по выбранной теме."
-          uz: "Haftada 4 marta, 10 daqiqadan, tanlangan mavzu bo'yicha qisqa faktlarni o'qing yoki qisqa video ko'ring."
+        - ru: "4 недели по кругу: нед. 1 — регионы и города Узбекистана, соседи и столицы Центральной Азии; нед. 2 — ключевые даты и личности истории Узбекистана и мира; нед. 3 — базовые экономические понятия (инфляция, ВВП, курс валют) на местных примерах; нед. 4 — 20 базовых фактов науки (клетка, энергия, климат)."
+          uz: "4 hafta aylanma tartibda: 1-hafta — Oʻzbekiston viloyatlari va shaharlari, Markaziy Osiyo qoʻshnilari va poytaxtlari; 2-hafta — Oʻzbekiston va dunyo tarixining asosiy sanalari va shaxslari; 3-hafta — mahalliy misollardagi asosiy iqtisodiy tushunchalar (inflyatsiya, YaIM, valyuta kursi); 4-hafta — fanning 20 ta asosiy fakti (hujayra, energiya, iqlim)."
+        - ru: "4 раза в неделю по 10 минут читай короткие факты или смотри короткое видео по теме текущей недели."
+          uz: "Haftada 4 marta, 10 daqiqadan, joriy hafta mavzusi bo'yicha qisqa faktlarni o'qing yoki qisqa video ko'ring."
         - ru: "После каждой сессии задай себе 1–2 вопроса по тому, что узнал, не глядя в текст — это проверяет, запомнил ли ты, а не просто прочитал."
           uz: "Har mashg'ulotdan keyin matnga qaramay, o'qiganlaringiz bo'yicha o'zingizga 1–2 savol bering — bu shunchaki o'qiganini emas, eslab qolganini tekshiradi."
-        - ru: "Раз в месяц проходи тест-викторину и смотри на точность в процентах — это и есть замер цели."
-          uz: "Oyiga bir marta test-viktorinani topshiring va foizdagi aniqlikka qarang — bu maqsadning o'lchovi."
-        - ru: "Темы, где точность в викторине ниже, повторяй в следующем цикле чаще — так слабые места подтягиваются."
-          uz: "Viktorinada aniqlik pastroq bo'lgan mavzularni keyingi siklda ko'proq takrorlang — shunda zaif joylar yaxshilanadi."
+        - ru: "Раз в неделю (в субботу) проходи тест-викторину по темам, изученным 7+ дней назад, и смотри на точность в процентах — так понятнее, что реально осталось в памяти, а не что ты только что прочитал."
+          uz: "Haftada bir marta (shanba kuni) 7+ kun oldin o'rganilgan mavzular bo'yicha test-viktorinani topshiring va foizdagi aniqlikka qarang — shunda hozirgina o'qiganingiz emas, haqiqatan yodda qolgani ko'rinadi."
+        - ru: "Не смешивай очень похожие факты (например разные похожие даты или цифры) в одной неделе — это создаёт путаницу в памяти; темы со слабым результатом викторины повторяй чаще в следующем цикле."
+          uz: "Bir-biriga juda o'xshash faktlarni (masalan, o'xshash sanalar yoki raqamlarni) bir haftada aralashtirmang — bu xotirada chalkashlik yaratadi; viktorinada natija past bo'lgan mavzularni keyingi siklda ko'proq takrorlang."
       mistakes:
         - ru: "Читать много фактов подряд без попытки вспомнить их позже — без повторения большая часть забывается за пару дней."
           uz: "Ko'plab faktlarni keyinroq eslashga urinmasdan ketma-ket o'qish — takrorlash bo'lmasa, ularning ko'pi bir necha kunda esdan chiqadi."
-        - ru: "Проходить викторину сразу после прочтения темы — интереснее и честнее проверить себя спустя несколько дней."
-          uz: "Mavzuni o'qib bo'lgach darhol viktorinani topshirish — bir necha kundan keyin o'zingizni tekshirish qiziqarli va halolroq."
-        - ru: "Выбирать только одну любимую тему и игнорировать остальные — цель именно в широкой эрудиции, а не глубине одной области."
-          uz: "Faqat bitta sevimli mavzuni tanlab, qolganlarini e'tiborsiz qoldirish — maqsad aynan keng bilimdonlik, bitta sohaning chuqurligi emas."
+        - ru: "Проходить викторину сразу после прочтения темы вместо того, чтобы подождать 7+ дней — так ты проверяешь память прямо сейчас, а не реальное долгое удержание."
+          uz: "Mavzuni o'qib bo'lgach darhol viktorinani topshirish, 7+ kun kutish o'rniga — shunda hozirgi xotirani tekshirasiz, uzoq muddatli saqlanishini emas."
+        - ru: "Учить даты и цифры без контекста, вместо того чтобы привязывать их к истории или примеру — такие факты легче забываются и легче путаются с похожими."
+          uz: "Sanalar va raqamlarni tarix yoki misolga bog'lamay, kontekstsiz yodlash — bunday faktlar tezroq unutiladi va o'xshashlari bilan oson chalkashadi."
       first_week_example:
-        ru: "4 раза по 10 минут: по разным темам (история Узбекистана, география мира) читаешь факты и задаёшь себе 1–2 вопроса после каждой сессии."
-        uz: "4 marta 10 daqiqadan: turli mavzular (O'zbekiston tarixi, dunyo geografiyasi) bo'yicha faktlarni o'qiysiz va har mashg'ulotdan keyin o'zingizga 1–2 savol berasiz."
+        ru: "4 раза по 10 минут на неделе 1 — регионы и города Узбекистана, соседи по Центральной Азии: читаешь факты и задаёшь себе 1–2 вопроса после каждой сессии."
+        uz: "4 marta 10 daqiqadan, 1-hafta — Oʻzbekiston viloyatlari va shaharlari, Markaziy Osiyo qoʻshnilari: faktlarni o'qiysiz va har mashg'ulotdan keyin o'zingizga 1–2 savol berasiz."
     source:
-      name: "эвристика"
+      name: "Cepeda et al. 2008 / Rowland 2014 — отложенная проверка измеряет удержание"
+      url: "https://pubmed.ncbi.nlm.nih.gov/19076480/"
     template_id: trivia_uzbekistan_world
 
   - id: reading_notes
@@ -185,8 +215,14 @@ goals:
     secondary: ["сколько мыслей превращено в карточки"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      Пересказ своими словами работает лучше, чем выделение текста маркером
-      (Dunlosky et al. 2013).
+      Пересказ своими словами (вспоминание по памяти) работает лучше, чем
+      выделение текста маркером или конспектирование-пересказ — это одна из
+      двух техник с высшей оценкой полезности в метаобзоре Dunlosky et al.
+      (2013), наряду с самопроверкой. При регулярной практике за 30 дней
+      обычно набирается 20–30 своими словами записанных мыслей и 300–450
+      минут чтения (~1–2 книги); цифры — для ежедневной растущей практики
+      10→20–25 минут, при 3 сессиях в неделю по 10–15 минут ориентируйся на
+      меньшую часть этого диапазона.
     week_skeleton: "3 сессии по 10 минут в неделю"
     minimal_version: "1 мысль"
     guide:

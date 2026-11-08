@@ -11,20 +11,27 @@ goals:
     for_whom: "Для тех, кто учит язык без системы и хочет дойти до следующего уровня CEFR"
     outcome: "В конце — накоплены часы занятий языком, уровень подтверждён тестом или экзаменом"
     metric: { key: language_hours, kind: timer, unit: "ч", rounding: 0.5 }
-    secondary: ["новые слова, вышедшие в долгое повторение", "минуты разговорной практики"]
+    secondary: ["минуты понятного слушания/чтения (input)", "новые слова, вышедшие в долгое повторение (extraction)", "минуты разговорной практики (output)"]
     targets: ["60 дней", "90 дней"]
     pace: >-
-      От нуля до уровня: A2 ≈180–200 ч, B1 ≈350–400 ч, B2 ≈500–600 ч,
-      C1 ≈700–800 ч. Переход B1→B2, например, занимает около 150–200 ч —
-      это примерно 6–9 месяцев при 5 часах в неделю (Cambridge English).
+      Часы считаются накопительно от нуля, с преподавателем (Cambridge):
+      A1 ≈95 ч, A2 ≈190 ч, B1 ≈375 ч, B2 ≈550 ч, C1 ≈750 ч, C2 ≈1100 ч.
+      Переход между соседними уровнями неравномерный: ≈95 ч (A1→A2), ≈185
+      (A2→B1), ≈175 (B1→B2), ≈200 (B2→C1), ≈350 (C1→C2) — это ориентир,
+      реальный срок зависит от бэкграунда, возраста и интенсивности занятий
+      (Cambridge English, Guided learning hours). При 5 ч/нед типичный
+      переход (например B1→B2) занимает около 35–40 недель. Часы честны,
+      только если есть все три типа: понимание (слушать/читать), извлечение
+      (карточки, пересказ по памяти) и речь — без речи активный уровень
+      растёт намного медленнее, чем кажется по накопленным часам.
     week_skeleton: "5 занятий в неделю по 45–60 минут"
     minimal_version: "5 слов или 2 минуты аудио"
     guide:
       steps:
         - ru: "Поставь 5 слотов в неделю по 45–60 минут и закрепи их за конкретным временем дня — язык растёт от регулярности, а не от редких долгих сессий."
           uz: "Haftada 5 ta 45–60 daqiqalik vaqt belgilang va ularni kun ichida aniq vaqtga bog'lang — til tartibli mashg'ulotdan o'sadi, kamdan-kam uzoq mashg'ulotdan emas."
-        - ru: "В каждой сессии сочетай разные навыки: немного грамматики/лексики, немного слушания, немного разговорной практики вслух."
-          uz: "Har mashg'ulotda turli ko'nikmalarni aralashtiring: biroz grammatika/lug'at, biroz tinglash, biroz ovoz chiqarib gaplashish."
+        - ru: "В каждой сессии сочетай три типа: понимание (слушать или читать), извлечение (карточки, пересказ по памяти) и речь (говорить вслух или с человеком) — если какого-то типа совсем нет, часы идут, а реальный уровень растёт медленнее."
+          uz: "Har mashg'ulotda uch turni aralashtiring: tushunish (tinglash yoki o'qish), chiqarib olish (kartochkalar, xotiradan qayta aytish) va nutq (ovoz chiqarib yoki odam bilan gaplashish) — qaysidir turi butunlay bo'lmasa, soatlar o'tadi, lekin haqiqiy daraja sekinroq o'sadi."
         - ru: "Отмечай каждую сессию таймером в приложении — именно накопленные часы, а не «ощущение прогресса», показывают, сколько осталось до следующего уровня."
           uz: "Har mashg'ulotni ilovadagi taymer bilan belgilang — keyingi darajagacha qancha qolganini aynan to'plangan soatlar ko'rsatadi, 'rivojlanish hissi' emas."
         - ru: "Раз в несколько недель делай пробный тест или разговор с носителем/преподавателем, чтобы проверить, что часы переходят в реальный уровень."
@@ -56,17 +63,20 @@ goals:
     secondary: ["точность, %"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      Для свободного чтения нужно порядка 8–9 тыс. семей слов (Nation,
-      2006). Реалистичный темп — 10–20 новых слов в день, усвоенными
-      считаются слова, вспомненные верно при интервале 21+ день.
+      Для чтения без словаря нужно примерно 98% знакомых слов в тексте — это
+      около 8–9 тыс. семей слов для письменного текста и 6–7 тыс. для устной
+      речи (Nation, 2006). Реалистичный темп — 10 новых слов в день по
+      умолчанию (можно увеличить до 20), усвоенными считаются слова,
+      вспомненные верно при интервале 21+ день. При таком темпе за 30 дней
+      обычно усваивается +150–300 слов, за 90 дней +500–900 [эвристика].
     week_skeleton: "Ежедневно, 15 минут"
     minimal_version: "3 слова"
     guide:
       steps:
         - ru: "Каждый день добавляй 10–20 новых слов в карточки — удобно брать слова из того, что ты уже читаешь или слушаешь, а не из случайного списка."
           uz: "Har kuni 10–20 ta yangi so'z kartochkaga qo'shing — tasodifiy ro'yxatdan emas, o'qiyotgan yoki eshitayotgan matndan so'z olish qulayroq."
-        - ru: "Повторяй старые карточки по растущим интервалам (например через 1, 3, 7, 16, 35 дней) — так слово закрепляется в долгой памяти, а не забывается сразу."
-          uz: "Eski kartochkalarni o'sib boruvchi oraliqlarda (masalan, 1, 3, 7, 16, 35 kundan keyin) takrorlang — shunda so'z darhol unutilmay, uzoq xotirada mustahkamlanadi."
+        - ru: "Повторяй старые карточки по интервалам, которые рассчитывает алгоритм повторений (они растут, если ты честно вспоминаешь) — так слово закрепляется в долгой памяти при минимуме повторений, а не забывается сразу."
+          uz: "Eski kartochkalarni takrorlash algoritmi hisoblagan oraliqlarda (ular rost eslasangiz o'sib boradi) takrorlang — shunda so'z eng kam takrorlash bilan uzoq xotirada mustahkamlanadi, darhol unutilmaydi."
         - ru: "Слово считается усвоенным, только когда ты верно вспомнил его через 21+ день — поэтому не торопись удалять карточку после одного удачного ответа."
           uz: "So'z faqat 21+ kundan keyin to'g'ri eslanganda o'rganilgan hisoblanadi — shuning uchun bir marta to'g'ri javobdan keyin kartochkani o'chirishga shoshilmang."
         - ru: "Выделяй на повторение и новые слова 15 минут в день — короткая ежедневная сессия работает лучше, чем редкая долгая."
@@ -95,20 +105,26 @@ goals:
     for_whom: "Для тех, кто хочет системно набрать часы практики с кодом"
     outcome: "В конце — заметно больше часов практики, решённых задач и коммитов на GitHub"
     metric: { key: coding_hours, kind: timer, unit: "ч", rounding: 0.5 }
-    secondary: ["решённые задачи", "коммиты на GitHub"]
+    secondary: ["решённые задачи", "коммиты на GitHub", "доля времени за написанием кода (не видео), %"]
     targets: ["30 дней", "60 дней", "90 дней"]
     pace: >-
-      Сертификация freeCodeCamp рассчитана примерно на 300 часов. При
-      6–8 часах в неделю это около 9–12 месяцев — сезон покрывает часть
-      этого пути.
+      Бесплатные пути: CS50 (Harvard) — около 10 недель лекций с заданиями
+      и финальным проектом, реальная нагрузка для новичка около 100–200 ч
+      [эвристика]; есть бесплатный сертификат CS50 (отдельно от платного
+      сертификата edX) при ≥70% по каждому обязательному заданию. Старые
+      сертификаты freeCodeCamp заявляли ~300 ч, но в 2025 программа крупно
+      обновилась — конкретные часы сверяй перед стартом. При 5–8 ч/нед путь
+      растягивается на месяцы, сезон покрывает часть пути. Правило нагрузки:
+      на каждую минуту видео/туториала — минимум минута своего кода, доля
+      своего кода в неделю держать не ниже 50% [эвристика].
     week_skeleton: "5 занятий в неделю по 60 минут"
     minimal_version: "Написать или поправить 1 строку кода"
     guide:
       steps:
         - ru: "Выбери одно направление (Python или веб) и один учебный трек (например freeCodeCamp) — не распыляйся на несколько курсов сразу."
           uz: "Bitta yo'nalish (Python yoki veb) va bitta o'quv yo'lini (masalan, freeCodeCamp) tanlang — bir vaqtda bir necha kursga tarqalmang."
-        - ru: "Ставь 5 блоков по 60 минут в неделю и в каждом блоке пиши код сам, а не только смотри видео."
-          uz: "Haftada 5 ta 60 daqiqalik blok belgilang va har blokda faqat video ko'rmay, o'zingiz kod yozing."
+        - ru: "Ставь 5 блоков по 60 минут в неделю и в каждом блоке пиши код сам, а не только смотри видео — ориентир: на каждую минуту видео минимум минута своего кода."
+          uz: "Haftada 5 ta 60 daqiqalik blok belgilang va har blokda faqat video ko'rmay, o'zingiz kod yozing — moʻljal: har bir daqiqa videoga kamida bir daqiqa oʻz kodingiz."
         - ru: "После каждого раздела теории сразу решай практическую задачу — теория без практики почти не превращается в навык."
           uz: "Har bir nazariy bo'limdan keyin darhol amaliy masala yeching — amaliyotsiz nazariya ko'nikmaga deyarli aylanmaydi."
         - ru: "Делай хотя бы 1 коммит в день в свой репозиторий на GitHub — даже маленькая правка — это видимый след прогресса."
@@ -116,8 +132,8 @@ goals:
         - ru: "Раз в неделю считай накопленные часы и решённые задачи — это и есть твоя метрика, а не субъективное «вроде продвинулся»."
           uz: "Haftada bir marta to'plangan soat va yechilgan masalalarni sanang — bu aynan sizning ko'rsatkichingiz, 'go'yo oldinga ketdim' degan subyektiv tuyg'u emas."
       mistakes:
-        - ru: "Смотреть туториалы без практики — часы накапливаются, но реальных навыков и своего кода почти не остаётся."
-          uz: "Amaliyotsiz tutoriallar ko'rish — soatlar to'planadi, lekin haqiqiy ko'nikma va o'z kodingiz deyarli qolmaydi."
+        - ru: "Смотреть туториалы без практики — часы накапливаются, но реальных навыков и своего кода почти не остаётся; держи долю своего кода не ниже 50% в неделю."
+          uz: "Amaliyotsiz tutoriallar ko'rish — soatlar to'planadi, lekin haqiqiy ko'nikma va o'z kodingiz deyarli qolmaydi; haftada o'z kodingiz ulushini 50% dan past tushirmang."
         - ru: "Перескакивать с одного курса на другой при первой трудности — непрерывность важнее новизны материала."
           uz: "Birinchi qiyinchilikda bir kursdan ikkinchisiga sakrash — materialning yangiligidan ko'ra uzluksizlik muhimroq."
         - ru: "Копировать готовые решения без попытки сначала написать своё — так задача решается один раз, а навык не остаётся."
@@ -126,8 +142,8 @@ goals:
         ru: "Пн–Пт по 60 минут: 20 минут теория/урок курса, 30 минут практическая задача, 10 минут — закоммитить изменения на GitHub."
         uz: "Dush–Juma 60 daqiqa: 20 daqiqa kurs nazariyasi/darsi, 30 daqiqa amaliy masala, 10 daqiqa — GitHubga o'zgarishlarni commit qilish."
     source:
-      name: "freeCodeCamp certifications"
-      url: "https://www.freecodecamp.org/news/freecodecamp-certifications/"
+      name: "CS50x FAQs (Harvard CS50, бесплатный сертификат)"
+      url: "https://cs50.harvard.edu/x/2022/faqs"
     template_id: programming
 
   - id: portfolio
@@ -144,8 +160,8 @@ goals:
     minimal_version: "1 коммит или 1 строка описания"
     guide:
       steps:
-        - ru: "Выбери проект размером на 2–4 недели — сначала маленький и завершённый лучше, чем большой и брошенный на середине."
-          uz: "2–4 haftaga mo'ljallangan loyiha tanlang — avval kichik va yakunlangan loyiha, katta va yarim yo'lda tashlab qo'yilgandan yaxshiroq."
+        - ru: "Выбери проект размером на 2–4 недели — удобная лестница: сначала клон существующего проекта (быстрый старт), затем свой вариант с изменениями, и только потом задача реального пользователя (знакомый бизнес, кафедра, НКО). Маленький и завершённый лучше, чем большой и брошенный на середине."
+          uz: "2–4 haftaga mo'ljallangan loyiha tanlang — qulay zinapoya: avval mavjud loyihaning klonini (tezkor start), keyin oʻzgartirishlar bilan oʻz variantini, va faqat shundan keyin haqiqiy foydalanuvchi vazifasini (tanish biznes, kafedra, NKT) qiling. Kichik va yakunlangan loyiha, katta va yarim yo'lda tashlab qo'yilgandan yaxshiroq."
         - ru: "Сразу заведи публичный репозиторий (GitHub) или страницу (Behance) и выложи туда первую версию, даже сырую."
           uz: "Darhol ochiq repozitoriya (GitHub) yoki sahifa (Behance) oching va birinchi, hom bo'lsa ham, versiyani joylashtiring."
         - ru: "Работай по 3 сессии в неделю по 60 минут, двигаясь маленькими кусками — не жди «вдохновения» на весь проект сразу."
@@ -178,8 +194,11 @@ goals:
     secondary: ["результат пробного теста"]
     targets: ["30 дней", "60 дней"]
     pace: >-
-      Срок подготовки считается от набранных часов по языку или по курсу
-      (без отдельного источника — производная от целей «Язык» и «Курс»).
+      Срок подготовки считается от разрыва между текущим и целевым уровнем
+      CEFR по накопительным часам Cambridge (например B1→B2 ≈175 ч) либо от
+      объёма курса/сертификации — производная от целей «Язык» и «Курс». Если
+      разрыв больше одного уровня, а до экзамена остаётся меньше 8 недель —
+      дата, скорее всего, нереалистична [эвристика].
     week_skeleton: "4 сессии в неделю по 60 минут"
     minimal_version: "1 вопрос пробника"
     guide:
@@ -205,7 +224,8 @@ goals:
         ru: "Пн — назначить дату экзамена и записать план по неделям, Вт/Чт — разбор формата заданий, Сб — пробный тест по таймеру."
         uz: "Dush — imtihon sanasini belgilash va haftalik reja yozish, Sesh/Pay — topshiriq formatini o'rganish, Shan — taymer bilan sinov test."
     source:
-      name: "эвристика"
+      name: "Cambridge English, Guided learning hours (расчёт разрыва уровней)"
+      url: "https://support.cambridgeenglish.org/hc/en-gb/articles/202838506-Guided-learning-hours"
     template_id: certificate
 
   - id: resume_applications
@@ -217,13 +237,20 @@ goals:
     metric: { key: applications_sent, kind: counter, unit: "заявок/мес", rounding: 1 }
     secondary: ["ответы и собеседования"]
     targets: ["30 дней", "60 дней"]
-    pace: "Без отдельного источника — темп задаётся самим пользователем"
+    pace: >-
+      Темп отправки задаёт сам пользователь (без отдельного источника). Само
+      резюме — по чек-листу карьерных центров Harvard (OCS) и Pepperdine
+      (Seaver): 1 страница для бакалавра, строки начинаются с глагола
+      действия, результаты в цифрах где возможно, без «я», без фото,
+      возраста и пола (международный формат). В Узбекистане часть
+      работодателей и госорганизаций всё ещё просит «объективку» с фото и
+      датой рождения — держи обе версии резюме.
     week_skeleton: "2 сессии в неделю по 30 минут"
     minimal_version: "Сохранить 1 вакансию"
     guide:
       steps:
-        - ru: "Сначала обнови резюме и профиль LinkedIn/аналог одной версией «на сейчас» — не жди, пока резюме станет идеальным."
-          uz: "Avval rezyume va LinkedIn/shunga o'xshash profilni 'hozirgi' bir versiya qilib yangilang — rezyume mukammal bo'lishini kutmang."
+        - ru: "Сначала перепиши резюме по правилам Harvard OCS: 1 страница, без фото, возраста и пола, каждая строка — с глагола действия и с числом, где возможно. Если работодатель просит «объективку» (фото, дата рождения) — держи и такую версию отдельно. Не жди, пока резюме станет идеальным."
+          uz: "Avval rezyumeni Harvard OCS qoidalari bo'yicha qayta yozing: 1 sahifa, fotosiz, yosh va jinssiz, har bir qator harakat fe'lidan va, imkon bo'lsa, raqamdan boshlanadi. Agar ish beruvchi 'ob'ektivka' (foto, tug'ilgan sana) so'rasa — shunday versiyasini ham alohida saqlang. Rezyume mukammal bo'lishini kutmang."
         - ru: "Два раза в неделю по 30 минут — находи и сохраняй вакансии, которые подходят по направлению и уровню."
           uz: "Haftada 2 marta 30 daqiqa — yo'nalish va darajaga mos vakansiyalarni topib saqlang."
         - ru: "Перед отправкой каждой заявки чуть подправляй резюме или сопроводительное письмо под конкретную вакансию — это повышает отклик."
@@ -243,5 +270,6 @@ goals:
         ru: "Пн — обновить резюме и LinkedIn, Ср/Сб по 30 минут — найти и сохранить вакансии, отправить 2–3 заявки с коротким сопроводительным письмом."
         uz: "Dush — rezyume va LinkedIn-ni yangilash, Chor/Shan 30 daqiqadan — vakansiyalarni topib saqlash, qisqa xat bilan 2–3 ariza yuborish."
     source:
-      name: "эвристика"
+      name: "Harvard FAS OCS, Resumes & Cover Letters"
+      url: "https://fae.uprrp.edu/enlace/wp-content/uploads/sites/17/2022/08/undergrad_resumes_and_cover_letters.pdf"
     template_id: resume_applications
