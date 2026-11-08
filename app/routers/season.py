@@ -5,6 +5,9 @@
 «Замер», §7.3/§7.4 ТЗ, переименовано UX-правкой).
 """
 
+import math
+from functools import lru_cache
+from pathlib import Path
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -13,15 +16,37 @@ from sqlmodel import Session, select
 
 from app.auth import require_user
 from app.database import get_session
-from app.models import Measurement, Reveal, Season, SeasonDay, User
+from app.i18n import translate
+from app.models import Measurement, Season, SeasonDay, SphereState, User
 from app.rendering import render
 from app.newlife.conversation_starters_bank import conversation_starters_for_display
 from app.newlife.goal_catalog import goal_meta, guide_for_display, ladder_for_display
 from app.newlife.resources_bank import resources_for_goal
+from app.newlife.spheres import SPHERES, is_valid_sphere
 from app.services.events import log_event_safe
 from app.services.flash import push_flash
 from app.seasons_library.catalog_meta import poster_hero_for
-from app.seasons_library.loader import load_library
+from app.seasons_library.loader import get_template, load_library
+
+# Кольцо прогресса сезона — тот же радиус/длина окружности, что на "Сегодня"
+# (app/routers/today.py::RING_RADIUS), чтобы кольца визуально совпадали.
+RING_RADIUS = 36
+RING_CIRCUMFERENCE = 2 * math.pi * RING_RADIUS
+
+_SPHERE_ICONS_DIR = Path(__file__).resolve().parent.parent.parent / "assets" / "icons" / "spheres"
+
+
+@lru_cache(maxsize=None)
+def _sphere_icon_svg(sphere_id: str) -> str:
+    """Инлайн-разметка неоновой иконки сферы (assets/icons/spheres/<id>.svg) —
+    инлайним, а не <img src>, потому что иконки рисуются stroke="currentColor"
+    и свечение (.sphere-glow/.sphere-dim, design/components.css) работает
+    только для инлайн-SVG внутри страницы."""
+    path = _SPHERE_ICONS_DIR / f"{sphere_id}.svg"
+    try:
+        return path.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return ""
 
 _DEFAULT_CATALOG_META = {
     "difficulty": "Свой уровень",
@@ -51,8 +76,56 @@ from app.services.usertime import today_for
 router = APIRouter()
 
 
+def _template_sphere(template_id: str) -> Optional[str]:
+    """К какой из 11 сфер относится шаблон сезона — через goal_meta (NEWLIFE_2_0.md
+    §3.2: "Цели" = сетка сфер → сезоны внутри сферы). None для шаблонов без
+    записи в content/spheres/*.yaml (ИИ-черновик — см. BACKLOG.md), такой
+    сезон не попадёт ни на одну сферную страницу (ограничение контента, не
+    этого роутера)."""
+    entry = goal_meta(template_id)
+    return entry.sphere if entry else None
+
+
 @router.get("/seasons")
 def seasons_hub(request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)):
+    """Сетка 11 сфер (NEWLIFE_2_0.md §3.2, Задача 1): выбранные пользователем
+    сферы — ярко (.sphere-glow), остальные — приглушённо (.sphere-dim) с
+    кнопкой "Добавить" на существующий флоу выбора сфер в онбординге. Клик по
+    активной сфере ведёт на /seasons/{sphere_id} (список сезонов сферы)."""
+    states = {
+        s.sphere_id: s
+        for s in db.exec(select(SphereState).where(SphereState.uid == user.id)).all()
+    }
+    tiles = [
+        {
+            "sphere": sphere,
+            "icon_svg": _sphere_icon_svg(sphere.id),
+            "active": bool(states.get(sphere.id) and states[sphere.id].active),
+        }
+        for sphere in SPHERES
+    ]
+
+    return render(
+        request,
+        "seasons_hub.html",
+        {
+            "tiles": tiles,
+            "lang": user.language,
+        },
+    )
+
+
+@router.get("/seasons/{sphere_id}")
+def seasons_sphere(
+    sphere_id: str, request: Request, user: User = Depends(require_user), db: Session = Depends(get_session)
+):
+    """Сезоны и каталог одной сферы (NEWLIFE_2_0.md §3.2, Задача 2): активные
+    сезоны пользователя в этой сфере с живым кольцом прогресса, затем шаблоны
+    этой сферы, которых пользователь ещё не начинал."""
+    if not is_valid_sphere(sphere_id):
+        raise HTTPException(status_code=404)
+    sphere = next(s for s in SPHERES if s.id == sphere_id)
+
     today = today_for(user)
     active = get_active_seasons(db, user.id)
     for season in active:
@@ -60,39 +133,40 @@ def seasons_hub(request: Request, user: User = Depends(require_user), db: Sessio
         sync_season_state(db, season, today)
     # sync_season_state может перевести сезон в "finished" — перечитываем список.
     active = get_active_seasons(db, user.id)
+    active_in_sphere = [s for s in active if _template_sphere(s.template_id) == sphere_id]
 
-    active_cards = [
-        {
-            "season": s,
-            "poster_hero": poster_hero_for(s.template_id),
-            "day_number": max(1, (today - s.start_date).days + 1),
-        }
-        for s in active
-    ]
+    active_cards = []
+    for s in active_in_sphere:
+        day_number = max(1, (today - s.start_date).days + 1)
+        percent = min(1.0, day_number / s.length_days) if s.length_days else 0.0
+        active_cards.append(
+            {
+                "season": s,
+                "day_number": day_number,
+                "ring_circumference": round(RING_CIRCUMFERENCE, 1),
+                "ring_offset": round(RING_CIRCUMFERENCE * (1 - percent), 1),
+            }
+        )
 
-    completed = db.exec(
-        select(Season)
-        .where(Season.uid == user.id, Season.status == "finished")
-        .order_by(Season.created_at.desc())
-    ).all()
-    reveals = {s.id: db.exec(select(Reveal).where(Reveal.season_id == s.id)).first() for s in completed}
-
+    started_template_ids = {
+        s.template_id for s in db.exec(select(Season).where(Season.uid == user.id)).all()
+    }
     catalog = [
         {
             "template": t,
             "meta": _display_meta(t.id),
-            "poster_hero": poster_hero_for(t.id),
         }
         for t in sorted(load_library().values(), key=lambda t: t.id)
+        if _template_sphere(t.id) == sphere_id and t.id not in started_template_ids
     ]
 
     return render(
         request,
         "seasons_hub.html",
         {
+            "sphere": sphere,
+            "icon_svg": _sphere_icon_svg(sphere.id),
             "active_cards": active_cards,
-            "completed": completed,
-            "reveals": reveals,
             "catalog": catalog,
             "can_start": len(active) < MAX_ACTIVE_SEASONS,
             "lang": user.language,
@@ -194,9 +268,92 @@ def season_detail(
                 else None
             ),
             "resources": resources_for_goal(season.template_id, user.language),
+            "roadmap": _build_roadmap(season, today_number, user.language),
             "lang": user.language,
         },
     )
+
+
+# Роудмап-«тропа» (NEWLIFE_2_0.md §3.2, Задача 3) — только для сфер, где уже
+# есть богатая прогрессия YAML-шаблона (Тело/Разум/Энергия); остальные 8 сфер
+# оставлены без изменений в season_detail.html осознанно (экономия времени
+# дедлайна, см. отчёт в V2_PROGRESS.md/BACKLOG.md).
+_ROADMAP_SPHERES = {"body", "mind", "energy"}
+
+
+def _build_roadmap(season: Season, today_number: int, lang: str) -> Optional[dict]:
+    sphere_id = _template_sphere(season.template_id)
+    if sphere_id not in _ROADMAP_SPHERES:
+        return None
+    try:
+        template = get_template(season.template_id)
+    except KeyError:
+        return None
+
+    phases = template.phases
+    total_phases = len(phases)
+    current_phase = min(max(season.current_phase, 1), total_phases)
+    length_days = season.length_days or 1
+
+    if total_phases > 1:
+        # Богатая прогрессия (например run_5k — 5 фаз от baseline): один шаг
+        # роудмапа = одна фаза шаблона, "Ты здесь" = season.current_phase.
+        # Диапазон дней — равные доли length_days (в YAML нет явных дней на
+        # фазу, только пороги baseline), это приближение для визуала тропы.
+        steps = []
+        for p in template.phases:
+            start_day = round((p.phase - 1) / total_phases * length_days) + 1
+            end_day = round(p.phase / total_phases * length_days)
+            if p.phase < current_phase:
+                status = "done"
+            elif p.phase == current_phase:
+                status = "here"
+            else:
+                status = "future"
+            steps.append(
+                {
+                    "title": p.days[0].title,
+                    "days_label": translate(lang, "season.roadmap_days_label", start=start_day, end=max(end_day, start_day)),
+                    "unlock_label": translate(
+                        lang, "season.roadmap_unlock_label", value=p.unlock_if_baseline_gte, unit=template.metric.unit
+                    ),
+                    "status": status,
+                }
+            )
+        current_number = current_phase
+    else:
+        # Шаблон с одной фазой (сейчас — все текущие Mind/Energy сезоны):
+        # нет пороговой прогрессии в YAML, поэтому тропа — по неделям сезона
+        # (length_days/7), "Ты здесь" = текущая неделя по дню сезона.
+        weeks = max(1, math.ceil(length_days / 7))
+        current_week = min(max(math.ceil(today_number / 7), 1), weeks)
+        steps = []
+        for w in range(1, weeks + 1):
+            start_day = (w - 1) * 7 + 1
+            end_day = min(w * 7, length_days)
+            if w < current_week:
+                status = "done"
+            elif w == current_week:
+                status = "here"
+            else:
+                status = "future"
+            steps.append(
+                {
+                    "title": translate(lang, "season.roadmap_week_label", n=w),
+                    "days_label": translate(lang, "season.roadmap_days_label", start=start_day, end=end_day),
+                    "unlock_label": None,
+                    "status": status,
+                }
+            )
+        total_phases = weeks
+        current_number = current_week
+
+    return {
+        "sphere_id": sphere_id,
+        "steps": steps,
+        "current_number": current_number,
+        "total": total_phases,
+    }
 
 
 def _ladder_context(season: Season, lang: str) -> Optional[dict]:

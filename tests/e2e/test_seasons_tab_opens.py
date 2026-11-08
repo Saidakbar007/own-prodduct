@@ -8,6 +8,11 @@ season_detail) не нашло ни исключения, ни N+1-зависа�
 настоящий клик по нижней навигации (не прямой переход по URL) — на
 случай, если реальная проблема клиентская (перехват клика JS/HTMX), а
 не серверная.
+
+NEWLIFE_2_0.md §3.2 (Задача 1/2, ui-screens-builder): /seasons стала сеткой
+11 сфер, а не флэт-списком — текст сезона теперь виден не на /seasons самом,
+а на /seasons/{sphere_id} (клик по активной сфере). Тест обновлён под эту
+навигацию, сохраняя дух регресс-теста — клик, а не прямой переход по URL.
 """
 
 import uuid
@@ -63,11 +68,15 @@ def test_seasons_tab_opens_with_several_active_and_completed_seasons(page: Page,
     # Настоящий клик по нижней навигации, не прямой переход по URL.
     page.click('a[href="/seasons"]')
     page.wait_for_url(f"{live_server_url}/seasons", timeout=10_000)
+    expect(page.locator("body")).to_be_visible()
 
+    # Клик по активной сфере ("Тело") — список сезонов этой сферы, не
+    # должен зависать/падать на нескольких активных + завершённом сезоне.
+    page.click('a[href="/seasons/body"]')
+    page.wait_for_url(f"{live_server_url}/seasons/body", timeout=10_000)
     expect(page.locator("body")).to_be_visible()
     expect(page.get_by_text("5 км").first).to_be_visible()
 
-    # Открыть карточку завершённого сезона и один из активных — тоже
-    # не должны зависать/падать.
+    # Открыть один из активных сезонов — тоже не должен зависать/падать.
     page.goto(f"{live_server_url}/season")
     expect(page.locator("body")).to_be_visible()
