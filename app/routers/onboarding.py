@@ -25,6 +25,7 @@ from app.database import get_session
 from app.models import Profile, SphereState, User
 from app.newlife import point_a
 from app.newlife.goal_catalog import goal_meta
+from app.newlife.potential_catalog import load_potential_catalog
 from app.newlife.spheres import SPHERES, SPHERE_BY_ID
 from app.rendering import render
 from app.seasons import engine
@@ -533,7 +534,49 @@ def woop_submit(request: Request, plan: Optional[str] = Form(None)):
     draft = _draft(request)
     draft["woop_plan"] = plan
     _save(request, draft)
-    return RedirectResponse("/onboarding/trailer", status_code=303)
+    return RedirectResponse("/onboarding/potential", status_code=303)
+
+
+# ------------------------------------------- экран 11.5: потенциал 30/60/90
+
+@router.get("/potential")
+def potential_screen(
+    request: Request,
+    user: Optional[User] = Depends(get_current_user),
+):
+    """NEWLIFE_2_0.md §2.1 п.8: после честной точки А — реально достижимое
+    за 30/60/90 дней при соблюдении плана, по протоколам базы знаний
+    (`content/potential_30_60_90.yaml`). Карточка показывается только для
+    целей, у которых есть запись в файле И которые относятся к сферам,
+    выбранным на экране 2 — остальное тихо пропускается, не блокирует
+    переход дальше."""
+    draft = _draft(request)
+    chosen_spheres = draft.get("spheres") or []
+    lang = user.language if user else "ru"
+
+    cards = []
+    for goal_id, entry in load_potential_catalog().items():
+        meta = goal_meta(goal_id)
+        if meta is None or meta.sphere not in chosen_spheres:
+            continue
+        cards.append(
+            {
+                "title": meta.title.text(lang),
+                "sphere": SPHERE_BY_ID.get(meta.sphere),
+                "day_30": entry.day_30.text(lang) if entry.day_30 else None,
+                "day_60": entry.day_60.text(lang) if entry.day_60 else None,
+                "day_90": entry.day_90.text(lang) if entry.day_90 else None,
+            }
+        )
+
+    sphere_order = {s: i for i, s in enumerate(chosen_spheres)}
+    cards.sort(key=lambda c: sphere_order.get(c["sphere"].id if c["sphere"] else "", 99))
+
+    return render(
+        request,
+        "onboarding/potential.html",
+        {"cards": cards, "lang": lang},
+    )
 
 
 # --------------------------------------------------- экран 12: раскрытие

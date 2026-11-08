@@ -26,8 +26,11 @@ WINDOW_DAYS = 14
 
 
 def _sphere_of_season(season: Season) -> str | None:
-    if season.sphere_id:
-        return season.sphere_id
+    # NEWLIFE_2_0.md ночной прогон 2026-11-08: Season не имеет поля
+    # sphere_id (он есть только у Goal/SphereState) — старая быстрая ветка
+    # `season.sphere_id` всегда падала с AttributeError на любом реальном
+    # сезоне (сломан /today для любого пользователя с активным сезоном,
+    # см. DECISIONS.md). goal_meta(template_id) и так покрывает все случаи.
     entry = goal_meta(season.template_id)
     return entry.sphere if entry else None
 

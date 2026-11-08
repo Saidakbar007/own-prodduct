@@ -19,6 +19,25 @@
   <p class="season-range__forecast">{{ t('season.forecast_plain', value=forecast, unit=season.metric_unit) }}</p>
 </div>
 
+{% if roadmap %}
+<div class="card sphere-{{ roadmap.sphere_id }}" style="padding:var(--space-5);margin-bottom:var(--space-5)">
+  <h3 style="font-size:var(--text-sm);margin-bottom:var(--space-1)">{{ t('season.roadmap_title') }}</h3>
+  <p style="font-size:var(--text-xs);color:var(--text-faint);margin-bottom:var(--space-4)">{{ t('season.roadmap_phase_label', n=roadmap.current_number, total=roadmap.total) }}</p>
+  <div class="roadmap">
+    {% for step in roadmap.steps %}
+    <div class="roadmap__step roadmap__step--{{ step.status }}">
+      <div style="display:flex;align-items:center;gap:var(--space-2)">
+        {% if step.status == 'done' %}<svg class="icon" style="width:1em;height:1em;flex:none"><use href="#i-check"/></svg>{% endif %}
+        <strong style="font-size:var(--text-sm)">{{ step.title }}</strong>
+        {% if step.status == 'here' %}<span class="roadmap__here-badge">{{ t('season.roadmap_here') }}</span>{% endif %}
+      </div>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ step.days_label }}{% if step.unlock_label %} &middot; {{ step.unlock_label }}{% endif %}</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
 <div class="card" style="padding:var(--space-5);margin-bottom:var(--space-5)">
   <div class="calendar-grid calendar-grid--compact">
     {% for day in days %}

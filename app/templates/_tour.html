@@ -1,9 +1,12 @@
-{# Тур из 4 подсказок поверх интерфейса после регистрации — пропускаемый,
+{# Тур из 5 подсказок поверх интерфейса после регистрации — пропускаемый,
    показывается один раз (today.py передаёт show_tour только при ?tour=1
-   сразу после /register или /onboarding/start). Логика — app/static/tour.js. #}
+   сразу после /register или /onboarding/start). Логика — app/static/tour.js.
+   NEWLIFE_2_0.md §2.1 п.9: "Это Главная", дерево сфер; действие дня;
+   Привычки; Прогресс; Профиль и настройки — 5 шагов, кнопки «Далее»/
+   «Пропустить», повтор — в Профиле → «Как пользоваться». #}
 <div class="tour-sheet" id="tour-sheet" hidden data-next-label="{{ t('tour.next') }}" data-done-label="{{ t('tour.done') }}">
   <div class="tour-sheet__body">
-    <p class="tour-sheet__step" id="tour-step-counter">1/4</p>
+    <p class="tour-sheet__step" id="tour-step-counter">1/5</p>
     <h3 class="tour-sheet__title" id="tour-title"></h3>
     <p class="tour-sheet__text" id="tour-text"></p>
   </div>
@@ -14,10 +17,11 @@
 </div>
 <script>
   window.__tourSteps = [
-    { selector: '[data-tour="progress"]', title: {{ t('tour.step1_title')|tojson }}, text: {{ t('tour.step1_text')|tojson }} },
+    { selector: '[data-tour="spheres-tree"]', title: {{ t('tour.step1_title')|tojson }}, text: {{ t('tour.step1_text')|tojson }} },
     { selector: '[data-tour="action"]', title: {{ t('tour.step2_title')|tojson }}, text: {{ t('tour.step2_text')|tojson }} },
-    { selector: '[data-tour="mascot"]', title: {{ t('tour.step3_title')|tojson }}, text: {{ t('tour.step3_text')|tojson }} },
-    { selector: '.bottom-nav', title: {{ t('tour.step4_title')|tojson }}, text: {{ t('tour.step4_text')|tojson }} }
+    { selector: '.bottom-nav a[href="/habits"]', title: {{ t('tour.step3_title')|tojson }}, text: {{ t('tour.step3_text')|tojson }} },
+    { selector: '.bottom-nav a[href="/week"]', title: {{ t('tour.step4_title')|tojson }}, text: {{ t('tour.step4_text')|tojson }} },
+    { selector: '.bottom-nav a[href="/profile"]', title: {{ t('tour.step5_title')|tojson }}, text: {{ t('tour.step5_text')|tojson }} }
   ];
 </script>
 <script src="/static/tour.js"></script>

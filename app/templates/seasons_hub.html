@@ -1,61 +1,96 @@
 {% extends "shell_base.html" %}
-{% block title %}{{ t('nav.seasons') }} — {{ t('common.app_name') }}{% endblock %}
+{% block title %}{% if sphere %}{{ t('sphere.' + sphere.id + '.name') }}{% else %}{{ t('seasons.hub_title') }}{% endif %} — {{ t('common.app_name') }}{% endblock %}
 {% block content %}
 {% set active = 'seasons' %}
 
-<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
-  <h1 style="font-size:var(--text-xl)">{{ t('seasons.hub_title') }}</h1>
+{% if sphere %}
+{# ===== /seasons/{sphere_id} — сезоны и каталог одной сферы (NEWLIFE_2_0.md §3.2, Задача 2) ===== #}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left;display:flex;align-items:center;gap:var(--space-3)">
+  <a href="/seasons" class="btn btn--text" style="padding:0;font-size:var(--text-sm)">&larr;</a>
+  <span class="sphere-{{ sphere.id }} sphere-glow" style="width:28px;height:28px;display:inline-flex">{{ icon_svg|safe }}</span>
+  <h1 style="font-size:var(--text-xl)">{{ t('sphere.' + sphere.id + '.name') }}</h1>
 </div>
 
 {% if active_cards %}
-<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-6)">
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('seasons.sphere_active_title') }}</h2>
+<div class="season-tile-grid" style="margin-bottom:var(--space-6)">
   {% for card in active_cards %}
-  <a href="/season/{{ card.season.id }}" class="card" style="display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4)">
-    <div style="width:64px;flex:none">{% with poster_title='', poster_hero=card.poster_hero, poster_size='sm' %}{% include "_poster.html" %}{% endwith %}</div>
-    <div>
-      <strong style="font-size:var(--text-sm)">{{ card.season.title }}</strong>
-      <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ t('season.day_of', n=card.day_number, total=card.season.length_days) }}</div>
+  <a href="/season/{{ card.season.id }}" class="card season-tile sphere-{{ sphere.id }}">
+    <span class="season-tile__corner-icon sphere-glow--sm">{{ icon_svg|safe }}</span>
+    <div class="season-progress__ring" style="width:72px;height:72px">
+      <svg viewBox="0 0 84 84">
+        <circle class="sphere-ring-bg" cx="42" cy="42" r="36" stroke-width="7" fill="none"/>
+        <circle class="sphere-ring-fg" cx="42" cy="42" r="36" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="{{ card.ring_circumference }}" stroke-dashoffset="{{ card.ring_offset }}"/>
+      </svg>
+      <div class="season-progress__label">
+        <span class="season-progress__day tabular" style="font-size:var(--text-md)">{{ card.day_number }}</span>
+        <span class="season-progress__total" style="font-size:10px">{{ t('today.of', total=card.season.length_days) }}</span>
+      </div>
     </div>
+    <strong class="season-tile__title">{{ card.season.title }}</strong>
   </a>
   {% endfor %}
 </div>
 {% endif %}
 
-{% if can_start %}
-<a href="/onboarding" class="btn btn--primary btn--block" style="margin-bottom:var(--space-8)">{{ t('seasons.start_new') }}</a>
-{% else %}
-<p style="font-size:var(--text-xs);color:var(--text-faint);text-align:center;margin-bottom:var(--space-8)">{{ t('onboarding.error_too_many_active') }}</p>
-{% endif %}
-
-<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('seasons.catalog_title') }}</h2>
-<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-8)">
+<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('seasons.sphere_catalog_title') }}</h2>
+{% if catalog %}
+<div style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-6)">
   {% for item in catalog %}
+  {% if can_start %}
   <form method="post" action="/onboarding/goal">
     <input type="hidden" name="template_id" value="{{ item.template.id }}" />
-    <button type="submit" class="card" style="width:100%;text-align:left;padding:0;cursor:pointer;border:1px solid var(--border);overflow:hidden">
-      {% with poster_title=item.template.title, poster_hero=item.poster_hero, poster_size='catalog' %}{% include "_poster.html" %}{% endwith %}
-      <div style="padding:var(--space-4)">
-        <span class="badge">{{ item.meta.difficulty }}</span>
-        <p style="font-size:var(--text-xs);color:var(--text-muted);margin-top:var(--space-2)">{{ item.meta.for_whom }}</p>
-        <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-1)">{{ item.meta.outcome }}</p>
-        <div style="margin-top:var(--space-2);font-size:var(--text-xs);color:var(--text-faint);text-transform:uppercase;letter-spacing:var(--tracking-wide)">{{ item.template.lengths|join(' / ') }} {{ t('onboarding.days_suffix') }}</div>
-      </div>
+    <button type="submit" class="card" style="width:100%;text-align:left;cursor:pointer;border:1px solid var(--border);padding:var(--space-4);display:flex;align-items:center;gap:var(--space-3)">
+      <span class="sphere-{{ sphere.id }} sphere-glow--sm" style="width:28px;height:28px;flex:none;display:inline-flex">{{ icon_svg|safe }}</span>
+      <span style="flex:1;min-width:0">
+        <strong style="font-size:var(--text-sm);display:block">{{ item.template.title }}</strong>
+        <span class="badge" style="margin-top:var(--space-2)">{{ item.meta.difficulty }}</span>
+        <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ item.meta.outcome }}</p>
+      </span>
     </button>
   </form>
+  {% else %}
+  <div class="card" style="padding:var(--space-4);display:flex;align-items:center;gap:var(--space-3);opacity:0.6">
+    <span class="sphere-{{ sphere.id }} sphere-dim" style="width:28px;height:28px;flex:none;display:inline-flex">{{ icon_svg|safe }}</span>
+    <span style="flex:1;min-width:0">
+      <strong style="font-size:var(--text-sm);display:block">{{ item.template.title }}</strong>
+      <p style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ item.meta.outcome }}</p>
+    </span>
+  </div>
+  {% endif %}
   {% endfor %}
+</div>
+{% if not can_start %}
+<p style="font-size:var(--text-xs);color:var(--text-faint);text-align:center;margin-bottom:var(--space-6)">{{ t('onboarding.error_too_many_active') }}</p>
+{% endif %}
+{% elif not active_cards %}
+<p style="color:var(--text-faint);font-size:var(--text-sm);margin-bottom:var(--space-6)">{{ t('seasons.sphere_empty') }}</p>
+{% else %}
+<p style="color:var(--text-faint);font-size:var(--text-sm);margin-bottom:var(--space-6)">{{ t('seasons.sphere_empty') }}</p>
+{% endif %}
+
+{% else %}
+{# ===== /seasons — сетка 11 сфер (NEWLIFE_2_0.md §3.2, Задача 1) ===== #}
+<div class="home-hero" style="padding:var(--space-4) 0 var(--space-5);text-align:left">
+  <h1 style="font-size:var(--text-xl)">{{ t('seasons.hub_title') }}</h1>
+  <p style="color:var(--text-muted);font-size:var(--text-sm)">{{ t('seasons.hub_subtitle') }}</p>
 </div>
 
-<h2 style="font-size:var(--text-md);margin-bottom:var(--space-3)">{{ t('profile.shelf_title') }}</h2>
-{% if completed %}
-<div style="display:flex;gap:var(--space-3);overflow-x:auto;padding-bottom:var(--space-2)">
-  {% for season in completed %}
-  <a href="/season/{{ season.id }}/reveal" class="card" style="min-width:140px;padding:var(--space-4);flex:none">
-    <strong style="font-size:var(--text-sm)">{{ season.title }}</strong>
-    <div style="font-size:var(--text-xs);color:var(--text-faint);margin-top:var(--space-2)">{{ reveals[season.id].tier if reveals.get(season.id) else '' }}</div>
+<div class="choice-grid">
+  {% for tile in tiles %}
+  {% if tile.active %}
+  <a href="/seasons/{{ tile.sphere.id }}" class="choice-tile sphere-tile sphere-{{ tile.sphere.id }}">
+    <span class="sphere-tile__icon sphere-glow">{{ tile.icon_svg|safe }}</span>
+    <span>{{ t('sphere.' + tile.sphere.id + '.name') }}</span>
   </a>
+  {% else %}
+  <div class="choice-tile sphere-tile sphere-{{ tile.sphere.id }}" style="cursor:default">
+    <span class="sphere-tile__icon sphere-dim">{{ tile.icon_svg|safe }}</span>
+    <span style="color:var(--text-faint)">{{ t('sphere.' + tile.sphere.id + '.name') }}</span>
+    <a href="/onboarding/spheres" class="sphere-tile__add">{{ t('seasons.add_sphere') }}</a>
+  </div>
+  {% endif %}
   {% endfor %}
 </div>
-{% else %}
-<p style="color:var(--text-faint);font-size:var(--text-sm)">{{ t('profile.shelf_empty') }}</p>
 {% endif %}
 {% endblock %}

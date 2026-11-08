@@ -194,6 +194,7 @@ def test_onboarding_trailer_screen(page: Page, live_server_url, theme):
     page.click('form[action="/onboarding/constraints"] button[type="submit"]')
     page.locator('form[action="/onboarding/woop/obstacle"] button[type="submit"] >> nth=0').click()
     page.click('form[action="/onboarding/woop"] button[type="submit"]')
+    page.click('a[href="/onboarding/trailer"]')  # экран 11.5: потенциал 30/60/90 — просто продолжить
 
     page.set_viewport_size(VIEWPORT)
     _set_theme(page, theme)

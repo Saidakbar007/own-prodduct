@@ -1,7 +1,7 @@
-<nav class="bottom-nav" style="max-width:520px;margin:0 auto;width:100%">
+<nav class="bottom-nav" style="max-width:520px;margin:0 auto;width:100%;position:sticky;bottom:0;z-index:40">
   <a href="/today" class="bottom-nav__item{% if active == 'today' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-home"/></svg>{{ t('nav.today') }}</a>
-  <a href="/week" class="bottom-nav__item{% if active == 'week' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-calendar"/></svg>{{ t('nav.week') }}</a>
   <a href="/seasons" class="bottom-nav__item{% if active == 'seasons' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-target"/></svg>{{ t('nav.goals') }}</a>
   <a href="/habits" class="bottom-nav__item{% if active == 'habits' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-repeat"/></svg>{{ t('nav.habits') }}</a>
+  <a href="/week" class="bottom-nav__item{% if active == 'week' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-calendar"/></svg>{{ t('nav.week') }}</a>
   <a href="/profile" class="bottom-nav__item{% if active == 'me' %} bottom-nav__item--active{% endif %}"><svg class="icon"><use href="#i-user"/></svg>{{ t('nav.me') }}</a>
 </nav>

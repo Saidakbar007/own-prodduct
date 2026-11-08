@@ -95,6 +95,8 @@
 
 {% include "_mascot.html" %}
 
+<p style="font-size:var(--text-xs);color:var(--text-faint);text-transform:uppercase;letter-spacing:var(--tracking-wide);margin-bottom:var(--space-2)">{{ t('home.task_kicker') }}</p>
+
 {% if has_season %}
   {% if day.kind == 'measure' %}
   <div class="action-card" data-tour="action">
@@ -191,11 +193,6 @@
     {% with term_id='second-chance', term_text=t('terms.second_chance') %}{% include "_term.html" %}{% endwith %}
   </form>
   {% endif %}
-
-  <div class="wave-summary card" style="padding:var(--space-4);margin-top:var(--space-5)" data-tour="team">
-    <span class="wave-summary__text">{{ t('today.wave_checkins', checked=checkins, total=wave_size) }}</span>
-    <a href="/team" class="btn--text">{{ t('today.wave_see_all') }}</a>
-  </div>
 {% else %}
 <div class="card empty-state" data-tour="action">
   <h3>{{ t('today.no_goal_title') }}</h3>
@@ -203,6 +200,135 @@
   <a href="/seasons" class="btn btn--primary btn--block" style="margin-top:var(--space-3)">{{ t('today.no_goal_cta') }}</a>
 </div>
 {% endif %}
+
+<!-- ====== NEWLIFE_2_0.md §3.1: дерево сфер, живая паутинка, привычки, продуктивность недели ====== -->
+
+<div class="home-section" data-tour="spheres-tree" style="margin-top:var(--space-8)">
+  <h2 class="home-section__title">{{ t('home.tree_title') }}</h2>
+  {% if sphere_tree.nodes %}
+  <div style="position:relative;width:{{ sphere_tree.size|int }}px;height:{{ sphere_tree.size|int }}px;margin:0 auto">
+    <svg class="sphere-tree" viewBox="0 0 {{ sphere_tree.size|int }} {{ sphere_tree.size|int }}" width="{{ sphere_tree.size|int }}" height="{{ sphere_tree.size|int }}" style="position:absolute;inset:0">
+      {% for node in sphere_tree.nodes %}
+      <line class="sphere-tree__line sphere-{{ node.sphere.id }}{% if node.active_today %} sphere-tree__line--active{% endif %}" x1="{{ sphere_tree.center }}" y1="{{ sphere_tree.center }}" x2="{{ node.x }}" y2="{{ node.y }}" {% if node.active_today %}style="stroke:var(--sphere-color)"{% endif %} />
+      {% endfor %}
+    </svg>
+    <a href="/profile" class="sphere-tree__avatar" aria-label="{{ t('home.tree_avatar_label') }}">
+      <span class="sphere-tree__avatar-label">{{ t('home.tree_avatar_label') }}</span>
+      <span class="sphere-tree__avatar-level">{{ t('home.tree_level', n=sphere_tree.avg_level) }}</span>
+    </a>
+    {% for node in sphere_tree.nodes %}
+    <a href="/seasons/{{ node.sphere.id }}" class="sphere-tree__node sphere-{{ node.sphere.id }} {% if node.active_today %}sphere-glow{% else %}sphere-dim{% endif %}" style="left:{{ node.x }}px;top:{{ node.y }}px">
+      <span aria-hidden="true" style="width:22px;height:22px;display:block;background-color:var(--sphere-color);-webkit-mask-image:url('/assets/icons/spheres/{{ node.sphere.id }}.svg');mask-image:url('/assets/icons/spheres/{{ node.sphere.id }}.svg');-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;"></span>
+      <span class="sphere-tree__node-label">{{ t('sphere.' + node.sphere.id + '.name') }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="sphere-tree__empty">{{ t('home.radar_empty') }}</p>
+  {% endif %}
+</div>
+
+<div class="home-section">
+  <h2 class="home-section__title">{{ t('home.radar_title') }}</h2>
+  {% if radar_chart.has_data %}
+  <div style="position:relative;width:{{ radar_chart.size|int }}px;height:{{ radar_chart.size|int }}px;margin:0 auto">
+    <svg class="radar-chart" viewBox="0 0 {{ radar_chart.size|int }} {{ radar_chart.size|int }}" width="{{ radar_chart.size|int }}" height="{{ radar_chart.size|int }}">
+      {% for ring in radar_chart.rings %}
+      <circle class="radar-chart__ring" cx="{{ radar_chart.center }}" cy="{{ radar_chart.center }}" r="{{ ring }}" />
+      {% endfor %}
+      {% for axis in radar_chart.axes %}
+      <line class="radar-chart__axis" x1="{{ radar_chart.center }}" y1="{{ radar_chart.center }}" x2="{{ axis.lx }}" y2="{{ axis.ly }}" />
+      {% endfor %}
+      {% if radar_chart.baseline_points %}<polygon class="radar-chart__baseline" points="{{ radar_chart.baseline_points }}" />{% endif %}
+      {% if radar_chart.current_points %}<polygon class="radar-chart__current" points="{{ radar_chart.current_points }}" />{% endif %}
+    </svg>
+    {% for axis in radar_chart.axes %}
+    <div class="radar-chart__label sphere-{{ axis.sphere.id }}" style="left:{{ axis.lx }}px;top:{{ axis.ly }}px">
+      <span aria-hidden="true" style="width:14px;height:14px;display:block;background-color:var(--sphere-color);-webkit-mask-image:url('/assets/icons/spheres/{{ axis.sphere.id }}.svg');mask-image:url('/assets/icons/spheres/{{ axis.sphere.id }}.svg');-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;"></span>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="radar-legend">
+    <span><span class="radar-legend__swatch"></span>{{ t('home.radar_legend_current') }}</span>
+    <span><span class="radar-legend__swatch radar-legend__swatch--baseline"></span>{{ t('home.radar_legend_baseline') }}</span>
+  </div>
+  {% else %}
+  <p class="sphere-tree__empty">{{ t('home.radar_empty') }}</p>
+  {% endif %}
+</div>
+
+<div class="home-section">
+  <h2 class="home-section__title">{{ t('home.good_habits_title') }}</h2>
+  {% if home_good_habits %}
+  <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+    {% for row in home_good_habits %}
+    <div class="card home-habit-row">
+      <div>
+        <strong style="font-size:var(--text-sm)">{{ row.habit.title }}</strong>
+        <div class="home-habit-row__streak">{{ t('habits.streak', n=row.streak) }}</div>
+      </div>
+      {% if row.today_status not in ('done', 'minimal') %}
+      <form method="post" action="/habits/{{ row.habit.id }}/log">
+        <input type="hidden" name="status" value="done" />
+        <button class="btn btn--primary btn--sm" type="submit" data-haptic="success">{{ t('habits.cta_done') }}</button>
+      </form>
+      {% else %}
+      <span class="badge">{{ t('habits.already_' + row.today_status) }}</span>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="color:var(--text-faint);font-size:var(--text-sm)">{{ t('home.good_habits_empty') }}</p>
+  {% endif %}
+  <a href="/habits" class="btn--text" style="display:block;text-align:center;margin-top:var(--space-3)">{{ t('home.see_all') }}</a>
+</div>
+
+<div class="home-section">
+  <h2 class="home-section__title">{{ t('home.bad_habits_title') }}</h2>
+  {% if home_bad_habits %}
+  <div style="display:flex;flex-direction:column;gap:var(--space-3)">
+    {% for row in home_bad_habits %}
+    <div class="card home-habit-row">
+      <div>
+        <strong style="font-size:var(--text-sm)">{{ row.bad_habit.title }}</strong>
+        <div class="home-habit-row__clean">{{ t('habits.clean_since', days=row.clean_days, hours=row.clean_hours) }}</div>
+      </div>
+      <form method="post" action="/habits/bad/{{ row.bad_habit.id }}/slip">
+        <button class="btn btn--secondary btn--sm" type="submit">{{ t('habits.cta_slip') }}</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="color:var(--text-faint);font-size:var(--text-sm)">{{ t('home.bad_habits_empty') }}</p>
+  {% endif %}
+</div>
+
+<div class="home-section">
+  <h2 class="home-section__title">{{ t('home.week_title') }}</h2>
+  <div class="week-bars">
+    {% for bar in week_bars %}
+    <div class="week-bars__col{% if bar.is_today %} week-bars__col--today{% endif %}">
+      <div class="week-bars__track">
+        {% if bar.percent is none %}
+        <div class="week-bars__fill week-bars__fill--none"></div>
+        {% elif bar.percent <= 50 %}
+        <div class="week-bars__fill" style="height:{{ bar.percent }}%;background:color-mix(in srgb, var(--danger) {{ 100 - bar.percent * 2 }}%, var(--accent) {{ bar.percent * 2 }}%)"></div>
+        {% else %}
+        <div class="week-bars__fill" style="height:{{ bar.percent }}%;background:color-mix(in srgb, var(--accent) {{ 100 - (bar.percent - 50) * 2 }}%, var(--status-done) {{ (bar.percent - 50) * 2 }}%)"></div>
+        {% endif %}
+      </div>
+      <span class="week-bars__label">{{ bar.label }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% if week_bars|selectattr('percent', 'none')|list|length == 7 %}
+  <p style="color:var(--text-faint);font-size:var(--text-xs);text-align:center;margin-top:var(--space-2)">{{ t('home.week_no_data') }}</p>
+  {% endif %}
+</div>
+
+<!-- ====== конец блоков новой Главной ====== -->
 
 {% if day_question %}
 <div class="card" style="padding:var(--space-5);margin-top:var(--space-5)" data-tour="day-question">
@@ -235,6 +361,13 @@
     <span class="day-feed__title">{{ block.title }}</span>
   </div>
   {% endfor %}
+</div>
+{% endif %}
+
+{% if has_season %}
+<div class="wave-summary card" style="padding:var(--space-4);margin-top:var(--space-5)" data-tour="team">
+  <span class="wave-summary__text">{{ t('today.wave_checkins', checked=checkins, total=wave_size) }}</span>
+  <a href="/team" class="btn--text">{{ t('today.wave_see_all') }}</a>
 </div>
 {% endif %}
 
