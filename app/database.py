@@ -19,7 +19,21 @@ def normalize_database_url(url: str) -> str:
     return url
 
 
-DATABASE_URL = normalize_database_url(os.getenv("DATABASE_URL", "sqlite:///app.db"))
+_raw_database_url = os.getenv("DATABASE_URL")
+if not _raw_database_url:
+    if os.getenv("RENDER"):
+        # На Render (prod) молчаливый откат на SQLite однажды привёл к тому,
+        # что сервис писал в эфемерный локальный файл вместо Neon, пока
+        # DATABASE_URL не был заведён/подхвачен (см. docs/V2_PROGRESS.md,
+        # миграция в Frankfurt) — без явной ошибки это осталось бы незаметным.
+        raise RuntimeError(
+            "DATABASE_URL не задан на Render — приложению нужна настоящая "
+            "БД (Neon), а не SQLite по умолчанию. Задайте переменную "
+            "окружения DATABASE_URL в настройках сервиса."
+        )
+    _raw_database_url = "sqlite:///app.db"
+
+DATABASE_URL = normalize_database_url(_raw_database_url)
 
 # check_same_thread нужен только SQLite: FastAPI обращается к базе из разных потоков.
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
