@@ -63,7 +63,7 @@ def test_ladder_advance_moves_to_next_rung_and_cannot_skip_ahead(client, unique,
 def test_ladder_advance_stops_at_last_rung(client, unique, db_session):
     _start_ladder_season(client, unique)
     season = db_session.exec(select(Season).order_by(Season.id.desc())).first()
-    total_rungs = 6  # confidence_through_action: 6 ступеней
+    total_rungs = 7  # confidence_through_action: 7 ступеней (расширено по NEWLIFE_KNOWLEDGE_BASE.md)
 
     for _ in range(total_rungs + 3):
         client.post(f"/season/{season.id}/ladder/advance", follow_redirects=False)
